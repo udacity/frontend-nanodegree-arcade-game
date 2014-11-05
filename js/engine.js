@@ -23,7 +23,6 @@ var Engine = (function(global) {
         win = global.window,
         canvas = doc.createElement('canvas'),
         ctx = canvas.getContext('2d'),
-        patterns = {},
         lastTime;
 
     canvas.width = 505;
