@@ -34,7 +34,7 @@ Player.prototype.update = function(dt) {
 }
 
 Player.prototype.render = function() {
-    
+    ctx.drawImage(Resources(this.player), this.x, this.y)
 }
 
 Player.prototype.handleInput = function() {
