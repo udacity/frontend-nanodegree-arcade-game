@@ -96,6 +96,8 @@ var Engine = (function(global) {
         });
         player.update();
         gemblue.update();
+        gemgreen.update();
+        gemorange.update();
     }
 
     /* This function initially draws the "game level", it will then call
@@ -154,6 +156,8 @@ var Engine = (function(global) {
 
         player.render();
         gemblue.render();
+        gemgreen.render();
+        gemorange.render();
     }
 
     /* This function does nothing but it could have been a good place to

@@ -166,25 +166,24 @@ function restartPlayer(obj) {
     }
 }
 
-var GemBlue = function() {
+var Gem = function() {
     this.x = 0;
     this.y = 0;
     this.visible = false;
     this.nextAppearance = 5;
-    this.sprite = 'images/Gem Blue.png';
 }
 
 
-GemBlue.prototype.newPosition = function() {
+Gem.prototype.newPosition = function() {
     this.x = getRandomInt(0,4) * 101;
     this.y = (getRandomInt(1,3) * 83) - (83 / 3);
 }
 
-GemBlue.prototype.newTime = function() {
+Gem.prototype.newTime = function() {
     this.nextAppearance = Date.now() + 30000 + (30000 * Math.random());
 }
 
-GemBlue.prototype.update = function() {
+Gem.prototype.update = function() {
     console.log("Gem blue " + this.visible);
     console.log("time next appearance: " + this.nextAppearance + ", now Time: " + Date.now());
     if (!this.visible && (Date.now() > this.nextAppearance)) {
@@ -195,7 +194,7 @@ GemBlue.prototype.update = function() {
         //check if there is any blue gem
         collision = checkCollision(player.x, player.y, [this]);
         if (collision) {
-            player.score += 25;
+            player.score += this.scoreGem;
             this.visible = false;
             this.newTime();
             this.newPosition();
@@ -203,7 +202,7 @@ GemBlue.prototype.update = function() {
     }
 }
 
-GemBlue.prototype.render = function() {
+Gem.prototype.render = function() {
     if (this.visible) {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     }
@@ -212,6 +211,33 @@ GemBlue.prototype.render = function() {
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * ((max - min) + 1)) + min;
 }
+
+var GemBlue = function() {
+    Gem.call();
+    this.scoreGem = 25;
+    this.sprite = 'images/Gem Blue.png';
+
+}
+
+GemBlue.prototype = Object.create(Gem.prototype);
+
+var GemGreen = function() {
+    Gem.call();
+    this.scoreGem = 50;
+    this.sprite = 'images/Gem Green.png';
+
+}
+
+GemGreen.prototype = Object.create(Gem.prototype);
+
+var GemOrange = function() {
+    Gem.call();
+    this.scoreGem = 75;
+    this.sprite = 'images/Gem Orange.png';
+
+}
+
+GemOrange.prototype = Object.create(Gem.prototype);
 
 
 // Now instantiate your objects.
@@ -229,6 +255,12 @@ for (var row = 1; row < 4; row++) {
 var gemblue = new GemBlue();
 gemblue.newPosition();
 gemblue.newTime();
+var gemgreen = new GemGreen();
+gemgreen.newPosition();
+gemgreen.newTime();
+var gemorange = new GemOrange();
+gemorange.newPosition();
+gemorange.newTime();
 console.log("Test beginning: " + gemblue.x);
 console.log(gemblue.nextAppearance);
 
