@@ -54,6 +54,7 @@ Enemy.prototype.render = function() {
 
 var bigEnemy = function (x, y) {
     Enemy.call(this, x, y);
+    this.sprite = 'images/bigEnemy.png'
 }
 
 bigEnemy.prototype = Object.create(Enemy.prototype);
@@ -64,15 +65,18 @@ bigEnemy.prototype.update = function (dt) {
     var dist = 150 * dt;
     this.x += dist
 
-    this.rightside = this.x + 170;
-    this.bottomside = this.x + 140;
+    this.leftside = this.x;
+    this.bottomside = this.y + 90;
+    this.rightside = this.x +170;
+    this.topside = this.y;
 }
-/*bigEnemy.prototype.render = function() {
-    ctx.scale(2,2);
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y)
-    ctx.scale(.5, .5);
 
-}*/
+
+bigEnemy.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+
+
+}
 
 
 // Collision code for entities in the game. Idea taken from the 
@@ -85,6 +89,7 @@ bigEnemy.prototype.update = function (dt) {
 Enemy.prototype.checkCollision = function (enemy, player) {
     if (this.isOverlapping(enemy, player)) {
         player.resetPosition();
+        player.lives -= 1;
     }
 }
 
@@ -94,6 +99,8 @@ Enemy.prototype.isOverlapping = function(enemy, player) {
             player.topside > enemy.bottomside ||
             player.bottomside < enemy.topside);
 }
+
+
 
 // Now write your own player class
 // This class requires an update(), render() and
@@ -107,6 +114,8 @@ var Player = function(x,y) {
 
     this.x = 200;
     this.y = 400;
+
+    this.lives = 6;
 
 }
 
@@ -128,6 +137,13 @@ Player.prototype.resetPosition = function() {
 
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    
+
+    ctx.fillStyle = "rgb(250, 250, 250)";
+    ctx.font = "24px Helvetica";
+    ctx.textAlign = "left";
+    ctx.textBaseline = "top";
+    ctx.fillText("lives: " + this.lives, 400, 90)
 }
 
 Player.prototype.handleInput = function(key) {
@@ -178,3 +194,5 @@ document.addEventListener('keyup', function(e) {
 
     player.handleInput(allowedKeys[e.keyCode]);
 });
+
+
