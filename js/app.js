@@ -37,6 +37,11 @@ Enemy.prototype.render = function() {
 // This class requires an update(), render() and
 // a handleInput() method.
 
+/**
+ * Player from the game.
+ * @param {int} x is a int which should contain x-asis coordinate.
+ * @param {int} y is a int which should contain x-asis coordinate.
+ */
 var Player = function(X, Y) {
     //nere aldaketak
 
@@ -80,7 +85,10 @@ Player.prototype.render = function() {
     updateScore(this);
 }
 
-// Function for updating score
+/**
+ * Function for updating score.
+ * @param {object} obj is an object, in this case player.
+ */
 function updateScore(obj) {
     //white background, otherwise overwritten
     ctx.fillStyle= 'white';
@@ -100,6 +108,10 @@ function updateScore(obj) {
     ctx.fillText("Lifes: " + player.lifes, 505, 40);
 }
 
+/**
+ * Function for handling keyboard interaction.
+ * @param {string} key is an string with the direction. e.g. left, up and so on.
+ */
 Player.prototype.handleInput = function(key) {
     
     switch (key) {
@@ -120,11 +132,9 @@ Player.prototype.handleInput = function(key) {
         else {
             this.y = (5 * 83) - (83 / 3);
             this.score += 100;
-            console.log("Score " + this.score);
         }
         break;
     case 'down':
-        console.log(this.y);
         if ((this.y + 83) < (5 * 83)) {
             this.y += 83;
         }
@@ -139,6 +149,13 @@ Player.prototype.handleInput = function(key) {
     } **/
 }
 
+/**
+ * Function for handling keyboard interaction.
+ * @param {int} X is an int which should contain x-asis coordinate.
+ * @param {int} Y is an int which should contain y-asis coordinate.
+ * @param {array} arrayObjs is an array with enemies.
+ * @return {boolean} This return a boolean. True if there is a collision between enemy and player, otherwise false.
+ */
 function checkCollision (X, Y, arrayObjs) {
     for (obj in arrayObjs) {
         var objX = (arrayObjs[obj].x / 101).toFixed(0);
@@ -147,7 +164,6 @@ function checkCollision (X, Y, arrayObjs) {
 
         if ((objX == (X / 101).toFixed(0)) && (objY == (Y / 83).toFixed(0))) {
             //collision
-            console.log("collision");
             return true;
             
         }
@@ -156,16 +172,26 @@ function checkCollision (X, Y, arrayObjs) {
     return false;
 }
 
+/**
+ * Function for handling end of the game.
+ * @param {object} obj is an object, in this case player.
+ */
 function restartPlayer(obj) {
     obj.x = 2 * 101;
     obj.y = (5 * 83) - (83 / 3);
     obj.lifes -= 1;
-    obj.score = 0;
+    
     if (obj.lifes <= 0) {
-        //finish gabe, stop engine    
+        //finish gabe, stop engine
+        obj.score = 0;
+        obj.lifes = 5;
+        
     }
 }
 
+/**
+ * Gems for the game, to get extra score.
+ */
 var Gem = function() {
     this.x = 0;
     this.y = 0;
@@ -173,19 +199,25 @@ var Gem = function() {
     this.nextAppearance = 5;
 }
 
-
+/**
+ * Gems's function to ramdonly allocate on the game board.
+ */
 Gem.prototype.newPosition = function() {
     this.x = getRandomInt(0,4) * 101;
     this.y = (getRandomInt(1,3) * 83) - (83 / 3);
 }
 
+/**
+ * Gems's function to specify every how long appear in the game.
+ */
 Gem.prototype.newTime = function() {
     this.nextAppearance = Date.now() + 30000 + (30000 * Math.random());
 }
 
+/**
+ * Gems's function to update the gema's position.
+ */
 Gem.prototype.update = function() {
-    console.log("Gem blue " + this.visible);
-    console.log("time next appearance: " + this.nextAppearance + ", now Time: " + Date.now());
     if (!this.visible && (Date.now() > this.nextAppearance)) {
         this.visible = true;
     }
@@ -202,16 +234,28 @@ Gem.prototype.update = function() {
     }
 }
 
+/**
+ * Gems's function to draw it on the game board.
+ */
 Gem.prototype.render = function() {
     if (this.visible) {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     }
 }
 
+/**
+ * Function to gent random int between two ints.
+ * @param {int} min is an int (lower bound).
+ * @param {int} max is an int (upper bound).
+ * @return {int} This return a radom int.
+ */
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * ((max - min) + 1)) + min;
 }
 
+/**
+ * Gems for the game (blue), to get different extra score.
+ */
 var GemBlue = function() {
     Gem.call();
     this.scoreGem = 25;
@@ -221,6 +265,9 @@ var GemBlue = function() {
 
 GemBlue.prototype = Object.create(Gem.prototype);
 
+/**
+ * Gems for the game (green), to get different extra score.
+ */
 var GemGreen = function() {
     Gem.call();
     this.scoreGem = 50;
@@ -230,6 +277,9 @@ var GemGreen = function() {
 
 GemGreen.prototype = Object.create(Gem.prototype);
 
+/**
+ * Gems for the game (orange), to get different extra score.
+ */
 var GemOrange = function() {
     Gem.call();
     this.scoreGem = 75;
@@ -261,8 +311,6 @@ gemgreen.newTime();
 var gemorange = new GemOrange();
 gemorange.newPosition();
 gemorange.newTime();
-console.log("Test beginning: " + gemblue.x);
-console.log(gemblue.nextAppearance);
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.

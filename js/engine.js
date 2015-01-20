@@ -64,7 +64,7 @@ var Engine = (function(global) {
      * game loop.
      */
     function init() {
-        reset();
+        //reset();
         lastTime = Date.now();
         main();
     }
@@ -94,10 +94,16 @@ var Engine = (function(global) {
         allEnemies.forEach(function(enemy) {
             enemy.update(dt);
         });
-        player.update();
-        gemblue.update();
-        gemgreen.update();
-        gemorange.update();
+        if (player.lifes < 1) {
+            reset();
+        }
+        else {
+            player.update();
+            gemblue.update();
+            gemgreen.update();
+            gemorange.update(); 
+        }
+        
     }
 
     /* This function initially draws the "game level", it will then call
