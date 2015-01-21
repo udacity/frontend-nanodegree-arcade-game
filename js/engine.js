@@ -64,7 +64,7 @@ var Engine = (function(global) {
      * game loop.
      */
     function init() {
-        reset();
+        //reset();
         lastTime = Date.now();
         main();
     }
@@ -94,7 +94,16 @@ var Engine = (function(global) {
         allEnemies.forEach(function(enemy) {
             enemy.update(dt);
         });
-        player.update();
+        if (player.lifes < 1) {
+            reset();
+        }
+        else {
+            player.update();
+            gemblue.update();
+            gemgreen.update();
+            gemorange.update(); 
+        }
+        
     }
 
     /* This function initially draws the "game level", it will then call
@@ -136,7 +145,6 @@ var Engine = (function(global) {
             }
         }
 
-
         renderEntities();
     }
 
@@ -153,6 +161,9 @@ var Engine = (function(global) {
         });
 
         player.render();
+        gemblue.render();
+        gemgreen.render();
+        gemorange.render();
     }
 
     /* This function does nothing but it could have been a good place to
@@ -172,7 +183,10 @@ var Engine = (function(global) {
         'images/water-block.png',
         'images/grass-block.png',
         'images/enemy-bug.png',
-        'images/char-boy.png'
+        'images/char-boy.png',
+        'images/Gem Blue.png',
+        'images/Gem Green.png',
+        'images/Gem Orange.png',
     ]);
     Resources.onReady(init);
 
