@@ -28,7 +28,8 @@ var Player = function(){
 
 }
 Player.prototype.render = function(){
-
+    this.sprite  = ''
+    
 }
 Player.prototype.update = function(){
     
