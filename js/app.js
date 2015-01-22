@@ -21,15 +21,14 @@ Entity.prototype.render = function() {
 
 // Enemies our player must avoid
 var Enemy = function(x, y, speed) {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
-    this.speed = speed;
-    this.x = x;
-    this.y = y;
-    // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
-    this.sprite = 'images/enemy-bug.png';    
+    //Calling Entity class
+    this.sprite = 'images/enemy-bug.png';
+    Entity.call(this, x, y, speed, sprite)
 }
+
+Enemy.prototype = Object.create(Entity.prototype);
+Enemy.prototype.constructor = Enemy;
+
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
