@@ -1,3 +1,5 @@
+//Superclass Entity wich will be common in Enemy and PLayer
+
 // Enemies our player must avoid
 var Enemy = function(x, y, speed) {
     // Variables applied to each of our instances go here,
@@ -29,20 +31,27 @@ Enemy.prototype.render = function() {
 // This class requires an update(), render() and
 // a handleInput() method.
 var Player = function(){
+    this.speed = speed;
+    this.x = x;
+    this.y =
+    this.sprite = 'images/char-boy.png';
 
 }
-Player.prototype.render = function(){
-    this.sprite  = ''
-    
-}
+
 Player.prototype.update = function(){
-
+    this.x += speed * dt;
+    this.y += speed * dt;
 }
+
+Player.prototype.render = function(){    
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);   
+}
+
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 var allEnemies = [];
-var player = new Player();
+var player = new Player(0, 0, 2);
 
 
 // This listens for key presses and sends the keys to your
