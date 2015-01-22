@@ -5,6 +5,18 @@ var Entity = function(x, y, speed, sprite){
     this.y = y;
     this.sprite = sprite;
 }
+Entity.prototype.update = function(dt) {
+    // You should multiply any movement by the dt parameter
+    // which will ensure the game runs at the same speed for
+    // all computers.
+    this.x += speed * dt;
+    this.y += speed * dt;
+}
+
+// Draw the enemy on the screen, required method for game
+Entity.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+}
 
 
 // Enemies our player must avoid
