@@ -1,4 +1,11 @@
 //Superclass Entity wich will be common in Enemy and PLayer
+var Entity = function(x, y, speed, sprite){
+    this.speed = speed;
+    this.x = x;
+    this.y = y;
+    this.sprite = sprite;
+}
+
 
 // Enemies our player must avoid
 var Enemy = function(x, y, speed) {
