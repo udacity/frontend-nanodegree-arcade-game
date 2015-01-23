@@ -56,21 +56,19 @@ Player.prototype = Object.create(Entity.prototype);
 Player.prototype.constructor = Player;
 Player.prototype.handleInput = function(key) {
     console.log(key);
-    if (key === 'right') {
+    switch(key){
+        case 'right':
         this.gridPosition.x++;
-    }
-
-    if (key === 'left') {
+        break;
+        case 'left':
         this.gridPosition.x--;
-    }
-
-    if (key === 'up') {
+        break;
+        case 'up':
         this.gridPosition.y--;
-    }
-
-    if (key === 'down') {
-     
+        break;
+        case 'down':
         this.gridPosition.y++;
+        break;
     }
 
     this.position = this.grid.position[this.gridPosition.x][this.gridPosition.y];
