@@ -5,13 +5,6 @@ var Entity = function(x, y, speed, sprite) {
     this.speed = speed;
     this.sprite = sprite;
 }
-Entity.prototype.update = function(dt) {
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
-    this.x;
-    this.y;
-}
 
 // Draw the enemy on the screen, required method for game
 Entity.prototype.render = function() {
@@ -25,6 +18,13 @@ var Enemy = function(x, y, speed) {
 }
 Enemy.prototype = Object.create(Entity.prototype);
 Enemy.prototype.constructor = Enemy;
+Enemy.prototype.update = function(dt) {
+    // You should multiply any movement by the dt parameter
+    // which will ensure the game runs at the same speed for
+    // all computers.
+    this.x;
+    this.y;
+}
 
 // Now write your own player class
 // This class requires an update(), render() and
@@ -55,6 +55,14 @@ Player.prototype.handleInput = function(key) {
         this.y += this.speed;
         console.log("aqui");
     }
+}
+
+Player.prototype.update = function(dt) {
+    // You should multiply any movement by the dt parameter
+    // which will ensure the game runs at the same speed for
+    // all computers.
+    this.x;
+    this.y;
 }
 
 // Now instantiate your objects.
