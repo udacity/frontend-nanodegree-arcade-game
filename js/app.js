@@ -1,5 +1,5 @@
 //Superclass Entity wich will be common in Enemy and PLayer
-var Entity = function(x, y, speed, sprite){
+var Entity = function(x, y, speed, sprite) {
     this.x = x;
     this.y = y;
     this.speed = speed;
@@ -9,8 +9,8 @@ Entity.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-    this.x += this.speed;
-    this.y += this.speed;
+    this.x;
+    this.y;
 }
 
 // Draw the enemy on the screen, required method for game
@@ -29,21 +29,43 @@ Enemy.prototype.constructor = Enemy;
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
-var Player = function(x, y, speed){
-     Entity.call(this, x, y, speed, 'images/enemy-bug.png')
+var Player = function(x, y, speed) {
+    Entity.call(this, x, y, speed, 'images/char-boy.png')
 }
 Player.prototype = Object.create(Entity.prototype);
 Player.prototype.constructor = Player;
+Player.prototype.handleInput = function(key) {
+    console.log(key);
+    if (key === 'right') {
+        this.x += this.speed;
+        console.log("aqui");
+    }
+
+    if (key === 'left') {
+        this.x -= this.speed;
+        console.log("aqui");
+    }
+
+    if (key === 'up') {
+        this.y -= this.speed;
+        console.log("aqui");
+    }
+
+    if (key === 'down') {
+        this.y += this.speed;
+        console.log("aqui");
+    }
+}
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 var allEnemies = [];
-var player = new Player(0, 0, 0.001);
+var player = new Player(0, 0, 5);
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
-document.addEventListener('keyup', function(e) {
+document.addEventListener('keydown', function(e) {
     var allowedKeys = {
         37: 'left',
         38: 'up',
