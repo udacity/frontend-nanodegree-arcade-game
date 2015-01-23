@@ -59,13 +59,16 @@ Player.prototype.handleInput = function(key) {
     switch(key){
         case 'right':
         this.gridPosition.x++;
+
         break;
         case 'left':
         this.gridPosition.x--;
         break;
+
         case 'up':
         this.gridPosition.y--;
         break;
+
         case 'down':
         this.gridPosition.y++;
         break;
