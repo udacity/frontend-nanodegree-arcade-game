@@ -1,0 +1,27 @@
+Enemy:
+  Function:
+    ☐ Loading the image by setting to the approprate image in the image
+    ☐ Setting enemy inital location
+    ☐ Setting enemy speed
+    Update methods:
+      ☐ Update the enemy location
+      ☐ Handle collision with Player
+
+Player:
+  Function:
+    ✔ Loading player image @done (15-01-23 00:21)
+    ✔ Set inital position @done (15-01-23 00:21)
+    ✔ Render method @done (15-01-23 00:21)
+
+  Update methods:
+    ☐ Update the enemy location
+    ☐ Handle collision with Player
+
+  Input:
+    ☐ left, right, up down key
+    ☐ screen boundaries limit
+    ☐ (reset method)
+
+Outro:
+  ☐ Create new PLayer object
+  ☐ Create several new objects
