@@ -84,6 +84,7 @@ Player.prototype.render = function() {
 Player.prototype.next = function(){
     this.ind += 1;
     this.reset();
+    this.score += 50;
         if (this.ind >= 5){
         this.ind = 0;
         this.level += 1;
@@ -128,11 +129,8 @@ Player.prototype.checkCollisions = function(dt){
 Player.prototype.handleInput = function(direction){
     if (this.life <=0 ) {
         if(direction == "space") {
-            this.life = 5;
-            this.score = 0;
-            this.level = 1;
-            this.ind = 0;
-            heart.timePassed = 0;
+           this.restart();
+
         }
         return;
     }
@@ -146,7 +144,17 @@ Player.prototype.handleInput = function(direction){
         this.y = this.y + 83;
 
 }
-
+Player.prototype.restart = function(){
+            this.life = 5;
+            this.score = 0;
+            this.level = 1;
+            this.ind = 0;
+            heart.timePassed = 0;  
+            while( allEnemies.length > 5){
+                allEnemies.pop();
+            }
+    
+}
 Player.prototype.Start = function(){
     if (this.life == -1){
                ctx.save();
@@ -219,16 +227,20 @@ Heart.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprites), this.x, this.y+25, 90, 150);}
 }
 Heart.prototype.update = function(dt) {
+    var tmp = this.timePassed;
     this.timePassed +=dt;
-    if (this.timePassed > 20){
-        this.init();
-    }
+    if (this.timePassed >= 20 
+        && tmp < 20){
+        this.x = getRandomInt(0, 5) * 101;
+        this.y = lines[randomLineIndex()];  
+}
 
-    if (this.timePassed > 40){
-
+   if (this.timePassed >= 40 
+        && tmp < 40){
         this.x = -100;
         this.y = -100;
-        this.timePassed = 0;}
+        this.timePassed = 0
+   }
 }
 Heart.prototype.init = function(){
     this.x = getRandomInt(0, 5) * 101;
