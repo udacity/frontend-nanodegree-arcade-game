@@ -1,4 +1,4 @@
-// Enemies our player must avoid
+    // Enemies our player must avoid
 var Enemy = function() {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
@@ -7,7 +7,7 @@ var Enemy = function() {
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
     this.init();
- 
+
 }
 
 
@@ -24,13 +24,13 @@ Enemy.prototype.update = function(dt) {
 }
 Enemy.prototype.init = function(){
     this.x = getRandomInt(-250, -100);
-    this.y = lines[randomLineIndex()];  
+    this.y = lines[randomLineIndex()];
     this.speed = getRandomInt(100, 250)
 }
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y); 
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 
 var getRandomInt = function (min, max) {
@@ -45,17 +45,17 @@ var randomLineIndex = function(){
 // This class requires an update(), render() and
 // a handleInput() method.
 var Player = function() {
-    this.sprites = ['images/char-cat-girl.png', 
-                    'images/char-horn-girl.png', 
-                    'images/char-pink-girl.png', 
-                    'images/char-princess-girl.png', 
+    this.sprites = ['images/char-cat-girl.png',
+                    'images/char-horn-girl.png',
+                    'images/char-pink-girl.png',
+                    'images/char-princess-girl.png',
                     'images/char-boy.png'] ;
-    this.reset(); 
+    this.reset();
     this.score = 0;
     this.level = 1;
     this.ind = 0;
     this.life = -1;
- 
+
 }
 Player.prototype.renderScoreLine = function(){
     ctx.font = '400 24pt Nunito';
@@ -76,8 +76,8 @@ Player.prototype.reset = function() {
 }
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprites[this.ind]), this.x, this.y);
-    this.renderScoreLine(); 
-    this.Start();          
+    this.renderScoreLine();
+    this.Start();
 
 }
 
@@ -87,8 +87,9 @@ Player.prototype.next = function(){
         if (this.ind >= 5){
         this.ind = 0;
         this.level += 1;
+        allEnemies.push( new Enemy());
         this.score += 100;
-         
+
         //this.renderScoreLine();
     }
 }
@@ -101,7 +102,7 @@ Player.prototype.checkCollisions = function(dt){
         this.life-=1;
         }
     }
-  
+
     if( Math.abs(this.x - gem.x) <= 40 && Math.abs(this.y - gem.y) <= 40) {
         this.score = this.score + 20;
         //this.renderScoreLine();
@@ -117,7 +118,7 @@ Player.prototype.checkCollisions = function(dt){
         heart.x = -100;
         heart.y = -100;
 
-         
+
         if (this.life < 5){
             this.life +=1;
         }
@@ -202,7 +203,7 @@ Gem.prototype.render = function() {
 Gem.prototype.update = function(dt) {}
 Gem.prototype.init = function(){
     this.x = getRandomInt(0, 5) * 101;
-    this.y = lines[randomLineIndex()];  
+    this.y = lines[randomLineIndex()];
     this.ind = getRandomInt(0, 3)
 }
 var gem = new Gem();
@@ -210,7 +211,7 @@ var gem = new Gem();
 var Heart = function(){
     this.sprites = 'images/Heart.png';
     this.x = -100;
-    this.y = -100;  
+    this.y = -100;
     this.timePassed = 0;
 }
 Heart.prototype.render = function() {
@@ -222,16 +223,16 @@ Heart.prototype.update = function(dt) {
     if (this.timePassed > 20){
         this.init();
     }
-   
+
     if (this.timePassed > 40){
-    
+
         this.x = -100;
         this.y = -100;
         this.timePassed = 0;}
 }
 Heart.prototype.init = function(){
     this.x = getRandomInt(0, 5) * 101;
-    this.y = lines[randomLineIndex()];  
+    this.y = lines[randomLineIndex()];
     this.timePassed = 0;
     }
 var heart = new Heart();
