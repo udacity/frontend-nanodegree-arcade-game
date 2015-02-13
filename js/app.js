@@ -9,7 +9,17 @@ var Enemy = function() {
     this.init();
 
 }
-
+var SpeedEnemy = function(){
+    Enemy.call(this);
+    this.sprite = 'images/speed-enemy-bug.png';
+}
+SpeedEnemy.prototype = Object.create(Enemy.prototype);
+SpeedEnemy.prototype.constructor = SpeedEnemy;
+SpeedEnemy.prototype.init = function(){
+    Enemy.prototype.init.call(this);
+    this.x = getRandomInt(-5000, -4500);
+    this.speed = getRandomInt(250, 500); 
+}
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
@@ -31,6 +41,16 @@ Enemy.prototype.init = function(){
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+}
+
+Enemy.prototype.onCollision = function(player) {
+        player.reset();
+        player.life-=1;
+}
+
+SpeedEnemy.prototype.onCollision = function(player) {
+        player.reset();
+        player.life = 0;
 }
 
 var getRandomInt = function (min, max) {
@@ -99,8 +119,7 @@ Player.prototype.checkCollisions = function(dt){
     for(var i in allEnemies) {
         if( Math.abs(this.x - allEnemies[i].x) <= 40
          && Math.abs(this.y - allEnemies[i].y) <= 40){
-        this.reset();
-        this.life-=1;
+            allEnemies[i].onCollision(this);    
         }
     }
 
@@ -150,7 +169,7 @@ Player.prototype.restart = function(){
             this.level = 1;
             this.ind = 0;
             heart.timePassed = 0;  
-            while( allEnemies.length > 5){
+            while( allEnemies.length > 6){
                 allEnemies.pop();
             }
     
@@ -169,6 +188,7 @@ Player.prototype.Start = function(){
                ctx.fillText("the road as each of the 5 players, ", 80, 340);
                ctx.fillText("you will go to next level. You can", 80, 380);
                ctx.fillText("pick up Gems. It gives you extra points.", 80, 420);
+               ctx.fillText("Beware blue bug!!!", 150, 460);
                ctx.fillStyle = "red";
                ctx.font = '800 24pt Nunito';
                ctx.fillText("Press Space to start game", 80, 500);
@@ -198,6 +218,7 @@ var allEnemies = [];
 for (var i = 0; i < 5; i++) {
 allEnemies.push( new Enemy());
 }
+allEnemies.push(new SpeedEnemy()); 
 var player = new Player();
 
 var Gem = function(){
