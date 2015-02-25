@@ -2,15 +2,15 @@
 // TODO: pull these with code in either resources.js or engine.js
 var gameWidth = 505;
 var gameHeight = 606;
-var blockWidth = 83;
-var blockHeight = 101;
+var blockWidth = 101;
+var blockHeight = 83;
 
 // Enemies our player must avoid
 var Enemy = function(x, y) {
     // x,y coordinate location of this object
     this.x = x;
     this.y = y;
-
+    this.speed = getRandom(100, 400);
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
@@ -22,7 +22,7 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-    var newX = Math.abs(this.x) + Math.abs(dt * 100);
+    var newX = this.x + dt * this.speed;
      
     // we want the enemy to continue moving until it's left edge is off the screen
     if (newX < gameWidth) {
@@ -37,7 +37,6 @@ Enemy.prototype.update = function(dt) {
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function () {
-    console.log("Enemy render at " + this.x + ", " + this.y);
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 
@@ -86,7 +85,8 @@ Player.prototype.handleInput = function (keycode) {
 // Place the player object in a variable called player
 var allEnemies = [];
 for (var i = 0; i < 5; i++) {
-     allEnemies.push(new Enemy(0, 3*blockHeight));
+
+    allEnemies.push(new Enemy(getRandom(0, 505), getRandom(1,3)*blockHeight - (blockHeight * .25)));
 }
 
 var player = new Player(gameWidth / 2, gameHeight - blockHeight);
@@ -104,4 +104,8 @@ document.addEventListener('keyup', function(e) {
     player.handleInput(allowedKeys[e.keyCode]);
 });
 
-
+function getRandom(min, max) {
+    var x = Math.floor(Math.random() * max) + min;
+    console.log(x);
+    return x;
+}
