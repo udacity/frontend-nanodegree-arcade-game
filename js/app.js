@@ -77,13 +77,16 @@ Player.prototype.render = function () {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 
     if (this.justScored === true) {
-        ctx.font = "60pt Bangers";
+        ctx.font = "60pt Bangers, cursive";
         ctx.fillStyle = "deeppink";
         ctx.fillText("Score!!", 100, 400);
     }
 
-    ctx.font = "30pt Bangers";
+    ctx.font = "45px Bangers, cursive";
     ctx.fillStyle = "deeppink";
+    ctx.textBaseline = "bottom";
+
+    ctx.clearRect(0, 0, gameWidth, 90);
     ctx.fillText("Score: " + this.currentScore, 350, 100);
 
 }
