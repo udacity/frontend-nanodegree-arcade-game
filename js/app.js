@@ -71,11 +71,6 @@ Player.prototype.update = function (dt) {
 
 }
 
-// Part of resetting a user after they've scored
-Player.prototype.scoreDone = function () {
-    this.justScored = false;
-}
-
 // Compare vertical position against an enemy
 // To determine if we might be colliding
 Player.prototype.inSameRow = function (enemyY) {
@@ -110,7 +105,7 @@ Player.prototype.render = function () {
         ctx.fillText("Score!!", 100, 400);
     }
 
-    if (this.justDied == true) {
+    if (this.justDied === true) {
         ctx.font = "60pt Bangers, cursive";
         ctx.fillStyle = "deeppink";
         ctx.fillText("OUCH!! Dead!", 100, 400);
@@ -135,19 +130,36 @@ Player.prototype.render = function () {
 // Player ran into an enemy; need to update lives and reset
 Player.prototype.died = function () {
     this.lives--;
-    player.justDied = false;
-    if (this.lives <= 0) {
+
+    // If we ran out of lives, we're dead
+    if (this.lives === 0) {
         gameOver();
         return;
     }
 
-    player.setStartPosition();
+    // if it's not game over, reset to start position
+    this.setStartPosition();
+
+    // Set our flag so player can move again
+    this.justDied = false;
+}
+
+// Runs when player has scored
+Player.prototype.scored = function () {
+    // up the score
+    this.currentScore++;
+
+    // set our flag
+    this.justScored = true;
+
+    // wait 2 seconds to clear the "score!" message and reset player position
+    window.setTimeout(function () { player.clearScore(); }, 2000);
 }
 
 // This is called on a timer after the user has scored
 // It resets the justScored flag and resets the player to the start position
 Player.prototype.clearScore = function() {
-    this.scoreDone();
+    this.justScored = false;
     ctx.clearRect(0, 0, gameWidth, gameHeight);
     this.setStartPosition();
 }
@@ -160,7 +172,7 @@ Player.prototype.handleInput = function (keycode) {
 
     // Player cannot move for the couple seconds after 
     // scoring, when we display the score and reset their position
-    if (this.justScored === true || this.justDied == true) {
+    if (this.justScored === true || this.justDied === true) {
         return;
     }
 
@@ -190,9 +202,7 @@ Player.prototype.handleInput = function (keycode) {
                 // to move into the water and score
             else {
                 this.y = this.y - 50;
-                this.currentScore++;
-                this.justScored = true;
-                window.setTimeout(function () { this.clearScore(); }, 2000);
+                this.scored();
             }
     }
 }
@@ -234,7 +244,6 @@ function initializePlayer() {
 
 // this runs after the pause for showing Game Over on screen
 function gameOver() {
-    console.log("Hit game over");
     // start with a clear Canvas
     ctx.clearRect(0, 0, gameWidth, gameHeight);
 
