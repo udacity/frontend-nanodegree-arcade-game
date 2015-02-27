@@ -35,7 +35,6 @@ Enemy.prototype.update = function (dt) {
     else {
         this.x = 0 - Resources.get(this.sprite).width;
     }
-
 }
 
 // Draw the enemy on the screen, required method for game
@@ -44,6 +43,7 @@ Enemy.prototype.render = function () {
 }
 
 // Player who will try to make it across the traffic
+// There should only be one of these at a time
 var Player = function (x, y) {
     // x, y coordinates of player locationn
     this.x = x
@@ -51,44 +51,105 @@ var Player = function (x, y) {
 
     // Count of how many times they make it across the road
     this.currentScore = 0;
-    
+
+    // Count of lives. Subtract one for each death until 0
+    this.lives = 5;
+
     // when true, we display a SCORE!! across the screen
+    // and do not allow the player to move
     this.justScored = false;
+
+    // when true, we display a message across the screen
+    // and do not allow the player to move
+    this.justDied = false;
 
     // url to our player's resource
     this.sprite = 'images/char-cat-girl.png';
 }
 
 Player.prototype.update = function (dt) {
-   
+
 }
 
+// Part of resetting a user after they've scored
 Player.prototype.scoreDone = function () {
     this.justScored = false;
 }
 
-Player.prototype.setStartPosition = function() {
+// Compare vertical position against an enemy
+// To determine if we might be colliding
+Player.prototype.inSameRow = function (enemyY) {
+    if (enemyY <= this.y <= enemyY - 50) {
+        return true;
+    }
+}
+
+// Compare horizontal position against an enemy
+// To determine if we might be colliding
+Player.prototype.inSameColumn = function (enemyX) {
+    if (enemyX <= this.x <= enemyX + 80) {
+        return true;
+    }
+}
+
+// Set player start position at bottom middle of screen
+Player.prototype.setStartPosition = function () {
     ctx.clearRect(0, 0, 60, 505);
     this.x = (gameWidth / 2) - 50;
     this.y = gameHeight - blockHeight - 90;
- 
 }
+
+// Draw player and player-related text on screen
 Player.prototype.render = function () {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 
+    // User successfully made it to the top of the screen
     if (this.justScored === true) {
         ctx.font = "60pt Bangers, cursive";
         ctx.fillStyle = "deeppink";
         ctx.fillText("Score!!", 100, 400);
     }
 
+    if (this.justDied == true) {
+        ctx.font = "60pt Bangers, cursive";
+        ctx.fillStyle = "deeppink";
+        ctx.fillText("OUCH!! Dead!", 100, 400);
+    }
+
+    // Display player score in upper right
     ctx.font = "45px Bangers, cursive";
     ctx.fillStyle = "deeppink";
     ctx.textBaseline = "bottom";
 
+    // and player lives in upper left
     ctx.clearRect(0, 0, gameWidth, 90);
-    ctx.fillText("Score: " + this.currentScore, 350, 100);
+    var lifeString = ""
+    for (var i = 0; i < 5; i++) {
+        lifeString = lifeString + " \u2665";
+    }
+    ctx.fillText(lifeString, 10, 100);
+    ctx.fillText("Score: " + this.currentScore, gameWidth - 155, 100);
 
+}
+
+// Player ran into an enemy; need to update lives and reset
+Player.prototype.died = function () {
+    this.lives--;
+    player.justDied = false;
+    if (this.lives <= 0) {
+        gameOver();
+        return;
+    }
+
+    player.setStartPosition();
+}
+
+// This is called on a timer after the user has scored
+// It resets the justScored flag and resets the player to the start position
+Player.prototype.clearScore = function() {
+    this.scoreDone();
+    ctx.clearRect(0, 0, gameWidth, gameHeight);
+    this.setStartPosition();
 }
 
 // Our player sprites are 101x170px
@@ -96,9 +157,17 @@ Player.prototype.render = function () {
 // but vertically the bottom of the sprite near the bottom of the block
 Player.prototype.handleInput = function (keycode) {
     var spriteHeight = 170;
+
+    // Player cannot move for the couple seconds after 
+    // scoring, when we display the score and reset their position
+    if (this.justScored === true || this.justDied == true) {
+        return;
+    }
+
+    // Move the player in response to user key input
     switch (keycode) {
         case 'left':
-            if (this.x -blockWidth >= 0) {
+            if (this.x - blockWidth >= 0) {
                 this.x = this.x - blockWidth;
             }
             break;
@@ -119,27 +188,14 @@ Player.prototype.handleInput = function (keycode) {
             }
                 // She's in the top row of the road and we want to allow her
                 // to move into the water and score
-            else  {
-                if (this.justScored === false) {
-                    this.y = this.y - 50;
-                    this.currentScore++;
-                    this.justScored = true;
-                    window.setTimeout(function () { clearScore(); }, 2000);
-                }
+            else {
+                this.y = this.y - 50;
+                this.currentScore++;
+                this.justScored = true;
+                window.setTimeout(function () { this.clearScore(); }, 2000);
             }
     }
 }
-// *********************************************************************
-// Here we create our enemies 
-// Setting random location in the road tiles for the enemies, and random speed
-var allEnemies = [];
-for (var i = 0; i < 5; i++) {
-    allEnemies.push(new Enemy(getRandom(0, 505), getRandom(1, 3) * blockHeight - (blockHeight * .25)));
-}
-
-// Create a new player
-// TODO: allow player to choose character
-var player = new Player((gameWidth / 2) - 50, gameHeight - blockHeight - 90);
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
@@ -160,10 +216,37 @@ function getRandom(min, max) {
 }
 
 
-function clearScore() {
-    console.log("Made it to clearScore function");
-    player.scoreDone();
-    ctx.clearRect(0, 0, gameWidth, gameHeight);
-    player.setStartPosition();
+// Returns an array of randomly placed enemies
+// Pass in the number of enemies you want in the array
+function initializeEnemies(enemyCount) {
+    var enemies = [];
+    for (var i = 0; i < enemyCount; i++) {
+        enemies.push(new Enemy(getRandom(0, 505), getRandom(1, 3) * blockHeight - (blockHeight * .25)));
+    }
+    return enemies;
 }
+
+// Create a new player
+// TODO: allow player to choose character?
+function initializePlayer() {
+    return new Player((gameWidth / 2) - 50, gameHeight - blockHeight - 90);
+}
+
+// this runs after the pause for showing Game Over on screen
+function gameOver() {
+    console.log("Hit game over");
+    // start with a clear Canvas
+    ctx.clearRect(0, 0, gameWidth, gameHeight);
+
+    // reset enemies and player
+    allEnemies = initializeEnemies();
+    player = initializePlayer();
+}
+
+// *********************************************************************
+// Here we create our enemies 
+// Setting random location in the road tiles for the enemies, and random speed
+var allEnemies = initializeEnemies(5);
+var player = initializePlayer();
+//*********************************************************************
 

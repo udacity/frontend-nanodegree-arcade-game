@@ -14,7 +14,7 @@
  * a little simpler to work with.
  */
 
-var Engine = (function(global) {
+var Engine = (function (global) {
     /* Predefine the variables we'll be using within this scope,
      * create the canvas element, grab the 2D context for that canvas
      * set the canvas elements height/width and add it to the DOM.
@@ -45,7 +45,7 @@ var Engine = (function(global) {
         /* Call our update/render functions, pass along the time delta to
          * our update function since it may be used for smooth animation.
          */
- 
+
         update(dt);
         render();
 
@@ -81,7 +81,7 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        // checkCollisions();
+        checkCollisions();
     }
 
     /* This is called by the update function  and loops through all of the
@@ -92,9 +92,10 @@ var Engine = (function(global) {
      * render methods.
      */
     function updateEntities(dt) {
-        allEnemies.forEach(function(enemy) {
+        allEnemies.forEach(function (enemy) {
             enemy.update(dt);
         });
+
         player.update();
     }
 
@@ -115,7 +116,7 @@ var Engine = (function(global) {
                 'images/stone-block.png',   // Row 3 of 3 of stone
                 'images/grass-block.png',   // Row 1 of 2 of grass
                 'images/grass-block.png'    // Row 2 of 2 of grass
-            ],
+        ],
             numRows = 6,
             numCols = 5,
             row, col;
@@ -148,10 +149,10 @@ var Engine = (function(global) {
         /* Loop through all of the objects within the allEnemies array and call
          * the render function you have defined.
          */
-        allEnemies.forEach(function(enemy) {
+        allEnemies.forEach(function (enemy) {
             enemy.render();
         });
-
+  
         player.render();
     }
 
@@ -161,6 +162,24 @@ var Engine = (function(global) {
      */
     function reset() {
         // noop
+    }
+
+    // If player collides with an enemy, they lose a life 
+    // and move back to their start position
+    function checkCollisions() {
+        if (player.justDied === true) {
+            return;
+        }
+
+        allEnemies.forEach(function (enemy) {
+            // if in the same row as player
+            //console.log("enemy position is " + enemy.x + ", " + enemy.y);
+            if (player.inSameRow(enemy.y) && player.inSameColumn(enemy.x)) {
+                // COLLIDE!!
+                //player.justDied = true;
+                //setTimeout(function () { player.died(); }, 2000);
+            }
+        });
     }
 
     /* Go ahead and load all of the images we know we're going to need to
