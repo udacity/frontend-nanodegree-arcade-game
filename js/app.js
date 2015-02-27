@@ -67,6 +67,7 @@ var Player = function (x, y) {
     this.sprite = 'images/char-cat-girl.png';
 }
 
+// no-op so far
 Player.prototype.update = function (dt) {
 
 }
@@ -74,8 +75,11 @@ Player.prototype.update = function (dt) {
 // Compare vertical position against an enemy
 // To determine if we might be colliding
 Player.prototype.inSameRow = function (enemyY) {
-    console.log("Y comp: " + enemyY + " >= " + this.y + " <= " + (enemyY - 50).toString());
-    if (enemyY <= this.y <= enemyY - 50) {
+    console.log("Y comp: " + enemyY + " <= " + this.y + " <= " + (enemyY - 50).toString());
+    var midPlayer = this.y - 85;
+     
+    if (enemyY <= this.y && this.y <= enemyY - 50) {
+        console.log("In same row");
         return true;
     }
     return false;
@@ -85,7 +89,7 @@ Player.prototype.inSameRow = function (enemyY) {
 // To determine if we might be colliding
 Player.prototype.inSameColumn = function (enemyX) {
     console.log("X comp: " + enemyX + " <= " + this.x + " <= " + (enemyX + 80).toString());
-    if (enemyX <= this.x <= enemyX + 80) {
+    if (enemyX <= this.x && this.x <= enemyX + 80) {
         return true;
     }
     return false;
@@ -194,13 +198,13 @@ Player.prototype.handleInput = function (keycode) {
             break;
         case 'down':
             if (this.y + blockHeight + spriteHeight <= gameHeight) {
-                this.y = this.y + blockHeight;
+                this.y = this.y + blockHeight / 2;
             }
             break;
         case 'up':
         default:
             if (this.y - blockHeight >= 0) {
-                this.y = this.y - blockHeight;
+                this.y = this.y - blockHeight / 2;
             }
                 // She's in the top row of the road and we want to allow her
                 // to move into the water and score
