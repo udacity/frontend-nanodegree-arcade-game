@@ -74,17 +74,21 @@ Player.prototype.update = function (dt) {
 // Compare vertical position against an enemy
 // To determine if we might be colliding
 Player.prototype.inSameRow = function (enemyY) {
+    console.log("Y comp: " + enemyY + " >= " + this.y + " <= " + (enemyY - 50).toString());
     if (enemyY <= this.y <= enemyY - 50) {
         return true;
     }
+    return false;
 }
 
 // Compare horizontal position against an enemy
 // To determine if we might be colliding
 Player.prototype.inSameColumn = function (enemyX) {
+    console.log("X comp: " + enemyX + " <= " + this.x + " <= " + (enemyX + 80).toString());
     if (enemyX <= this.x <= enemyX + 80) {
         return true;
     }
+    return false;
 }
 
 // Set player start position at bottom middle of screen
