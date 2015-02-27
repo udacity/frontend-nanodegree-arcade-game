@@ -75,21 +75,20 @@ Player.prototype.update = function (dt) {
 // Compare vertical position against an enemy
 // To determine if we might be colliding
 Player.prototype.inSameRow = function (enemyY) {
-    console.log("Y comp: " + enemyY + " <= " + this.y + " <= " + (enemyY - 50).toString());
     var midPlayer = this.y - 85;
      
-    if (enemyY <= this.y && this.y <= enemyY - 50) {
-        console.log("In same row");
-        return true;
+    if ((midPlayer >= enemyY - 50) && (midPlayer <= enemyY)) {
+            return true;
     }
+
     return false;
 }
 
 // Compare horizontal position against an enemy
 // To determine if we might be colliding
 Player.prototype.inSameColumn = function (enemyX) {
-    console.log("X comp: " + enemyX + " <= " + this.x + " <= " + (enemyX + 80).toString());
-    if (enemyX <= this.x && this.x <= enemyX + 80) {
+
+    if ((enemyX <= this.x) && (this.x <= enemyX + 80)) {
         return true;
     }
     return false;
