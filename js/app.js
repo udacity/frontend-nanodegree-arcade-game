@@ -74,11 +74,11 @@ Player.prototype.update = function (dt) {
 
 // Compare vertical position against an enemy
 // To determine if we might be colliding
-Player.prototype.inSameRow = function (enemyY) {
-    var midPlayer = this.y - 85;
-     
-    if ((midPlayer >= enemyY - 50) && (midPlayer <= enemyY)) {
-            return true;
+Player.prototype.inSameRow = function (enemy) {
+
+    // The sprite is 171 px tall, but the bug only shows in the bottom third
+    if ((this.y + 20 >= enemy.y) && (this.y + 20 <= enemy.y + 40 )) {
+        return true;
     }
 
     return false;
@@ -86,9 +86,10 @@ Player.prototype.inSameRow = function (enemyY) {
 
 // Compare horizontal position against an enemy
 // To determine if we might be colliding
-Player.prototype.inSameColumn = function (enemyX) {
+Player.prototype.inSameColumn = function (enemy) {
 
-    if ((enemyX <= this.x) && (this.x <= enemyX + 80)) {
+    var wiggleRoom = 20;
+    if ((this.x + 20 >= enemy.x) && (this.x  + 20 <= enemy.x + 60)) {
         return true;
     }
     return false;
@@ -112,7 +113,7 @@ Player.prototype.render = function () {
         ctx.fillText("Score!!", 100, 400);
     }
 
-    if (this.justDied === true) {
+    if ((this.justDied === true) && (this.lives > 0)) {
         ctx.font = "60pt Bangers, cursive";
         ctx.fillStyle = "deeppink";
         ctx.fillText("OUCH!! Dead!", 100, 400);
@@ -126,7 +127,7 @@ Player.prototype.render = function () {
     // and player lives in upper left
     ctx.clearRect(0, 0, gameWidth, 90);
     var lifeString = ""
-    for (var i = 0; i < 5; i++) {
+    for (var i = 0; i < this.lives; i++) {
         lifeString = lifeString + " \u2665";
     }
     ctx.fillText(lifeString, 10, 100);
@@ -136,7 +137,7 @@ Player.prototype.render = function () {
 
 // Player ran into an enemy; need to update lives and reset
 Player.prototype.died = function () {
-    this.lives--;
+    this.lives = this.lives - 1;
 
     // If we ran out of lives, we're dead
     if (this.lives === 0) {
@@ -165,7 +166,7 @@ Player.prototype.scored = function () {
 
 // This is called on a timer after the user has scored
 // It resets the justScored flag and resets the player to the start position
-Player.prototype.clearScore = function() {
+Player.prototype.clearScore = function () {
     this.justScored = false;
     ctx.clearRect(0, 0, gameWidth, gameHeight);
     this.setStartPosition();
@@ -186,23 +187,23 @@ Player.prototype.handleInput = function (keycode) {
     // Move the player in response to user key input
     switch (keycode) {
         case 'left':
-            if (this.x - blockWidth >= 0) {
-                this.x = this.x - blockWidth;
+            if (this.x - blockWidth / 2 >= 0) {
+                this.x = this.x - blockWidth / 2;
             }
             break;
         case 'right':
             if (this.x + blockWidth <= gameWidth) {
-                this.x = this.x + blockWidth;
+                this.x = this.x + blockWidth / 2;
             }
             break;
         case 'down':
-            if (this.y + blockHeight + spriteHeight <= gameHeight) {
+            if (this.y + (blockHeight / 2) + spriteHeight <= gameHeight) {
                 this.y = this.y + blockHeight / 2;
             }
             break;
         case 'up':
         default:
-            if (this.y - blockHeight >= 0) {
+            if (this.y - blockHeight  >= 0) {
                 this.y = this.y - blockHeight / 2;
             }
                 // She's in the top row of the road and we want to allow her
@@ -238,7 +239,7 @@ function getRandom(min, max) {
 function initializeEnemies(enemyCount) {
     var enemies = [];
     for (var i = 0; i < enemyCount; i++) {
-        enemies.push(new Enemy(getRandom(0, 505), getRandom(1, 3) * blockHeight - (blockHeight * .25)));
+        enemies.push(new Enemy(getRandom(0, 505), getRandom(1, 3) * blockHeight + (blockHeight / 2)));
     }
     return enemies;
 }
@@ -247,16 +248,28 @@ function initializeEnemies(enemyCount) {
 // TODO: allow player to choose character?
 function initializePlayer() {
     return new Player((gameWidth / 2) - 50, gameHeight - blockHeight - 90);
+
 }
 
 // this runs after the pause for showing Game Over on screen
 function gameOver() {
+    // Display Game Over
+    ctx.font = "60pt Bangers, cursive";
+    ctx.fillStyle = "deeppink";
+    ctx.fillText(" ~ GAME OVER ~", 100, 400);
+
+    setTimeout(function () { gameReset(); }, 2000);
+}
+
+// Runs after Game Over to reset everything
+function gameReset() {
     // start with a clear Canvas
     ctx.clearRect(0, 0, gameWidth, gameHeight);
 
     // reset enemies and player
-    allEnemies = initializeEnemies();
+    allEnemies = initializeEnemies(5);
     player = initializePlayer();
+    console.log("Player has lives: " + player.lives);
 }
 
 // *********************************************************************

@@ -70,6 +70,10 @@ var Engine = (function (global) {
         main();
     }
 
+    function reset() {
+        //noop
+    }
+
     /* This function is called by main (our game loop) and itself calls all
      * of the functions which may need to update entity's data. Based on how
      * you implement your collision detection (when two entities occupy the
@@ -149,14 +153,6 @@ var Engine = (function (global) {
         player.render();
     }
 
-    /* This function does nothing but it could have been a good place to
-     * handle game reset states - maybe a new game menu or a game over screen
-     * those sorts of things. It's only called once by the init() method.
-     */
-    function reset() {
-        // noop
-    }
-
     // If player collides with an enemy, they lose a life 
     // and move back to their start position
     function checkCollisions() {
@@ -165,9 +161,7 @@ var Engine = (function (global) {
         }
 
         allEnemies.forEach(function (enemy) {
-            // if in the same row as player
-            //console.log("enemy position is " + enemy.x + ", " + enemy.y);
-            if (player.inSameRow(enemy.y) && player.inSameColumn(enemy.x)) {
+            if (player.inSameRow(enemy) && player.inSameColumn(enemy)) {
                 // COLLIDE!!
                 player.justDied = true;
                 setTimeout(function () { player.died(); }, 2000);
