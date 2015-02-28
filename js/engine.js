@@ -29,6 +29,12 @@ var Engine = (function (global) {
     canvas.height = 666;
     doc.body.appendChild(canvas);
 
+    /* Assign the canvas' context object to the global variable (the window
+     * object when run in a browser) so that developer's can use it more easily
+     * from within their app.js files.
+     */
+    global.ctx = ctx;
+
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
      */
@@ -161,7 +167,7 @@ var Engine = (function (global) {
         }
 
         allEnemies.forEach(function (enemy) {
-            if (player.inSameRow(enemy) && player.inSameColumn(enemy)) {
+            if (player.intersect(enemy)) {
                 // COLLIDE!!
                 player.justDied = true;
                 setTimeout(function () { player.died(); }, 2000);
@@ -182,9 +188,4 @@ var Engine = (function (global) {
     ]);
     Resources.onReady(init);
 
-    /* Assign the canvas' context object to the global variable (the window
-     * object when run in a browser) so that developer's can use it more easily
-     * from within their app.js files.
-     */
-    global.ctx = ctx;
 })(this);
