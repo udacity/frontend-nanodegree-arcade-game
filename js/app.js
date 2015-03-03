@@ -7,7 +7,7 @@ var livesNumber = 5;
 
 var scoreText = document.createElement("div");
 scoreText.id = 'score';
-var t = document.createTextNode("5");       // Create a text node
+var t = document.createTextNode(livesNumber.toString());       // Create a text node
 scoreText.appendChild(t);                                // Append the text to <button>
 document.body.appendChild(scoreText);  
 
@@ -93,23 +93,22 @@ player.prototype.update = function() {
 };
 
 player.prototype.win = function() {
-    var win = "CONGRATS! YOU WON!!";
-    document.getElementById("score").innerHTML = win;
+
+    document.getElementById("score").innerHTML = "You Win!";
     this.lives = livesNumber;
     player.reset();
 };
 
 player.prototype.lose = function() {
-    var lives = this.lives;
+    this.lives -= 1;
     if (this.lives > 0) {
-      this.lives = this.lives-1;
+      
       player.reset();
-      document.getElementById("score").innerHTML = lives;
+      document.getElementById("score").innerHTML = this.lives.toString();
     }
     else {
-      var gameOver = "GAME OVER!";
-      document.getElementById("score").innerHTML = gameOver;
-      this.lives = livesNumber;
+      document.getElementById("score").innerHTML = "GAME OVER!";
+  
       player.gameOver();
     }
 };
@@ -122,12 +121,17 @@ player.prototype.reset = function() {
 player.prototype.gameOver = function() {
       var btn = document.createElement("BUTTON");
       btn.id = "resetGame";        // Create a <button> element
-      var t = document.createTextNode("Reset Game");       // Create a text node
+      var t = document.createTextNode("Try Again!");       // Create a text node
       btn.appendChild(t);                                // Append the text to <button>
       document.body.appendChild(btn);
+
+      allEnemies = [];
       btn.onclick=function(){
         document.getElementById("resetGame").remove();
         player.reset();
+        this.lives = livesNumber;
+        document.getElementById("score").innerHTML = this.lives.toString();
+
       };
 
     };
@@ -145,9 +149,9 @@ player.prototype.handleInput = function(movement) {
 
 
 function checkCollisions() {
-    allEnemies.forEach(function(potential) {
-      if(potential.y-player.y==0){
-        if(Math.abs(potential.x-player.x)<80) 
+    allEnemies.forEach(function(bug) {
+      if(bug.y-player.y==0){
+        if(Math.abs(bug.x-player.x)<80) 
           player.lose();    
       }
     });
