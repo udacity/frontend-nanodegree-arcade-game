@@ -1,9 +1,11 @@
+//Global Variables
 var enemyNumber = 5; 
 var xStep = 101;
 var yStep = 83;
 var playerStartX = 202;
 var playerStartY = 392;
 var livesNumber = 5;
+
 
 var scoreText = document.createElement("div");
 scoreText.id = 'score';
@@ -66,7 +68,9 @@ var player = function() {
 
 
 player.prototype.update = function() {
-
+  //prevents player from moving when the game is paused
+  if (allEnemies.length>0) {
+  //controls movements and limits the player
   switch (this.key) {
   case "right":
     this.x += xStep;
@@ -86,9 +90,10 @@ player.prototype.update = function() {
     }
   this.key = "";
  
-
+//controls if player gets to the water
   if(this.y<0) { 
     player.win();
+  }
   }
 };
 
@@ -104,9 +109,11 @@ player.prototype.lose = function() {
     if (this.lives > 0) {
       
       player.reset();
+      allHearts.splice(allHearts.length-1, 1);
+      console.log(allHearts.length);
       document.getElementById("score").innerHTML = this.lives.toString();
     }
-    else {
+    else if(this.lives ==0){
       document.getElementById("score").innerHTML = "GAME OVER!";
   
       player.gameOver();
@@ -126,12 +133,14 @@ player.prototype.gameOver = function() {
       document.body.appendChild(btn);
 
       allEnemies = [];
+
       btn.onclick=function(){
         document.getElementById("resetGame").remove();
-        player.reset();
+        
         this.lives = livesNumber;
         document.getElementById("score").innerHTML = this.lives.toString();
-
+        player.reset();
+        createEnemies();
       };
 
     };
@@ -157,7 +166,18 @@ function checkCollisions() {
     });
 }
 
+//HEARTS!
+var heart = function(x){
+    this.sprite = 'images/Heart.png';
+    this.x = x;
+    this.y = 0;
+    this.width = 101/3;
+    this.height = 171/3;
+}
 
+heart.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y, this.width, this.height);
+};
 
 
 // Now instantiate your objects.
@@ -166,12 +186,25 @@ function checkCollisions() {
 
 var player = new player();
 
-
 var allEnemies = [];
+createEnemies();
 
+function createEnemies() {
 for (var i = 0; i < enemyNumber; i++) {
   var newEnemy = new Enemy(60+(i%3)*83);
   allEnemies.push(newEnemy);
+};
+};
+
+
+var allHearts = [];
+createHearts();
+
+function createHearts() {
+for (var i = 0; i < livesNumber; i++) {
+  var newHeart = new heart(i*40);
+  allHearts.push(newHeart);
+};
 };
 
 
