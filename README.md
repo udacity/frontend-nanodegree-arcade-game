@@ -1,6 +1,11 @@
-frontend-nanodegree-arcade-game
+frontend-nanodegree-arcade-game "Bugger"
 ===============================
+Goal:  Your player needs to make it across the road without hitting any bugs.
 
-Students should use this rubric: https://www.udacity.com/course/viewer#!/c-ud015/l-3072058665/m-3072588797
+To move, use the arrow keys to navigate up, down, left and right.
 
-for self-checking their submission.
+If you hit a bug, you will lose a life.
+The game is over when all lives are lost.
+
+Difficulty: Adjust the number of enemies and number of lives you have by choosing a difficulty
+

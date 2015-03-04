@@ -1,0 +1,7 @@
+* HTML5 Game Development & Object-Oriented Javascript Udacity courses
+* Udacity nanodegree forum for P3
+* Stack Overflow
+* W3Schools.com web tutorial pages
+* VS2013
+* Developer.Mozilla.org
+* Google fonts
