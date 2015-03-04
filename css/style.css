@@ -1,3 +1,17 @@
 body {
     text-align: center;
+    outline: none;
 }
+
+
+.difficulty {
+    font: 24pt Bangers, cursive;
+    color: forestgreen;
+    vertical-align: middle;
+ }
+
+.rbutton {
+    vertical-align: middle;
+    margin-right: 10px;
+}
+
