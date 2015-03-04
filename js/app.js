@@ -1,7 +1,6 @@
 // Global Variables
 var gameSize = { width: 505, height: 666 };
 var blockSize = { width: 101, height: 83 };
-var gameOverLoc = 200;
 var difficulty = { name: "medium", state: false, lives: 3, enemies: 4, speedMin: 100, speedMax: 400 };
 
 // Enemy object definition
@@ -90,10 +89,24 @@ Player.prototype.setStartPosition = function () {
     this.pos.y = gameSize.height - blockSize.height - 90;
 }
 
+// For scrolling the game over down the canvas
+var gameOverLocation = (function () {
+    gameOverLoc = 200;
+    return function () {
+        if (gameOverLoc < gameSize.height - 10) {
+            gameOverLoc++;
+        }
+        else {
+            setTimeout(function () { gameOverLoc = 200; }, 2000);
+        }
+        return gameOverLoc;
+    };
+})();
+
 // Draw player and player-related text on screen
 Player.prototype.render = function () {
     ctx.drawImage(Resources.get(this.sprite), this.pos.x, this.pos.y);
-
+    
     // User changed difficulty
     if (difficulty.state === true) {
         ctx.font = "60pt Bangers, cursive";
@@ -111,7 +124,7 @@ Player.prototype.render = function () {
     if ((this.justDied === true) && (this.lives > 0)) {
         ctx.font = "60pt Bangers, cursive";
         ctx.fillStyle = "deeppink";
-        ctx.fillText("OUCH!! Dead!", 100, 400);
+        ctx.fillText("Bugger!!", 150, 400);
     }
 
     // Game over
@@ -123,12 +136,8 @@ Player.prototype.render = function () {
         ctx.lineWidth = "2px";
 
         // Scrolls "Game Over" down the canvas
-        gameOverLoc += 1.5;
-        if (gameOverLoc >= gameSize.height - 10) {
-            gameOverLoc = 200;
-        }
-        ctx.fillText("GAME OVER!!", 100, gameOverLoc);
-        ctx.strokeText("GAME OVER!!", 100, gameOverLoc);
+        ctx.fillText("GAME OVER!!", 100, gameOverLocation());
+        ctx.strokeText("GAME OVER!!", 100, gameOverLocation());
     }
 
     // Display player score in upper right
@@ -267,19 +276,17 @@ function setDifficulty(choice) {
 // this runs after the pause for showing Game Over on screen
 function gameOver() {
     setTimeout(function () { gameReset(); }, 4000);
-    gameOverLoc = 200;
 }
 
 // Clear the canvas and re-create the enemies and players
 function gameReset() {
-    ctx.clearRect(0, 0, gameSize.width, gameSize.height);
     allEnemies = initializeEnemies();
     player = initializePlayer();
+    ctx.clearRect(0, 0, gameSize.width, gameSize.height);
     if (difficulty.state === true) {
         difficulty.state = false;
         document.getElementById('canvas').focus();
     }
-
 }
 
 // Allows us to randomize location and speed of objects
@@ -302,11 +309,26 @@ function initializePlayer() {
     return new Player((gameSize.width / 2) - 50, gameSize.height - blockSize.height - 90);
 }
 
+function setRadioButtons() {
+    var difficultyButtons = document.getElementById('difficultyButtons');
+    console.log("hit the function");
+    for (var i = 0; i < difficultyButtons.length; i++) {
+        if (difficultyButtons[i].id == 'medium') {
+            console.log("found a medium button");
+            difficultyButtons[i].checked = true;
+        }
+        else {
+            difficultyButtons[i].checked = false;
+        }
+    }
+}
 // *********************************************************************
 // Here we create our enemies on first run of the game
 // Setting random location in the road tiles for the enemies, and random speed
 var allEnemies = initializeEnemies();
 var player = initializePlayer();
+
+window.onload = function () { setRadioButtons(); };
 //*********************************************************************
 
 
