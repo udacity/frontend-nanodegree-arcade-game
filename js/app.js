@@ -2,6 +2,7 @@
 var gameSize = { width: 505, height: 666 };
 var blockSize = { width: 101, height: 83 };
 var difficulty = { name: "medium", state: false, lives: 3, enemies: 4, speedMin: 100, speedMax: 400 };
+var gameOverLoc = gameOverLocation();
 
 // Enemy object definition
 var Enemy = function (xPos, yPos) {
@@ -90,69 +91,65 @@ Player.prototype.setStartPosition = function () {
 }
 
 // For scrolling the game over down the canvas
-var gameOverLocation = (function () {
-    gameOverLoc = 200;
-    return function () {
-        if (gameOverLoc < gameSize.height - 10) {
-            gameOverLoc++;
-        }
-        else {
-            setTimeout(function () { gameOverLoc = 200; }, 2000);
-        }
-        return gameOverLoc;
-    };
-})();
+// Set a variable to this function on gameReset 
+function gameOverLocation() {
+        var textLoc = 200;
+        return function () {
+            if (textLoc < gameSize.height - 10) {
+                textLoc++;
+            }
+            console.log("made it! gameoverloc is" + textLoc);
+            //else {
+            //    setTimeout(function () { gameOverLoc = 200; }, 2000);
+            //}
+            return textLoc;
+        };
+}
 
 // Draw player and player-related text on screen
 Player.prototype.render = function () {
     ctx.drawImage(Resources.get(this.sprite), this.pos.x, this.pos.y);
-    
+    ctx.font = "60pt Bangers, cursive";
+    ctx.fillStyle = "crimson";
+    ctx.strokeStyle = "white";
+    ctx.lineWidth = "5px";
+
     // User changed difficulty
     if (difficulty.state === true) {
-        ctx.font = "60pt Bangers, cursive";
-        ctx.fillStyle = "#00ffff";
         ctx.fillText("Resetting...", 100, 400);
+        ctx.strokeText("Resetting...", 100, 400);
     }
+
     // User successfully made it to the top of the screen
     if (this.justScored === true) {
-        ctx.font = "60pt Bangers, cursive";
-        ctx.fillStyle = "deeppink";
-        ctx.fillText("Score!!", 100, 400);
+        ctx.fillText("Score!!", 150, 400);
+        ctx.strokeText("Score!!", 150, 400);
     }
 
     // User hit a bug
     if ((this.justDied === true) && (this.lives > 0)) {
-        ctx.font = "60pt Bangers, cursive";
-        ctx.fillStyle = "deeppink";
         ctx.fillText("Bugger!!", 150, 400);
+        ctx.strokeText("Bugger!!", 150, 400);
     }
 
     // Game over
     if (this.lives === 0) {
-        // Display Game Over
-        ctx.font = "60pt Bangers, cursive";
-        ctx.fillStyle = "#00ffff";
-        ctx.strokeStyle = "deeppink"
-        ctx.lineWidth = "2px";
-
-        // Scrolls "Game Over" down the canvas
-        ctx.fillText("GAME OVER!!", 100, gameOverLocation());
-        ctx.strokeText("GAME OVER!!", 100, gameOverLocation());
+        ctx.fillText("GAME OVER!!", 100, gameOverLoc());
+        ctx.strokeText("GAME OVER!!", 100, gameOverLoc());
     }
 
     // Display player score in upper right
     ctx.font = "45px Bangers, cursive";
-    ctx.fillStyle = "deeppink";
     ctx.textBaseline = "bottom";
 
     // and player lives in upper left
-    ctx.clearRect(0, 0, gameSize.width, 95);
+    ctx.clearRect(0, 0, gameSize.width, 85);
     var lifeString = ""
     for (var i = 0; i < this.lives; i++) {
         lifeString = lifeString + " \u2665";
     }
-    ctx.fillText(lifeString, 10, 100);
-    ctx.fillText("Score: " + this.currentScore, gameSize.width - 155, 100);
+    ctx.fillText(lifeString, 10, 85);
+    ctx.fillText("Score: " + this.currentScore, gameSize.width - 155, 85);
 
 }
 
@@ -282,6 +279,7 @@ function gameOver() {
 function gameReset() {
     allEnemies = initializeEnemies();
     player = initializePlayer();
+    gameOverLoc = gameOverLocation();
     ctx.clearRect(0, 0, gameSize.width, gameSize.height);
     if (difficulty.state === true) {
         difficulty.state = false;
@@ -327,7 +325,6 @@ function setRadioButtons() {
 // Setting random location in the road tiles for the enemies, and random speed
 var allEnemies = initializeEnemies();
 var player = initializePlayer();
-
 window.onload = function () { setRadioButtons(); };
 //*********************************************************************
 
