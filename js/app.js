@@ -172,8 +172,8 @@ function resetGame() {
 //Check collisions 
 function checkCollisions() {
   allEnemies.forEach(function(bug) {
-    //due to sporadic strange rendering errors for the y value used 5 instead of 0
-    if(Math.abs(bug.y-player.y)<5 && player.lives > 0){ //prevents player from having negative lives
+    //due to sporadic strange rendering errors for the y value used 60 instead of 0
+    if(Math.abs(bug.y-player.y)<60 && player.lives > 0){ //prevents player from having negative lives
       if(Math.abs(bug.x-player.x)<80) 
         player.lose();    
     }
