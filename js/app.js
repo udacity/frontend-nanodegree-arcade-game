@@ -4,7 +4,7 @@ var xStep = 101;
 var yStep = 83;
 var playerStartX = 202;
 var playerStartY = 392;
-var livesNumber = 1;
+var livesNumber = 7;
 var points = 0;
 
 
