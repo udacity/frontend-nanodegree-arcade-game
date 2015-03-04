@@ -27,8 +27,11 @@ var Engine = (function (global) {
 
     canvas.width = 505;
     canvas.height = 666;
-    doc.body.appendChild(canvas);
-
+    canvas.id = 'canvas';
+    canvas.tabIndex = 1;
+    canvas.hideFocus = true;
+    doc.body.insertBefore(canvas, doc.getElementById('difficultyButtons'));
+  
     /* Assign the canvas' context object to the global variable (the window
      * object when run in a browser) so that developer's can use it more easily
      * from within their app.js files.

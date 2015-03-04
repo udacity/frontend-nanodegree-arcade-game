@@ -1,18 +1,17 @@
 // Global Variables
-var gameWidth = 505;
-var gameHeight = 666;
-var blockWidth = 101;
-var blockHeight = 83;
+var gameSize = { width: 505, height: 666 };
+var blockSize = { width: 101, height: 83 };
 var gameOverLoc = 200;
+var difficulty = { name: "medium", state: false, lives: 3, enemies: 4, speedMin: 100, speedMax: 400 };
 
-// Enemies our player must avoid
-var Enemy = function (x, y) {
+// Enemy object definition
+var Enemy = function (xPos, yPos) {
     // x,y coordinate location of this object
-    this.x = x;
-    this.y = y;
+    this.pos = { x: xPos, y: yPos }
+    this.size = { width: 80, height: 50 }
 
     // we want our enemies moving at different speeds
-    this.speed = getRandom(100, 400);
+    this.speed = getRandom(difficulty.speedMin, difficulty.speedMax);
 
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
@@ -25,42 +24,43 @@ Enemy.prototype.update = function (dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-    var newX = this.x + dt * this.speed;
+    var newX = this.pos.x + dt * this.speed;
 
     // we want the enemy to continue moving until it's left edge is off the screen
-    if (newX < gameWidth) {
-        this.x = newX;
+    if (newX < gameSize.width) {
+        this.pos.x = newX;
     }
         // and start showing again with the right edge first
     else {
-        this.x = 0 - Resources.get(this.sprite).width;
+        //this.pos.x = 0 - Resources.get(this.sprite).width;
+        this.pos.x = 0 - this.size.width;
     }
 }
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function () {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    ctx.drawImage(Resources.get(this.sprite), this.pos.x, this.pos.y);
 }
 
 // Player who will try to make it across the traffic
 // There should only be one of these at a time
-var Player = function (x, y) {
+var Player = function (xPos, yPos) {
     // x, y coordinates of player locationn
-    this.x = x
-    this.y = y
+    this.pos = { x: xPos, y: yPos };
+
+    // smaller than the actual sprite, this is used for calculating position and collisions
+    this.size = { width: 50, height: 75 };
 
     // Count of how many times they make it across the road
     this.currentScore = 0;
 
     // Count of lives. Subtract one for each death until 0
-    this.lives = 2;
+    this.lives = difficulty.lives;
 
-    // when true, we display a SCORE!! across the screen
-    // and do not allow the player to move
+    // Flag so we can change display and freeze user after scoring
     this.justScored = false;
 
-    // when true, we display a message across the screen
-    // and do not allow the player to move
+    // Flag so we can change display and freeze user after dying
     this.justDied = false;
 
     // url to our player's resource
@@ -72,26 +72,34 @@ Player.prototype.update = function (dt) {
 
 }
 
-// To determine if we might be colliding
+// To determine if player is colliding with another object
+// This is just the classic "intersectRect" algorithm
 Player.prototype.intersect = function (enemy) {
-   
-    return !(this.y > enemy.y + 50
-        || this.y + 80 < enemy.y
-        || this.x > enemy.y + 75
-        || enemy.y + 75 < this.y);
+    // R2 is enemy, R1 is player
+    
+    return !(enemy.pos.x > this.pos.x + this.size.width
+        || enemy.pos.x + enemy.size.width < this.pos.x
+        || enemy.pos.y > this.pos.y + this.size.height
+        || enemy.pos.y + enemy.size.height < this.pos.y);
 }
 
 // Set player start position at bottom middle of screen
 Player.prototype.setStartPosition = function () {
     ctx.clearRect(0, 0, 60, 505);
-    this.x = (gameWidth / 2) - 50;
-    this.y = gameHeight - blockHeight - 90;
+    this.pos.x = (gameSize.width / 2) - 50;
+    this.pos.y = gameSize.height - blockSize.height - 90;
 }
 
 // Draw player and player-related text on screen
 Player.prototype.render = function () {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    ctx.drawImage(Resources.get(this.sprite), this.pos.x, this.pos.y);
 
+    // User changed difficulty
+    if (difficulty.state === true) {
+        ctx.font = "60pt Bangers, cursive";
+        ctx.fillStyle = "#00ffff";
+        ctx.fillText("Resetting...", 100, 400);
+    }
     // User successfully made it to the top of the screen
     if (this.justScored === true) {
         ctx.font = "60pt Bangers, cursive";
@@ -99,12 +107,14 @@ Player.prototype.render = function () {
         ctx.fillText("Score!!", 100, 400);
     }
 
+    // User hit a bug
     if ((this.justDied === true) && (this.lives > 0)) {
         ctx.font = "60pt Bangers, cursive";
         ctx.fillStyle = "deeppink";
         ctx.fillText("OUCH!! Dead!", 100, 400);
     }
 
+    // Game over
     if (this.lives === 0) {
         // Display Game Over
         ctx.font = "60pt Bangers, cursive";
@@ -112,8 +122,9 @@ Player.prototype.render = function () {
         ctx.strokeStyle = "deeppink"
         ctx.lineWidth = "2px";
 
-        gameOverLoc += 2;
-        if (gameOverLoc >= gameHeight - 10) {
+        // Scrolls "Game Over" down the canvas
+        gameOverLoc += 1.5;
+        if (gameOverLoc >= gameSize.height - 10) {
             gameOverLoc = 200;
         }
         ctx.fillText("GAME OVER!!", 100, gameOverLoc);
@@ -126,17 +137,17 @@ Player.prototype.render = function () {
     ctx.textBaseline = "bottom";
 
     // and player lives in upper left
-    ctx.clearRect(0, 0, gameWidth, 95);
+    ctx.clearRect(0, 0, gameSize.width, 95);
     var lifeString = ""
     for (var i = 0; i < this.lives; i++) {
         lifeString = lifeString + " \u2665";
     }
     ctx.fillText(lifeString, 10, 100);
-    ctx.fillText("Score: " + this.currentScore, gameWidth - 155, 100);
+    ctx.fillText("Score: " + this.currentScore, gameSize.width - 155, 100);
 
 }
 
-// Player ran into an enemy; need to update lives and reset
+// Player ran into an enemy; need to update lives and reset position
 Player.prototype.died = function () {
     this.lives = this.lives - 1;
 
@@ -146,14 +157,14 @@ Player.prototype.died = function () {
         return;
     }
 
-    // if it's not game over, reset to start position
+    // if it's not game over, just reset to start position
     this.setStartPosition();
 
-    // Set our flag so player can move again
+    // reset flag so player can move again
     this.justDied = false;
 }
 
-// Runs when player has scored
+// Freeze player while updating canvas with Score!! message 
 Player.prototype.scored = function () {
     // up the score
     this.currentScore++;
@@ -169,18 +180,16 @@ Player.prototype.scored = function () {
 // It resets the justScored flag and resets the player to the start position
 Player.prototype.clearScore = function () {
     this.justScored = false;
-    ctx.clearRect(0, 0, gameWidth, gameHeight);
+    ctx.clearRect(0, 0, gameSize.width, gameSize.height);
     this.setStartPosition();
 }
 
-// Our player sprites are 101x170px
-// and we want to keep them horizontally centered on the blocks
+// We want to keep the player sprite horizontally centered on the blocks
 // but vertically the bottom of the sprite near the bottom of the block
 Player.prototype.handleInput = function (keycode) {
-    var spriteHeight = 170;
 
     // Player cannot move for the couple seconds after 
-    // scoring, when we display the score and reset their position
+    // scoring, while we display the score and reset their position
     if (this.justScored === true || this.justDied === true) {
         return;
     }
@@ -188,29 +197,29 @@ Player.prototype.handleInput = function (keycode) {
     // Move the player in response to user key input
     switch (keycode) {
         case 'left':
-            if (this.x - blockWidth / 2 >= 0) {
-                this.x = this.x - blockWidth / 2;
+            if (this.pos.x - blockSize.width / 2 >= 0) {
+                this.pos.x = this.pos.x - blockSize.width / 2;
             }
             break;
         case 'right':
-            if (this.x + blockWidth <= gameWidth) {
-                this.x = this.x + blockWidth / 2;
+            if (this.pos.x + blockSize.width <= gameSize.width) {
+                this.pos.x = this.pos.x + blockSize.width / 2;
             }
             break;
-        case 'down':
-            if (this.y + (blockHeight / 2) + spriteHeight <= gameHeight) {
-                this.y = this.y + blockHeight / 2;
+        case 'down': /* 170 is the height of the player sprite */
+            if (this.pos.y + (blockSize.height / 2) + 170 <= gameSize.height) {
+                this.pos.y = this.pos.y + blockSize.height / 2;
             }
             break;
         case 'up':
         default:
-            if (this.y - blockHeight  >= 0) {
-                this.y = this.y - blockHeight / 2;
+            if (this.pos.y - blockSize.height >= 0) {
+                this.pos.y = this.pos.y - blockSize.height / 2;
             }
                 // She's in the top row of the road and we want to allow her
                 // to move into the water and score
             else {
-                this.y = this.y - 50;
+                this.pos.y = this.pos.y - 50;
                 this.scored();
             }
     }
@@ -229,47 +238,75 @@ document.addEventListener('keyup', function (e) {
     player.handleInput(allowedKeys[e.keyCode]);
 });
 
-// Allows us to randomize location and speed of objects
-function getRandom(min, max) {
-    return Math.floor(Math.random() * max) + min;
-}
+// Listen for radio button clicks to change game difficulty
+document.getElementById('difficultyButtons').addEventListener('click', function () { setDifficulty(event.target.id); });
 
-
-// Returns an array of randomly placed enemies
-// Pass in the number of enemies you want in the array
-function initializeEnemies(enemyCount) {
-    var enemies = [];
-    for (var i = 0; i < enemyCount; i++) {
-        enemies.push(new Enemy(getRandom(0, 505), getRandom(1, 3) * blockHeight + (blockHeight / 2)));
+// changes difficulty of the game
+function setDifficulty(choice) {
+    if (choice === difficulty.name)
+        return;
+ 
+    difficulty.state = true;
+    difficulty.name = choice;
+    switch (choice) {
+        case "hard":
+            difficulty.enemies = 5;
+            difficulty.lives = 2;
+            break;
+        case "easy":
+            difficulty.enemies = 3;
+            difficulty.lives = 5;
+            break;
+        case "medium":
+            difficulty.enemies = 4;
+            difficulty.lives = 3;
     }
-    return enemies;
-}
-
-// Create a new player
-// TODO: allow player to choose character?
-function initializePlayer() {
-    return new Player((gameWidth / 2) - 50, gameHeight - blockHeight - 90);
+    setTimeout(function () { gameReset(); }, 3000);
 }
 
 // this runs after the pause for showing Game Over on screen
 function gameOver() {
     setTimeout(function () { gameReset(); }, 4000);
+    gameOverLoc = 200;
 }
 
-// Runs after Game Over to reset everything
+// Clear the canvas and re-create the enemies and players
 function gameReset() {
-    // start with a clear Canvas
-    ctx.clearRect(0, 0, gameWidth, gameHeight);
-
-    // reset enemies and player
-    allEnemies = initializeEnemies(5);
+    ctx.clearRect(0, 0, gameSize.width, gameSize.height);
+    allEnemies = initializeEnemies();
     player = initializePlayer();
+    if (difficulty.state === true) {
+        difficulty.state = false;
+        document.getElementById('canvas').focus();
+    }
+
+}
+
+// Allows us to randomize location and speed of objects
+function getRandom(min, max) {
+    return Math.floor(Math.random() * max) + min;
+}
+
+// Returns an array of randomly placed enemies
+// Uses difficulty object to determine number of enemies to create
+function initializeEnemies() {
+    var enemies = [];
+    for (var i = 0; i < difficulty.enemies; i++) {
+        enemies.push(new Enemy(getRandom(0, 505), getRandom(1, 3) * blockSize.height + (blockSize.height / 2)));
+    }
+    return enemies;
+}
+
+// Create a new player
+function initializePlayer() {
+    return new Player((gameSize.width / 2) - 50, gameSize.height - blockSize.height - 90);
 }
 
 // *********************************************************************
-// Here we create our enemies 
+// Here we create our enemies on first run of the game
 // Setting random location in the road tiles for the enemies, and random speed
-var allEnemies = initializeEnemies(5);
+var allEnemies = initializeEnemies();
 var player = initializePlayer();
 //*********************************************************************
+
 
