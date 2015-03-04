@@ -1,3 +1,60 @@
-body {
+body
+{
     text-align: center;
+}
+
+#score {
+  z-index: 3; 
+  padding-right: 20px;
+  position:relative;
+  margin-bottom: -40px;
+  margin-right: auto; 
+  margin-left: auto;
+  width: 505px;
+  text-align: right;
+  color: white;
+  font-family: 'Dosis', sans-serif;
+  font-weight: 800;
+  font-size: 30px;
+}
+
+#rules {
+  border-radius: 30px;
+  width: 400px;
+  height: 80px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  background-color: #e912a6;
+  margin-left: auto;
+  margin-right: auto;
+  color: white;
+  font-family: 'Monofett', cursive;  
+  font-size: 20px;
+  padding-top: 7px;
+  -webkit-text-stroke: 1px black;
+}
+
+#gameOverBanner,
+#gameOverText { 
+  position: relative;
+  height: 150px;
+  margin-right: auto; 
+  margin-left: auto;
+  width: 505px;
+  text-align: center;
+  font-family: 'Dosis', sans-serif;
+  font-weight: 800;
+  font-size: 50px;
+}
+
+#gameOverBanner {
+  margin-top: -250px;
+  z-index: 4; 
+  background-color:rgba(255,255,255,0.5);
+}
+
+#gameOverText {
+  margin-top: -150px;
+  z-index: 5; 
+  color: purple;
 }
