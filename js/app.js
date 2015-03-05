@@ -130,13 +130,13 @@ player.prototype.win = function() {
 //when player looses looses 1 life and resets
 player.prototype.lose = function() {
   //to do cat being hit explosion
-  // this.sprite = 'images/char-cat-hit.png';
-
   this.lives -= 1;
   allHearts[this.lives].sprite = "images/Heartless.png";
-
+  
   if (this.lives > 0) {
-    player.reset();
+      player.sprite ='images/char-cat-hit.png';
+
+    setTimeout(function(){player.reset()}, 0.0900);
   }
   //Gameover situation - final score
   else if(this.lives ==0){
@@ -169,15 +169,12 @@ function resetGame() {
   createEnemies();
 };
 
-
-
 //Check collisions 
 function checkCollisions() {
   allEnemies.forEach(function(bug) {
     //due to sporadic strange rendering errors for the y value used 60 instead of 0
     if(Math.abs(bug.y-player.y)<60 && player.lives > 0){ //prevents player from having negative lives
       if(Math.abs(bug.x-player.x)<80) 
-
         player.lose();    
     }
   });
@@ -247,7 +244,6 @@ function createBanner() {
   gameOverText.appendChild(document.createElement("br"));
   gameOverText.appendChild(t2);
 };
-
 
 //OBJECTS***********
 //player object

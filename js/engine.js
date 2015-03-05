@@ -181,7 +181,7 @@ var Engine = (function(global) {
         'images/Heart.png',
         "images/Heartless.png",
         'images/char-cat.png',
-        // 'images/char-cat-hit.png',
+        'images/char-cat-hit.png',
         'images/char-cat-dead.png',
         'images/char-cat-right.png',
         'images/char-cat-left.png',
