@@ -129,6 +129,7 @@ player.prototype.win = function() {
 
 //when player looses looses 1 life and resets
 player.prototype.lose = function() {
+  //to do cat being hit explosion
   // this.sprite = 'images/char-cat-hit.png';
 
   this.lives -= 1;
