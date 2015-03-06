@@ -80,8 +80,22 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        // checkCollisions();
+        checkCollisions();
     }
+
+    //Check collisions function
+    function checkCollisions() {
+      allEnemies.forEach(function(bug) {
+
+      if (gameIsOn &&  //prevents player from dying twice (while one case is being evaluated)
+        player.x < bug.x + bug.width &&
+        player.x + player.width > bug.x &&
+        player.y < bug.y + bug.height &&
+        player.height + player.y > bug.y){
+          player.lose();
+        }
+    });
+};
 
     /* This is called by the update function  and loops through all of the
      * objects within your allEnemies array as defined in app.js and calls
@@ -108,12 +122,12 @@ var Engine = (function(global) {
          * for that particular row of the game level.
          */
         var rowImages = [
-                'images/water-block.png',   // Top row is water
-                'images/stone-block.png',   // Row 1 of 3 of stone
-                'images/stone-block.png',   // Row 2 of 3 of stone
-                'images/stone-block.png',   // Row 3 of 3 of stone
-                'images/grass-block.png',   // Row 1 of 2 of grass
-                'images/grass-block.png'    // Row 2 of 2 of grass
+                'images/city.png',   // the cityscape
+                'images/road.png',   // normal road
+                'images/roadlines.png',   // road with marks
+                'images/road.png',   // normal road
+                'images/sidewalk.png',   // edge of sidewalk
+                'images/grey.png'    // normal sidewalk
             ],
             numRows = 6,
             numCols = 5,
@@ -153,6 +167,9 @@ var Engine = (function(global) {
         });
 
         player.render();
+        allHearts.forEach(function(heart) {
+            heart.render();
+        });
     }
 
     /* This function does nothing but it could have been a good place to
@@ -168,11 +185,23 @@ var Engine = (function(global) {
      * all of these images are properly loaded our game will start.
      */
     Resources.load([
-        'images/stone-block.png',
-        'images/water-block.png',
-        'images/grass-block.png',
-        'images/enemy-bug.png',
-        'images/char-boy.png'
+        'images/city.png',
+        'images/road.png',
+        'images/roadlines.png',
+        'images/road.png',
+        'images/sidewalk.png',
+        'images/grey.png',
+        'images/boot.png',
+        'images/Heart.png',
+        "images/Heartless.png",
+        'images/char-cat.png',
+        'images/char-cat-hit.png',
+        'images/char-cat-dead.png',
+        'images/char-cat-right.png',
+        'images/char-cat-left.png',
+        'images/char-cat-up.png',
+        'images/char-cat-down.png',
+
     ]);
     Resources.onReady(init);
 
