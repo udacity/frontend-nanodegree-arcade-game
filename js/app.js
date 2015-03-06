@@ -1,12 +1,19 @@
 //Global Variables***********
 var enemyNumber = 5; 
-var xStep = 101;
-var yStep = 83;
-var playerStartX = 202;
-var playerStartY = 392;
+var ENEMY_X = -200;
+var X_STEP = 101;
+var Y_STEP = 83;
+var PLAYER_START_X = 202;
+var PLAYER_START_Y = 422;
 var livesNumber = 7;
 var points = 0;
-
+var gameIsOn = true;
+var ENTITY_HEIGHT = 50;
+var ENTITY_WIDTH = 90;
+var CANVAS_OFFSET = 90;
+//temporary variable for the canvas
+var canvas_width = 505;
+var canvas_height = 606;
 
 
 // create random number
@@ -17,18 +24,20 @@ var randomNumber = function() {
 //Enemy class
 var Enemy = function(y) {
   this.sprite = 'images/boot.png';
-  this.x = -200;
+  this.x = ENEMY_X;
   this.y = y;
+  this.height = ENTITY_HEIGHT;
+  this.width = ENTITY_WIDTH;
   this.speed = randomNumber();
 };
 
 Enemy.prototype.update = function(dt) {
   this.x = this.x + this.speed * dt;
   //brings back the enemies to a random row and a random speed
-  if(this.x>500) {
-    this.x = -120;
+  if(this.x>canvas_width) {
+    this.x = ENEMY_X;
     this.speed = randomNumber();
-    this.y = 60+Math.floor(Math.random() * 3)*83;
+    this.y = CANVAS_OFFSET+Math.floor(Math.random() * 3)*Y_STEP;
   }
 };
 
@@ -39,17 +48,19 @@ Enemy.prototype.render = function() {
 
 //Function to initiate enemies
 function createEnemies() {
-for (var i = 0; i < enemyNumber; i++) {
-  var newEnemy = new Enemy(60+(i%3)*83);
-  allEnemies.push(newEnemy);
-};
+  for (var i = 0; i < enemyNumber; i++) {
+    var newEnemy = new Enemy(CANVAS_OFFSET+(i%3)*Y_STEP);
+    allEnemies.push(newEnemy);
+  }
 };
 
 //Player Class
 var player = function() {
   this.sprite = 'images/char-cat.png';
-  this.x = playerStartX;
-  this.y = playerStartY;
+  this.x = PLAYER_START_X;
+  this.y = PLAYER_START_Y;
+  this.height = ENTITY_HEIGHT;
+  this.width = ENTITY_WIDTH;
   this.lives = livesNumber;
   this.key = "";
   this.points = points;
@@ -62,37 +73,39 @@ player.prototype.render = function() {
 
 player.prototype.update = function() {
   //prevents player from moving when the game is paused
-  if (allEnemies.length>0) {
+  if (gameIsOn) {
     //controls movements, limits the player and updates sprite
     switch (this.key) {
     case "right":
       this.sprite = "images/char-cat-right.png";
-      this.x += xStep;
-      if(this.x>404) this.x=404;
+      this.x += X_STEP;
+      if(this.x>canvas_width-this.width) this.x=404;
       break;
     case "left":
       this.sprite = "images/char-cat-left.png";
-      this.x -= xStep;
+      this.x -= X_STEP;
       if(this.x<0) this.x=0;
       break;
     case "up":
       this.sprite = "images/char-cat-up.png";
-      this.y -= yStep;
+      this.y -= Y_STEP;
       break;  
     case "down":
       this.sprite = "images/char-cat-down.png";
-      this.y += yStep;
-      if(this.y>380) this.y=380;
-      break; 
+      this.y += Y_STEP;
+      if(this.y>PLAYER_START_Y) this.y=PLAYER_START_Y;
+      break;
     }
     this.key = "";
     //controls if player gets to the water
-    if(this.y<0) { 
+    if(this.y<CANVAS_OFFSET) { 
       player.win();
     }
   }
-  else if (this.key=="space")
+  else if (this.key=="space"){
+  gameIsOn = true;
   resetGame();
+  }
 };
 //receives the keys
 player.prototype.handleInput = function(movement) {
@@ -115,8 +128,9 @@ document.addEventListener('keyup', function(e) {
 
 //resets player position and sprite
 player.prototype.reset = function() {
-  this.x = playerStartX;
-  this.y = playerStartY;
+  gameIsOn = true;
+  this.x = PLAYER_START_X;
+  this.y = PLAYER_START_Y;
   this.sprite = 'images/char-cat.png';
 };
 
@@ -135,8 +149,9 @@ player.prototype.lose = function() {
   
   if (this.lives > 0) {
       player.sprite ='images/char-cat-hit.png';
+      gameIsOn =false;
 
-    setTimeout(function(){player.reset()}, 0.0900);
+    setTimeout(function(){player.reset()}, 50);
   }
   //Gameover situation - final score
   else if(this.lives ==0){
@@ -147,13 +162,14 @@ player.prototype.lose = function() {
 
 //game Over Function
 player.prototype.gameOver = function() {
+  gameIsOn = false;
   //creates banner and text divs
   createBanner();
-
   //change cat to dead cat
   this.sprite = 'images/char-cat-dead.png';
   //erases enemies
   allEnemies = [];
+  
 };
 
 
@@ -169,19 +185,10 @@ function resetGame() {
   createEnemies();
 };
 
-//Check collisions 
-function checkCollisions() {
-  allEnemies.forEach(function(bug) {
-    //due to sporadic strange rendering errors for the y value used 60 instead of 0
-    if(Math.abs(bug.y-player.y)<60 && player.lives > 0){ //prevents player from having negative lives
-      if(Math.abs(bug.x-player.x)<80) 
-        player.lose();    
-    }
-  });
-}
+
 
 //Hearts 
-var heart = function(x){
+var Heart = function(x){
   this.sprite = 'images/Heart.png';
   this.x = x;
   this.y = -10;
@@ -194,12 +201,11 @@ function createHearts() {
   allHearts = [];
   //creates new ones
   for (var i = 0; i < livesNumber; i++) {
-    var newHeart = new heart(10+i*40);
-    allHearts.push(newHeart);
-  };
+    allHearts.push(new Heart(10+i*40));
+  }
 };
 
-heart.prototype.render = function() {
+Heart.prototype.render = function() {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y, this.width, this.height);
 };
 
@@ -209,7 +215,7 @@ heart.prototype.render = function() {
 function createRules() {
   var rules = document.createElement("div");
   rules.id = 'rules';
-  var t1 = document.createTextNode("beware of the shoes!");
+  var t1 = document.createTextNode("beware of the boots!");
   var t2 = document.createTextNode("use the arrows to get to the rooftops");
   var t3 = document.createTextNode("you like rooftops.");
 
@@ -254,7 +260,7 @@ var allEnemies = [];
 createEnemies();
 
 
-//hearts object
+//Hearts object
 var allHearts = [];
 createHearts();
 
