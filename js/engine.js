@@ -83,12 +83,11 @@ var Engine = (function(global) {
         checkCollisions();
     }
 
-    //Check collisions 
+    //Check collisions function
     function checkCollisions() {
       allEnemies.forEach(function(bug) {
 
-      if (gameIsOn && 
-        player.lives > 0 &&  
+      if (gameIsOn &&  //prevents player from dying twice (while one case is being evaluated)
         player.x < bug.x + bug.width &&
         player.x + player.width > bug.x &&
         player.y < bug.y + bug.height &&

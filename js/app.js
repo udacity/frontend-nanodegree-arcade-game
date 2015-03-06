@@ -15,7 +15,6 @@ var CANVAS_OFFSET = 90;
 var canvas_width = 505;
 var canvas_height = 606;
 
-
 // create random number
 var randomNumber = function() {
   return Math.floor((Math.random() * 300) + 50);
@@ -72,7 +71,7 @@ player.prototype.render = function() {
 };
 
 player.prototype.update = function() {
-  //prevents player from moving when the game is paused
+  //prevents player from moving when the game is "paused"
   if (gameIsOn) {
     //controls movements, limits the player and updates sprite
     switch (this.key) {
@@ -97,7 +96,7 @@ player.prototype.update = function() {
       break;
     }
     this.key = "";
-    //controls if player gets to the water
+    //controls if player gets to the rooftops
     if(this.y<CANVAS_OFFSET) { 
       player.win();
     }
@@ -122,7 +121,6 @@ document.addEventListener('keyup', function(e) {
         39: 'right',
         40: 'down'
     };
-
     player.handleInput(allowedKeys[e.keyCode]);
 });
 
@@ -143,35 +141,33 @@ player.prototype.win = function() {
 
 //when player looses looses 1 life and resets
 player.prototype.lose = function() {
-  //to do cat being hit explosion
+  //prevents checkcollision function to analise more than one bug at the same time
+  gameIsOn =false;
+  //removes one life and substitutes one heart by an empty one
   this.lives -= 1;
   allHearts[this.lives].sprite = "images/Heartless.png";
-  
   if (this.lives > 0) {
-      player.sprite ='images/char-cat-hit.png';
-      gameIsOn =false;
-
+    //cat explodes
+    player.sprite ='images/char-cat-hit.png';
+    //delays the reset function so the cat-hit png is visible
     setTimeout(function(){player.reset()}, 50);
   }
-  //Gameover situation - final score
+  //gameover situation + final score
   else if(this.lives ==0){
     document.getElementById("score").innerHTML = "FINAL SCORE: "+this.points.toString();
     player.gameOver();
   }
 };
 
-//game Over Function
+//game over function
 player.prototype.gameOver = function() {
-  gameIsOn = false;
   //creates banner and text divs
   createBanner();
   //change cat to dead cat
   this.sprite = 'images/char-cat-dead.png';
   //erases enemies
   allEnemies = [];
-  
 };
-
 
 //reset game function - resets lives, points, creates enemies and hearts
 function resetGame() {
@@ -184,8 +180,6 @@ function resetGame() {
   createHearts();
   createEnemies();
 };
-
-
 
 //Hearts 
 var Heart = function(x){
@@ -208,7 +202,6 @@ function createHearts() {
 Heart.prototype.render = function() {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y, this.width, this.height);
 };
-
 
 //CREATE MORE ELEMENTS****
 //create a rules div
@@ -259,7 +252,6 @@ var player = new player();
 var allEnemies = [];
 createEnemies();
 
-
 //Hearts object
 var allHearts = [];
 createHearts();
@@ -269,4 +261,3 @@ createRules();
 
 //Score
 createScore();
-
