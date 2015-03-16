@@ -13,8 +13,6 @@
  * the canvas' context (ctx) object globally available to make writing app.js
  * a little simpler to work with.
  */
- 
- "use strict"; 
 
 var Engine = (function(global) {
     /* Predefine the variables we'll be using within this scope,
