@@ -24,10 +24,12 @@ var Engine = (function(global) {
         canvas = doc.createElement('canvas'),
         ctx = canvas.getContext('2d'),
         lastTime;
+        gameOver = false;
 
     canvas.width = 505;
     canvas.height = 606;
     doc.body.appendChild(canvas);
+
 
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
@@ -47,6 +49,18 @@ var Engine = (function(global) {
          */
         update(dt);
         render();
+
+        if(gameOver){
+            ctx.textAlign = "center"
+            ctx.font = "36pt Impact";
+            ctx.strokeStyle = "black";
+            ctx.font = "36pt Impact";
+            ctx.fillStyle = "white";
+            ctx.fillText("GAME OVER", canvas.width / 2, canvas.height / 2);
+            ctx.lineWidth = 3;
+            ctx.strokeText("GAME OVER", canvas.width / 2, canvas.height / 2);
+            return;
+        }
 
         /* Set our lastTime variable which is used to determine the time delta
          * for the next time this function is called.
@@ -80,7 +94,24 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        // checkCollisions();
+        checkCollisions();
+    }
+
+    // Checks collisions between player and enemies.
+    function checkCollisions(){
+        var collision = false;
+        allEnemies.forEach(function(enemy) {
+            collision = hasCollision(player, enemy);
+            if(collision){
+                player.reset();
+                gameOver = true;
+            }
+        });
+    }
+
+    function hasCollision(player, enemy){
+        //console.log(Math.round(enemy.x), player.x, Math.round(enemy.y), player.y);
+        return (player.y === Math.round(enemy.y) && Math.abs(player.x - Math.round(enemy.x)) < 50 );
     }
 
     /* This is called by the update function  and loops through all of the
@@ -161,6 +192,7 @@ var Engine = (function(global) {
      */
     function reset() {
         // noop
+        gameOver = false;
     }
 
     /* Go ahead and load all of the images we know we're going to need to
