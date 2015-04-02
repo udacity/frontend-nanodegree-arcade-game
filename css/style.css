@@ -73,22 +73,18 @@ body
   }
   #buttons {
     position: absolute;
-    width: 90%;
+    width: 100%;
     margin-top: 110%;
-    margin-left: 10%;
-    margin-right: 10%;
   }
 
   button {
     float: left;
     margin-right: 15px;
     outline: 0;
-    width: 45px;
-    height: 45px;
+    width: 40px;
+    height: 40px;
     background: none;
-    border: 1px solid;
-    border-radius: 50%;
-    border-color: purple;
+    border: 0;
     font-size: 30px;
     color: purple;
     vertical-align: top;
