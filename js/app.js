@@ -288,6 +288,19 @@ function createButtons(){
       event.gesture.preventDefault();
       })
     }, false);
+
+    document.addEventListener('touchmove', function(e)
+      {
+      e.preventDefault();
+      window.scroll(0,0);
+      return false;
+      }, false);
+    document.addEventListener('touchmove', function(e)
+{
+e.preventDefault();
+window.zoom(0,0);
+return false;
+}, false);
 };
 
 //OBJECTS***********
