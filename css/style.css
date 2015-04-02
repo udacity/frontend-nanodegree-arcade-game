@@ -60,23 +60,29 @@ body
   canvas {
     width: 100%;
   }
+  #rules {
+    width: 100%;
+  }
+  #score {
+    width: 100%;
+  }
   #buttons {
     position: absolute;
     margin-left: 40%;
     width: 100%;
-    margin-top: 600px;
+    margin-top: 120%;
   }
 
   button {
     margin-right: 15px;
     outline: 0;
-    width: 90px;
-    height: 90px;
+    width: 45px;
+    height: 45px;
     background: black;
-    border: 4px solid;
-    border-color: blue;
+    border: 2px solid;
+    border-color: pink;
     border-radius: 50%;
-    font-size: 25px;
+    font-size: 30px;
     color: white;
     text-align: center;
     vertical-align: center;
