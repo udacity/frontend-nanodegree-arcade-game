@@ -282,9 +282,9 @@ function createButtons(){
     document.getElementById("left").onclick = function(){ player.key = "left"; };
     document.getElementById("right").onclick = function(){ player.key = "right"; };
 
-    window.addEventListener('load', function() {
+    document.addEventListener('touchmove', function() {
       var element = document.getElementById('canvas');
-      var hammertime = Hammer(element).on("doubletap", function(event) {
+      var hammertime = Hammer(element).on('doubletap', function(event) {
       event.gesture.preventDefault();
       })
     }, false);
