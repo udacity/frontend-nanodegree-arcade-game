@@ -96,9 +96,10 @@ body
 #gameOverBanner,
 #gameOverText { 
   width: 100%;
-  padding-top: 20px;
+  padding-top: 40px;
   font-weight: 800;
-  font-size: 20px;
+  font-size: 30px;
+  height: 100px;
 }
 
 }
