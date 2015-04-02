@@ -281,6 +281,13 @@ function createButtons(){
     document.getElementById("down").onclick = function(){ player.key = "down"; };
     document.getElementById("left").onclick = function(){ player.key = "left"; };
     document.getElementById("right").onclick = function(){ player.key = "right"; };
+
+    window.addEventListener('load', function() {
+      var element = document.getElementById('canvas');
+      var hammertime = Hammer(element).on("doubletap", function(event) {
+      event.gesture.preventDefault();
+      })
+    }, false);
 };
 
 //OBJECTS***********
