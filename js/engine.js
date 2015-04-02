@@ -86,16 +86,14 @@ var Engine = (function(global) {
     //Check collisions function
     function checkCollisions() {
       allEnemies.forEach(function(bug) {
-
-      if (gameIsOn &&  //prevents player from dying twice (while one case is being evaluated)
-        player.x < bug.x + bug.width &&
-        player.x + player.width > bug.x &&
-        player.y < bug.y + bug.height &&
-        player.height + player.y > bug.y){
-          player.lose();
-        }
-    });
-};
+        if (gameIsOn &&  //prevents player from dying twice (while one case is being evaluated)
+          player.x < bug.x + bug.width &&
+          player.x + player.width > bug.x &&
+          player.y < bug.y + bug.height &&
+          player.height + player.y > bug.y)
+            player.lose();
+      });
+    };
 
     /* This is called by the update function  and loops through all of the
      * objects within your allEnemies array as defined in app.js and calls

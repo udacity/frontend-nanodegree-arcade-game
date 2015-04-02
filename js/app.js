@@ -125,7 +125,7 @@ document.addEventListener('keyup', function(e) {
 });
 
 //resets player position and sprite
-player.prototype.reset = function() {
+player.prototype.resetPosition = function() {
   gameIsOn = true;
   this.x = PLAYER_START_X;
   this.y = PLAYER_START_Y;
@@ -136,7 +136,7 @@ player.prototype.reset = function() {
 player.prototype.win = function() {
   this.points +=10;
   document.getElementById("score").innerHTML = this.points.toString();
-  player.reset();
+  player.resetPosition();
 };
 
 //when player looses looses 1 life and resets
@@ -150,7 +150,7 @@ player.prototype.lose = function() {
     //cat explodes
     player.sprite ='images/char-cat-hit.png';
     //delays the reset function so the cat-hit png is visible
-    setTimeout(function(){player.reset()}, 50);
+    setTimeout(function(){player.resetPosition()}, 50);
   }
   //gameover situation + final score
   else if(this.lives ==0){
@@ -173,7 +173,7 @@ player.prototype.gameOver = function() {
 function resetGame() {
   document.getElementById("gameOverBanner").remove();
   document.getElementById("gameOverText").remove();
-  player.reset();
+  player.resetPosition();
   player.lives = livesNumber;
   player.points = points;
   document.getElementById("score").innerHTML = player.points.toString();
@@ -244,6 +244,45 @@ function createBanner() {
   gameOverText.appendChild(t2);
 };
 
+//create buttons for mobile
+function createButtons(){
+  var mq = window.matchMedia( "(max-width: 1024px)" );
+    if(mq.matches) {
+      var buttons = document.createElement("div");
+      buttons.id = "buttons";
+      document.body.appendChild(buttons);
+      //Button LEFT 
+      var btn = document.createElement("BUTTON"); 
+      btn.id = "left";
+      var t = document.createTextNode("\u25C0");
+      btn.appendChild(t);
+      buttons.appendChild(btn);
+      //Button UP
+      var btn = document.createElement("BUTTON"); 
+      btn.id = "up";
+      var t = document.createTextNode("\u25B2");
+      btn.appendChild(t);
+      buttons.appendChild(btn);
+      //Button DOWN
+      var btn = document.createElement("BUTTON"); 
+      btn.id = "down";
+      var t = document.createTextNode("\u25BC");
+      btn.appendChild(t);
+      buttons.appendChild(btn);
+      //Button RIGHT 
+      var btn = document.createElement("BUTTON"); 
+      btn.id = "right";
+      var t = document.createTextNode("\u25B6");
+      btn.appendChild(t);
+      buttons.appendChild(btn);
+    
+    }
+    document.getElementById("up").onclick = function(){ player.key = "up"; };
+    document.getElementById("down").onclick = function(){ player.key = "down"; };
+    document.getElementById("left").onclick = function(){ player.key = "left"; };
+    document.getElementById("right").onclick = function(){ player.key = "right"; };
+};
+
 //OBJECTS***********
 //player object
 var player = new player();
@@ -261,3 +300,6 @@ createRules();
 
 //Score
 createScore();
+
+//Buttons
+createButtons();
