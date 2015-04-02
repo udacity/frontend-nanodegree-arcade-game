@@ -62,30 +62,37 @@ body
   }
   #rules {
     font-size: 9px;
-    height:30px;
+    height:40px;
     width: 100%;
+    margin-top: 5px;
+    padding-top: 2px;
+    margin-bottom: 5px;
   }
   #score {
     width: 100%;
   }
   #buttons {
     position: absolute;
-    max-width: 100% !important;
-    margin-top: 120%;
+    width: 90%;
+    margin-top: 110%;
+    margin-left: 10%;
+    margin-right: 10%;
   }
 
   button {
+    float: left;
     margin-right: 15px;
     outline: 0;
     width: 45px;
     height: 45px;
-    background: black;
-    border: 2px solid;
-    border-color: purple;
+    background: none;
+    border: 1px solid;
     border-radius: 50%;
+    border-color: purple;
     font-size: 30px;
-    color: white;
+    color: purple;
+    vertical-align: top;
     text-align: center;
-    vertical-align: center;
+    padding-top: 5px;
   }
 }

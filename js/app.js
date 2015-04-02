@@ -254,25 +254,25 @@ function createButtons(){
       //Button LEFT 
       var btn = document.createElement("BUTTON"); 
       btn.id = "left";
-      var t = document.createTextNode("\u25C0");
+      var t = document.createTextNode("\u261C");
       btn.appendChild(t);
       buttons.appendChild(btn);
       //Button UP
       var btn = document.createElement("BUTTON"); 
       btn.id = "up";
-      var t = document.createTextNode("\u25B2");
+      var t = document.createTextNode("\u261D");
       btn.appendChild(t);
       buttons.appendChild(btn);
       //Button DOWN
       var btn = document.createElement("BUTTON"); 
       btn.id = "down";
-      var t = document.createTextNode("\u25BC");
+      var t = document.createTextNode("\u261F");
       btn.appendChild(t);
       buttons.appendChild(btn);
       //Button RIGHT 
       var btn = document.createElement("BUTTON"); 
       btn.id = "right";
-      var t = document.createTextNode("\u25B6");
+      var t = document.createTextNode("\u261E");
       btn.appendChild(t);
       buttons.appendChild(btn);
     
