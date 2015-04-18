@@ -29,12 +29,18 @@ Enemy.prototype.update = function(dt) {
 
 	if (this.x > 600) {
 		this.x = -100 * random2;
-		if (random3 < 0.33) {
+		if (random3 < 0.16) {
 		this.y = 60;
-		} else if (random3 > 0.33 && random3 < 0.67) {
+		} else if (random3 > 0.16 && random3 < 0.33) {
 		this.y = 143;
+		} else if (random3 > 0.33 && random3 < 0.50) {
+		this.y = 226;
+		} else if (random3 > 0.50 && random3 < 0.67) {
+		this.y = 309;
+		} else if (random3 > 0.67 && random3 < 0.84) {
+		this.y = 392;
 		} else {
-			this.y = 226;
+			this.y = 475;
 		}
 	}
 }	
@@ -67,7 +73,7 @@ Player.prototype.update = function(dt) {
 	//console.log(allEnemies[0].x);
 		if (checkCollisionX < 50 && checkCollisionY < 50 || this.y < 0) { //
 			this.x = 202;
-			this.y = 385;
+			this.y = 685;
 			console.log(checkCollisionX,checkCollisionY)
 		}
 	}
@@ -82,7 +88,7 @@ Player.prototype.handleInput = function(action){
 		this.x = this.x + stepX;
 	} else if (action === "up") {
 		this.y = this.y - stepY;
-	} else if (action === "down" && this.y < 385) {
+	} else if (action === "down" && this.y < 685) {
 		this.y = this.y + stepY;
 	}
 }
@@ -93,8 +99,11 @@ Player.prototype.handleInput = function(action){
 var enemy1 = new Enemy(-45,60);
 var enemy2 = new Enemy(300,143);
 var enemy3 = new Enemy(150,226);
-var allEnemies = [enemy1, enemy2, enemy3];
-var player = new Player(202,385);
+var enemy4 = new Enemy(-45,309);
+var enemy5 = new Enemy(300,392);
+var enemy6 = new Enemy(150,475);
+var allEnemies = [enemy1, enemy2, enemy3, enemy4, enemy5, enemy6];
+var player = new Player(202,685);
 
 
 // This listens for key presses and sends the keys to your
