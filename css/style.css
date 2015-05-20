@@ -1,3 +1,85 @@
+ /* Styles */
+html {
+    font-family: 'Oswald', helvetica, sans-serif;
+}
+
 body {
     text-align: center;
+    margin: auto;
+    width: 520px;
+}
+
+
+
+h1{
+    margin: 0.3em;
+    color: white;
+}
+
+h2 {
+    margin: 0.3em;
+    color: white;
+}
+
+h3 {
+    margin: 0.3em;
+    color: white;
+}
+
+h3.title {
+    margin: 0.3em;
+    color: black;
+}
+
+p
+   {
+    margin: 0.3em;
+    color: white;
+}
+
+#selection {
+    width: 520px;
+    height: 610px;
+    background: linear-gradient(red, orange);
+    text-align: center;
+    margin: 0.3em;
+    padding: 0.3em;
+    position: absolute;
+    z-index: 1;
+    border: none;
+    border-radius: 9px;
+}
+
+.characterImg {
+	height: 100px;
+	width: 60px;
+	margin: 0.3em;
+    cursor: pointer;
+    border: 2px solid white;
+    border-radius: 6px;
+}
+
+
+#enterudacity {
+    width: 200px;
+    font-weight: bold;
+    background-color: red;
+    color: orange;
+}
+
+
+#reset {
+    margin: 0.3em;
+}
+
+.button {
+    height: 40px;
+    width: 110px;
+    border: 2px solid orange;
+    margin: 0.3em;
+    color: orange;
+    font-size: 17px;
+    background-color: white;
+    text-align: center;
+    vertical-align: center;
 }
