@@ -1,4 +1,4 @@
-//Variables 
+//Variables I use for the additional features
 var characterImages = [
     'images/char-boy.png',
     'images/char-cat-girl.png',
@@ -127,7 +127,7 @@ document.addEventListener('keyup', function(e) {
     player.handleInput(allowedKeys[e.keyCode]);
 });
 
-//Additional functions: characteroption, enemyoption, start Game
+//Additional functions: character options, enemy options, enter Uda City
 function characterOption (imgId, imgIndex) {
     characterIndex = imgIndex;
     var buttons = document.getElementsByClassName('characterImg'); 
