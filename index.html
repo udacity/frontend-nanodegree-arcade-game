@@ -4,10 +4,40 @@
     <meta charset="UTF-8">
     <title>Effective JavaScript: Frogger</title>
     <link rel="stylesheet" href="css/style.css">
+	<link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
 </head>
 <body>
-    <script src="js/resources.js"></script>
-    <script src="js/app.js"></script>
-    <script src="js/engine.js"></script>
+	<h3 class="title"> Welcome to 
+	<img class="img-responsive" src="images/logo.png">
+	Are you udacious? Enter the City, but don't touch your personal bugs!</h3><br>
+	<div id="selection">
+			<h2>Select your Character</h2>
+			<img id="character0" class="characterImg" onclick="characterOption(this.id, 0)" src="images/char-boy.png" />
+			<img id="character2" class="characterImg" onclick="characterOption(this.id, 2)" src="images/char-horn-girl.png" />
+			<img id="character1" class="characterImg" onclick="characterOption(this.id, 1)" src="images/char-cat-girl.png" />
+			<img id="character3" class="characterImg" onclick="characterOption(this.id, 3)" src="images/char-pink-girl.png" />
+			<img id="character4" class="characterImg" onclick="characterOption(this.id, 4)" src="images/char-princess-girl.png" />
+		<hr>
+			<h2>Select your personal Bug: Car-Bug, Real Bug, Politician-Bug or Diet-Bug!</h2>
+			<img id="enemy0" class="enemyImg" onclick="enemyClick(this.id, 0)" src="images/car-bug-option.png" />
+			<img id="enemy1" class="enemyImg" onclick="enemyClick(this.id, 1)" src="images/enemy-bug-option.png" />
+			<img id="enemy2" class="enemyImg" onclick="enemyClick(this.id, 2)" src="images/poli-bug-option.png" />
+			<img id="enemy3" class="enemyImg" onclick="enemyClick(this.id, 3)" src="images/burger-bug-option.png" />
+		<hr>
+		<audio autoplay loop id="player" src="sounds/M-GameBG.mp3"></audio>
+			<div>
+				<h2><img src="images/music.png">Turn off the music if you like<img src="images/music.png"></h2>
+    			<button onclick="document.getElementById('player').play()">Play</button>
+    			<button onclick="document.getElementById('player').pause()">Stop</button>
+			</div>
+			<hr>
+			<button id="enterudacity" class="button" onclick="enterCity();">Enter Uda City</button>
+			<button id="reset" class="button" onclick="history.go(0)">Reset</button>
+		<hr>
+			<p>How to play the Game? Just use your arrow keys.</p>
+		</div>
+		    <script src="js/resources.js"></script>
+    		<script src="js/app.js"></script>
+    		<script src="js/engine.js"></script>
 </body>
 </html>
