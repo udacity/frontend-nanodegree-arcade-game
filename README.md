@@ -3,7 +3,7 @@ frontend-nanodegree-arcade-game
 Welcome to Uda City, the game that challenges your personal bugs!
 
 How to load the Game:
-Just click on this link: 
+Just click on this link: http://justkaran.github.io/frontend-nanodegree-arcade-game/
 
 How to play the Game:
 In this game, you have a Player and Enemies (Bugs). The goal of the player is to reach the water, without colliding into any one of the enemies. The player can move left, right, up and down. Just use your arrow key on the keyboard to move the player in these directions. The enemies move in varying speeds on the paved block portion of the scene. Once a the player collides with an enemy; the game is reset and the player moves back to the start square. Once the player reaches the water, the game is won.
@@ -30,7 +30,7 @@ For this project I:
 The repository contains the following files: 
 
 - style.css
-- images
+- images 
 - sounds
 - js folder
 - index.html 
@@ -39,9 +39,9 @@ The repository contains the following files:
 
 I also used the following resources to learn and write the code:
 
-https://github.com/ellisonleao/clumsy-bird/tree/gh-pages/data (sound effects)
-http://www.codecademy.com/tracks/javascript
-http://www.codecademy.com/courses/web-beginner-en-SWM11/0/1
-http://www.w3schools.com/tags/att_audio_autoplay.asp (sound effects)
-https://github.com/CreateJS/SoundJS (mp3 sound)
-http://www.dafont.com/adventure.font?text=Uda+City&psize=l (Adventure Fonts)
+- https://github.com/ellisonleao/clumsy-bird/tree/gh-pages/data (sound effects)
+- http://www.codecademy.com/tracks/javascript
+- http://www.codecademy.com/courses/web-beginner-en-SWM11/0/1
+- http://www.w3schools.com/tags/att_audio_autoplay.asp (sound effects)
+- https://github.com/CreateJS/SoundJS (mp3 sound)
+- http://www.dafont.com/adventure.font?text=Uda+City&psize=l (Adventure Fonts)
