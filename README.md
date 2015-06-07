@@ -1,6 +1,18 @@
-frontend-nanodegree-arcade-game
-===============================
+########## Frogger clone ############
 
-Students should use this rubric: https://www.udacity.com/course/viewer#!/c-ud015/l-3072058665/m-3072588797
+This is a simple replication of the classical frogger game (https://en.wikipedia.org/wiki/Frogger)
 
-for self-checking their submission.
+Version 1.0 features
+
+* Win/fail detection with corresponding message and counter
+* Check wether you are moving beyond the board
+* Fixed number of enemies, their individual speeds and board size
+
+Currently under development
+
+* Time limit to reach the water
+* Gems that can be added while crossing the street
+* Random creation of enemies
+* Set difficulty level (number of bugs and their speeds)
+* Set size of the board
+* Better alerts for wins and crashes
