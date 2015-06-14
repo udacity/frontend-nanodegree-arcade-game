@@ -17,3 +17,9 @@ body {
 	display: block;
 	font-size: large;
 }
+
+.messageNeutral {
+	color: black;
+	display: block;
+	font-size: large;
+}
