@@ -2,10 +2,6 @@ body {
     text-align: center;
 }
 
-.messageHidden {
-	display: none;
-}
-
 .messageSuccess {
 	color: green;
 	display: block;
