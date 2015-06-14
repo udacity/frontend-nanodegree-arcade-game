@@ -1,46 +1,1 @@
-// Enemies our player must avoid
-var Enemy = function() {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
-
-    // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
-    this.sprite = 'images/enemy-bug.png';
-}
-
-// Update the enemy's position, required method for game
-// Parameter: dt, a time delta between ticks
-Enemy.prototype.update = function(dt) {
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
-}
-
-// Draw the enemy on the screen, required method for game
-Enemy.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-}
-
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
-
-
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
-
-
-
-// This listens for key presses and sends the keys to your
-// Player.handleInput() method. You don't need to modify this.
-document.addEventListener('keyup', function(e) {
-    var allowedKeys = {
-        37: 'left',
-        38: 'up',
-        39: 'right',
-        40: 'down'
-    };
-
-    player.handleInput(allowedKeys[e.keyCode]);
-});
+// Enemies our player must avoidvar Enemy = function() {    this.sprite = 'images/enemy-bug.png'; // The image/sprite for our enemies    // The enemy's position on the canvas    this.x;    this.y;    // The enemy's speed    this.speed;};// Update the enemy's position// Parameter: dt, a time delta between ticksEnemy.prototype.update = function(dt) {    // You should multiply any movement by the dt parameter    // which will ensure the game runs at the same speed for    // all computers.    this.x = this.x + this.speed * dt;    if (this.x > 505) {        this.x = -100;    }};// Draw the enemy on the screenEnemy.prototype.render = function() {    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);};// Set properties of individual bugs. Executed inside initializeEnemies().Enemy.prototype.init = function(currentLane, currentEnemy, laneSpeed) {    this.y = currentLane;    this.x = -400 * currentEnemy; // Set enemies on the same lane slightly apart from each other    this.speed = laneSpeed;    allEnemies.push(this);};/* Set the difficulty level of the game. Difficulty is defined as    the number of enemies per lane    their minimum speed    their maximum speed   There is only one level at the moment. More levels will be added in later versions of the game.*/var level = {    1 : {        "enemiesPerLane": 1,        "minSpeed": 150,        "maxSpeed" : 300    }};// Define the vertical position of each lane on the canvasvar lanes = [60,141,230];var allEnemies = [];function initializeEnemies() {    // Loop through each lane...    for (var currentLane = 0; currentLane < lanes.length; currentLane++) {        // ...Give it a fixed speed and...        var laneSpeed = getRandomInt(level[1].minSpeed, level[1].maxSpeed);        var distBetweenBugs = 100;        // ...Create enemiesPerLane times of enemies on this lane        for (var currentEnemy = 0; currentEnemy < level[1].enemiesPerLane; currentEnemy++) {            var enemy = new Enemy();            enemy.init(lanes[currentLane], currentEnemy, laneSpeed);        }    }}// Bring our bugs to life!initializeEnemies();// Player class. Requires an update(), render() and a handleInput() method.var Player = function() {    // Setting the player's image    this.sprite = "images/char-boy.png";    // The player's position on the canvas    this.x = 200;    this.y = 320;};// Reset function, used after each collision and when you reach the waterPlayer.prototype.reset = function() {    this.x = 200;    this.y = 320;    };var score = 0;Player.prototype.update = function() {    // If you make it to the water, increase the score and reset the player position    if (this.y < 71) {        this.reset();        score++;        document.getElementById("message").innerHTML = "Well done!!";        document.getElementById("message").setAttribute("class", "messageSuccess");        document.getElementById("score").innerHTML = "Score: " + score;    }    // Don't let the player go beyond the bottom edge of the canvas    if (this.y > 320) {        this.y = 391;    }    // Don't let the player go beyond the left edge of the canvas    if (this.x < -2) {        this.x = -2;    }    // Don't let the player go beyond the right edge of the canvas    if (this.x > 402) {        this.x = 402;    }    // Check for collisions. If a collision occurs, alert the user, decrease the score and reset the    // player position    var index = 0;    for (index = 0; index < allEnemies.length; index++) {        rightBound = allEnemies[index].x + 70;        leftBound = allEnemies[index].x - 70;        upperBound = allEnemies[index].y + 70;        lowerBound = allEnemies[index].y - 70;        if (this.y < upperBound && this.y > lowerBound && this.x < rightBound && this.x > leftBound) {            score--;            document.getElementById("message").innerHTML = "You crashed with a bug!!";            document.getElementById("message").setAttribute("class", "messageCrash");            document.getElementById("score").innerHTML = "Score: " + score;            this.reset();        }    }};// (Re-)draw the player on the canvasPlayer.prototype.render = function() {    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);};Player.prototype.handleInput = function(userInput) {    if (userInput == "up") {        this.y = this.y - 83;    } else if (userInput == "down") {        this.y = this.y + 83;    } else if (userInput == "right") {        this.x = this.x + 101;    } else if (userInput == "left") {        this.x = this.x - 101;    }    // Display the player's coordinates in the console if you like    // console.log("x,y = " + this.x + "," + this.y);};// Instantiate the player objectvar player = new Player();// This listens for key presses and sends the keys to your// Player.handleInput() method.document.addEventListener('keyup', function(e) {    var allowedKeys = {        37: 'left',        38: 'up',        39: 'right',        40: 'down'    };    player.handleInput(allowedKeys[e.keyCode]);    // Reset the message after a collision when the player starts moving again    document.getElementById("message").innerHTML = "Go get' em!";    document.getElementById("message").setAttribute("class", "messageNeutral");});// Helper function. Returns a random integer between min (included) and max (excluded)function getRandomInt(min, max) {    return Math.floor(Math.random() * (max - min)) + min;}

@@ -1,3 +1,21 @@
 body {
     text-align: center;
 }
+
+.messageSuccess {
+	color: green;
+	display: block;
+	font-size: large;
+}
+
+.messageCrash {
+	color: red;
+	display: block;
+	font-size: large;
+}
+
+.messageNeutral {
+	color: black;
+	display: block;
+	font-size: large;
+}
