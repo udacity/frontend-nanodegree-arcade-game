@@ -37,7 +37,6 @@ var Player = function() {
 // This class requires an update(), render() and
 // a handleInput() method.
 
-
 Player.prototype.update = function() {
 
 }
@@ -51,7 +50,7 @@ Player.prototype.handleInput = function(direction) {
   if (direction == 'left') {
     console.log("player pressed left");
     console.log("this.x was at " +this.x +". tileWidth was " +tileWidth);
-    if (this.x > 0 ) { // ensure that we don't go left of the first tile
+    if (this.x > 0 ) { // ensure that we don't go past the first column
       this.x = this.x - tileWidth;
       console.log("valid move");
     }
@@ -60,7 +59,7 @@ Player.prototype.handleInput = function(direction) {
   if (direction == 'up') {
     console.log("player pressed up");
     console.log("this.y was at " +this.y +". tileHeight was " +tileHeight);
-    if (this.y > 0 ) { // ensure that we don't go left of the first tile
+    if (this.y > 0 ) { // ensure that we don't go past the first row
       this.y = this.y - tileHeight;
       console.log("valid move");
     }
@@ -69,7 +68,7 @@ Player.prototype.handleInput = function(direction) {
   if (direction == 'right') {
     console.log("player pressed right");
     console.log("this.x was at " +this.x +". tileWidth was " +tileWidth);
-    if (this.x < tileWidth*4 ) { // ensure that we don't go right of the last tile
+    if (this.x < tileWidth*4 ) { // ensure that we don't go past the last column
       this.x = this.x + tileWidth;
       console.log("valid move");
     }
@@ -78,7 +77,7 @@ Player.prototype.handleInput = function(direction) {
   if (direction == 'down') {
     console.log("player pressed down");
     console.log("this.y was at " +this.y +". tileHeight was " +tileHeight);
-    if (this.y < (tileHeight*4 + topArea) ) { // ensure that we don't go left of the first tile
+    if (this.y < (tileHeight*4 + topArea) ) { // ensure that we don't go past the bottow row
       this.y = this.y + tileHeight;
       console.log("valid move");
     }
