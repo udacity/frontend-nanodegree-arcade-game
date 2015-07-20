@@ -6,8 +6,24 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <script src="js/resources.js"></script>
-    <script src="js/app.js"></script>
-    <script src="js/engine.js"></script>
+	<div id="score">
+		Score:
+		<span id="scoreVal">0</span>
+	</div>
+	<div class="welcomeScreen">
+		<h1>Hello there!</h1>
+		<h1>Please choose your character</h1>
+		<div class="imgGrid">
+			<img src="images/char-boy.png">
+			<img src="images/char-cat-girl.png">
+			<img class="selected" src="images/char-horn-girl.png">
+			<img src="images/char-pink-girl.png">
+			<img src="images/char-princess-girl.png">
+		</div>
+		<button id="start"> Start Game </button>
+	</div>
+  <script src="js/resources.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/engine.js"></script>
 </body>
 </html>
