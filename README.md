@@ -1,4 +1,4 @@
-frontend-nanodegree-arcade-game
+Frogger Arcade Game
 ===============================
 This Arcade game is the third project in the Udacity Front End Nanodegree. 
 For instructions on how to build the game, check out [Getting Started with Frogger](https://github.com/udacity/fend-office-hours/tree/master/OOJS/Getting%20Started%20with%20Frogger).
