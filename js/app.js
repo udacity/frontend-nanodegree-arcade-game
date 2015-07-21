@@ -6,9 +6,7 @@ var Enemy = function() {
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
-    this.y = Math.random();
-    this.x = 0;
-    this.speed = Math.random();
+    this.set();
 }
 
 // Update the enemy's position, required method for game
@@ -17,7 +15,10 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-    this.x = this.speed * dt;
+    this.x = (((this.x + 100) + (this.speed * dt)) % 600) - 100;
+    if( this.x > 600 ) {
+        this.set();
+    }
 }
 
 // Draw the enemy on the screen, required method for game
@@ -25,15 +26,35 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 
+Enemy.prototype.randomizeSpeed = function() {
+    this.speed = Math.random() * (200 - 75) + 75;
+}
+
+Enemy.prototype.selectRow = function() {
+    this.startingY = [60, 145, 230];
+    this.y = this.startingY[Math.floor(Math.random() * 10) % 3];
+}
+
+Enemy.prototype.set = function() {
+    this.x = -100;
+    this.selectRow();
+    this.randomizeSpeed();
+}
+
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
 
 var Player = function() {
-    this.sprite = 'image/char-boy.png';
-    this.x =
-    this.y =
+    this.sprite = 'images/char-boy.png';
+    this.x = 202;
+    this.y = 404;
     this.speed = 1;
+}
+
+Player.prototype.reset = function() {
+    this.x = 202;
+    this.y = 404;
 }
 
 Player.prototype.update = function(dt) {
@@ -45,14 +66,45 @@ Player.prototype.render = function() {
 }
 
 Player.prototype.handleInput = function(input) {
-    
+    switch(input) {
+    case 'left':
+        this.x -= 25;
+        if( this.x < 0 ) {
+            this.x = 0;
+        }
+        break;
+    case 'up':
+        this.y -= 25;
+        if( this.y < -10 ) {
+            this.y = -10;
+        }
+        break;
+    case 'right':
+        this.x += 25;
+        if( this.x > 404 ){
+            this.x = 404;
+        }
+        break;
+    case 'down':
+        this.y += 25;
+        if( this.y > 404 ) {
+            this.y = 404;
+        }
+        break;
+    default:
+        console.log("Something went wrong! Can't move character!");
+}
 }
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-
-
+var allEnemies = [];
+for( var i = 0; i < 6; i ++){
+    var enemy = new Enemy();
+    allEnemies.push(enemy);
+}
+var player = new Player();
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.

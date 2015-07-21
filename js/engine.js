@@ -80,7 +80,41 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        // checkCollisions();
+        checkCollisions();
+    }
+
+    function checkCollisions() {
+        //Enemy : x + 100 | y + 70
+        //Player : x + 75 | y + 90
+        allEnemies.forEach(function(enemy) {
+            //have to add 20 to base .y values because of the invisible portion at the top of the images
+            enemyY = enemy.y + 20;
+            //have to add 10 to base .y values because of the invisible portion at the top of the images
+            playerY = player.y + 10;
+            //player needs 12.5 added to .x values because of the invisible portion at the left of the images
+            playerX = player.x + 12.5;
+            enemyX = enemy.x;
+            if( enemyX > playerX && enemyX < playerX + 75 ) {
+                if( enemyY > playerY && enemyY < playerY + 90 ) {
+                    reset();
+                }
+            }
+            if( enemyX + 100 > playerX && enemyX + 100 < playerX + 75 ) {
+                if( enemyY + 70 > playerY && enemyY + 70 < playerY + 90 ) {
+                    reset();
+                }
+            }
+            if( enemyX > playerX && enemyX < playerX + 75 ) {
+                if( enemyY + 70 > playerY && enemyY + 70 < playerY + 90 ) {
+                    reset();
+                }
+            }
+            if( enemyX + 100 > playerX && enemyX + 100 < playerX + 75 ) {
+                if( enemyY > playerY && enemyY < playerY + 90 ) {
+                    reset();
+                }
+            }
+        });
     }
 
     /* This is called by the update function  and loops through all of the
@@ -160,7 +194,7 @@ var Engine = (function(global) {
      * those sorts of things. It's only called once by the init() method.
      */
     function reset() {
-        // noop
+        player.reset();
     }
 
     /* Go ahead and load all of the images we know we're going to need to
