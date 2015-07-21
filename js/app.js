@@ -1,3 +1,5 @@
+'use strict';
+
 // Game measurements to help set initial state of the game.
 var Game = function() {
   // A single block element width and height.
@@ -65,17 +67,21 @@ Game.prototype.pickCharacter = function() {
   var charPicker = document.getElementsByClassName('welcomeScreen')[0],
       start = document.getElementById('start'),
       imgs = document.getElementsByTagName('img'),
-      score = document.getElementById('score');
+      score = document.getElementById('score'),
+      imgsLength = imgs.length;
 
   charPicker.style.display = 'block';
 
-  for(var i = 0; i < imgs.length; ++i) {
-    imgs[i].addEventListener('click',function(){
-      var currentSelected = document.getElementsByClassName('selected')[0];
-      currentSelected.className = '';
-      this.className = 'selected';
-      game.playerSprite = this.getAttribute('src');
-    });
+  function imgSelect(event){
+    var image = event.target;
+    var currentSelected = document.getElementsByClassName('selected')[0];
+    currentSelected.className = '';
+    image.className = 'selected';
+    game.playerSprite = image.getAttribute('src');
+  }
+
+  for(var i = 0; i < imgsLength; ++i) {
+    imgs[i].addEventListener('click', imgSelect);
   }
 
   // Hide character picker, display score and initialize game
@@ -102,7 +108,7 @@ var Enemy = function(x, y, speed) {
   this.x = x;
   this.y = y;
   this.speed = speed;
-}
+};
 /* Update the enemy's position, required method for game
  * Parameter: dt, a time delta between ticks
  * Ensures the game runs at the same speed for all computers.
@@ -121,12 +127,12 @@ Enemy.prototype.render = function() {
 Enemy.prototype.detectCollision = function() {
   // the +80 and +30 are used to neglect white space around
   // the enemy and the player sprites, for a better visual collision detection.
-  if((this.x + 80 >= game.player.x
-      && this.x + 80 <= game.player.x + game.blockWidth
-      && this.y == game.player.y) ||
-      (this.x + 30 <= game.player.x + game.blockWidth
-      && this.x + 30 >= game.player.x
-      && this.y == game.player.y)) {
+  if((this.x + 80 >= game.player.x &&
+      this.x + 80 <= game.player.x + game.blockWidth &&
+      this.y == game.player.y) ||
+      (this.x + 30 <= game.player.x + game.blockWidth &&
+      this.x + 30 >= game.player.x &&
+      this.y == game.player.y)) {
     game.winRounds--;
     game.updateScore();
     game.resetGame();
@@ -165,7 +171,7 @@ Player.prototype.handleInput = function(val) {
       this.moveDown();
       break;
     default:
-      return
+      return;
   }
 };
 Player.prototype.update = function() {
@@ -208,4 +214,3 @@ Player.prototype.reset = function() {
 
 var game = new Game();
 game.pickCharacter();
-
