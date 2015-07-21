@@ -1,3 +1,53 @@
+@font-face {
+    font-family: 'arcade';
+    src: url(../font/ARCADECLASSIC.TTF);
+}
+
 body {
-    text-align: center;
+  text-align: center;
+  font-family: 'arcade';
+  word-spacing: 20px;
+  color: #0071AB;
+}
+
+.welcomeScreen {
+	background-color: white;
+	width: 600px;
+	height: 600px;
+	display: none;
+	position: absolute;
+	right: 0;
+	left: 0;
+	top: 1em;
+  margin-left:-300px;
+  left:50%;
+  padding-top: 3.5em;
+}
+
+.imgGrid {
+	border: 10px #ccc solid;
+	padding: 1em;
+}
+.imgGrid img.selected {
+	border: 2px #2D8CBD solid;
+}
+.imgGrid img:hover {
+	background-color: #ccc;
+}
+
+#start {
+	width: 100px;
+  height: 40px;
+  background-color: #2D8CBD;
+  color: #fff;
+  border: none;
+  margin-top: 1em;
+}
+
+#score {
+	position: absolute;
+  top: 1em;
+  left: 1em;
+  font-size: 3em;
+  display: none;
 }
