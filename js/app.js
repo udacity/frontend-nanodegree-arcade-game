@@ -31,20 +31,24 @@ var Player = function(x,y) {
     this.sprite = 'images/char-boy.png';
     this.x = x;
     this.y = y;
+    this.newx = 0;
+    this.newy = 0;
 };
 
 Player.prototype.handleInput = function(dir) {
 
-    if (dir == 38) { // up
-        this.y = this.y + 101;
-    } else if (dir == 40) { // down
-        this.y = this.y - 101;
-    } else if (dir == 37) { // left
-        this.x = this.x - 101;
-    } else if (dir == 39) { // right
-        this.x = this.x + 101;
-    } else {
-        // do nothing, user gave an invalid input
+    if (dir == 'up') {
+        this.y = this.y - 100;
+
+    } else if (dir == 'down') {
+        this.y = this.y + 100;
+
+    } else if (dir == 'left') {
+        this.x = this.x - 100;
+
+    } else if (dir == 'right') {
+        this.x = this.x + 100;
+
     };
 
 };
@@ -61,10 +65,12 @@ Player.prototype.render = function() {
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-enemy1 = new Enemy(2, 202);
-allEnemies = [enemy1];
+enemy1 = new Enemy(0, 225);
+enemy2 = new Enemy(-300, 140);
+enemy3 = new Enemy (-500, 60);
+allEnemies = [enemy1, enemy2, enemy3];
 
-player = new Player(202, 303);
+player = new Player(200, 300);
 
 
 // This listens for key presses and sends the keys to your
@@ -78,4 +84,5 @@ document.addEventListener('keyup', function(e) {
     };
 
     player.handleInput(allowedKeys[e.keyCode]);
+    console.log(allowedKeys[e.keyCode]);
 });
