@@ -21,9 +21,10 @@ Enemy.prototype.update = function(dt) {
     this.x = this.x + 101 * dt * this.multiplier;
 
     if (this.y == player.y && (this.x > player.x - 20 && this.x < player.x + 20)) {
-        console.log('attack!!!');
+        player.score--;
+        document.getElementsByClassName('score')[0].innerHTML = 'Score: ' + player.score;
         player.reset();
-    };
+    }
 };
 
 // Draw the enemy on the screen, required method for game
@@ -38,6 +39,7 @@ var Player = function(x,y) {
     this.sprite = 'images/char-boy.png';
     this.x = x;
     this.y = y;
+    this.score = 0;
 };
 
 Player.prototype.handleInput = function(dir) {
@@ -54,20 +56,24 @@ Player.prototype.handleInput = function(dir) {
     } else if (dir == 'right') {
         this.x = this.x + 101;
 
-    };
+    }
 
     if (this.x < 0 || this.x > 404) {
         this.reset();
-    } else if (this.y < -25 || this.y > 404) {
+    } else if (this.y > 404) {
         this.reset();
-    };
+    } else if (this.y <= -20) {
+        this.score++;
+        document.getElementsByClassName('score')[0].innerHTML = 'Score: ' + this.score;
+        this.reset();
+    }
 
 };
 
 Player.prototype.reset = function() {
     this.x = 202;
     this.y = 380;
-}
+};
 
 Player.prototype.update = function() {
     this.x = this.x;
@@ -88,7 +94,7 @@ for (var i = 0; i < 30; i++) {
     var y = yVals[Math.floor((Math.random() * 3))];
     enemy = new Enemy(x, y);
     allEnemies.push(enemy);
-};
+}
 
 player = new Player(202, 380);
 
