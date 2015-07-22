@@ -35,13 +35,13 @@ var Player = function(x,y) {
 
 Player.prototype.handleInput = function(dir) {
 
-    if (dir == 'up') {
+    if (dir == 38) { // up
         this.y = this.y + 1;
-    } else if (dir == 'down') {
+    } else if (dir == 40) { // down
         this.y = this.y - 1;
-    } else if (dir == 'left') {
+    } else if (dir == 37) { // left
         this.x = this.x - 1;
-    } else if (dif == 'right') {
+    } else if (dir == 39) { // right
         this.x = this.x + 1;
     } else {
         // do nothing, user gave an invalid input
@@ -50,21 +50,21 @@ Player.prototype.handleInput = function(dir) {
 };
 
 Player.prototype.update = function() {
-    this.x = this.x + 1;
-    this.y = this.y + 1;
+    this.x = this.x;
+    this.y = this.y;
 };
 
 Player.prototype.render = function() {
-    ctx.drawImages(Resources.get(this.sprite), this.x, this.y);
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-enemy1 = new Enemy(2, 3);
+enemy1 = new Enemy(2, 115);
 allEnemies = [enemy1];
 
-player = new Player(3, 1);
+player = new Player(3, 8);
 
 
 // This listens for key presses and sends the keys to your
@@ -76,6 +76,7 @@ document.addEventListener('keyup', function(e) {
         39: 'right',
         40: 'down'
     };
+    console.log(e.keyCode);
 
     player.handleInput(allowedKeys[e.keyCode]);
 });
