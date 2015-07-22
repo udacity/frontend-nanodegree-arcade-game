@@ -16,7 +16,7 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-    this.x = (this.x + 1) * dt;
+    this.x = this.x + 100 * dt;
 };
 
 // Draw the enemy on the screen, required method for game
@@ -36,13 +36,13 @@ var Player = function(x,y) {
 Player.prototype.handleInput = function(dir) {
 
     if (dir == 38) { // up
-        this.y = this.y + 1;
+        this.y = this.y + 101;
     } else if (dir == 40) { // down
-        this.y = this.y - 1;
+        this.y = this.y - 101;
     } else if (dir == 37) { // left
-        this.x = this.x - 1;
+        this.x = this.x - 101;
     } else if (dir == 39) { // right
-        this.x = this.x + 1;
+        this.x = this.x + 101;
     } else {
         // do nothing, user gave an invalid input
     };
@@ -61,10 +61,10 @@ Player.prototype.render = function() {
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-enemy1 = new Enemy(2, 115);
+enemy1 = new Enemy(2, 202);
 allEnemies = [enemy1];
 
-player = new Player(3, 8);
+player = new Player(202, 303);
 
 
 // This listens for key presses and sends the keys to your
@@ -76,7 +76,6 @@ document.addEventListener('keyup', function(e) {
         39: 'right',
         40: 'down'
     };
-    console.log(e.keyCode);
 
     player.handleInput(allowedKeys[e.keyCode]);
 });
