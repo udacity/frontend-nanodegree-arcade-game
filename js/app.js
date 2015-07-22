@@ -19,6 +19,11 @@ Enemy.prototype.update = function(dt) {
     // which will ensure the game runs at the same speed for
     // all computers.
     this.x = this.x + 101 * dt * this.multiplier;
+
+    if (this.y == player.y && (this.x > player.x - 20 && this.x < player.x + 20)) {
+        console.log('attack!!!');
+        player.reset();
+    };
 };
 
 // Draw the enemy on the screen, required method for game
