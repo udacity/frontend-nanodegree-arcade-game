@@ -27,6 +27,17 @@ Enemy.prototype.update = function(dt) {
         document.getElementsByClassName('lives')[0].innerHTML = 'Lives: ' + player.lives;
         player.reset();
     }
+
+    // If the bug goes off of the board, reset its position and randomize the multiplier
+    if (this.x > 650) {
+    	this.multiplier = Math.floor((Math.random() * 4) + 1);
+    	this.reset();
+    }
+};
+
+// Reset the enemy to the left of the board
+Enemy.prototype.reset = function() {
+	this.x = -200;
 };
 
 // Draw the enemy on the screen, required method for game
@@ -92,8 +103,8 @@ Player.prototype.render = function() {
 // Place the player object in a variable called player
 var allEnemies = [];
 var yVals = [220, 140, 60];
-for (var i = 0; i < 30; i++) {
-    var x = Math.floor((Math.random() * -10000) + 1);
+for (var i = 0; i < 6; i++) {
+    var x = Math.floor((Math.random() * -1000) + 1);
     var y = yVals[Math.floor((Math.random() * 3))];
     enemy = new Enemy(x, y);
     allEnemies.push(enemy);
