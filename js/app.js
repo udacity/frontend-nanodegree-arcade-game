@@ -45,7 +45,10 @@ var Player = function() {
   this.sprite = 'images/char-boy.png';
   this.x = tileWidth*2; // Start on the third column
   this.y = topArea + tileHeight*3; // Start on the forth row
-}
+  currentCol = 3;
+  currentRow = 5;
+  
+
 
 // This class requires an update(), render() and
 // a handleInput() method.
@@ -57,23 +60,18 @@ Player.prototype.render = function(direction) {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
   debugOutput('Player is at (' +this.x +"," +this.y +')', 0);
 }
+  
+}
 
 Player.prototype.handleInput = function(direction) {
   if (direction == 'left') {
     debugOutput("player pressed " +direction, 1);
-    debugOutput("this.x was at " +this.x +". tileWidth was " +tileWidth);
+    debugOutput("this.x was at " +this.x +". tileWidth was " +tileWidth, 0);
     if (this.x > 0 ) { // ensure that we don't go past the first column
       this.x = this.x - tileWidth;
-      // Attempted animation
-/*
-      var lastFrame = (this.x - tileWidth);
-      if (this.x > lastFrame) {
-        this.x--; 
-      }
-*/
       debugOutput("valid move");
     }
-    debugOutput("this.x is at " +this.x +". tileWidth is " +tileWidth);
+    debugOutput("this.x is at " +this.x +". tileWidth is " +tileWidth, 0);
   }
 
   if (direction == 'up') {
@@ -103,6 +101,61 @@ Player.prototype.handleInput = function(direction) {
     }
     debugOutput("this.y is at " +this.y +". tileHeight is " +tileHeight);
   }
+  
+  /* debugOutput('this.x is ' +this.x, 1); */
+  
+  switch (this.x) {
+    case (0):
+    currentCol = 1;    
+    break;
+    
+    case (tileWidth):
+    currentCol = 2;
+    break;
+    
+    case (tileWidth * 2):
+    currentCol = 3;
+    break;
+    
+    case (tileWidth * 3):
+    currentCol = 4;
+    break;
+    
+    case (tileWidth * 4):
+    currentCol = 5;
+    break;
+  }
+  
+  debugOutput('this.y is ' +this.y, 1);
+  switch (this.y) {
+    case (topArea - tileHeight):
+    currentRow = 1;    
+    break;
+    
+    case (topArea):
+    currentRow = 2;
+    break;
+    
+    case (topArea + tileHeight):
+    currentRow = 3;
+    break;
+    
+    case (topArea + tileHeight * 2):
+    currentRow = 4;
+    break;
+    
+    case (topArea + tileHeight * 3):
+    currentRow = 5;
+    break;
+
+    case (topArea + tileHeight * 4):
+    currentRow = 6;
+    break;
+  }
+  debugOutput('Player is at column ' +currentCol +' and row ' +currentRow, 1);
+  
+  
+  
 }
 
 // Now instantiate your objects.
