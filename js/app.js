@@ -9,7 +9,6 @@ var Enemy = function(x,y) {
     this.x = x;
     this.y = y;
     this.multiplier = Math.floor((Math.random() * 4) + 1);
-    console.log(this.multiplier);
 };
 
 // Update the enemy's position, required method for game
@@ -21,8 +20,11 @@ Enemy.prototype.update = function(dt) {
     this.x = this.x + 101 * dt * this.multiplier;
 
     if (this.y == player.y && (this.x > player.x - 20 && this.x < player.x + 20)) {
-        player.score--;
-        document.getElementsByClassName('score')[0].innerHTML = 'Score: ' + player.score;
+        player.lives--;
+        if (player.lives === 0) {
+        	// TODO: Add logic here for doing a 'game over'
+        }
+        document.getElementsByClassName('lives')[0].innerHTML = 'Lives: ' + player.lives;
         player.reset();
     }
 };
@@ -40,6 +42,7 @@ var Player = function(x,y) {
     this.x = x;
     this.y = y;
     this.score = 0;
+    this.lives = 5;
 };
 
 Player.prototype.handleInput = function(dir) {

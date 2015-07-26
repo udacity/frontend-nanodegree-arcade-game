@@ -8,3 +8,14 @@ h1 {
 		color: white;
 		background-color: black;
 }
+
+.info-box {
+	display: flex;
+	max-width: 400px;
+	margin: auto;
+}
+
+.score,
+.lives {
+	width: 50%;
+}
