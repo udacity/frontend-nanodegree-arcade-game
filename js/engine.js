@@ -91,10 +91,16 @@ var Engine = (function(global) {
      * render methods.
      */
     function updateEntities(dt) {
+        allKitties.forEach(function(kitty) {
+            kitty.update();
+        });
+
         allEnemies.forEach(function(enemy) {
             enemy.update(dt);
         });
+
         player.update();
+
     }
 
     /* This function initially draws the "game level", it will then call
@@ -164,7 +170,6 @@ var Engine = (function(global) {
          */
         allKitties.forEach(function(kitty) {
             kitty.render();
-            console.log(kitty.sprite);
         });
 
         player.render();

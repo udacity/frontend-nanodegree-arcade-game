@@ -89,6 +89,7 @@ Player.prototype.handleInput = function(dir) {
 Player.prototype.reset = function() {
     this.x = 303;
     this.y = 380;
+    this.sprite = 'images/char-cat-girl.png';
 };
 
 Player.prototype.update = function() {
@@ -102,9 +103,19 @@ Player.prototype.render = function() {
 
 // Create the Kitty object
 var Kitty = function(color, x, y) {
+	this.color = color;
 	this.sprite = 'images/cat-' + color + '.png';
 	this.x = x;
 	this.y = y;
+};
+
+Kitty.prototype.update = function () {
+    if (this.y === player.y + 50 && this.x === player.x) {
+    	// Change the player's sprite to be the girl 'holding' the correct color kitty
+    	player.sprite = 'images/char-cat-girl-' + this.color + '-cat.png';
+    	this.x = -100;
+    	this.y = -100;
+	}
 };
 
 Kitty.prototype.render = function () {
@@ -129,7 +140,7 @@ player = new Player(303, 380);
 // Instantiate the kitties
 var colors = ['red', 'orange', 'green', 'blue', 'purple'];
 var xVals = [0, 101, 202, 303, 404, 505, 606];
-var yValsKitty = [270, 180, 110];
+var yValsKitty = [270, 190, 110];
 var allKitties = [];
 for (var j = 0; j < 5; j++) {
 	var x = xVals[Math.floor(Math.random() * 7)];
