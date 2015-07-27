@@ -29,7 +29,7 @@ Enemy.prototype.update = function(dt) {
     }
 
     // If the bug goes off of the board, reset its position and randomize the multiplier
-    if (this.x > 650) {
+    if (this.x > 750) {
     	this.multiplier = Math.floor((Math.random() * 4) + 1);
     	this.reset();
     }
@@ -74,7 +74,7 @@ Player.prototype.handleInput = function(dir) {
 
     }
 
-    if (this.x < 0 || this.x > 404) {
+    if (this.x < 0 || this.x > 606) {
         this.reset();
     } else if (this.y > 404) {
         this.reset();
