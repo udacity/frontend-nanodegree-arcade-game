@@ -56,6 +56,7 @@ var Player = function(x,y) {
     this.y = y;
     this.score = 0;
     this.lives = 5;
+    this.hold = false; // player is not holding a kitty
 };
 
 Player.prototype.handleInput = function(dir) {
@@ -90,6 +91,7 @@ Player.prototype.reset = function() {
     this.x = 303;
     this.y = 380;
     this.sprite = 'images/char-cat-girl.png';
+    this.hold = false;
 };
 
 Player.prototype.update = function() {
@@ -110,9 +112,10 @@ var Kitty = function(color, x, y) {
 };
 
 Kitty.prototype.update = function () {
-    if (this.y === player.y + 50 && this.x === player.x) {
+    if (this.y === player.y + 50 && this.x === player.x && player.hold === false) {
     	// Change the player's sprite to be the girl 'holding' the correct color kitty
     	player.sprite = 'images/char-cat-girl-' + this.color + '-cat.png';
+    	player.hold = true;
     	this.x = -100;
     	this.y = -100;
 	}
