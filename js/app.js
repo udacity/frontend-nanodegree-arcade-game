@@ -38,6 +38,8 @@ Enemy.prototype.update = function(dt) {
 // Reset the enemy to the left of the board
 Enemy.prototype.reset = function() {
 	this.x = -200;
+	var yVals = [220, 140, 60];
+	this.y = yVals[Math.floor((Math.random() * 3))];
 };
 
 // Draw the enemy on the screen, required method for game
