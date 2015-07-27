@@ -162,11 +162,17 @@ var Engine = (function(global) {
         /* Loop through all of the objects within the allEnemies array and call
          * the render function you have defined.
          */
+        allKitties.forEach(function(kitty) {
+            kitty.render();
+            console.log(kitty.sprite);
+        });
+
+        player.render();
+
         allEnemies.forEach(function(enemy) {
             enemy.render();
         });
 
-        player.render();
     }
 
     /* This function does nothing but it could have been a good place to
@@ -191,12 +197,17 @@ var Engine = (function(global) {
         'images/stone-block-green.png',
         'images/stone-block-orange.png',
         'images/stone-block-red.png',
-        'images/stone-block-purple.png'
+        'images/stone-block-purple.png',
+        'images/cat-red.png',
+        'images/cat-orange.png',
+        'images/cat-green.png',
+        'images/cat-blue.png',
+        'images/cat-purple.png',
     ]);
     Resources.onReady(init);
 
     /* Assign the canvas' context object to the global variable (the window
-     * object when run in a browser) so that developer's can use it more easily
+     * object when run in a browser) so that developers can use it more easily
      * from within their app.js files.
      */
     global.ctx = ctx;

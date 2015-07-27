@@ -100,6 +100,17 @@ Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+// Create the Kitty object
+var Kitty = function(color, x, y) {
+	this.sprite = 'images/cat-' + color + '.png';
+	this.x = x;
+	this.y = y;
+};
+
+Kitty.prototype.render = function () {
+	ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
@@ -107,12 +118,25 @@ var allEnemies = [];
 var yVals = [220, 140, 60];
 for (var i = 0; i < 6; i++) {
     var x = Math.floor((Math.random() * -1000) + 1);
-    var y = yVals[Math.floor((Math.random() * 3))];
+    var y = yVals[Math.floor(Math.random() * 3)];
     enemy = new Enemy(x, y);
     allEnemies.push(enemy);
 }
 
+// Instantiate the player
 player = new Player(303, 380);
+
+// Instantiate the kitties
+var colors = ['red', 'orange', 'green', 'blue', 'purple'];
+var xVals = [0, 101, 202, 303, 404, 505, 606];
+var yValsKitty = [270, 180, 110];
+var allKitties = [];
+for (var j = 0; j < 5; j++) {
+	var x = xVals[Math.floor(Math.random() * 7)];
+	var y = yValsKitty[Math.floor(Math.random() * 3)];
+	kitty = new Kitty(colors[j], x, y);
+	allKitties.push(kitty);
+}
 
 
 // This listens for key presses and sends the keys to your
