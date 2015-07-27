@@ -87,7 +87,7 @@ Player.prototype.handleInput = function(dir) {
 };
 
 Player.prototype.reset = function() {
-    this.x = 202;
+    this.x = 303;
     this.y = 380;
 };
 
@@ -112,7 +112,7 @@ for (var i = 0; i < 6; i++) {
     allEnemies.push(enemy);
 }
 
-player = new Player(202, 380);
+player = new Player(303, 380);
 
 
 // This listens for key presses and sends the keys to your
