@@ -57,6 +57,7 @@ var Player = function(x,y) {
     this.score = 0;
     this.lives = 5;
     this.hold = false; // player is not holding a kitty
+    this.color = undefined; // will reflect color of currently held kitty
 };
 
 Player.prototype.handleInput = function(dir) {
@@ -79,10 +80,39 @@ Player.prototype.handleInput = function(dir) {
         this.reset();
     } else if (this.y > 404) {
         this.reset();
-    } else if (this.y <= -20) {
+    } else if (this.y <= -20 && this.x > 0 && this.x < 606) {
+    	// Player has made it to the top colored blocks
+    	// Check to see if the block is the right color for the kitty
+    	if (this.hold === true) {
+    		if (this.color === 'red' && this.x === 101) {
+    			this.sprite = 'images/char-cat-girl.png';
+    			allKitties[0].x = 101;
+    			allKitties[0].y = 20;
+    		} else if (this.color === 'orange' && this.x === 202) {
+    			this.sprite = 'images/char-cat-girl.png';
+    			allKitties[1].x = 202;
+    			allKitties[1].y = 20;
+    		} else if (this.color === 'green' && this.x === 303) {
+    			this.sprite = 'images/char-cat-girl.png';
+    			allKitties[2].x = 303;
+    			allKitties[2].y = 20;
+    		} else if (this.color === 'blue' && this.x === 404) {
+    			this.sprite = 'images/char-cat-girl.png';
+    			allKitties[3].x = 404;
+    			allKitties[3].y = 20;
+    		} else if (this.color === 'purple' && this.x === 505) {
+    			this.sprite = 'images/char-cat-girl.png';
+    			allKitties[4].x = 505;
+    			allKitties[4].y = 20;
+    		}
+    	}
         this.score++;
         document.getElementsByClassName('score')[0].innerHTML = 'Score: ' + this.score;
         this.reset();
+    } else if (this.y <= -20 && (this.x === 0 || this.x === 606)) {
+    	this.lives--;
+    	document.getElementsByClassName('lives')[0].innerHTML = 'Lives: ' + this.lives;
+    	this.reset();
     }
 
 };
@@ -92,6 +122,7 @@ Player.prototype.reset = function() {
     this.y = 380;
     this.sprite = 'images/char-cat-girl.png';
     this.hold = false;
+    this.color = undefined;
 };
 
 Player.prototype.update = function() {
@@ -115,7 +146,10 @@ Kitty.prototype.update = function () {
     if (this.y === player.y + 50 && this.x === player.x && player.hold === false) {
     	// Change the player's sprite to be the girl 'holding' the correct color kitty
     	player.sprite = 'images/char-cat-girl-' + this.color + '-cat.png';
-    	player.hold = true;
+    	player.hold = true; // player is now holding a kitty
+    	player.color = this.color; // player's color matches the kitty's color
+
+    	// Move the kitty sprite to off of the grid so it isn't visible
     	this.x = -100;
     	this.y = -100;
 	}
