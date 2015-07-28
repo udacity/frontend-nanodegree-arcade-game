@@ -1,3 +1,20 @@
+// Create the game constructor to store the game variables
+var Game = function() {
+	this.win = false;
+	this.lose = false;
+};
+
+Game.prototype.reset = function() {
+	for (k = 0; k < 5; k++) {
+		allKitties[k].reset();
+	}
+	player.reset();
+	player.lives = 5;
+	document.getElementsByClassName('lives')[0].innerHTML = 'Lives: ' + player.lives;
+	game.lose = false;
+	game.win = false;
+};
+
 // Enemies our player must avoid
 var Enemy = function(x,y) {
     // Variables applied to each of our instances go here,
@@ -20,19 +37,27 @@ Enemy.prototype.update = function(dt) {
     this.x = this.x + 101 * dt * this.multiplier;
 
     if (this.y == player.y && (this.x > player.x - 20 && this.x < player.x + 20)) {
+    	// Player has encountered an emeny and thus loses one life
         player.lives--;
-        if (player.lives === 0) {
-        	// TODO: Add logic here for doing a 'game over'
-        }
         document.getElementsByClassName('lives')[0].innerHTML = 'Lives: ' + player.lives;
-        if (player.hold === true) {
-        	for (k = 0; k < 5; k++ ) {
-				if (allKitties[k].color == player.color) {
-					allKitties[k].reset();
-				}
-    		}
+
+        // Check to see if the player has any lives left
+        if (player.lives === 0) {
+        	game.lose = true;
+        	alert('You lose!');
+        	game.reset();
+        } else {
+	        if (player.hold === true) {
+	        	for (k = 0; k < 5; k++ ) {
+					if (allKitties[k].color == player.color) {
+						allKitties[k].reset();
+					}
+	    		}
+	        }
+	        player.reset();
         }
-        player.reset();
+
+
     }
 
     // If the bug goes off of the board, reset its position and randomize the multiplier
@@ -96,23 +121,23 @@ Player.prototype.handleInput = function(dir) {
     		if (this.color === 'red' && this.x === 101) {
     			this.sprite = 'images/char-cat-girl.png';
     			allKitties[0].x = 101;
-    			allKitties[0].y = 20;
+    			allKitties[0].y = 35;
     		} else if (this.color === 'orange' && this.x === 202) {
     			this.sprite = 'images/char-cat-girl.png';
     			allKitties[1].x = 202;
-    			allKitties[1].y = 20;
+    			allKitties[1].y = 35;
     		} else if (this.color === 'green' && this.x === 303) {
     			this.sprite = 'images/char-cat-girl.png';
     			allKitties[2].x = 303;
-    			allKitties[2].y = 20;
+    			allKitties[2].y = 35;
     		} else if (this.color === 'blue' && this.x === 404) {
     			this.sprite = 'images/char-cat-girl.png';
     			allKitties[3].x = 404;
-    			allKitties[3].y = 20;
+    			allKitties[3].y = 35;
     		} else if (this.color === 'purple' && this.x === 505) {
     			this.sprite = 'images/char-cat-girl.png';
     			allKitties[4].x = 505;
-    			allKitties[4].y = 20;
+    			allKitties[4].y = 35;
     		} else {
     			// Kitty did not match the color
     			for (k = 0; k < 5; k++ ) {
@@ -130,8 +155,13 @@ Player.prototype.handleInput = function(dir) {
     	// Player made it to one of the two water blocks
     	// Lose a life and reset the player
     	this.lives--;
-    	document.getElementsByClassName('lives')[0].innerHTML = 'Lives: ' + this.lives;
-    	this.reset();
+    	if (this.lives === 0) {
+    		// END OF GAME YOU LOSE!!
+    	} else {
+    		document.getElementsByClassName('lives')[0].innerHTML = 'Lives: ' + this.lives;
+    		this.reset();
+    	}
+
     }
 
 };
@@ -169,10 +199,10 @@ var Kitty = function(color, x, y) {
 Kitty.prototype.reset = function() {
 	this.x = this.xo;
 	this.y = this.yo;
-}
+};
 
 Kitty.prototype.update = function () {
-    if (this.y === player.y + 50 && this.x === player.x && player.hold === false) {
+    if (this.y === player.y + 65 && this.x === player.x && player.hold === false) {
     	// Change the player's sprite to be the girl 'holding' the correct color kitty
     	player.sprite = 'images/char-cat-girl-' + this.color + '-cat.png';
     	player.hold = true; // player is now holding a kitty
@@ -206,7 +236,7 @@ player = new Player(303, 380);
 // Instantiate the kitties
 var colors = ['red', 'orange', 'green', 'blue', 'purple'];
 var xVals = [0, 101, 202, 303, 404, 505, 606];
-var yValsKitty = [270, 190, 110];
+var yValsKitty = [285, 205, 125];
 var allKitties = [];
 for (var j = 0; j < 5; j++) {
 	var x = xVals[Math.floor(Math.random() * 7)];
@@ -214,6 +244,8 @@ for (var j = 0; j < 5; j++) {
 	kitty = new Kitty(colors[j], x, y);
 	allKitties.push(kitty);
 }
+
+game = new Game();
 
 
 // This listens for key presses and sends the keys to your
