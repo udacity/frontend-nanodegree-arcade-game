@@ -1,3 +1,12 @@
+/* zocial */
+.zocial-twitter:before,
+.zocial-github:before,
+.zocial-gmail:before,
+.zocial-linkedin:before {
+	font-family: 'zocial', sans-serif;
+	margin: 5px 10px 5px 25px;
+}
+
 body {
     text-align: center;
     font-family: 'Arvo', serif;
@@ -9,13 +18,14 @@ h1 {
 		background-color: black;
 }
 
-.info-box {
-	display: flex;
-	max-width: 400px;
-	margin: auto;
+a {
+	color: #3399cc;
+	text-decoration: none;
 }
 
 .lives {
 	width: 100%;
 	font-size: 1.5em;
+	max-width: 400px;
+	margin: auto;
 }
