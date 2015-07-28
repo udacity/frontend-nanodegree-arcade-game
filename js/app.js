@@ -1,7 +1,5 @@
 // TODO List:
-// 1. kitty resets if player walks off the screen while holding it
 // 2. Game winning situation
-// 3. some way to put more things into functions to eliminate extra code
 
 /*
  * GAME CLASS
@@ -207,9 +205,14 @@ Player.prototype.handleInput = function(dir) {
 
 // Reset the player to her original position & image
 Player.prototype.reset = function() {
+	// Reset the player to the original position
     this.x = this.xo;
     this.y = this.yo;
+
+    // Reset the image
     this.sprite = 'images/char-cat-girl.png';
+
+    // Reset the defauts for holding kitties
     this.hold = false;
     this.color = undefined;
     this.kittyIdx = undefined;
@@ -232,8 +235,13 @@ Player.prototype.render = function() {
 
 // Create the Kitty constructor
 var Kitty = function(color, x, y) {
+
+	// Set the color of the kitty
 	this.color = color;
+	// Set the image based on the color
 	this.sprite = 'images/cat-' + color + '.png';
+
+	// Set the starting position of the kitty
 	this.x = x;
 	this.y = y;
 
@@ -311,29 +319,75 @@ document.addEventListener('keyup', function(e) {
  * INSTANTIATE OBJECTS
  */
 
-// Instantiate the enemies
+// -- Instantiate the enemies --
+
+// Create the allEnemies array, which will hold all of the
+// enemy objects
 var allEnemies = [];
+// Set a varaiable for the possible y values
 var yVals = [220, 140, 60];
+
+// Create the separate enemy instances
 for (var i = 0; i < 4; i++) {
+
+	// Set a starting x-position based on a random value
     var x = Math.floor((Math.random() * -1000) + 1);
+
+    // Set a starting y-position based on a random selection
+    // of the 3 possible values
     var y = yVals[Math.floor(Math.random() * 3)];
+
+    // Create the new enemy object
     enemy = new Enemy(x, y);
+
+    // Push the enemy into the array
     allEnemies.push(enemy);
 }
 
-// Instantiate the player
+// -- Instantiate the player --
 player = new Player(303, 380);
 
-// Instantiate the kitties
+// -- Instantiate the kitties --
+
+// Set up the possible colors, x-values, and y-values
 var colors = ['red', 'orange', 'green', 'blue', 'purple'];
 var xVals = [0, 101, 202, 303, 404, 505, 606];
 var yValsKitty = [285, 205, 125];
+
+// Create a variable for all the possible xy locations
+// This will be used to ensure only one kitty occupies
+// each possible spot
+var xyLocations = [];
+
+// Look through the x & y values and push each location pair
+// into the xyLocations array
+for (l = 0; l < xVals.length; l++) {
+	for (n = 0; n < yValsKitty.length; n++) {
+		xyLocations.push([xVals[l], yValsKitty[n]]);
+	}
+}
+
+// Create the allKitties array, which will hold all of the
+// kitty objects
 var allKitties = [];
+
+// Create the separate kitty instances
 for (var j = 0; j < 5; j++) {
-	var x = xVals[Math.floor(Math.random() * 7)];
-	var y = yValsKitty[Math.floor(Math.random() * 3)];
+
+	// Select a random starting location for the kitty
+	var index = Math.floor(Math.random() * (21 - j));
+	var xy = xyLocations[index];
+	var x = xy[0];
+	var y = xy[1];
+
+	// Create the new kitty object
 	kitty = new Kitty(colors[j], x, y);
+
+	// Push the new kitty into the array
 	allKitties.push(kitty);
+
+	// Remove the xy pair from the array
+	xyLocations.splice(index, 1);
 }
 
 // Instantiate the game
