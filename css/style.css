@@ -4,7 +4,7 @@ body {
 }
 
 h1 {
-		padding: 10px 0;
+		padding: 5px 0;
 		color: white;
 		background-color: black;
 }
@@ -15,7 +15,7 @@ h1 {
 	margin: auto;
 }
 
-.score,
 .lives {
-	width: 50%;
+	width: 100%;
+	font-size: 1.5em;
 }
