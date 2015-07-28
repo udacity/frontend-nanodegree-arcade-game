@@ -25,6 +25,13 @@ Enemy.prototype.update = function(dt) {
         	// TODO: Add logic here for doing a 'game over'
         }
         document.getElementsByClassName('lives')[0].innerHTML = 'Lives: ' + player.lives;
+        if (player.hold === true) {
+        	for (k = 0; k < 5; k++ ) {
+				if (allKitties[k].color == player.color) {
+					allKitties[k].reset();
+				}
+    		}
+        }
         player.reset();
     }
 
@@ -62,23 +69,25 @@ var Player = function(x,y) {
 
 Player.prototype.handleInput = function(dir) {
 
+	// Change the player's position based on the user keyboard input
     if (dir == 'up') {
         this.y = this.y - 80;
-
     } else if (dir == 'down') {
         this.y = this.y + 80;
-
     } else if (dir == 'left') {
         this.x = this.x - 101;
-
     } else if (dir == 'right') {
         this.x = this.x + 101;
-
     }
 
+    // Check the position of the player
     if (this.x < 0 || this.x > 606) {
+    	// Player is off to the left or right of the board
+    	// Reset player
         this.reset();
     } else if (this.y > 404) {
+    	// Player is off the bottom of the board
+    	// Reset player
         this.reset();
     } else if (this.y <= -20 && this.x > 0 && this.x < 606) {
     	// Player has made it to the top colored blocks
@@ -104,12 +113,22 @@ Player.prototype.handleInput = function(dir) {
     			this.sprite = 'images/char-cat-girl.png';
     			allKitties[4].x = 505;
     			allKitties[4].y = 20;
+    		} else {
+    			// Kitty did not match the color
+    			for (k = 0; k < 5; k++ ) {
+    				if (allKitties[k].color == this.color) {
+    					allKitties[k].reset();
+    				}
+    			}
     		}
     	}
-        this.score++;
-        document.getElementsByClassName('score')[0].innerHTML = 'Score: ' + this.score;
+
+    	// reset the player to the beginning
         this.reset();
+
     } else if (this.y <= -20 && (this.x === 0 || this.x === 606)) {
+    	// Player made it to one of the two water blocks
+    	// Lose a life and reset the player
     	this.lives--;
     	document.getElementsByClassName('lives')[0].innerHTML = 'Lives: ' + this.lives;
     	this.reset();
@@ -140,7 +159,17 @@ var Kitty = function(color, x, y) {
 	this.sprite = 'images/cat-' + color + '.png';
 	this.x = x;
 	this.y = y;
+
+	// Set the original position of the kitty
+	// This does not change throughout one game
+	this.xo = x;
+	this.yo = y;
 };
+
+Kitty.prototype.reset = function() {
+	this.x = this.xo;
+	this.y = this.yo;
+}
 
 Kitty.prototype.update = function () {
     if (this.y === player.y + 50 && this.x === player.x && player.hold === false) {
@@ -164,7 +193,7 @@ Kitty.prototype.render = function () {
 // Place the player object in a variable called player
 var allEnemies = [];
 var yVals = [220, 140, 60];
-for (var i = 0; i < 6; i++) {
+for (var i = 0; i < 4; i++) {
     var x = Math.floor((Math.random() * -1000) + 1);
     var y = yVals[Math.floor(Math.random() * 3)];
     enemy = new Enemy(x, y);
