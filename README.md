@@ -1,6 +1,8 @@
-frontend-nanodegree-arcade-game
+Save the Kitties!
 ===============================
 
-Students should use this rubric: https://www.udacity.com/course/viewer#!/c-ud015/l-3072058665/m-3072588797
+** Main Objective
+Get all 5 kitties to their correct colored blocks at the top of the screen.
 
-for self-checking their submission.
+** How to Play
+
