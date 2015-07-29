@@ -5,23 +5,7 @@
 // Create the game constructor to store the game variables
 var Game = function() {
 	this.gameOver = false;
-};
-
-// Define a reset function for the game
-Game.prototype.reset = function() {
-
-	// Reset all the kitties to their initial positions
-	for (k = 0; k < 5; k++) {
-		allKitties[k].reset();
-	}
-
-	// Reset the player
-	player.reset();
-
-	// Reset the player's lives to 5
-	player.lives = 5;
-	document.getElementsByClassName('lives')[0].innerHTML = 'Lives: ' + player.lives;
-	game.gameOver = false;
+	this.gameWin = false;
 };
 
 
@@ -181,6 +165,21 @@ Player.prototype.handleInput = function(dir) {
     			// Kitty did not match the color, so reset the kitty
     			allKitties[player.kittyIdx].reset();
     		}
+    	}
+
+    	// Check to see if the player has won the game
+    	var win = true;
+    	for (var w = 0; w < winPositions.length; w++) {
+    		if (allKitties[w].x === winPositions[w][0] && allKitties[w].y === winPositions[w][1]) {
+    			// Kitty is in the winning position, do nothing
+    		} else {
+    			// Set the win flag to false
+    			win = false;
+    		}
+    	}
+
+    	if (win) {
+    		game.gameWin = true;
     	}
 
     	// Reset the player to her original location & image
@@ -392,3 +391,6 @@ for (var j = 0; j < 5; j++) {
 
 // Instantiate the game
 game = new Game();
+
+// Set up the winning positions of the kitties
+var winPositions = [[101, 35], [202, 35], [303, 35], [404, 35], [505, 35]];

@@ -47,6 +47,8 @@ var Engine = (function(global) {
          */
         if (game.gameOver) {
             renderEnd();
+        } else if (game.gameWin) {
+            renderWin();
         } else {
             update(dt);
             render();
@@ -170,6 +172,11 @@ var Engine = (function(global) {
         ctx.drawImage(Resources.get(endImage), 0, 0);
     }
 
+    function renderWin() {
+        winImage = 'images/win-game.svg';
+        ctx.drawImage(Resources.get(winImage), 0, 0);
+    }
+
     /* This function is called by the render function and is called on each game
      * tick. It's purpose is to then call the render functions you have defined
      * on your enemy and player entities within app.js
@@ -223,7 +230,8 @@ var Engine = (function(global) {
         'images/char-cat-girl-green-cat.png',
         'images/char-cat-girl-blue-cat.png',
         'images/char-cat-girl-purple-cat.png',
-        'images/game-over.svg'
+        'images/game-over.svg',
+        'images/win-game.svg'
     ]);
     Resources.onReady(init);
 
