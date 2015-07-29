@@ -191,6 +191,13 @@ Player.prototype.handleInput = function(dir) {
 	} else if (this.y <= -20 && (this.x === 0 || this.x === 606)) {
 		// Player made it to one of the two water blocks
 
+		// Check to see if the player is holding a kitty
+		if (player.hold === true) {
+			// Player is holding a kitty, so find out which kitty and
+			// reset it to its original position
+			allKitties[player.kittyIdx].reset();
+		}
+
 		// Lose a life and reset the player
 		this.lives--;
 		if (this.lives === 0) {
