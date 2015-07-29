@@ -15,3 +15,4 @@ Get all 5 kitties to their correct colored blocks at the top of the screen.
 - Watch out for the bug enemies! If you hit one of these, you'll lose a life and both Cat Girl and the kitty will reset
   - You can also lose a life by stepping in the water
 - If you put the kitty on a block of the incorrect color, Cat Girl and the kitty will reset
+- Refresh the page to reset the game (including when you win or lose)

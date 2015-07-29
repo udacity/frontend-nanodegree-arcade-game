@@ -8,7 +8,6 @@ var Game = function() {
 	this.gameWin = false;
 };
 
-
 /*
  * ENEMY CLASS
  */
@@ -18,17 +17,18 @@ var Enemy = function(x,y) {
 
 	// Set the image for the enemy
     this.sprite = 'images/enemy-bug.png';
+
     // Set the enemy position
     this.x = x;
     this.y = y;
+
     // Set the speed multipler for the enemy using a random
     // number between 1 & 4
     this.multiplier = Math.floor((Math.random() * 4) + 1);
 
 };
 
-// Update the enemy's position, required method for game
-// Parameter: dt, a time delta between ticks
+// Update the enemy's position and check for collisions
 Enemy.prototype.update = function(dt) {
 
     // Set the position of the enemy based on dt and the speed multipler
@@ -43,7 +43,7 @@ Enemy.prototype.update = function(dt) {
 
         // Check to see if the player has any lives left
         if (player.lives === 0) {
-        	// Player is out of lives, reset the game
+        	// Player is out of lives, show the game over image
         	game.gameOver = true;
 
         } else {
@@ -66,7 +66,8 @@ Enemy.prototype.update = function(dt) {
     }
 };
 
-// Reset the enemy to the left of the board
+// Reset the enemy to the left of the board with a new y position
+// and a new speed multiplier
 Enemy.prototype.reset = function() {
 	this.x = -200;
 	var yVals = [220, 140, 60];
@@ -78,7 +79,6 @@ Enemy.prototype.reset = function() {
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
-
 
 /*
  * PLAYER CLASS
@@ -178,6 +178,7 @@ Player.prototype.handleInput = function(dir) {
     		}
     	}
 
+    	// If the player has won, display the game winning image
     	if (win) {
     		game.gameWin = true;
     	}
@@ -191,15 +192,14 @@ Player.prototype.handleInput = function(dir) {
     	// Lose a life and reset the player
     	this.lives--;
     	if (this.lives === 0) {
+    		// Player has no more lives left, show the game over image
     		game.gameOver = true;
     	} else {
     		// Player still has lives left so update the lives and reset the player
     		document.getElementsByClassName('lives')[0].innerHTML = 'Lives: ' + this.lives;
     		this.reset();
     	}
-
     }
-
 };
 
 // Reset the player to her original position & image
@@ -278,7 +278,6 @@ Kitty.prototype.render = function () {
 	ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-
 /*
  * FUNCTIONS
  */
@@ -313,7 +312,6 @@ document.addEventListener('keyup', function(e) {
     player.handleInput(allowedKeys[e.keyCode]);
 });
 
-
 /*
  * INSTANTIATE OBJECTS
  */
@@ -327,7 +325,7 @@ var allEnemies = [];
 var yVals = [220, 140, 60];
 
 // Create the separate enemy instances
-for (var i = 0; i < 4; i++) {
+for (var i = 0; i < 5; i++) {
 
 	// Set a starting x-position based on a random value
     var x = Math.floor((Math.random() * -1000) + 1);
@@ -389,8 +387,8 @@ for (var j = 0; j < 5; j++) {
 	xyLocations.splice(index, 1);
 }
 
-// Instantiate the game
-game = new Game();
-
 // Set up the winning positions of the kitties
 var winPositions = [[101, 35], [202, 35], [303, 35], [404, 35], [505, 35]];
+
+// -- Instantiate the game --
+game = new Game();

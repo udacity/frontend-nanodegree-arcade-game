@@ -45,15 +45,19 @@ var Engine = (function(global) {
         /* Call our update/render functions, pass along the time delta to
          * our update function since it may be used for smooth animation.
          */
+
+        // Check to see if the game is either over or won
         if (game.gameOver) {
+            // Player lost, render the ending image
             renderEnd();
         } else if (game.gameWin) {
+            // Player won, render the winning image
             renderWin();
         } else {
+            // Game is still going, update & render the entities
             update(dt);
             render();
         }
-
 
         /* Set our lastTime variable which is used to determine the time delta
          * for the next time this function is called.
@@ -71,7 +75,6 @@ var Engine = (function(global) {
      * game loop.
      */
     function init() {
-        reset();
         lastTime = Date.now();
         main();
     }
@@ -163,16 +166,17 @@ var Engine = (function(global) {
             }
         }
 
-
         renderEntities();
     }
 
     function renderEnd() {
+        // Render the game over image
         endImage = 'images/game-over.svg';
         ctx.drawImage(Resources.get(endImage), 0, 0);
     }
 
     function renderWin() {
+        // Render the game winning image
         winImage = 'images/win-game.svg';
         ctx.drawImage(Resources.get(winImage), 0, 0);
     }
@@ -195,14 +199,6 @@ var Engine = (function(global) {
             enemy.render();
         });
 
-    }
-
-    /* This function does nothing but it could have been a good place to
-     * handle game reset states - maybe a new game menu or a game over screen
-     * those sorts of things. It's only called once by the init() method.
-     */
-    function reset() {
-        // noop
     }
 
     /* Go ahead and load all of the images we know we're going to need to
