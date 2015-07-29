@@ -1,6 +1,9 @@
 Save the Kitties!
 ===============================
 
+### Where to Play
+Play the game [here!](http://tonirib.github.io/frontend-nanodegree-arcade-game)
+
 ### Main Objective
 
 Get all 5 kitties to their correct colored blocks at the top of the screen.
