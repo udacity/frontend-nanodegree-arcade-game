@@ -1,25 +1,27 @@
-// TODO List:
-// 2. Game winning situation
-
 /*
  * GAME CLASS
  */
 
 // Create the game constructor to store the game variables
 var Game = function() {
-	this.win = false;
-	this.lose = false;
+	this.gameOver = false;
 };
 
+// Define a reset function for the game
 Game.prototype.reset = function() {
+
+	// Reset all the kitties to their initial positions
 	for (k = 0; k < 5; k++) {
 		allKitties[k].reset();
 	}
+
+	// Reset the player
 	player.reset();
+
+	// Reset the player's lives to 5
 	player.lives = 5;
 	document.getElementsByClassName('lives')[0].innerHTML = 'Lives: ' + player.lives;
-	game.lose = false;
-	game.win = false;
+	game.gameOver = false;
 };
 
 
@@ -58,9 +60,7 @@ Enemy.prototype.update = function(dt) {
         // Check to see if the player has any lives left
         if (player.lives === 0) {
         	// Player is out of lives, reset the game
-        	game.lose = true;
-        	alert('You lose!');
-        	game.reset();
+        	game.gameOver = true;
 
         } else {
         	// Player still has lives left, check to see if the player
@@ -192,7 +192,7 @@ Player.prototype.handleInput = function(dir) {
     	// Lose a life and reset the player
     	this.lives--;
     	if (this.lives === 0) {
-    		// END OF GAME YOU LOSE!!
+    		game.gameOver = true;
     	} else {
     		// Player still has lives left so update the lives and reset the player
     		document.getElementsByClassName('lives')[0].innerHTML = 'Lives: ' + this.lives;

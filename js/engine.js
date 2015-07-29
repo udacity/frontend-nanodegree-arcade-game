@@ -45,8 +45,13 @@ var Engine = (function(global) {
         /* Call our update/render functions, pass along the time delta to
          * our update function since it may be used for smooth animation.
          */
-        update(dt);
-        render();
+        if (game.gameOver) {
+            renderEnd();
+        } else {
+            update(dt);
+            render();
+        }
+
 
         /* Set our lastTime variable which is used to determine the time delta
          * for the next time this function is called.
@@ -160,6 +165,11 @@ var Engine = (function(global) {
         renderEntities();
     }
 
+    function renderEnd() {
+        endImage = 'images/game-over.svg';
+        ctx.drawImage(Resources.get(endImage), 0, 0);
+    }
+
     /* This function is called by the render function and is called on each game
      * tick. It's purpose is to then call the render functions you have defined
      * on your enemy and player entities within app.js
@@ -212,7 +222,8 @@ var Engine = (function(global) {
         'images/char-cat-girl-orange-cat.png',
         'images/char-cat-girl-green-cat.png',
         'images/char-cat-girl-blue-cat.png',
-        'images/char-cat-girl-purple-cat.png'
+        'images/char-cat-girl-purple-cat.png',
+        'images/game-over.svg'
     ]);
     Resources.onReady(init);
 

@@ -7,6 +7,8 @@
 	margin: 5px 10px 5px 25px;
 }
 
+/* main styles */
+
 body {
     text-align: center;
     font-family: 'Arvo', serif;
@@ -22,6 +24,8 @@ a {
 	color: #3399cc;
 	text-decoration: none;
 }
+
+/* class styles */
 
 .lives {
 	width: 100%;
