@@ -83,11 +83,11 @@ var Engine = (function(global) {
         // checkCollisions();
     }
 
-    /* This is called by the update function  and loops through all of the
+    /* This is called by the update function and loops through all of the
      * objects within your allEnemies array as defined in app.js and calls
      * their update() methods. It will then call the update function for your
      * player object. These update methods should focus purely on updating
-     * the data/properties related to  the object. Do your drawing in your
+     * the data/properties related to the object. Do your drawing in your
      * render methods.
      */
     function updateEntities(dt) {
