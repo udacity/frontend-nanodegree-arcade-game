@@ -41,6 +41,7 @@ var Engine = (function(global) {
          */
         var now = Date.now(),
             dt = (now - lastTime) / 1000.0;
+            // dt = 20000000000;
 
         /* Call our update/render functions, pass along the time delta to
          * our update function since it may be used for smooth animation.
@@ -80,7 +81,7 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        // checkCollisions();
+        checkCollisions();
     }
 
     /* This is called by the update function  and loops through all of the
@@ -132,7 +133,7 @@ var Engine = (function(global) {
                  * so that we get the benefits of caching these images, since
                  * we're using them over and over.
                  */
-                ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
+                ctx.drawImage(Resources.get(rowImages[row]), col * blockWidth, row * blockHeight);
             }
         }
 
@@ -153,6 +154,27 @@ var Engine = (function(global) {
         });
 
         player.render();
+    }
+
+    function checkCollisions() {
+
+        allEnemies.forEach(function(enemy) {
+            // Only start checking enemies that are in the
+            // same row. Otherwise, ignore.
+            // We add 10 from the player's y coordinate
+            // to make up for the earlier adjustments to
+            // make sure the player is aligned vertically.
+            // this is… terrible.
+            if(enemy.y === player.y + 10){
+                // if the leftmost coordinate of the player
+                // is between the leftmost and rightmost
+                // coords of the enemy, it's a hit
+
+                if(enemy.x <= player.x && (enemy.x + blockWidth) >= player.x){
+                    console.log("Hit");
+                }
+            }
+        })
     }
 
     /* This function does nothing but it could have been a good place to

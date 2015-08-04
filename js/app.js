@@ -1,9 +1,11 @@
 // TODO Clear render on alpha pixels
-// TODO remove instances of 83 and 101 with variables
 // TODO Add music
 // TODO Rename playersprites and add selection menu (maybe)
 // TODO Add scoring mechanism (maybe)
-
+var canvasWidth = 505;
+var canvasHeight = 606;
+var blockHeight = 83;
+var blockWidth = 101;
 
 // Enemies our player must avoid
 var Enemy = function() {
@@ -16,8 +18,8 @@ var Enemy = function() {
 
     // SY: Iniital position of the bug. Y is set up
     // such that it only appears on the concrete path
-    this.x = Math.ceil(Math.random() * 5) * 101;
-    this.y = Math.ceil(Math.random() * 3) * 83 - 25;
+    this.x = Math.ceil(Math.random() * 5) * blockWidth;
+    this.y = Math.ceil(Math.random() * 3) * blockHeight - 25;
 
     this.speed = Math.random() * 200 + 100;
 }
@@ -33,11 +35,11 @@ Enemy.prototype.update = function(dt) {
     // collision of the bounds, they appear again on from
     // the edge
 
-    if (this.x <= 505){
+    if (this.x <= canvasWidth){
         this.x += this.speed * dt;
     } else{
-        this.x = -101;
-        this.y = Math.ceil(Math.random() * 3) * 83 - 25;
+        this.x = -blockWidth;
+        this.y = Math.ceil(Math.random() * 3) * blockHeight - 25;
         this.speed = Math.random() * 200 + 100;
     }
 }
@@ -53,12 +55,16 @@ Enemy.prototype.render = function() {
 var Player = function() {
     this.sprite = 'images/char-boy.png';
 
-    this.x = Math.floor(5 / 2) * 101;
-    this.y = 5 * 83 - 35;
+    this.colNo = 3;
+    this.rowNo = 6;
+
+    this.x = 0;
+    this.y = 0;
 }
 
-Player.prototype.update = function(dt) {
-
+Player.prototype.update = function() {
+    this.x = (this.colNo - 1) * blockWidth;
+    this.y = (this.rowNo - 1) * blockHeight - 35;
 }
 
 Player.prototype.render = function() {
@@ -66,25 +72,34 @@ Player.prototype.render = function() {
 }
 
 Player.prototype.handleInput = function(key) {
-    // TODO Handle collision with edges
+    // Check for each case, decide whether it's at the
+    // bounds, increment or decrement col or row counter
+    // if not at the edge.
     switch(key){
         case 'left':
-            this.x -= 101;
+            if(this.colNo === 1) break;
+            this.colNo -= 1;
             break;
         case 'right':
-            this.x += 101;
+            if(this.colNo === 5) break;
+            this.colNo += 1;
             break;
         case 'up':
-            this.y -= 83;
+            if(this.rowNo === 1) break;
+            this.rowNo -= 1;
             break;
         case 'down':
-            this.y += 83;
+            if(this.rowNo === 6) break;
+            this.rowNo += 1;
             break;
         default:
-            this.x = this.x;
-            this.y = this.y;
+            break;
     }
+
+    this.update();
+    console.log(this.x + " " + this.y);
 }
+
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
