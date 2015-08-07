@@ -22,12 +22,20 @@ var Engine = (function(global) {
     var doc = global.document,
         win = global.window,
         canvas = doc.createElement('canvas'),
+        hud = doc.createElement('canvas'),
         ctx = canvas.getContext('2d'),
+        hudctx = hud.getContext('2d'),
         lastTime;
 
-    canvas.width = 505;
-    canvas.height = 606;
+    canvas.width = canvasWidth;
+    canvas.height = canvasHeight;
+    hud.width = canvasWidth;
+    hud.height = canvasHeight;
+    hud.style.position = 'absolute';
+    hud.style.marginLeft = -canvasWidth + 'px';
+
     doc.body.appendChild(canvas);
+    doc.body.appendChild(hud);
 
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
@@ -45,8 +53,33 @@ var Engine = (function(global) {
         /* Call our update/render functions, pass along the time delta to
          * our update function since it may be used for smooth animation.
          */
-        update(dt);
-        render();
+        /* Update function changes the position of the entity, while
+         * render draws them out.
+         */
+        /* Moved the collision function here to check whether player picked
+         * up jems or collided with enemies. This function should be moved out
+         * into a separate function.
+         * Version 1 : game ends if collisions with enemies
+         */
+        /* This should be refactored out into a separate function later on
+         * so that this if else is a separate statement
+         */
+        if(gameRunning === true) {
+            if(player.rowNo === 1) {
+                // end if player goes to water
+                endGame();
+                gameRunning = false;
+            }
+            if(checkEnemyCollision()) {
+                // End the game if we hit any enemies
+                endGame();
+                gameRunning = false;
+            }
+
+            checkStarCollision();
+            update(dt);
+        }
+        renderGame();
 
         /* Set our lastTime variable which is used to determine the time delta
          * for the next time this function is called.
@@ -76,26 +109,22 @@ var Engine = (function(global) {
      * the need to add an additional function call here. For now, we've left
      * it commented out - you may or may not want to implement this
      * functionality this way (you could just implement collision detection
-     * on the entities themselves within your app.js file).
+     * on the entities themselves within your app.js file). Moved contents
+     * of original updateEntities here, since checkCollision function has been
+     * moved to the main function to also check for gems. Now, this loops
+     * through all the objects within your all Enemies array as defined in
+     * app.js and calls all of their update() methods + the player's update()
+     * method.
      */
     function update(dt) {
-        updateEntities(dt);
-        // checkCollisions();
-    }
-
-    /* This is called by the update function  and loops through all of the
-     * objects within your allEnemies array as defined in app.js and calls
-     * their update() methods. It will then call the update function for your
-     * player object. These update methods should focus purely on updating
-     * the data/properties related to  the object. Do your drawing in your
-     * render methods.
-     */
-    function updateEntities(dt) {
         allEnemies.forEach(function(enemy) {
             enemy.update(dt);
         });
         player.update();
     }
+
+    /* updateEntities() content moved into update() method
+     */
 
     /* This function initially draws the "game level", it will then call
      * the renderEntities function. Remember, this function is called every
@@ -103,7 +132,7 @@ var Engine = (function(global) {
      * they are flipbooks creating the illusion of animation but in reality
      * they are just drawing the entire screen over and over.
      */
-    function render() {
+    function renderGame() {
         /* This array holds the relative URL to the image used
          * for that particular row of the game level.
          */
@@ -132,12 +161,20 @@ var Engine = (function(global) {
                  * so that we get the benefits of caching these images, since
                  * we're using them over and over.
                  */
-                ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
+                ctx.drawImage(Resources.get(rowImages[row]), col * blockWidth, row * blockHeight);
             }
         }
 
-
         renderEntities();
+
+        hudctx.clearRect ((canvasWidth-70),50,70,30);
+        hudctx.fillStyle = "#ffffff";
+        hudctx.globalAlpha = 0.75;
+        hudctx.fillRect ((canvasWidth-70),50,70,30);
+        hudctx.globalAlpha = 1;
+        hudctx.fillStyle = '#555555';
+        hudctx.textAlign = "right";
+        hudctx.fillText("Stars: " + starsCollected, canvasWidth - 10, 70);
     }
 
     /* This function is called by the render function and is called on each game
@@ -148,11 +185,65 @@ var Engine = (function(global) {
         /* Loop through all of the objects within the allEnemies array and call
          * the render function you have defined.
          */
+        allStars.forEach(function(star) {
+            star.render();
+        });
+
         allEnemies.forEach(function(enemy) {
             enemy.render();
         });
 
         player.render();
+    }
+
+    function checkEnemyCollision() {
+        var collided = false;
+        allEnemies.forEach(function(enemy) {
+            if(checkCollision(enemy)) {
+                collided = true;
+            }
+        });
+
+        return collided;
+    }
+
+    function checkStarCollision() {
+        allStars.forEach(function(star) {
+            if(checkCollision(star)) {
+                starsCollected += 1;
+                star.x = canvasWidth;
+                star.y = - canvasHeight;
+            }
+        });
+    }
+
+    function checkCollision(collider) {
+        if(collider.y === player.y + 10){
+            /* if the leftmost coordinate of the player
+             * is between the leftmost and rightmost
+             * coords of the enemy, it's a hit
+             */
+            if(collider.x <= player.x && (collider.x + blockWidth) >= player.x){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function endGame() {
+        /* Pause all enemies and stop them from running
+         */
+        allEnemies.forEach(function(enemy) {
+            enemy.speed = 0;
+        })
+
+        hudctx.fillStyle = '#ffffff';
+        hudctx.fillRect ((canvasWidth-450)/2,(canvasHeight-150)/2,450,150);
+        hudctx.fillStyle = '#555555';
+        hudctx.font = '15px Arial';
+        hudctx.textAlign = 'center'
+        hudctx.fillText(starsCollected + " stars collected. Game Over. Hit Enter to reset", canvasWidth/2,canvasHeight/2)
+        ctx.clearRect(0,0,canvasWidth, canvasHeight);
     }
 
     /* This function does nothing but it could have been a good place to
@@ -161,7 +252,31 @@ var Engine = (function(global) {
      */
     function reset() {
         // noop
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0,0,canvasWidth,canvasHeight);
+
+        hudctx.fillStyle = '#ffffff';
+        hudctx.globalAlpha = 0.95;
+        hudctx.fillRect ((canvasWidth-450)/2,(canvasHeight-150)/2,450,150);
+        hudctx.globalAlpha = 1;
+        hudctx.fillStyle = '#555555';
+        hudctx.font = '15px Arial';
+        hudctx.textAlign = 'center'
+        hudctx.fillText("New Game. Hit Enter to begin.", canvasWidth/2,canvasHeight/2)
     }
+
+    /* Allows the game to be reset if game is not running.
+     */
+    document.addEventListener('keyup', function(e) {
+        if (gameRunning === false) {
+            if(e.keyCode === 13) {
+                gameRunning = true;
+                ctx.clearRect(0,0,canvasWidth,canvasHeight);
+                hudctx.clearRect(0,0,canvasWidth,canvasHeight);
+                gameReset();
+            }
+        }
+    })
 
     /* Go ahead and load all of the images we know we're going to need to
      * draw our game level. Then set init as the callback method, so that when
@@ -172,7 +287,8 @@ var Engine = (function(global) {
         'images/water-block.png',
         'images/grass-block.png',
         'images/enemy-bug.png',
-        'images/char-boy.png'
+        'images/char-boy.png',
+        'images/star.png'
     ]);
     Resources.onReady(init);
 
