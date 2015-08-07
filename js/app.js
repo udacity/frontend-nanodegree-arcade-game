@@ -120,6 +120,7 @@ function gameReset() {
 
    player.colNo = 3;
    player.rowNo = 6;
+   player.update();
 }
 
 // This listens for key presses and sends the keys to your

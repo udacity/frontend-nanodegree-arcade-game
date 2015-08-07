@@ -64,11 +64,12 @@ var Engine = (function(global) {
         /* This should be refactored out into a separate function later on
          * so that this if else is a separate statement
          */
-        if(checkCollisions(allEnemies) && gameRunning === true) {
-            // End the game if we hit any enemies
-            endGame();
-        }
         if(gameRunning === true) {
+            if(checkCollisions(allEnemies)) {
+                // End the game if we hit any enemies
+                endGame();
+                gameRunning = false;
+            }
             update(dt);
         }
         renderGame();
@@ -199,15 +200,12 @@ var Engine = (function(global) {
     }
 
     function endGame() {
-        gameRunning = false;
-
         /* Pause all enemies and stop them from running
          */
         allEnemies.forEach(function(enemy) {
             enemy.speed = 0;
         })
 
-        hudctx.globalAlpha = 0;
         hudctx.fillStyle = '#ffffff';
         hudctx.fillRect ((canvasWidth-330)/2,(canvasHeight-150)/2,330,150);
         hudctx.fillStyle = '#555555';
@@ -234,7 +232,6 @@ var Engine = (function(global) {
         hudctx.font = '15px Arial';
         hudctx.textAlign = 'center'
         hudctx.fillText("New Game. Hit Enter to begin.", canvasWidth/2,canvasHeight/2)
-
     }
 
     /* Allows the game to be reset if game is not running.
