@@ -1,17 +1,13 @@
-// TODO Add music
-// TODO Rename playersprites and add selection menu (maybe)
-// TODO Add scoring mechanism (maybe)
-
 /* First few variables to help with game structure
  * gameRunning is a flag to determine the state of the game
- * gemsCollected helps with scoring later on
+ * starsCollected helps with scoring later on
  */
 var canvasWidth = 505,
     canvasHeight = 606,
     blockHeight = 83,
     blockWidth = 101,
     gameRunning = false,
-    gemsCollected = 0;
+    starsCollected = 0;
 
 // Enemies our player must avoid
 var Enemy = function() {
@@ -53,6 +49,18 @@ Enemy.prototype.update = function(dt) {
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+}
+
+// Stars that player must collect
+var Star = function() {
+    this.sprite = 'images/star.png';
+
+    this.x = Math.ceil(Math.random() * 5) * blockWidth;
+    this.y = Math.ceil(Math.random() * 3) * blockHeight - 25;
+}
+
+Star.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 
@@ -106,17 +114,24 @@ Player.prototype.handleInput = function(key) {
 }
 
 // Instantiating objects
-var allEnemies = [];
-var player = new Player();
+var allEnemies = [],
+    allStars = [],
+    player = new Player();
 gameReset();
 
 // Resets number of enemies, their positions, and position
 // of player
 function gameReset() {
     allEnemies = [];
-    for(var i = 0; i < Math.random() * 5 + 2; i++){
+    for(var i = 0; i < Math.random() * 5 + 2; i++) {
        allEnemies.push(new Enemy());
    }
+
+   allStars = [];
+   for(var i = 0; i < Math.random() * 3 + 3; i++) {
+        allStars.push(new Star());
+   }
+   starsCollected = 0;
 
    player.colNo = 3;
    player.rowNo = 6;

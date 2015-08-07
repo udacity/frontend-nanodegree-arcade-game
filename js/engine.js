@@ -65,16 +65,18 @@ var Engine = (function(global) {
          * so that this if else is a separate statement
          */
         if(gameRunning === true) {
-            if(checkCollisions(allEnemies)) {
-                // End the game if we hit any enemies
-                endGame();
-                gameRunning = false;
-            }
             if(player.rowNo === 1) {
                 // end if player goes to water
                 endGame();
                 gameRunning = false;
             }
+            if(checkEnemyCollision()) {
+                // End the game if we hit any enemies
+                endGame();
+                gameRunning = false;
+            }
+
+            checkStarCollision();
             update(dt);
         }
         renderGame();
@@ -164,6 +166,15 @@ var Engine = (function(global) {
         }
 
         renderEntities();
+
+        hudctx.clearRect ((canvasWidth-70),50,70,30);
+        hudctx.fillStyle = "#ffffff";
+        hudctx.globalAlpha = 0.75;
+        hudctx.fillRect ((canvasWidth-70),50,70,30);
+        hudctx.globalAlpha = 1;
+        hudctx.fillStyle = '#555555';
+        hudctx.textAlign = "right";
+        hudctx.fillText("Stars: " + starsCollected, canvasWidth - 10, 70);
     }
 
     /* This function is called by the render function and is called on each game
@@ -174,6 +185,10 @@ var Engine = (function(global) {
         /* Loop through all of the objects within the allEnemies array and call
          * the render function you have defined.
          */
+        allStars.forEach(function(star) {
+            star.render();
+        });
+
         allEnemies.forEach(function(enemy) {
             enemy.render();
         });
@@ -181,27 +196,38 @@ var Engine = (function(global) {
         player.render();
     }
 
-    function checkCollisions(allColliders) {
+    function checkEnemyCollision() {
         var collided = false;
-        allColliders.forEach(function(collider) {
-            /* Only start checking enemies that are in the
-             * same row. Otherwise, ignore.
-             * We add 10 from the player's y coordinate
-             * to make up for the earlier adjustments to
-             * make sure the player is aligned vertically.
-             * this is… terrible.
-             */
-            if(collider.y === player.y + 10){
-                /* if the leftmost coordinate of the player
-                 * is between the leftmost and rightmost
-                 * coords of the enemy, it's a hit
-                 */
-                if(collider.x <= player.x && (collider.x + blockWidth) >= player.x){
-                    collided = true;
-                }
+        allEnemies.forEach(function(enemy) {
+            if(checkCollision(enemy)) {
+                collided = true;
             }
-        })
+        });
+
         return collided;
+    }
+
+    function checkStarCollision() {
+        allStars.forEach(function(star) {
+            if(checkCollision(star)) {
+                starsCollected += 1;
+                star.x = canvasWidth;
+                star.y = - canvasHeight;
+            }
+        });
+    }
+
+    function checkCollision(collider) {
+        if(collider.y === player.y + 10){
+            /* if the leftmost coordinate of the player
+             * is between the leftmost and rightmost
+             * coords of the enemy, it's a hit
+             */
+            if(collider.x <= player.x && (collider.x + blockWidth) >= player.x){
+                return true;
+            }
+        }
+        return false;
     }
 
     function endGame() {
@@ -212,11 +238,11 @@ var Engine = (function(global) {
         })
 
         hudctx.fillStyle = '#ffffff';
-        hudctx.fillRect ((canvasWidth-330)/2,(canvasHeight-150)/2,330,150);
+        hudctx.fillRect ((canvasWidth-450)/2,(canvasHeight-150)/2,450,150);
         hudctx.fillStyle = '#555555';
         hudctx.font = '15px Arial';
         hudctx.textAlign = 'center'
-        hudctx.fillText("Game Over. Hit Enter to reset", canvasWidth/2,canvasHeight/2)
+        hudctx.fillText(starsCollected + " stars collected. Game Over. Hit Enter to reset", canvasWidth/2,canvasHeight/2)
         ctx.clearRect(0,0,canvasWidth, canvasHeight);
     }
 
@@ -231,7 +257,7 @@ var Engine = (function(global) {
 
         hudctx.fillStyle = '#ffffff';
         hudctx.globalAlpha = 0.95;
-        hudctx.fillRect ((canvasWidth-330)/2,(canvasHeight-150)/2,330,150);
+        hudctx.fillRect ((canvasWidth-450)/2,(canvasHeight-150)/2,450,150);
         hudctx.globalAlpha = 1;
         hudctx.fillStyle = '#555555';
         hudctx.font = '15px Arial';
@@ -261,7 +287,8 @@ var Engine = (function(global) {
         'images/water-block.png',
         'images/grass-block.png',
         'images/enemy-bug.png',
-        'images/char-boy.png'
+        'images/char-boy.png',
+        'images/star.png'
     ]);
     Resources.onReady(init);
 
