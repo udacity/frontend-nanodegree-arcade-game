@@ -70,6 +70,11 @@ var Engine = (function(global) {
                 endGame();
                 gameRunning = false;
             }
+            if(player.rowNo === 1) {
+                // end if player goes to water
+                endGame();
+                gameRunning = false;
+            }
             update(dt);
         }
         renderGame();
