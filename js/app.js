@@ -6,6 +6,7 @@ var canvasWidth = 505;
 var canvasHeight = 606;
 var blockHeight = 83;
 var blockWidth = 101;
+var gameRunning = false;         // Boolean to record if game is running
 
 // Enemies our player must avoid
 var Enemy = function() {
@@ -58,8 +59,8 @@ var Player = function() {
     this.colNo = 3;
     this.rowNo = 6;
 
-    this.x = 0;
-    this.y = 0;
+    this.x = (this.colNo - 1) * blockWidth;
+    this.y = (this.rowNo - 1) * blockHeight - 35;
 }
 
 Player.prototype.update = function() {
@@ -72,6 +73,7 @@ Player.prototype.render = function() {
 }
 
 Player.prototype.handleInput = function(key) {
+
     // Check for each case, decide whether it's at the
     // bounds, increment or decrement col or row counter
     // if not at the edge.
@@ -97,17 +99,25 @@ Player.prototype.handleInput = function(key) {
     }
 
     this.update();
-    console.log(this.x + " " + this.y);
+}
+
+// Resets all theh game positions etc
+function gameReset() {
+    allEnemies = [];
+    for(var i = 0; i < Math.random() * 5 + 2; i++){
+       allEnemies.push(new Enemy());
+   }
+
+   player.colNo = 3;
+   player.rowNo = 6;
 }
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 var allEnemies = [];
-for(var i = 0; i < Math.random() * 5 + 2; i++){
-    allEnemies.push(new Enemy());
-}
 var player = new Player();
+gameReset();
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
@@ -119,5 +129,7 @@ document.addEventListener('keyup', function(e) {
         40: 'down'
     };
 
-    player.handleInput(allowedKeys[e.keyCode]);
+    if(gameRunning === true){
+        player.handleInput(allowedKeys[e.keyCode]);
+    }
 });

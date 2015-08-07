@@ -22,12 +22,20 @@ var Engine = (function(global) {
     var doc = global.document,
         win = global.window,
         canvas = doc.createElement('canvas'),
+        hud = doc.createElement('canvas'),
         ctx = canvas.getContext('2d'),
+        hudctx = hud.getContext('2d'),
         lastTime;
 
-    canvas.width = 505;
-    canvas.height = 606;
+    canvas.width = canvasWidth;
+    canvas.height = canvasHeight;
+    hud.width = canvasWidth;
+    hud.height = canvasHeight;
+    hud.style.position = 'absolute';
+    hud.style.marginLeft = -canvasWidth + 'px';
+
     doc.body.appendChild(canvas);
+    doc.body.appendChild(hud);
 
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
@@ -40,14 +48,32 @@ var Engine = (function(global) {
          * computer is) - hurray time!
          */
         var now = Date.now(),
-            dt = (now - lastTime) / 1000.0;
-            // dt = 20000000000;
+            // dt = (now - lastTime) / 1000.0;
+            dt = (now - lastTime) / 10000.0;
 
         /* Call our update/render functions, pass along the time delta to
          * our update function since it may be used for smooth animation.
          */
-        update(dt);
-        render();
+        /* Update function changes the position of the entity, while
+         * render draws them out.
+         */
+        /* Moved the collision function here to check whether player picked
+         * up jems or collided with enemies. This function should be moved out
+         * into a separate function.
+         * Version 1 : game ends if collisions with enemies
+         */
+        /* This should be refactored out into a separate function later on
+         * so that this if else is a separate statement
+         */
+        if(checkCollisions(allEnemies)){
+            // End the game if we hit any enemies
+            console.log('hit by Enemy');
+            gameRunning = false;
+            endGame();
+        }else {
+            update(dt);
+        }
+        renderGame();
 
         /* Set our lastTime variable which is used to determine the time delta
          * for the next time this function is called.
@@ -77,26 +103,22 @@ var Engine = (function(global) {
      * the need to add an additional function call here. For now, we've left
      * it commented out - you may or may not want to implement this
      * functionality this way (you could just implement collision detection
-     * on the entities themselves within your app.js file).
+     * on the entities themselves within your app.js file). Moved contents
+     * of original updateEntities here, since checkCollision function has been
+     * moved to the main function to also check for gems. Now, this loops
+     * through all the objects within your all Enemies array as defined in
+     * app.js and calls all of their update() methods + the player's update()
+     * method.
      */
     function update(dt) {
-        updateEntities(dt);
-        checkCollisions();
-    }
-
-    /* This is called by the update function  and loops through all of the
-     * objects within your allEnemies array as defined in app.js and calls
-     * their update() methods. It will then call the update function for your
-     * player object. These update methods should focus purely on updating
-     * the data/properties related to  the object. Do your drawing in your
-     * render methods.
-     */
-    function updateEntities(dt) {
         allEnemies.forEach(function(enemy) {
             enemy.update(dt);
         });
         player.update();
     }
+
+    /* updateEntities() content moved into update() method
+     */
 
     /* This function initially draws the "game level", it will then call
      * the renderEntities function. Remember, this function is called every
@@ -104,7 +126,7 @@ var Engine = (function(global) {
      * they are flipbooks creating the illusion of animation but in reality
      * they are just drawing the entire screen over and over.
      */
-    function render() {
+    function renderGame() {
         /* This array holds the relative URL to the image used
          * for that particular row of the game level.
          */
@@ -156,22 +178,49 @@ var Engine = (function(global) {
         player.render();
     }
 
-    function checkCollisions() {
+    function checkCollisions(allColliders) {
+        var collided = false;
+        allColliders.forEach(function(collider) {
+            /* Only start checking enemies that are in the
+             * same row. Otherwise, ignore.
+             * We add 10 from the player's y coordinate
+             * to make up for the earlier adjustments to
+             * make sure the player is aligned vertically.
+             * this is… terrible.
+             */
+            if(collider.y === player.y + 10){
+                /* if the leftmost coordinate of the player
+                 * is between the leftmost and rightmost
+                 * coords of the enemy, it's a hit
+                 */
+                if(collider.x <= player.x && (collider.x + blockWidth) >= player.x){
+                    collided = true;
+                }
+            }
+        })
+        return collided;
+    }
 
+    function endGame() {
         allEnemies.forEach(function(enemy) {
-            // Only start checking enemies that are in the
-            // same row. Otherwise, ignore.
-            // We add 10 from the player's y coordinate
-            // to make up for the earlier adjustments to
-            // make sure the player is aligned vertically.
-            // this is… terrible.
-            if(enemy.y === player.y + 10){
-                // if the leftmost coordinate of the player
-                // is between the leftmost and rightmost
-                // coords of the enemy, it's a hit
+            enemy.speed = 0;
+        })
 
-                if(enemy.x <= player.x && (enemy.x + blockWidth) >= player.x){
-                    console.log("Hit");
+        hudctx.fillStyle = '#ffffff';
+        hudctx.globalAlpha = 0.95;
+        hudctx.fillRect ((canvasWidth-330)/2,(canvasHeight-150)/2,330,150);
+        hudctx.fillStyle = '#555555';
+        hudctx.font = '15px Arial';
+        hudctx.textAlign = 'center'
+        hudctx.fillText("Game Over. Hit Enter to reset", canvasWidth/2,canvasHeight/2)
+        ctx.clearRect(0,0,canvasWidth, canvasHeight);
+
+        document.addEventListener('keyup', function(e) {
+            if(gameRunning === false) {
+                if(e.keyCode === 13) {
+                    hudctx.clearRect(0,0,canvasWidth,canvasHeight);
+                    console.log("alert");
+                    gameRunning = true;
                 }
             }
         })
@@ -183,7 +232,29 @@ var Engine = (function(global) {
      */
     function reset() {
         // noop
+        hudctx.fillRect(0,0,canvasWidth,canvasHeight);
+
+        hudctx.fillStyle = '#ffffff';
+        hudctx.globalAlpha = 0.95;
+        hudctx.fillRect ((canvasWidth-330)/2,(canvasHeight-150)/2,330,150);
+        hudctx.globalAlpha = 1;
+        hudctx.fillStyle = '#555555';
+        hudctx.font = '15px Arial';
+        hudctx.textAlign = 'center'
+        hudctx.fillText("New Game. Hit Enter to begin.", canvasWidth/2,canvasHeight/2)
+
     }
+
+
+    document.addEventListener('keyup', function(e) {
+        if (gameRunning === false) {
+            if(e.keyCode === 13) {
+                hudctx.clearRect(0,0,canvasWidth,canvasHeight);
+                gameRunning = true;
+                gameReset();
+            }
+        }
+    })
 
     /* Go ahead and load all of the images we know we're going to need to
      * draw our game level. Then set init as the callback method, so that when
