@@ -48,8 +48,7 @@ var Engine = (function(global) {
          * computer is) - hurray time!
          */
         var now = Date.now(),
-            // dt = (now - lastTime) / 1000.0;
-            dt = (now - lastTime) / 10000.0;
+            dt = (now - lastTime) / 1000.0;
 
         /* Call our update/render functions, pass along the time delta to
          * our update function since it may be used for smooth animation.
@@ -65,12 +64,11 @@ var Engine = (function(global) {
         /* This should be refactored out into a separate function later on
          * so that this if else is a separate statement
          */
-        if(checkCollisions(allEnemies)){
+        if(checkCollisions(allEnemies) && gameRunning === true) {
             // End the game if we hit any enemies
-            console.log('hit by Enemy');
-            gameRunning = false;
             endGame();
-        }else {
+        }
+        if(gameRunning === true) {
             update(dt);
         }
         renderGame();
@@ -159,7 +157,6 @@ var Engine = (function(global) {
             }
         }
 
-
         renderEntities();
     }
 
@@ -202,28 +199,22 @@ var Engine = (function(global) {
     }
 
     function endGame() {
+        gameRunning = false;
+
+        /* Pause all enemies and stop them from running
+         */
         allEnemies.forEach(function(enemy) {
             enemy.speed = 0;
         })
 
+        hudctx.globalAlpha = 0;
         hudctx.fillStyle = '#ffffff';
-        hudctx.globalAlpha = 0.95;
         hudctx.fillRect ((canvasWidth-330)/2,(canvasHeight-150)/2,330,150);
         hudctx.fillStyle = '#555555';
         hudctx.font = '15px Arial';
         hudctx.textAlign = 'center'
         hudctx.fillText("Game Over. Hit Enter to reset", canvasWidth/2,canvasHeight/2)
         ctx.clearRect(0,0,canvasWidth, canvasHeight);
-
-        document.addEventListener('keyup', function(e) {
-            if(gameRunning === false) {
-                if(e.keyCode === 13) {
-                    hudctx.clearRect(0,0,canvasWidth,canvasHeight);
-                    console.log("alert");
-                    gameRunning = true;
-                }
-            }
-        })
     }
 
     /* This function does nothing but it could have been a good place to
@@ -232,7 +223,8 @@ var Engine = (function(global) {
      */
     function reset() {
         // noop
-        hudctx.fillRect(0,0,canvasWidth,canvasHeight);
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0,0,canvasWidth,canvasHeight);
 
         hudctx.fillStyle = '#ffffff';
         hudctx.globalAlpha = 0.95;
@@ -245,12 +237,14 @@ var Engine = (function(global) {
 
     }
 
-
+    /* Allows the game to be reset if game is not running.
+     */
     document.addEventListener('keyup', function(e) {
         if (gameRunning === false) {
             if(e.keyCode === 13) {
-                hudctx.clearRect(0,0,canvasWidth,canvasHeight);
                 gameRunning = true;
+                ctx.clearRect(0,0,canvasWidth,canvasHeight);
+                hudctx.clearRect(0,0,canvasWidth,canvasHeight);
                 gameReset();
             }
         }
