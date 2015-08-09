@@ -136,7 +136,7 @@ Player.prototype.update = function(direction) {
   }
   debugOutput('Player is at column ' +this.currentCol +' and row ' +this.currentRow, 1); 
 
-  // Test
+  // Reset the game if the player makes it to the top row
   if (this.currentRow == 1) {
     debugOutput('Row 1 deteced, reset the game', 1);
     reset(); // Reset the game
@@ -204,7 +204,7 @@ function reset() {
 
 // Set up Tile objects to determine whether enemies of the player are currently on those tiles
 // Co-ordinates are based on rows and columns, starting from the top right
-var Tileobject = function (xcoord, ycoord) {
+var Tile = function (xcoord, ycoord) {
   this.xcoord = xcoord;
   this.ycoord = ycoord;
 
@@ -217,9 +217,11 @@ var tile = [[]]; // create a two-dimensional array to represent the grid of tile
 // instantiate the tiles
 for (var y = 1; y < 7; y++) { // outter loop scans through each row. There are 6 rows.
   for (var x = 1; x < 6; x++) { //inner loop scans through each column. There are 5 columns.
-    tile[[x,y]] = new Tileobject(x,y);
+    tile[[x,y]] = new Tile(x,y);
   }
 }
+
+debugOutput(tile, 1);
 
 
 
