@@ -19,7 +19,7 @@ var Enemy = function() {
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
     this.x = -110; //starting position for enemies
-    name = "Bug";
+    var name = "Bug";
     var currentCol = 0;
     var currentRow = 0;
 }
@@ -59,13 +59,11 @@ Enemy.prototype.update = function(dt) {
         break;
       }
       
-      debugOutput('Bugs are at column ' +this.currentCol, 1); 
+      debugOutput(this.name + 'is at column ' +this.currentCol, 0); 
       
     } else {
       this.x = -110;
     }
-    
-
     
 }
 
@@ -81,8 +79,7 @@ var Player = function() {
   this.y = topArea + tileHeight*3; // Start on the forth row
   var currentCol = 3;
   var currentRow = 5;
-  
-
+}
 
 // This class requires an update(), render() and
 // a handleInput() method.
@@ -91,7 +88,7 @@ Player.prototype.update = function(direction) {
   debugOutput('this.x is ' +this.x, 0);  
   switch (this.x) {
     case (0):
-    this.currentCol = 1;    
+    this.currentCol = 1;
     break;
     
     case (tileWidth):
@@ -137,14 +134,19 @@ Player.prototype.update = function(direction) {
     this.currentRow = 6;
     break;
   }
-  debugOutput('Player is at column ' +currentCol +' and row ' +currentRow, 1); 
+  debugOutput('Player is at column ' +this.currentCol +' and row ' +this.currentRow, 1); 
+
+  // Test
+  if (this.currentRow == 1) {
+    debugOutput('Row 1 deteced, reset the game', 1);
+    reset(); // Reset the game
+  }
+  
 }
 
 Player.prototype.render = function(direction) {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
   debugOutput('Player is at (' +this.x +"," +this.y +')', 0);
-}
-  
 }
 
 Player.prototype.handleInput = function(direction) {
@@ -185,9 +187,41 @@ Player.prototype.handleInput = function(direction) {
     }
     debugOutput("this.y is at " +this.y +". tileHeight is " +tileHeight);
   }
-  
-  
 }
+
+// Reset the game
+
+function reset() {
+    // Reset the player
+    player.x = tileWidth*2; // Start on the third column
+    player.y = topArea + tileHeight*3; // Start on the forth row
+
+    // Reset the enemies
+    enemyTop.x = -110; // Top row enemy
+    enemyMiddle.x = -110; // Middle row enemy
+    enemyBottom.x = -110; // Bottom row enemy
+}
+
+// Set up Tile objects to determine whether enemies of the player are currently on those tiles
+// Co-ordinates are based on rows and columns, starting from the top right
+var Tileobject = function (xcoord, ycoord) {
+  this.xcoord = xcoord;
+  this.ycoord = ycoord;
+
+  var hasBug = 0; // On instantiation, the current tile does not have the bug on it
+  var hasPlayer = 0; // On instantiation, the current tile does not have the player on it
+}
+
+var tile = [[]]; // create a two-dimensional array to represent the grid of tiles using an x-y coordinate system
+
+// instantiate the tiles
+for (var y = 1; y < 7; y++) { // outter loop scans through each row. There are 6 rows.
+  for (var x = 1; x < 6; x++) { //inner loop scans through each column. There are 5 columns.
+    tile[[x,y]] = new Tileobject(x,y);
+  }
+}
+
+
 
 // Now instantiate your objects.
 
