@@ -4,7 +4,7 @@ var topArea = 60;
 var tileHeight = 83;
 
 // For debugging purposes
-function debugOutput(string, debugMode) { 
+function debugOutput(string, debugMode) {
   if (debugMode == 1) {
     console.log(string);
   }
@@ -18,10 +18,11 @@ var Enemy = function() {
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
-    this.x = -110; //starting position for enemies
+    var x = -110; //starting position for enemies
     var name = "Bug";
     var currentCol = 0;
     var currentRow = 0;
+    this.speed = 100;
 }
 
 // Update the enemy's position, required method for game
@@ -30,48 +31,53 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
+    // this.currentCol = 0;
+    // this.currentRow = 0;
+
     if (this.x < 550) {
-      this.x++;
+      // this.x++;
+      this.x = this.x + dt*this.speed;
       debugOutput('Bugs are at ' +this.x, 0);
-      
+
       switch (this.x) {
         case (-tileWidth):
-        this.currentCol = 1;    
+        this.currentCol = 1;
         break;
-        
+
         case (0):
         this.currentCol = 2;
         break;
-        
+
         case (tileWidth):
         this.currentCol = 3;
         break;
-        
+
         case (tileWidth * 2):
         this.currentCol = 4;
         break;
-        
+
         case (tileWidth * 3):
         this.currentCol = 5;
         break;
+
         case (tileWidth * 4):
         this.currentCol = 6;
         break;
       }
-      
-      debugOutput(this.name + 'is at column ' +this.currentCol, 0); 
-      
+      // tile[[this.currentCol,this.currentRow]].hasBug = 1;
+      debugOutput(this.name + 'is at column ' +this.currentCol, 0);
+
     } else {
       this.x = -110;
     }
-    
+
 }
 
 // Draw the enemy on the screen, required method for game
-Enemy.prototype.render = function() {;  
+Enemy.prototype.render = function() {;
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
-  
+
 // Now write your own player class
 var Player = function() {
   this.sprite = 'images/char-boy.png';
@@ -79,53 +85,55 @@ var Player = function() {
   this.y = topArea + tileHeight*3; // Start on the forth row
   var currentCol = 3;
   var currentRow = 5;
+  var previousCol = 0;
+  var previousRow = 0;
 }
 
 // This class requires an update(), render() and
 // a handleInput() method.
 
 Player.prototype.update = function(direction) {
-  debugOutput('this.x is ' +this.x, 0);  
+  debugOutput('this.x is ' +this.x, 0);
   switch (this.x) {
     case (0):
     this.currentCol = 1;
     break;
-    
+
     case (tileWidth):
     this.currentCol = 2;
     break;
-    
+
     case (tileWidth * 2):
     this.currentCol = 3;
     break;
-    
+
     case (tileWidth * 3):
     this.currentCol = 4;
     break;
-    
+
     case (tileWidth * 4):
     this.currentCol = 5;
     break;
   }
-  
+
   debugOutput('this.y is ' +this.y, 0);
   switch (this.y) {
     case (topArea - tileHeight):
-    this.currentRow = 1;    
+    this.currentRow = 1;
     break;
-    
+
     case (topArea):
     this.currentRow = 2;
     break;
-    
+
     case (topArea + tileHeight):
     this.currentRow = 3;
     break;
-    
+
     case (topArea + tileHeight * 2):
     this.currentRow = 4;
     break;
-    
+
     case (topArea + tileHeight * 3):
     this.currentRow = 5;
     break;
@@ -134,14 +142,13 @@ Player.prototype.update = function(direction) {
     this.currentRow = 6;
     break;
   }
-  debugOutput('Player is at column ' +this.currentCol +' and row ' +this.currentRow, 1); 
 
   // Reset the game if the player makes it to the top row
   if (this.currentRow == 1) {
     debugOutput('Row 1 deteced, reset the game', 1);
     reset(); // Reset the game
   }
-  
+
 }
 
 Player.prototype.render = function(direction) {
@@ -150,12 +157,18 @@ Player.prototype.render = function(direction) {
 }
 
 Player.prototype.handleInput = function(direction) {
+  // Set trackers for where the player was before moving
+  // this.previousCol = this.currentCol;
+  // this.previousRow = this.currentRow;
+
   if (direction == 'left') {
     debugOutput("player pressed " +direction, 1);
     debugOutput("this.x was at " +this.x +". tileWidth was " +tileWidth, 0);
     if (this.x > 0 ) { // ensure that we don't go past the first column
       this.x = this.x - tileWidth;
       debugOutput("valid move");
+      // this.currentCol = this.currentCol - 1;
+      debugOutput("currentCol is " +this.currentCol, 1);
     }
     debugOutput("this.x is at " +this.x +". tileWidth is " +tileWidth, 0);
   }
@@ -166,6 +179,7 @@ Player.prototype.handleInput = function(direction) {
     if (this.y > 0 ) { // ensure that we don't go past the first row
       this.y = this.y - tileHeight;
       debugOutput("valid move");
+      // this.currentRow = currentRow - 1;
     }
     debugOutput("this.y is at " +this.y +". tileHeight is " +tileHeight);
   }
@@ -197,9 +211,9 @@ function reset() {
     player.y = topArea + tileHeight*3; // Start on the forth row
 
     // Reset the enemies
-    enemyTop.x = -110; // Top row enemy
+    enemyTop.x = -220; // Top row enemy
     enemyMiddle.x = -110; // Middle row enemy
-    enemyBottom.x = -110; // Bottom row enemy
+    enemyBottom.x = -350; // Bottom row enemy
 }
 
 // Set up Tile objects to determine whether enemies of the player are currently on those tiles
@@ -218,6 +232,7 @@ var tile = [[]]; // create a two-dimensional array to represent the grid of tile
 for (var y = 1; y < 7; y++) { // outter loop scans through each row. There are 6 rows.
   for (var x = 1; x < 6; x++) { //inner loop scans through each column. There are 5 columns.
     tile[[x,y]] = new Tile(x,y);
+
   }
 }
 
@@ -232,19 +247,19 @@ debugOutput(tile, 1);
 var enemyTop = new Enemy();
 enemyTop.y = 0 + topArea;
 enemyTop.name = "Albert";
-/*
-enemyTop.update = function() {
-  this.x+3;
-};
-*/
+enemyTop.x = -220;
+enemyTop.speed = 200;
 
 var enemyMiddle = new Enemy();
 enemyMiddle.y = 0 + topArea + tileHeight;
 enemyMiddle.name = "Brandy";
 
+
 var enemyBottom = new Enemy();
 enemyBottom.y = 0 + topArea + tileHeight*2;
 enemyBottom.name = "Clarice";
+enemyBottom.x = -350;
+enemyBottom.speed = 80;
 
 
 // Place all enemy objects in an array called allEnemies
