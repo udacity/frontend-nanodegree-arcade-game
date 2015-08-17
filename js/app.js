@@ -2,29 +2,25 @@ var enemyCollision = false;
 
 // Enemies our player must avoid
 var Enemy = function(x, y, dt, speed) {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
-
-    // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
+    // The image/sprite for our enemies
     this.sprite = 'images/enemy-bug.png';
+    //x position for our enemy
     this.x = x;
+    //y position for our enemy
     this.y = y;
     this.dt = dt;
+    //speed for our enemy
     this.speed = speed;
 }
 
-// Update the enemy's position, required method for game
+// Update the enemy's position
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt, speed) {
     // You should multiply any movement by the dt parameter
     if (this.x >= 505) {
         this.x = -101;
-
     }
     this.x = this.x + this.speed * dt;
-
-
 //bounding box for collision detection
   if (this.x < player.x + 85 &&
    this.x + 85 > player.x &&
@@ -32,13 +28,11 @@ Enemy.prototype.update = function(dt, speed) {
    85 + this.y > player.y) {
         enemyCollision = true;
         this.collision();
-
 }
-else {
-    //set collision flag to false?
-    enemyCollision = false;
+    else {
+        //set collision flag to false?
+        enemyCollision = false;
     }
-
 }
 
 // Draw the enemy on the screen, required method for game
@@ -54,8 +48,6 @@ var Player = function(x, y) {
     this.x = x;
     this.y = y;
     this.sprite = 'images/char-horn-girl.png';
-
-
 }
 
 //Keeps player on canvas
@@ -71,14 +63,12 @@ Player.prototype.update = function() {
     if (this.y > 430) {
         this.y = 430;
     }
-
 }
 
 //Gets player image and starting point
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
-
 
 // Now instantiate enemy objects and sets position, dt, and speed.
 var enemy1 = new Enemy(-101, 65, 50, 80);
@@ -90,7 +80,6 @@ var allEnemies = [];
 allEnemies.push(enemy1);
 allEnemies.push(enemy2);
 allEnemies.push(enemy3);
-
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
@@ -133,7 +122,6 @@ Player.prototype.reset = function() {
     this.x = 200;
 }
 
-
 // Places the player object in a variable called player
 var player = new Player(200, 400);
 
@@ -152,11 +140,8 @@ Enemy.prototype.collision = function() {
         alert("Gameover - Click okay to restart");
         //resets hearts
         createHearts();
-
     }
-
 }
-
 
 var Heart = function(x, y) {
     this.sprite = 'images/Heart.png';
@@ -183,7 +168,3 @@ var createHearts = function() {
 }
 
 createHearts();
-
-
-
-
