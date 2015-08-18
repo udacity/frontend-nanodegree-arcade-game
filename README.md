@@ -5,4 +5,4 @@ Students should use this rubric: https://www.udacity.com/course/viewer#!/c-ud015
 
 for self-checking their submission.
 
-http://jgillesp.github.io/frontend-nanodegree-arcade-game
+[Game Link](http://jgillesp.github.io/frontend-nanodegree-arcade-game)
