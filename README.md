@@ -5,4 +5,8 @@ Students should use this rubric: https://www.udacity.com/course/viewer#!/c-ud015
 
 for self-checking their submission.
 
+<<<<<<< HEAD
 <h1>Frogger Game</h1>
+=======
+[Game Link](http://jgillesp.github.io/frontend-nanodegree-arcade-game)
+>>>>>>> master
