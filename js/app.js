@@ -83,8 +83,8 @@ var Player = function() {
   this.sprite = 'images/char-boy.png';
   this.x = tileWidth*2; // Start on the third column
   this.y = topArea + tileHeight*3; // Start on the forth row
-  var currentCol = 3;
-  var currentRow = 5;
+  this.currentCol = 3;
+  this.currentRow = 5;
   var previousCol = 0;
   var previousRow = 0;
 }
@@ -158,8 +158,8 @@ Player.prototype.render = function(direction) {
 
 Player.prototype.handleInput = function(direction) {
   // Set trackers for where the player was before moving
-  // this.previousCol = this.currentCol;
-  // this.previousRow = this.currentRow;
+  var previousCol = this.currentCol;
+  var previousRow = this.currentRow;
 
   if (direction == 'left') {
     debugOutput("player pressed " +direction, 1);
@@ -167,7 +167,7 @@ Player.prototype.handleInput = function(direction) {
     if (this.x > 0 ) { // ensure that we don't go past the first column
       this.x = this.x - tileWidth;
       debugOutput("valid move");
-      // this.currentCol = this.currentCol - 1;
+      this.currentCol = this.currentCol - 1;
       debugOutput("currentCol is " +this.currentCol, 1);
     }
     debugOutput("this.x is at " +this.x +". tileWidth is " +tileWidth, 0);
@@ -179,28 +179,43 @@ Player.prototype.handleInput = function(direction) {
     if (this.y > 0 ) { // ensure that we don't go past the first row
       this.y = this.y - tileHeight;
       debugOutput("valid move");
-      // this.currentRow = currentRow - 1;
+      this.currentRow = this.currentRow - 1;
+      debugOutput("currentRow is " +this.currentRow, 1);
     }
     debugOutput("this.y is at " +this.y +". tileHeight is " +tileHeight);
   }
+
   if (direction == 'right') {
     debugOutput("player pressed " +direction, 1);
     debugOutput("this.x was at " +this.x +". tileWidth was " +tileWidth);
     if (this.x < tileWidth*4 ) { // ensure that we don't go past the last column
       this.x = this.x + tileWidth;
       debugOutput("valid move");
+      this.currentCol = this.currentCol + 1;
+      debugOutput("currentCol is " +this.currentCol, 1);
     }
     debugOutput("this.x is at " +this.x +". tileWidth is " +tileWidth);
   }
+
   if (direction == 'down') {
     debugOutput("player pressed " +direction, 1);
     debugOutput("this.y was at " +this.y +". tileHeight was " +tileHeight);
     if (this.y < (tileHeight*4 + topArea) ) { // ensure that we don't go past the bottow row
       this.y = this.y + tileHeight;
       debugOutput("valid move");
+      this.currentRow = this.currentRow + 1;
+      debugOutput("currentRow is " +this.currentRow, 1);
     }
     debugOutput("this.y is at " +this.y +". tileHeight is " +tileHeight);
   }
+
+  // Play back the tile the player's currently in
+  debugOutput("Player is at " +this.currentCol +"," +this.currentRow, 1);
+  debugOutput("Player was previously at " +previousCol +"," +previousRow, 1);
+  tile[[previousCol,previousRow]].hasPlayer = 0;
+  tile[[this.currentCol,this.currentRow]].hasPlayer = 1;
+  debugOutput(previousCol +"," +previousRow +" hasPlayer = " +tile[[previousCol,previousRow]].hasPlayer, 1);
+  debugOutput(this.currentCol +"," +this.currentRow +" hasPlayer = " +tile[[this.currentCol,this.currentRow]].hasPlayer, 1);
 }
 
 // Reset the game
@@ -221,27 +236,37 @@ function reset() {
 var Tile = function (xcoord, ycoord) {
   this.xcoord = xcoord;
   this.ycoord = ycoord;
-
-  var hasBug = 0; // On instantiation, the current tile does not have the bug on it
-  var hasPlayer = 0; // On instantiation, the current tile does not have the player on it
+  this.hasBug = 0; // On instantiation, the current tile does not have the bug on it
+  this.hasPlayer = 0; // On instantiation, the current tile does not have the player on it
 }
 
-var tile = [[]]; // create a two-dimensional array to represent the grid of tiles using an x-y coordinate system
-
-// instantiate the tiles
-for (var y = 1; y < 7; y++) { // outter loop scans through each row. There are 6 rows.
-  for (var x = 1; x < 6; x++) { //inner loop scans through each column. There are 5 columns.
-    tile[[x,y]] = new Tile(x,y);
-
+Tile.prototype.clearBugs = function () {
+  for (var y = 1; y < 7; y++) { // outter loop scans through each row. There are 6 rows.
+    for (var x = 1; x < 6; x++) { //inner loop scans through each column. There are 5 columns.
+      tile[[x,y]].hasBug = 0;
+    }
   }
 }
 
+Tile.prototype.clearPlayer = function () {
+  for (var y = 1; y < 7; y++) { // outter loop scans through each row. There are 6 rows.
+    for (var x = 1; x < 6; x++) { //inner loop scans through each column. There are 5 columns.
+      tile[[x,y]].hasPlayer = 0;
+    }
+  }
+}
+
+// instantiate the tiles
+var tile = [[]]; // create a two-dimensional array to represent the grid of tiles using an x-y coordinate system
+
+for (var y = 1; y < 7; y++) { // outter loop scans through each row. There are 6 rows.
+  for (var x = 1; x < 6; x++) { //inner loop scans through each column. There are 5 columns.
+    tile[[x,y]] = new Tile(x,y);
+  }
+}
 debugOutput(tile, 1);
 
-
-
 // Now instantiate your objects.
-
 // Instantiate each enemy
 // Rows are counted from the top
 var enemyTop = new Enemy();
@@ -254,13 +279,11 @@ var enemyMiddle = new Enemy();
 enemyMiddle.y = 0 + topArea + tileHeight;
 enemyMiddle.name = "Brandy";
 
-
 var enemyBottom = new Enemy();
 enemyBottom.y = 0 + topArea + tileHeight*2;
 enemyBottom.name = "Clarice";
 enemyBottom.x = -350;
 enemyBottom.speed = 80;
-
 
 // Place all enemy objects in an array called allEnemies
 var allEnemies = [enemyTop, enemyMiddle, enemyBottom];
