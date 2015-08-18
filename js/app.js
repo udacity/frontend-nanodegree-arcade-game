@@ -18,11 +18,11 @@ var Enemy = function() {
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
-    var x = -110; //starting position for enemies
-    var name = "Bug";
-    var currentCol = 0;
-    var currentRow = 0;
-    this.speed = 100;
+    this.x = -110; //default position for enemies
+    this.name = "Bug";
+    this.currentCol = 2;
+    this.currentRow = 2; //default row when an enemy is generated
+    this.speed = 100; //default speed for enemies
 }
 
 // Update the enemy's position, required method for game
@@ -38,7 +38,7 @@ Enemy.prototype.update = function(dt) {
       // this.x++;
       this.x = this.x + dt*this.speed;
       debugOutput('Bugs are at ' +this.x, 0);
-
+      // TODO: detect which column(s) the bug is currently in, and put that into the tile info.
       switch (this.x) {
         case (-tileWidth):
         this.currentCol = 1;
@@ -93,6 +93,7 @@ var Player = function() {
 // a handleInput() method.
 
 Player.prototype.update = function(direction) {
+  // TODO: this function may not even be necessary
   debugOutput('this.x is ' +this.x, 0);
   switch (this.x) {
     case (0):
@@ -216,6 +217,15 @@ Player.prototype.handleInput = function(direction) {
   tile[[this.currentCol,this.currentRow]].hasPlayer = 1;
   debugOutput(previousCol +"," +previousRow +" hasPlayer = " +tile[[previousCol,previousRow]].hasPlayer, 1);
   debugOutput(this.currentCol +"," +this.currentRow +" hasPlayer = " +tile[[this.currentCol,this.currentRow]].hasPlayer, 1);
+
+  // Show which tiles has Player in it
+  for (var y = 1; y < 7; y++) { // outter loop scans through each row. There are 6 rows.
+    for (var x = 1; x < 6; x++) { //inner loop scans through each column. There are 5 columns.
+      if (tile[[x,y]].hasPlayer == 1) {
+        debugOutput(x +"," +y +" has player", 1);
+      }
+    }
+  }
 }
 
 // Reset the game
@@ -226,9 +236,9 @@ function reset() {
     player.y = topArea + tileHeight*3; // Start on the forth row
 
     // Reset the enemies
-    enemyTop.x = -220; // Top row enemy
-    enemyMiddle.x = -110; // Middle row enemy
-    enemyBottom.x = -350; // Bottom row enemy
+    enemyTop.x = -220; // Top row enemy starting position
+    enemyMiddle.x = -110; // Middle row enemy starting position
+    enemyBottom.x = -350; // Bottom row enemy starting position
 }
 
 // Set up Tile objects to determine whether enemies of the player are currently on those tiles
@@ -271,18 +281,22 @@ debugOutput(tile, 1);
 // Rows are counted from the top
 var enemyTop = new Enemy();
 enemyTop.y = 0 + topArea;
+enemyTop.currentRow = 2;
 enemyTop.name = "Albert";
-enemyTop.x = -220;
+enemyTop.x = -220; // Top row enemy starting position
 enemyTop.speed = 200;
 
 var enemyMiddle = new Enemy();
 enemyMiddle.y = 0 + topArea + tileHeight;
+enemyMiddle.currentRow = 3;
 enemyMiddle.name = "Brandy";
+// middle row enemy starting position and speed uses default values
 
 var enemyBottom = new Enemy();
 enemyBottom.y = 0 + topArea + tileHeight*2;
+enemyBottom.currentRow = 4;
 enemyBottom.name = "Clarice";
-enemyBottom.x = -350;
+enemyBottom.x = -350; // Bottom row enemy starting position
 enemyBottom.speed = 80;
 
 // Place all enemy objects in an array called allEnemies
