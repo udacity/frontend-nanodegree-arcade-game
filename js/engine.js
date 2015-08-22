@@ -80,9 +80,16 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        // checkCollisions();
+        checkCollisions();
     }
-
+    function checkCollisions(){
+        for(var i=0;i<allEnemies.length;i++){
+            if(allEnemies[i].y === player.y && allEnemies[i].x === player.x){
+                player.update();
+                return;
+            }
+        }
+    }
     /* This is called by the update function  and loops through all of the
      * objects within your allEnemies array as defined in app.js and calls
      * their update() methods. It will then call the update function for your
@@ -96,7 +103,7 @@ var Engine = (function(global) {
         });
         player.update();
     }
-
+   
     /* This function initially draws the "game level", it will then call
      * the renderEntities function. Remember, this function is called every
      * game tick (or loop of the game engine) because that's how games work -
@@ -168,6 +175,7 @@ var Engine = (function(global) {
      * all of these images are properly loaded our game will start.
      */
     Resources.load([
+        'images/char-princess-girl.png',
         'images/stone-block.png',
         'images/water-block.png',
         'images/grass-block.png',
