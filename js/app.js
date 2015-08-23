@@ -20,7 +20,7 @@ var Enemy = function() {
     this.sprite = 'images/enemy-bug.png';
     this.x = -110; //default position for enemies
     this.name = "Bug";
-    this.currentCol = 2;
+    this.currentCol = 0;
     this.currentRow = 2; //default row when an enemy is generated
     this.speed = 100; //default speed for enemies
 }
@@ -37,35 +37,47 @@ Enemy.prototype.update = function(dt) {
     if (this.x < 550) {
       // this.x++;
       this.x = this.x + dt*this.speed;
-      debugOutput('Bugs are at ' +this.x, 0);
-      // TODO: detect which column(s) the bug is currently in, and put that into the tile info.
-      switch (this.x) {
-        case (-tileWidth):
+      // this.x = this.x + 1;
+
+      if ((this.x > (-tileWidth + 15)) && (this.x < (tileWidth - 15))) {
         this.currentCol = 1;
-        break;
-
-        case (0):
-        this.currentCol = 2;
-        break;
-
-        case (tileWidth):
-        this.currentCol = 3;
-        break;
-
-        case (tileWidth * 2):
-        this.currentCol = 4;
-        break;
-
-        case (tileWidth * 3):
-        this.currentCol = 5;
-        break;
-
-        case (tileWidth * 4):
-        this.currentCol = 6;
-        break;
+        if ((player.currentCol == this.currentCol) && (this.currentRow == player.currentRow)) {
+          debugOutput(this.name + 'is at column ' +this.currentCol, 1);
+        }
       }
+
+      if ((this.x > 15) && (this.x < (2 * tileWidth - 15))) {
+        this.currentCol = 2;
+        if ((player.currentCol == this.currentCol) && (this.currentRow == player.currentRow)) {
+          debugOutput(this.name + 'is at column ' +this.currentCol, 1);
+        }
+      }
+
+      if ((this.x > (tileWidth + 15)) && (this.x < (3 * tileWidth - 15))) {
+        this.currentCol = 3;
+        if ((player.currentCol == this.currentCol) && (this.currentRow == player.currentRow)) {
+          debugOutput(this.name + 'is at column ' +this.currentCol, 1);
+        }
+      }
+
+      if ((this.x > (2 * tileWidth + 15)) && (this.x < (4 * tileWidth - 15))) {
+        this.currentCol = 4;
+        if ((player.currentCol == this.currentCol) && (this.currentRow == player.currentRow)) {
+          debugOutput(this.name + 'is at column ' +this.currentCol, 1);
+        }
+      }
+
+      if ((this.x > (3 * tileWidth + 15)) && (this.x < (5 * tileWidth - 15))) {
+        this.currentCol = 5;
+        if ((player.currentCol == this.currentCol) && (this.currentRow == player.currentRow)) {
+          debugOutput(this.name + 'is at column ' +this.currentCol, 1);
+        }
+      }
+
+      debugOutput('Bugs are at ' +this.x, 1);
+
       // tile[[this.currentCol,this.currentRow]].hasBug = 1;
-      debugOutput(this.name + 'is at column ' +this.currentCol, 0);
+      // debugOutput(this.name + 'is at column ' +this.currentCol, 1);
 
     } else {
       this.x = -110;
@@ -301,6 +313,7 @@ enemyBottom.speed = 80;
 
 // Place all enemy objects in an array called allEnemies
 var allEnemies = [enemyTop, enemyMiddle, enemyBottom];
+// var allEnemies = [enemyBottom];
 
 // Place the player object in a variable called player
 var player = new Player();
