@@ -84,8 +84,8 @@ var Engine = (function(global) {
     }
     function checkCollisions(){
         for(var i=0;i<allEnemies.length;i++){
-            if(allEnemies[i].y === player.y && allEnemies[i].x === player.x){
-                player.update();
+            if(allEnemies[i].x <= player.x +50 && allEnemies[i].x >= player.x-50 && allEnemies[i].y+10 == player.y){
+                player.home();
                 return;
             }
         }

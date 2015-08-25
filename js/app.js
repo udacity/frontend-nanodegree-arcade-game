@@ -60,6 +60,12 @@ Player.prototype.update = function(){
 	if(this.y < 0  ){
 		this.y = 400;
 	}
+
+}
+Player.prototype.home = function(){
+	this.x = 200;
+	this.y = 400;
+	
 }
 Player.prototype.handleInput = function(e) {	
 	if (e === "up" && this.y >=0){
@@ -81,7 +87,7 @@ Player.prototype.handleInput = function(e) {
 var allEnemies = [];
 var player = new Player();
 
-for(var i = 0;i < 5; i++){
+for(var i = 0;i < 20; i++){
 	allEnemies[i] = new Enemy();
 }
 
