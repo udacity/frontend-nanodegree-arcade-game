@@ -79,7 +79,7 @@ var checkHits = function(aRock, allEnemies) {
 	&& allEnemies[i].x - aRock.x <= 73) {
 	console.log('hit');
 	++totalBugsKilled;
-	allEnemies[i].y = -1000;
+	allEnemies[i].y = -10000;
 	}
 	++i
     }
@@ -188,12 +188,8 @@ var checkCollision = function(anEnemy) {
         player.y = 383;
         console.log('next level');
 
-        ctx.fillStyle = 'white';
-        ctx.fillRect(0, 0, 505, 171);
-
 	gameLevel += 1;
 	increaseDifficulty(gameLevel);
-
     }
 
     if (player.y > 383 ) {
