@@ -97,6 +97,9 @@ var Engine = (function(global) {
 	allBonus.forEach(function(bonus) {
 	    bonus.update();
 	});
+	allRocks.forEach(function(rock) {
+	    rock.update(dt);
+	});
         player.update();
     }
 
@@ -158,6 +161,9 @@ var Engine = (function(global) {
 	allBonus.forEach(function(bonus) {
 	    bonus.render();
 	});
+	allRocks.forEach(function(rock) {
+	    rock.render();
+	});
 
         player.render();
     }
@@ -180,7 +186,8 @@ var Engine = (function(global) {
         'images/grass-block.png',
         'images/enemy-bug.png',
         'images/char-boy.png',
-	'images/Star.png'
+	'images/Star.png',
+	'images/Rock.png'
     ]);
     Resources.onReady(init);
 

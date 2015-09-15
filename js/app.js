@@ -42,11 +42,53 @@ Bonus.prototype.render = function() {
 
 Bonus.prototype.update = function() {
     checkBonus(this);
-}
+};
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
 
+var Rock = function(x, y) {
+    this.x = x;
+    this.y = y;
+    this.sprite = 'images/Rock.png';
+    this.speed = 250;
+};
+
+Rock.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+Rock.prototype.update = function(dt) {
+    this.y -= this.speed * dt;
+    
+    if (this.y < -10) {
+	this.y = -1000;
+    }
+
+    checkHits(this, allEnemies);
+};
+
+var checkHits = function(aRock, allEnemies) {
+    // console.log(allEnemies.length);
+    var i = 0;
+    //for (i = 0; i < allEnemies.length; ++i) { // cann't use for loop?
+    while (i < allEnemies.length) {
+	//	console.log(i);
+	console.log(allEnemies[i].x);
+	if (
+	allEnemies[i].y - aRock.y >= -77
+	&& allEnemies[i].y - aRock.y <= 73
+	&& allEnemies[i].x - aRock.x >= -88
+	&& allEnemies[i].x - aRock.x <= 73) {
+	console.log('hit');
+	allEnemies[i].y = -1000;
+	}
+	++i
+    }
+    
+// 	
+    //}
+};
 var Player = function(x, y, speed) {
     this.x = x;
     this.y = y;
@@ -56,7 +98,7 @@ var Player = function(x, y, speed) {
 
 Player.prototype.update = function() {
     // function not needed right now
-}
+};
 
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
@@ -76,10 +118,18 @@ Player.prototype.handleInput = function(keyPress) {
     if (keyPress == 'down') {
         player.y += player.speed - 20;
     }
+    if (keyPress == 'f') {
+	this.throwRock();
+    }
     console.log('keyPress is: ' + keyPress);
     console.log(player.x + ' ' +  player.y);
 };
 
+Player.prototype.throwRock = function() {
+    var rock = new Rock(player.x, player.y - 30);
+    allRocks.push(rock);
+};
+    
 var displayBonusLevel = function(aBonus, aLevel) {
     var canvas = document.getElementsByTagName('canvas');
     var firstCanvasTag = canvas[0];
@@ -158,6 +208,7 @@ var increaseDifficulty = function(gameLevel) {
 // Place the player object in a variable called player
 var allEnemies = [];
 var allBonus = [];
+var allRocks = [];
 var totalBonus = 0;
 var gameLevel = 1;
 var bonusLevelDiv = document.createElement('div');
@@ -165,9 +216,9 @@ var bonusLevelDiv = document.createElement('div');
 var player = new Player(202.5, 383, 50);
 var enemy = new Enemy(0, Math.random() * 184 + 50, Math.random() * 256);
 allEnemies.push(enemy);
-//var bonus = new Bonus(Math.random() *  + 50,  Math.random() * 256);
 var bonus = new Bonus(Math.random() * 405 , Math.random() * 256);
 allBonus.push(bonus);
+
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function(e) {
@@ -175,7 +226,8 @@ document.addEventListener('keyup', function(e) {
         37: 'left',
         38: 'up',
         39: 'right',
-        40: 'down'
+        40: 'down',
+	70: 'f'  //fire
     };
 
     player.handleInput(allowedKeys[e.keyCode]);
