@@ -61,8 +61,8 @@ Rock.prototype.render = function() {
 Rock.prototype.update = function(dt) {
     this.y -= this.speed * dt;
     
-    if (hasRock === 0 && this.y < -10) {
-	this.y = -10;
+    if (hasRock === 0 && this.y < -17) {
+	this.y = -17;
     }
 
     checkHits(this, allEnemies);
@@ -78,6 +78,7 @@ var checkHits = function(aRock, allEnemies) {
 	&& allEnemies[i].x - aRock.x >= -88
 	&& allEnemies[i].x - aRock.x <= 73) {
 	console.log('hit');
+	++totalBugsKilled;
 	allEnemies[i].y = -1000;
 	}
 	++i
@@ -109,7 +110,7 @@ Player.prototype.update = function() {
 
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-    displayChanceBonusLevel(numOfChances, totalBonus, gameLevel);
+    displayGameStatus(numOfChances, totalBonus, totalBugsKilled, gameLevel);
 };
 
 Player.prototype.handleInput = function(keyPress) {
@@ -144,12 +145,12 @@ Player.prototype.throwRock = function() {
     }
 };
     
-var displayChanceBonusLevel = function(aChance, aBonus, aLevel) {
+var displayGameStatus = function(aChance, aBonus, aBug, aLevel) {
     var canvas = document.getElementsByTagName('canvas');
     var firstCanvasTag = canvas[0];
 
     // add player score and level to div element created
-    bonusLevelDiv.innerHTML = 'Chance: ' + aChance + ' / ' + 'Bonus: ' + aBonus
+    bonusLevelDiv.innerHTML = 'Chance: ' + aChance + ' / ' + 'Bugs: ' + aBug + ' / ' + 'Bonus: ' + aBonus
         + ' / ' + 'Level: ' + aLevel;
     document.body.insertBefore(bonusLevelDiv, firstCanvasTag[0]);
 };
@@ -230,6 +231,7 @@ var restart = function() {
     hasRock = 1;
     gameLevel = 1;
     totalBonus = 0;
+    totalBugsKilled = 0;
 
     player.x = 202.5;
     player.y = 383;
@@ -248,6 +250,7 @@ var allEnemies = [];
 var allBonus = [];
 var allRocks = [];
 var totalBonus = 0;
+var totalBugsKilled = 0;
 var gameLevel = 1;
 var bonusLevelDiv = document.createElement('div');
 
