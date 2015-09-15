@@ -51,7 +51,7 @@ var Rock = function(x, y) {
     this.x = x;
     this.y = y;
     this.sprite = 'images/Rock.png';
-    this.speed = 250;
+    this.speed = 400;
 };
 
 Rock.prototype.render = function() {
@@ -61,20 +61,17 @@ Rock.prototype.render = function() {
 Rock.prototype.update = function(dt) {
     this.y -= this.speed * dt;
     
-    if (this.y < -10) {
-	this.y = -1000;
+    if (hasRock === 0 && this.y < -10) {
+	this.y = -10;
     }
 
     checkHits(this, allEnemies);
+    checkPickup(this, player);
 };
 
 var checkHits = function(aRock, allEnemies) {
-    // console.log(allEnemies.length);
     var i = 0;
-    //for (i = 0; i < allEnemies.length; ++i) { // cann't use for loop?
     while (i < allEnemies.length) {
-	//	console.log(i);
-	console.log(allEnemies[i].x);
 	if (
 	allEnemies[i].y - aRock.y >= -77
 	&& allEnemies[i].y - aRock.y <= 73
@@ -85,10 +82,20 @@ var checkHits = function(aRock, allEnemies) {
 	}
 	++i
     }
-    
-// 	
-    //}
 };
+
+var checkPickup = function(aRock, player) {
+    if (
+	hasRock === 0
+	&& player.y - aRock.y >= -60
+	&& player.y - aRock.y <= 60
+	&& player.x - aRock.x >= -70
+	&& player.x - aRock.x <= 70) {
+	console.log('pickup');
+	aRock.y = -1000;
+	hasRock = 1;
+    }
+}
 var Player = function(x, y, speed) {
     this.x = x;
     this.y = y;
@@ -102,7 +109,7 @@ Player.prototype.update = function() {
 
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-    displayBonusLevel(totalBonus, gameLevel);
+    displayChanceBonusLevel(numOfChances, totalBonus, gameLevel);
 };
 
 Player.prototype.handleInput = function(keyPress) {
@@ -126,16 +133,23 @@ Player.prototype.handleInput = function(keyPress) {
 };
 
 Player.prototype.throwRock = function() {
-    var rock = new Rock(player.x, player.y - 30);
-    allRocks.push(rock);
+    //var rock = new Rock(player.x, player.y - 30);
+    //allRocks.push(rock);
+
+    //Reduce to only one rock per round.
+    if (hasRock) {
+	allRocks[0].x = player.x;
+	allRocks[0].y = player.y - 70;
+	hasRock = 0;
+    }
 };
     
-var displayBonusLevel = function(aBonus, aLevel) {
+var displayChanceBonusLevel = function(aChance, aBonus, aLevel) {
     var canvas = document.getElementsByTagName('canvas');
     var firstCanvasTag = canvas[0];
 
     // add player score and level to div element created
-    bonusLevelDiv.innerHTML = 'Bonus: ' + aBonus
+    bonusLevelDiv.innerHTML = 'Chance: ' + aChance + ' / ' + 'Bonus: ' + aBonus
         + ' / ' + 'Level: ' + aLevel;
     document.body.insertBefore(bonusLevelDiv, firstCanvasTag[0]);
 };
@@ -160,6 +174,10 @@ var checkCollision = function(anEnemy) {
         && player.y + 73 <= anEnemy.y + 135
         && player.x + 76 >= anEnemy.x + 11) {
         console.log('collided');
+	--numOfChances;
+	if (numOfChances == 0) {
+	    restart();
+	}
         player.x = 202.5;
         player.y = 383;
     }
@@ -203,6 +221,26 @@ var increaseDifficulty = function(gameLevel) {
     }
 };
 
+var restart = function() {
+    allEnemies.length = 0;
+    allRocks.length = 0;
+    allBonus.length = 0;
+
+    numOfChances = 3;
+    hasRock = 1;
+    gameLevel = 1;
+    totalBonus = 0;
+
+    player.x = 202.5;
+    player.y = 383;
+
+    var enemy = new Enemy(0, Math.random() * 184 + 50, Math.random() * 256);
+    allEnemies.push(enemy);
+    var bonus = new Bonus(Math.random() * 405 , Math.random() * 256);
+    allBonus.push(bonus);
+    var rock = new Rock(0, -1000);
+    allRocks.push(rock);
+};    
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
@@ -213,11 +251,15 @@ var totalBonus = 0;
 var gameLevel = 1;
 var bonusLevelDiv = document.createElement('div');
 
+var numOfChances = 3;
 var player = new Player(202.5, 383, 50);
 var enemy = new Enemy(0, Math.random() * 184 + 50, Math.random() * 256);
 allEnemies.push(enemy);
 var bonus = new Bonus(Math.random() * 405 , Math.random() * 256);
 allBonus.push(bonus);
+var rock = new Rock(0, -1000);
+allRocks.push(rock);
+var hasRock = 1;
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
@@ -229,6 +271,6 @@ document.addEventListener('keyup', function(e) {
         40: 'down',
 	70: 'f'  //fire
     };
-
+    
     player.handleInput(allowedKeys[e.keyCode]);
 });
