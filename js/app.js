@@ -147,7 +147,8 @@ Rock.prototype.checkPickup = function () {
         this.y = -1000;
         hasRock = 1;
     }
-}
+};
+
 var Player = function (x, y, speed) {
     this.x = x;
     this.y = y;
