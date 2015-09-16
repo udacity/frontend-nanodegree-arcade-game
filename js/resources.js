@@ -1,5 +1,5 @@
 /* Resources.js
- * This is simple an image loading utility. It eases the process of loading
+ * This is simply an image loading utility. It eases the process of loading
  * image files so that they can be used within your game. It also includes
  * a simple "caching" layer so it will reuse cached images if you attempt
  * to load the same image multiple times.
@@ -15,9 +15,9 @@
      */
     function load(urlOrArr) {
         if(urlOrArr instanceof Array) {
-            /* If the developer passed in an array of images
+            /* If the developer passed in an array of images,
              * loop through each value and call our image
-             * loader on that image file
+             * loader on that image file.
              */
             urlOrArr.forEach(function(url) {
                 _load(url);
@@ -70,7 +70,7 @@
         }
     }
 
-    /* This is used by developer's to grab references to images they know
+    /* This is used by developers to grab references to images they know
      * have been previously loaded. If an image is cached, this functions
      * the same as calling load() on that URL.
      */
@@ -79,7 +79,7 @@
     }
 
     /* This function determines if all of the images that have been requested
-     * for loading have in fact been completed loaded.
+     * for loading have in fact been completely loaded.
      */
     function isReady() {
         var ready = true;
