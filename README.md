@@ -5,8 +5,13 @@ Students should use this rubric: https://www.udacity.com/course/viewer#!/c-ud015
 
 for self-checking their submission.
 
+Instruction
+===============================
+Use chrome to open index.html and enjoy
+
 ===============================
 References:
+
 https://github.com/alexsales/frontend-nanodegree-arcade-game
 
 https://github.com/Sentry71/arcade

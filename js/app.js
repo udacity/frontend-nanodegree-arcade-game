@@ -1,5 +1,7 @@
+"use strict";
+
 // Enemies our player must avoid
-var Enemy = function(x, y, speed) {
+var Enemy = function (x, y, speed) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
     this.x = x;
@@ -12,108 +14,157 @@ var Enemy = function(x, y, speed) {
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
-Enemy.prototype.update = function(dt) {
+Enemy.prototype.update = function (dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
     this.x += this.speed * dt;
-    
+
     if (this.x >= 505) {
-	this.x = 0;
+        this.x = 0;
     }
 
-    checkCollision(this);
+    this.checkCollision();
+};
+
+Enemy.prototype.checkCollision = function () {
+    // check for collision between enemy and player
+    if (
+        player.y + 131 >= this.y + 90
+        && player.x + 25 <= this.x + 88
+        && player.y + 73 <= this.y + 135
+        && player.x + 76 >= this.x + 11) {
+        console.log('collided');
+        --numOfChances;
+        if (numOfChances == 0) {
+            restart();
+        }
+        player.x = 202.5;
+        player.y = 383;
+    }
+
+    if (player.y + 10 <= 0) {
+        player.x = 202.5;
+        player.y = 383;
+        console.log('next level');
+
+        gameLevel += 1;
+        increaseDifficulty(gameLevel);
+    }
+
+    if (player.y > 383) {
+        player.y = 383;
+    }
+    if (player.x > 402.5) {
+        player.x = 402.5;
+    }
+    if (player.x < 2.5) {
+        player.x = 2.5;
+    }
 };
 
 // Draw the enemy on the screen, required method for game
-Enemy.prototype.render = function() {
+Enemy.prototype.render = function () {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-var Bonus = function(x, y) {
+var Bonus = function (x, y) {
     this.x = x;
     this.y = y;
     this.sprite = 'images/Star.png';
 };
 
-Bonus.prototype.render = function() {
+Bonus.prototype.render = function () {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-Bonus.prototype.update = function() {
-    checkBonus(this);
+Bonus.prototype.update = function () {
+    this.checkBonus();
 };
+
+Bonus.prototype.checkBonus = function () {
+    if (
+        player.y - this.y >= -77
+        && player.y - this.y <= 73
+        && player.x - this.x >= -88
+        && player.x - this.x <= 73) {
+        console.log('bonus');
+        ++totalBonus;
+        this.x = -100;
+    }
+};
+
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
 
-var Rock = function(x, y) {
+var Rock = function (x, y) {
     this.x = x;
     this.y = y;
     this.sprite = 'images/Rock.png';
     this.speed = 400;
 };
 
-Rock.prototype.render = function() {
+Rock.prototype.render = function () {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-Rock.prototype.update = function(dt) {
+Rock.prototype.update = function (dt) {
     this.y -= this.speed * dt;
-    
+
     if (hasRock === 0 && this.y < -17) {
-	this.y = -17;
+        this.y = -17;
     }
 
-    checkHits(this, allEnemies);
-    checkPickup(this, player);
+    this.checkHits();
+    this.checkPickup();
 };
 
-var checkHits = function(aRock, allEnemies) {
+Rock.prototype.checkHits = function () {
     var i = 0;
     while (i < allEnemies.length) {
-	if (
-	allEnemies[i].y - aRock.y >= -77
-	&& allEnemies[i].y - aRock.y <= 73
-	&& allEnemies[i].x - aRock.x >= -88
-	&& allEnemies[i].x - aRock.x <= 73) {
-	console.log('hit');
-	++totalBugsKilled;
-	allEnemies[i].y = -10000;
-	}
-	++i
+        if (
+            allEnemies[i].y - this.y >= -77
+            && allEnemies[i].y - this.y <= 73
+            && allEnemies[i].x - this.x >= -88
+            && allEnemies[i].x - this.x <= 73) {
+            console.log('hit');
+            ++totalBugsKilled;
+            allEnemies[i].y = -10000;
+        }
+        ++i
     }
 };
 
-var checkPickup = function(aRock, player) {
+Rock.prototype.checkPickup = function () {
     if (
-	hasRock === 0
-	&& player.y - aRock.y >= -60
-	&& player.y - aRock.y <= 60
-	&& player.x - aRock.x >= -70
-	&& player.x - aRock.x <= 70) {
-	console.log('pickup');
-	aRock.y = -1000;
-	hasRock = 1;
+        hasRock === 0
+        && player.y - this.y >= -60
+        && player.y - this.y <= 60
+        && player.x - this.x >= -70
+        && player.x - this.x <= 70) {
+        console.log('pickup');
+        this.y = -1000;
+        hasRock = 1;
     }
 }
-var Player = function(x, y, speed) {
+var Player = function (x, y, speed) {
     this.x = x;
     this.y = y;
     this.speed = speed;
     this.sprite = 'images/char-boy.png';
 };
 
-Player.prototype.update = function() {
+Player.prototype.update = function () {
     // function not needed right now
 };
 
-Player.prototype.render = function() {
+Player.prototype.render = function () {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     displayGameStatus(numOfChances, totalBonus, totalBugsKilled, gameLevel);
 };
 
-Player.prototype.handleInput = function(keyPress) {
+Player.prototype.handleInput = function (keyPress) {
     if (keyPress == 'left') {
         player.x -= player.speed;
     }
@@ -127,25 +178,25 @@ Player.prototype.handleInput = function(keyPress) {
         player.y += player.speed - 20;
     }
     if (keyPress == 'f') {
-	this.throwRock();
+        this.throwRock();
     }
     console.log('keyPress is: ' + keyPress);
-    console.log(player.x + ' ' +  player.y);
+    console.log(player.x + ' ' + player.y);
 };
 
-Player.prototype.throwRock = function() {
+Player.prototype.throwRock = function () {
     //var rock = new Rock(player.x, player.y - 30);
     //allRocks.push(rock);
 
     //Reduce to only one rock per round.
     if (hasRock) {
-	allRocks[0].x = player.x;
-	allRocks[0].y = player.y - 70;
-	hasRock = 0;
+        allRocks[0].x = player.x;
+        allRocks[0].y = player.y - 70;
+        hasRock = 0;
     }
 };
-    
-var displayGameStatus = function(aChance, aBonus, aBug, aLevel) {
+
+var displayGameStatus = function (aChance, aBonus, aBug, aLevel) {
     var canvas = document.getElementsByTagName('canvas');
     var firstCanvasTag = canvas[0];
 
@@ -155,55 +206,7 @@ var displayGameStatus = function(aChance, aBonus, aBug, aLevel) {
     document.body.insertBefore(bonusLevelDiv, firstCanvasTag[0]);
 };
 
-var checkBonus = function(aBonus) {
-        if (
-	player.y - aBonus.y >= -77
-	&& player.y - aBonus.y <= 73
-	&& player.x - aBonus.x >= -88
-	&& player.x - aBonus.x <= 73) {
-	console.log('bonus');
-	++totalBonus;
-	aBonus.x = -100;
-    }
-}
-
-var checkCollision = function(anEnemy) {
-    // check for collision between enemy and player
-    if (
-        player.y + 131 >= anEnemy.y + 90
-        && player.x + 25 <= anEnemy.x + 88
-        && player.y + 73 <= anEnemy.y + 135
-        && player.x + 76 >= anEnemy.x + 11) {
-        console.log('collided');
-	--numOfChances;
-	if (numOfChances == 0) {
-	    restart();
-	}
-        player.x = 202.5;
-        player.y = 383;
-    }
-    
-    if (player.y + 10 <= 0) {        
-        player.x = 202.5;
-        player.y = 383;
-        console.log('next level');
-
-	gameLevel += 1;
-	increaseDifficulty(gameLevel);
-    }
-
-    if (player.y > 383 ) {
-        player.y = 383;
-    }
-    if (player.x > 402.5) {
-        player.x = 402.5;
-    }
-    if (player.x < 2.5) {
-        player.x = 2.5;
-    }
-};
-
-var increaseDifficulty = function(gameLevel) {
+var increaseDifficulty = function (gameLevel) {
     allEnemies.length = 0;
     allBonus.length = 0;
 
@@ -211,14 +214,14 @@ var increaseDifficulty = function(gameLevel) {
         var enemy = new Enemy(0, Math.random() * 184 + 50, Math.random() * 256);
         allEnemies.push(enemy);
     }
-    
-    for (var i = 0; i <= gameLevel/2 + 1; ++i) {
-	var bonus = new Bonus(Math.random() * 405 , Math.random() * 256);
-	allBonus.push(bonus);
+
+    for (var i = 0; i <= gameLevel / 2 + 1; ++i) {
+        var bonus = new Bonus(Math.random() * 405, Math.random() * 256);
+        allBonus.push(bonus);
     }
 };
 
-var restart = function() {
+var restart = function () {
     allEnemies.length = 0;
     allRocks.length = 0;
     allBonus.length = 0;
@@ -234,11 +237,11 @@ var restart = function() {
 
     var enemy = new Enemy(0, Math.random() * 184 + 50, Math.random() * 256);
     allEnemies.push(enemy);
-    var bonus = new Bonus(Math.random() * 405 , Math.random() * 256);
+    var bonus = new Bonus(Math.random() * 405, Math.random() * 256);
     allBonus.push(bonus);
     var rock = new Rock(0, -1000);
     allRocks.push(rock);
-};    
+};
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
@@ -254,7 +257,7 @@ var numOfChances = 3;
 var player = new Player(202.5, 383, 50);
 var enemy = new Enemy(0, Math.random() * 184 + 50, Math.random() * 256);
 allEnemies.push(enemy);
-var bonus = new Bonus(Math.random() * 405 , Math.random() * 256);
+var bonus = new Bonus(Math.random() * 405, Math.random() * 256);
 allBonus.push(bonus);
 var rock = new Rock(0, -1000);
 allRocks.push(rock);
@@ -262,14 +265,14 @@ var hasRock = 1;
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
-document.addEventListener('keyup', function(e) {
+document.addEventListener('keyup', function (e) {
     var allowedKeys = {
         37: 'left',
         38: 'up',
         39: 'right',
         40: 'down',
-	70: 'f'  //fire
+        70: 'f'  //fire
     };
-    
+
     player.handleInput(allowedKeys[e.keyCode]);
 });
