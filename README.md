@@ -7,7 +7,11 @@ for self-checking their submission.
 
 Instruction
 ===============================
-Use chrome to open index.html and enjoy
+Use chrome to open index.html or Click
+
+http://phddone.github.io/frontend-nanodegree-arcade-game/
+
+Enjoy!
 
 ===============================
 References:
