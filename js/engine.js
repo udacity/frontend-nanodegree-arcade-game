@@ -92,8 +92,14 @@ var Engine = (function(global) {
      */
     function updateEntities(dt) {
         allEnemies.forEach(function(enemy) {
-            enemy.update(dt);
-        });
+	    enemy.update(dt);
+	});
+	allBonus.forEach(function(bonus) {
+	    bonus.update();
+	});
+	allRocks.forEach(function(rock) {
+	    rock.update(dt);
+	});
         player.update();
     }
 
@@ -151,6 +157,13 @@ var Engine = (function(global) {
         allEnemies.forEach(function(enemy) {
             enemy.render();
         });
+	
+	allBonus.forEach(function(bonus) {
+	    bonus.render();
+	});
+	allRocks.forEach(function(rock) {
+	    rock.render();
+	});
 
         player.render();
     }
@@ -172,7 +185,9 @@ var Engine = (function(global) {
         'images/water-block.png',
         'images/grass-block.png',
         'images/enemy-bug.png',
-        'images/char-boy.png'
+        'images/char-boy.png',
+	'images/Star.png',
+	'images/Rock.png'
     ]);
     Resources.onReady(init);
 
