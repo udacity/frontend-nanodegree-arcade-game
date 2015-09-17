@@ -132,7 +132,7 @@ Rock.prototype.checkHits = function () {
             ++totalBugsKilled;
             allEnemies[i].y = -10000;
         }
-        ++i
+        ++i;
     }
 };
 
@@ -238,8 +238,10 @@ var restart = function () {
 
     var enemy = new Enemy(0, Math.random() * 184 + 50, Math.random() * 256);
     allEnemies.push(enemy);
+
     var bonus = new Bonus(Math.random() * 405, Math.random() * 256);
     allBonus.push(bonus);
+
     var rock = new Rock(0, -1000);
     allRocks.push(rock);
 };
@@ -256,12 +258,16 @@ var bonusLevelDiv = document.createElement('div');
 
 var numOfChances = 3;
 var player = new Player(202.5, 383, 50);
+
 var enemy = new Enemy(0, Math.random() * 184 + 50, Math.random() * 256);
 allEnemies.push(enemy);
+
 var bonus = new Bonus(Math.random() * 405, Math.random() * 256);
 allBonus.push(bonus);
+
 var rock = new Rock(0, -1000);
 allRocks.push(rock);
+
 var hasRock = 1;
 
 // This listens for key presses and sends the keys to your

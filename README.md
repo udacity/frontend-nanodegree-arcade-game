@@ -11,6 +11,13 @@ Use chrome to open index.html or Click
 
 http://phddone.github.io/frontend-nanodegree-arcade-game/
 
+Use up, down, left, right to move.
+
+
+Use F to throw a rock
+
+Remember to pickup the rock after throwing!
+
 Enjoy!
 
 ===============================
