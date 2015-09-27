@@ -1,4 +1,4 @@
-In addition to the rubrik, here are some notes to develop a process for creating the arcade game.
+In addition to the rubric, here are some notes to develop a process for creating the arcade game.
 
 Open index.html in Chrome.
 
@@ -8,7 +8,10 @@ allEnemies is not defined.
 
 In resources.js
 
-There is an anonymous function. At the end of the file - we invoke IIFE - not colluding the namespace.
+There is an anonymous function. At the end of the file - we invoke IIFE -
+https://en.wikipedia.org/wiki/Immediately-invoked_function_expression
+"An immediately-invoked function expression (or IIFE, pronounced "iffy"[1]) is a JavaScript design pattern which produces a lexical scope using JavaScript's function scoping. Immediately-invoked function expressions can be used to avoid variable hoisting from within blocks, protect against polluting the global environment and simultaneously allow public access to methods while retaining privacy for variables defined within the function. This pattern has been referred to as a self-executing anonymous function,[2] but Ben Alman introduced the term IIFE as a more semantically accurate term for the pattern, shortly after its discussion arose on comp.lang.javascript.[1][3] [4]"
+ not colluding the namespace.
 
 window.Resources is not defined.
 get()
