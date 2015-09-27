@@ -1,0 +1,31 @@
+In addition to the rubrik, here are some notes to develop a process for creating the arcade game.
+
+Open index.html in Chrome.
+
+alt + cmd + I to open developer tools.
+
+allEnemies is not defined.
+
+In resources.js
+
+There is an anonymous function. At the end of the file - we invoke IIFE - not colluding the namespace.
+
+window.Resources is not defined.
+get()
+isReady()
+load()
+onReady()
+
+In this project:
+
+Prototype functions
+
+
+
+Later:
+
+Use resources.js and / or engine.js
+
+How to add levels.
+
+How to add points.
