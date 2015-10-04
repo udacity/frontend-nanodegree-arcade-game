@@ -59,14 +59,14 @@ Player.prototype.handleInput = function () {
 var allEnemies = [];
 
 for (var i = 0; i < 3; i++) {
-    allEnemies.push(new Enemy(-60, 60 + (60 * i), 60));
+    allEnemies.push(new Enemy(-60, 60 + (83 * i), 60));
 }
 
 
 
 // Place the player object in a variable called player
 
-var player = new Player(200,200);
+var player = new Player(200, 400);
 
 
 // This listens for key presses and sends the keys to your
