@@ -59,7 +59,7 @@ Player.prototype.handleInput = function () {
 var allEnemies = [];
 
 for (var i = 0; i < 3; i++) {
-    allEnemies.push(new Enemy(-60, 60 + 1 * i, 60));
+    allEnemies.push(new Enemy(-60, 60 + (60 * i), 60));
 }
 
 
