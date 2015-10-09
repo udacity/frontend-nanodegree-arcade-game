@@ -74,11 +74,11 @@ Player.prototype.handleInput = function (key) {
     }
   }
   else if (key === 'up') {
-    if (this.y === -50){
-      this.y = -50;
+    if (this.y === 68){ // not sure why this can't be -15
+      this.resetPosition();
     }
     else {
-      this.y -= 90;
+      this.y -= 83;
       console.log("up", this.x, this.y);
     }
   }
@@ -87,13 +87,18 @@ Player.prototype.handleInput = function (key) {
       this.y = 400;
     }
     else {
-      this.y += 90;
+      this.y += 83;
       console.log("down", this.x, this.y);
     }
   }
   
   
 };
+
+Player.prototype.resetPosition = function () {
+  this.x = 200;
+  this.y = 400;
+}
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
