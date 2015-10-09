@@ -61,13 +61,35 @@ Player.prototype.handleInput = function (key) {
     }
     else {
       this.x -= 100;
-      console.log("left", this.x);
+      console.log("left", this.x, this.y);
     }
   }
   else if (key === 'right') {
-    
-    this.x += 100;
-    console.log("right");
+    if (this.x === 400) {
+      this.x = 400;
+    }
+    else {
+      this.x += 100;
+      console.log("right", this.x, this.y);
+    }
+  }
+  else if (key === 'up') {
+    if (this.y === -50){
+      this.y = -50;
+    }
+    else {
+      this.y -= 90;
+      console.log("up", this.x, this.y);
+    }
+  }
+  else if (key === 'down') {
+    if (this.y === 400) {
+      this.y = 400;
+    }
+    else {
+      this.y += 90;
+      console.log("down", this.x, this.y);
+    }
   }
   
   
