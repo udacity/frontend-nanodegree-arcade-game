@@ -54,7 +54,23 @@ Player.prototype.render = function () {
 
 // a handleInput() method.
 
-Player.prototype.handleInput = function () {
+Player.prototype.handleInput = function (key) {
+  if (key === 'left') {
+    if (this.x === 0) {
+      this.x = 0;
+    }
+    else {
+      this.x -= 100;
+      console.log("left", this.x);
+    }
+  }
+  else if (key === 'right') {
+    
+    this.x += 100;
+    console.log("right");
+  }
+  
+  
 };
 
 // Now instantiate your objects.
