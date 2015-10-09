@@ -22,7 +22,11 @@ Enemy.prototype.update = function (dt) {
 };
 
 
-
+function randomSpeed (min, max) {
+  var min = 50;
+  var max = 200;
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
 
 // Draw the enemy on the screen, required method for game
@@ -58,8 +62,11 @@ Player.prototype.handleInput = function () {
 
 var allEnemies = [];
 
+//var enemy4 = new Enemy (-60, 60 + (83 * 3), 80);
+//allEnemies.push(enemy4);
+
 for (var i = 0; i < 3; i++) {
-    allEnemies.push(new Enemy(-60, 60 + (83 * i), 60));
+    allEnemies.push(new Enemy(-60, 60 + (83 * i), randomSpeed()));
 }
 
 
