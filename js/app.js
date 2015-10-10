@@ -18,13 +18,23 @@ Enemy.prototype.update = function (dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
+    if (this.x > 490) {
+      this.x = -50;
+      this.speed = randomSpeed();
+    }
+  else {
     this.x = this.x += this.speed*dt;
+
+  }
+  if (player.x + 80 >= this.x + 20 && player.x + 20 <= this.x + 80 && player.y + 50 <= this.y + 120 && player.y + 120 >= this.y + 50) {
+    player.resetPosition();
+  }
 };
 
 
 function randomSpeed (min, max) {
   var min = 50;
-  var max = 200;
+  var max = 400;
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
@@ -74,7 +84,7 @@ Player.prototype.handleInput = function (key) {
     }
   }
   else if (key === 'up') {
-    if (this.y === 68){ // not sure why this can't be -15
+    if (this.y === 60){ // not sure why this can't be -15
       this.resetPosition();
     }
     else {
@@ -96,8 +106,8 @@ Player.prototype.handleInput = function (key) {
 };
 
 Player.prototype.resetPosition = function () {
-  this.x = 200;
-  this.y = 400;
+  this.x = 200; // 200
+  this.y = 392; // 392
 }
 
 // Now instantiate your objects.
@@ -109,14 +119,14 @@ var allEnemies = [];
 //allEnemies.push(enemy4);
 
 for (var i = 0; i < 3; i++) {
-    allEnemies.push(new Enemy(-60, 60 + (83 * i), randomSpeed()));
+    allEnemies.push(new Enemy(-50, 60 + (83 * i), randomSpeed()));
 }
 
 
 
 // Place the player object in a variable called player
 
-var player = new Player(200, 400);
+var player = new Player(200, 392);
 
 
 // This listens for key presses and sends the keys to your
