@@ -71,34 +71,46 @@ Player.prototype.render = function () {
 // a handleInput() method.
 
 Player.prototype.handleInput = function (key) {
-  if (key === 'left') {
-    if (this.x === 0) {
-      this.x = 0;
-    } else {
-      this.x -= 100;
-      console.log("left", this.x, this.y);
-    }
-  } else if (key === 'right') {
-    if (this.x === 400) {
-      this.x = 400;
-    } else {
-      this.x += 100;
-      console.log("right", this.x, this.y);
-    }
-  } else if (key === 'up') {
-    if (this.y === -23) { // not sure why this can't be -15
-      this.resetPosition();
-    } else {
-      this.y -= 83;
-      console.log("up", this.x, this.y);
-    }
-  } else if (key === 'down') {
-    if (this.y === 400) {
-      this.y = 400;
-    } else {
-      this.y += 83;
-      console.log("down", this.x, this.y);
-    }
+  switch (key) {
+    case 'left':
+      if (this.x === 0) {
+        this.x = 0;
+      }
+      else {
+        this.x -= 100;
+        console.log("left", this.x, this.y);
+      }
+      break;
+      
+    case 'right':
+      if (this.x === 400) {
+        this.x = 400;
+      }
+      else {
+        this.x += 100;
+        console.log("right", this.x, this.y);
+      }
+      break;
+    
+    case 'up':
+      if (this.y === -23) { 
+        this.resetPosition();
+      }
+      else {
+        this.y -= 83;
+        console.log("up", this.x, this.y);
+      }
+      break;
+    
+    case 'down':
+      if (this.y === 400) {
+        this.y = 400;
+      }
+      else {
+        this.y += 83;
+        console.log("down", this.x, this.y);
+      }
+      break;
   }
 
 
