@@ -9,12 +9,6 @@ var Enemy = function (startX, startY, speed) {
   // The image/sprite for our enemies, this uses
   // a helper we've provided to easily load images
   this.sprite = 'images/enemy-bug.png';
-  this.box = {
-    top: this.y+72,
-    bottom: this.y + 148,
-    left: this.x,
-    right: this.x + 100
-  }
 
 };
 
@@ -64,12 +58,6 @@ var Player = function (startX, startY) {
   this.y = startY;
 
   this.sprite = 'images/char-horn-girl.png';
-  this.box = {
-    top: this.y+54,
-    bottom: this.y + 148,
-    left: this.x,
-    right: this.x + 90
-  }
 };
 
 // This class requires an update(), render() and
