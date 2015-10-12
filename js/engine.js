@@ -80,6 +80,9 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
+        
+        // refresh canvas per sebastian_6082141025
+        ctx.clearRect(0,0,canvas.width,canvas.height);
         // checkCollisions();
     }
 

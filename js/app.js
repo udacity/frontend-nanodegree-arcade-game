@@ -86,7 +86,7 @@ Player.prototype.handleInput = function (key) {
       console.log("right", this.x, this.y);
     }
   } else if (key === 'up') {
-    if (this.y === 60) { // not sure why this can't be -15
+    if (this.y === -23) { // not sure why this can't be -15
       this.resetPosition();
     } else {
       this.y -= 83;
