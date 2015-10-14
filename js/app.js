@@ -1,3 +1,14 @@
+// Hello.
+//
+// This is JSHint, a tool that helps to detect errors and potential
+// problems in your JavaScript code.
+//
+// To start, simply enter some JavaScript anywhere on this page. Your
+// report will appear on the right side.
+//
+// Additionally, you can toggle specific options in the Configure
+// menu.
+
 // Enemies our player must avoid
 var Enemy = function (startX, startY, speed) {
   // Variables applied to each of our instances go here,
@@ -40,8 +51,8 @@ Enemy.prototype.update = function (dt) {
 
 
 function randomSpeed(min, max) {
-  var min = 50;
-  var max = 400;
+  min = 50;
+  max = 400;
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
@@ -119,7 +130,7 @@ Player.prototype.handleInput = function (key) {
 Player.prototype.resetPosition = function () {
   this.x = 200; // 200
   this.y = 392; // 392
-}
+};
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
@@ -154,7 +165,7 @@ document.addEventListener('keyup', function (e) {
 });
 
 ///
-clickLocations = [];
+var clickLocations = [];
 
 function logClicks(x, y) {
   clickLocations.push({
@@ -168,5 +179,5 @@ $(document).click(function (loc) {
   // your code goes here!
   var x = loc.pageX;
   var y = loc.pageY;
-  logClicks(x, y)
+  logClicks(x, y);
 });
