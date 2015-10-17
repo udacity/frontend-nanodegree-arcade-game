@@ -1,8 +1,20 @@
+//setting tile width and height values and variables
+/* Defining block height & width for later use */
+var tileWidth = 101;
+var tileHeight = 83;
+
 // Enemies our player must avoid
 var Enemy = function() {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
-
+    /* I will add x, y and speed
+       The keyword this refers to <global> */
+    this.x = 505 - Math.floor((Math.random() * 5)) * tileWidth;
+    /* Return a random number between 1 and 5 as per tutorial at
+      http://www.w3schools.com/jsref/jsref_random.asp
+      We floor the random number so as to get a whole number and not a decimal */
+    this.y = Math.floor((Math.random() * 5) + 1) * tileHeight;
+    this.speed = Math.floor(Math.random() * 200) + tileHeight;
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
