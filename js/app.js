@@ -1,5 +1,4 @@
-//setting tile width and height values and variables
-/* Defining block height & width for later use */
+/* setting tile width and height values and variables */
 var tileWidth = 101;
 var tileHeight = 83;
 
@@ -9,11 +8,11 @@ var Enemy = function() {
     // we've provided one for you to get started
     /* I will add x, y and speed
        The keyword this refers to <global> */
-    this.x = 505 - Math.floor((Math.random() * 5)) * tileWidth;
-    /* Return a random number between 1 and 5 as per tutorial at
+    this.x = tileWidth - (Math.floor((Math.random())));
+    /* Return a random number between 1 and 4 as per tutorial at
       http://www.w3schools.com/jsref/jsref_random.asp
       We floor the random number so as to get a whole number and not a decimal */
-    this.y = Math.floor((Math.random() * 5) + 1) * tileHeight;
+    this.y = Math.floor((Math.random() * 4) + 1) * tileHeight;
     this.speed = Math.floor(Math.random() * 200) + tileHeight;
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
@@ -27,8 +26,8 @@ Enemy.prototype.update = function(dt) {
     // which will ensure the game runs at the same speed for
     // all computers.
     this.x += this.speed * dt;
-    if (this.x > 505) {
-        this.x = this.reset();
+    if (this.x > (tileWidth * 5)) {
+        this.x = -100;
     }
 };
 
@@ -43,6 +42,9 @@ Enemy.prototype.render = function() {
 
 var Player = function(x, y) {
     //Enemy.call(this, x, y);
+    this.x = 2 * tileWidth;
+    this.y = 5 * tileHeight;
+    this.sprite = 'images/char-pink-girl.png';
 };
 Player.prototype = Object.create(Enemy.prototype);
 Player.prototype.constructor = Player;
@@ -53,9 +55,19 @@ Player.prototype.render = function( ) {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-Player.prototype.handleInput = function( ) {
-      /* … */
+Player.prototype.handleInput = function(e) {
+      console.log(e);
+    if (e == 'right' && this.x < (tileWidth * 5)){
+
+  } else if (e == 'left' && this.x > 0) {
+
+  } else if (e == 'up' && this.y > 0) {
+
+  } else if (e == 'down' && this.y < (tileHeight * 6)) {
+    this.y = this.y + tileHeight;
+  }
 };
+
 Player.prototype.checkCollisions = function( ) {
       /* … */
 };
