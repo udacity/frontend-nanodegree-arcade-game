@@ -93,7 +93,7 @@ Player.prototype.handleInput = function (key) {
       break;
     
     case 'up':
-      if (this.y === -23) { 
+      if (this.y === 60) { 
         this.resetPosition();
       }
       else {
