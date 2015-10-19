@@ -25,7 +25,7 @@ Enemy.prototype.update = function(dt) {
     if (this.col>5){
         this.x=0;
         this.y=83/2+Math.round(Math.random())*83+Math.round(Math.random())*83;
-    };
+    }
     if (this.col==player.col&&this.row==player.row){
         player.x=101*2;
         player.y=83*5-83/2;
@@ -68,23 +68,23 @@ Player.prototype.handleInput = function(key) {
 
     if (key=='up'&&this.row>0){
         this.y=this.y-83;
-    };
+    }
     if (key=='down'&&this.row<5){
         this.y=this.y+83;
-    };
+    }
     if (key=='left'&&this.col>0){
         this.x=this.x-101;
-    };
+    }
     if (key=='right'&&this.col<4){
         this.x=this.x+101;
     }
     this.col=Math.round(this.x/101);
     this.row=Math.round(this.y/83);
-    if (this.row==0){
+    if (this.row===0){
         this.x=101*2;
         this.y=83*5-83/2;
-    };
- 
+    }
+
 };
 
 // This listens for key presses and sends the keys to your
