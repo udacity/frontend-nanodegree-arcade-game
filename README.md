@@ -1,6 +1,13 @@
-frontend-nanodegree-arcade-game
-===============================
+Manual to Frogger game.
 
-Students should use this rubric: https://www.udacity.com/course/viewer#!/c-ud015/l-3072058665/m-3072588797
+How to Start Game
+1. Open index.html file with web browser.
+2. In the browser window you will see the game executing.
 
-for self-checking their submission.
+How to Play
+1. The main purpose of the game is to reach the water by you hero (boy).
+2. You can move the boy: up, down, left or right using keyboard.
+3. There are bugs trying to stop the boy. After collision with bug younshould start from the beginning.
+
+Good luck!
+
