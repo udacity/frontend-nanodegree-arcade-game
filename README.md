@@ -1,6 +1,19 @@
-frontend-nanodegree-arcade-game
+Frogger Arcade Game
 ===============================
 
-Students should use this rubric: https://www.udacity.com/course/viewer#!/c-ud015/l-3072058665/m-3072588797
+Welcome to my Frontend Nanodegree Arcade Game Clone!
 
-for self-checking their submission.
+This game is a basic clone of the classic Frogger arcade game.
+
+**Goal:** Move the heroine from the bottom of the board to the river at the top of the board!
+
+**Game play:**
+
+1. Game starts automatically.
+2. Avoid getting hit by the enemy bugs! 
+3. Game will restart automatically after a collision with a bug, and after reaching the river.
+
+**Controls:**
+Use the 4 arrow keys (Left, Right, Up, Down)
+
+I hope you like my game clone, and enjoying playing it!
