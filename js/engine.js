@@ -80,6 +80,9 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
+        
+        // refresh canvas per sebastian_6082141025
+        ctx.clearRect(0,0,canvas.width,canvas.height);
         // checkCollisions();
     }
 
@@ -172,7 +175,8 @@ var Engine = (function(global) {
         'images/water-block.png',
         'images/grass-block.png',
         'images/enemy-bug.png',
-        'images/char-boy.png'
+        'images/char-boy.png',
+        'images/char-horn-girl.png'
     ]);
     Resources.onReady(init);
 
