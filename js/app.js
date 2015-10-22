@@ -3,7 +3,7 @@ var tileWidth = 101;
 var tileHeight = 83;
 
 // Enemies our player must avoid
-var Enemy = function() {
+var Enemy = function(x,y,speed) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
     /* I will add x, y and speed
@@ -27,7 +27,8 @@ Enemy.prototype.update = function(dt) {
     // all computers.
     this.x += this.speed * dt;
     if (this.x > (tileWidth * 5)) {
-        this.x = -100;
+        this.x = -tileHeight;
+    // I don't understand why the above line works
     }
 };
 
@@ -40,37 +41,68 @@ Enemy.prototype.render = function() {
 // This class requires an update(), render() and
 // a handleInput() method.
 
-var Player = function(x, y) {
+var Player = function(x,y,speed) {
     //Enemy.call(this, x, y);
     this.x = 2 * tileWidth;
     this.y = 5 * tileHeight;
     this.sprite = 'images/char-pink-girl.png';
 };
-Player.prototype = Object.create(Enemy.prototype);
-Player.prototype.constructor = Player;
-Player.prototype.update = function( ) {
-      /* … */
+//Player.prototype = Object.create(Enemy.prototype);
+//Player.prototype.constructor = Player;
+Player.prototype.update = function(dt) {
+    this.checkCollisions();
+    this.win();
 };
 Player.prototype.render = function( ) {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
 Player.prototype.handleInput = function(e) {
-      console.log(e);
-    if (e == 'right' && this.x < (tileWidth * 5)){
+    var keyOK = (typeof e !== 'undefined');
+    console.log(e);
 
-  } else if (e == 'left' && this.x > 0) {
+    var xInBound = (this.x >= 0 && this.x <=(tileWidth * 4));
+    var yInBound = (this.y >= 0 && this.y <=(tileHeight * 5));
 
-  } else if (e == 'up' && this.y > 0) {
-
-  } else if (e == 'down' && this.y < (tileHeight * 6)) {
-    this.y = this.y + tileHeight;
-  }
+    if (keyOK && xInBound && yInBound) {
+      if (e == 'right' && this.x < (tileWidth * 4)){
+          this.x = this.x + tileWidth;
+      } else if (e == 'left' && this.x > 0) {
+          this.x = this.x - tileWidth;
+      } else if (e == 'up' && this.y > 0) {
+          this.y = this.y - tileHeight;
+      } else if (e == 'down' && this.y < (tileHeight * 5)) {
+        this.y = this.y + tileHeight;
+      }
+    }
 };
 
 Player.prototype.checkCollisions = function( ) {
-      /* … */
+    for (i = 0; i < allEnemies.length; i++) {
+
+            if (this.x < allEnemies[i].x + 50 && this.x + 50 > allEnemies[i].x &&
+                this.y < allEnemies[i].y + 30 && this.y + 30 > allEnemies[i].y) {
+                this.reset();
+                alert("Oopsie");
+            }
+        }
 };
+
+Player.prototype.win = function() {
+    if (this.y == 0) {
+      // what is the difference between == and ===
+        this.reset();
+        alert("You made it!");
+
+    }
+};
+
+/** This function sends the player back to the start position. */
+Player.prototype.reset = function() {
+    this.x = 2 * tileWidth;
+    this.y = 5 * tileHeight;
+};
+
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
