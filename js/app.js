@@ -9,10 +9,12 @@ var Enemy = function() {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
     this.x = 0;
-    this.y = 0;
+    this.y = 166;
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
+    this.width = 101;
+    this.height = 171;
 };
 
 // Update the enemy's position, required method for game
@@ -23,6 +25,9 @@ Enemy.prototype.update = function(dt) {
     // all computers.
     this.x += 200*dt;
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    if (this.x > 404) {
+      this.x = 0;
+    }
 };
 
 // Draw the enemy on the screen, required method for game
@@ -40,15 +45,17 @@ var Player = function() {
   this.dx = 0;
   this.dy = 0;
   this.sprite = 'images/char-boy.png';
+  this.width = 101;
+  this.height = 171;
 };
 
 Player.prototype.update = function() {
   this.x += this.dx;
   this.y += this.dy;
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+  this.checkCollsions();
   this.dx = 0;
   this.dy = 0;
-  //console.log("x: ",this.x,"y: ",this.y);
 };
 
 Player.prototype.render = function() {
@@ -57,29 +64,41 @@ Player.prototype.render = function() {
 
 Player.prototype.handleInput = function(key) {
   // Check the bounds, don't allow character to go out of screen
-  //console.log(key);
-  // x-max = 404
-  // x-min = 0
-  // y-min = 405
-  // y-max = -10
-
   if(key === 'left'){
+    // x-min = 0
     if( this.x > 0 ){
       this.dx = -101;
     }
   } else if (key === 'up') {
     if( this.y > -10 ){
+      // y-max = -10
       this.dy = -83;
     }
   } else if (key === 'down') {
     if( this.y < 405 ){
+      // y-min = 405
       this.dy = 83;
     }
   } else {
     if( this.x < 404 ){
+      // x-max = 404
       this.dx = 101;
     }
   }
+};
+
+Player.prototype.checkCollsions = function() {
+  var player = this;
+  allEnemies.forEach( function(enemy) {
+    //console.log(player.sprite);
+    // need to find the width
+    if (player.x < enemy.x + enemy.width &&
+      player.x + player.width > enemy.x &&
+      player.y < enemy.y + enemy.height &&
+      player.height + player.y > enemy.y) {
+          console.log('collision!');
+    }
+  });
 };
 
 // Now instantiate your objects.
