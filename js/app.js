@@ -8,13 +8,21 @@ var myCanvasHeight = myCanvas.height();
 var Enemy = function() {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
+
     this.x = 0;
     this.y = 166;
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
-    this.width = 101;
-    this.height = 171;
+    // Bug is 70 px tall and 101px wide
+    // Offset is 75px
+    this.boxWidth = 101;
+    this.boxHeight = 70;
+    this.boxTopOffset = 75;
+    this.boxSideOffset = 0;
+    //this.boxX = this.x + this.boxSideOffset;
+    this.boxY = this.y + this.boxTopOffset;
+    this.boxX = this.x;
 };
 
 // Update the enemy's position, required method for game
@@ -24,6 +32,7 @@ Enemy.prototype.update = function(dt) {
     // which will ensure the game runs at the same speed for
     // all computers.
     this.x += 200*dt;
+    this.boxX = this.x;
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     if (this.x > 404) {
       this.x = 0;
@@ -40,18 +49,26 @@ Enemy.prototype.render = function() {
 // a handleInput() method.
 
 var Player = function() {
+  // Box is 70px wide by 80px tall
+  // Offset at the top is 60px
   this.x = 202;
   this.y = 405;
   this.dx = 0;
   this.dy = 0;
   this.sprite = 'images/char-boy.png';
-  this.width = 101;
-  this.height = 171;
+  this.boxWidth = 70;
+  this.boxHeight = 80;
+  this.boxTopOffset = 60;
+  this.boxSideOffset = 15;
+  this.boxX = this.x + this.boxSideOffset;
+  this.boxY = this.y + this.boxTopOffset;
 };
 
 Player.prototype.update = function() {
   this.x += this.dx;
   this.y += this.dy;
+  this.boxX = this.x + this.boxSideOffset;
+  this.boxY = this.y + this.boxTopOffset;
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
   this.checkCollsions();
   this.dx = 0;
@@ -92,10 +109,11 @@ Player.prototype.checkCollsions = function() {
   allEnemies.forEach( function(enemy) {
     //console.log(player.sprite);
     // need to find the width
-    if (player.x < enemy.x + enemy.width &&
-      player.x + player.width > enemy.x &&
-      player.y < enemy.y + enemy.height &&
-      player.height + player.y > enemy.y) {
+    // console.log(enemy.boxX);
+    if (player.boxX < enemy.boxX + enemy.boxWidth &&
+      player.boxX + player.boxWidth > enemy.boxX &&
+      player.boxY < enemy.boxY + enemy.boxHeight &&
+      player.boxHeight + player.boxY > enemy.boxY) {
           console.log('collision!');
     }
   });
