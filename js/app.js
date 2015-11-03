@@ -51,6 +51,8 @@ Enemy.prototype.render = function() {
 var Player = function() {
   // Box is 70px wide by 80px tall
   // Offset at the top is 60px
+  this['x-default'] = 202;
+  this['y-default']= 405;
   this.x = 202;
   this.y = 405;
   this.dx = 0;
@@ -118,9 +120,15 @@ Player.prototype.checkCollsions = function() {
       player.boxHeight + player.boxY > enemy.boxY) {
           //console.log('collision!');
           //console.log(Engine);
-          console.log(currentState);
+          currentState = 'reset';
     }
   });
+};
+
+Player.prototype.reset = function() {
+  this.x = this['x-default'];
+  this.y = this['y-default'];
+  currentState = 'playing';
 };
 
 // Now instantiate your objects.

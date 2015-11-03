@@ -29,6 +29,7 @@ var Engine = (function(global) {
           'selectPlayer',
           'paused',
           'playing',
+          'reset',
           'end'
         ],
         lastTime;
@@ -55,9 +56,11 @@ var Engine = (function(global) {
          */
         update(dt);
         render();
-        
         //console.log(global.currentState);
-
+        if (global.currentState === 'reset') {
+          player.reset();
+        }
+        
         /* Set our lastTime variable which is used to determine the time delta
          * for the next time this function is called.
          */
