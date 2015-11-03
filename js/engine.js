@@ -48,28 +48,32 @@ var Engine = (function(global) {
          * would be the same for everyone (regardless of how fast their
          * computer is) - hurray time!
          */
-        var now = Date.now(),
-            dt = (now - lastTime) / 1000.0;
+         if (global.currentState === 'reset') {
+           // TODO: Reset the game instead?
+           player.reset();
+           allEnemies.forEach(function(enemy) {
+             enemy.reset();
+           });
+         } else if (global.currentState === 'playing') {
+           var now = Date.now(),
+               dt = (now - lastTime) / 1000.0;
 
-        /* Call our update/render functions, pass along the time delta to
-         * our update function since it may be used for smooth animation.
-         */
-        update(dt);
-        render();
-        //console.log(global.currentState);
-        if (global.currentState === 'reset') {
-          player.reset();
-        }
-        
-        /* Set our lastTime variable which is used to determine the time delta
-         * for the next time this function is called.
-         */
-        lastTime = now;
+           /* Call our update/render functions, pass along the time delta to
+            * our update function since it may be used for smooth animation.
+            */
+           update(dt);
+           render();
+           /* Set our lastTime variable which is used to determine the time delta
+            * for the next time this function is called.
+            */
+           lastTime = now;
 
-        /* Use the browser's requestAnimationFrame function to call this
-         * function again as soon as the browser is able to draw another frame.
-         */
-        win.requestAnimationFrame(main);
+           /* Use the browser's requestAnimationFrame function to call this
+            * function again as soon as the browser is able to draw another frame.
+            */
+           win.requestAnimationFrame(main);
+         }
+
     }
 
     /* This function does some initial setup that should only occur once,

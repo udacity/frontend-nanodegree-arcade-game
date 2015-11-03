@@ -1,5 +1,15 @@
 // TODO: Make a sprite superclass!!
+var Sprite = function() {
+  this['x-default'] = 0;
+  this['y-default'] = 0;
+  this.x = this['x-default'];
+  this.y = this['y-default'];
+};
 
+Sprite.prototype.setDefaultPosition = function(x, y) {
+  this['x-default'] = x;
+  this['y-default'] = y;
+};
 // Enemies our player must avoid
 var myCanvas = $('canvas');
 var myCanvasWidth = myCanvas.width();
@@ -42,6 +52,11 @@ Enemy.prototype.update = function(dt) {
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+Enemy.prototype.reset = function() {
+  this.x = this['x-default'];
+  this.y = this['y-default'];
 };
 
 // Now write your own player class
