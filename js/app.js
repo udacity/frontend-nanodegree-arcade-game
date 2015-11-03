@@ -1,6 +1,6 @@
+// TODO: Make a sprite superclass!!
 
 // Enemies our player must avoid
-
 var myCanvas = $('canvas');
 var myCanvasWidth = myCanvas.width();
 var myCanvasHeight = myCanvas.height();
@@ -96,11 +96,13 @@ Player.prototype.handleInput = function(key) {
       // y-min = 405
       this.dy = 83;
     }
-  } else {
+  } else if (key === 'right') {
     if( this.x < 404 ){
       // x-max = 404
       this.dx = 101;
     }
+  } else if (key === 'space') {
+    currentState = 'pause';
   }
 };
 
@@ -114,7 +116,9 @@ Player.prototype.checkCollsions = function() {
       player.boxX + player.boxWidth > enemy.boxX &&
       player.boxY < enemy.boxY + enemy.boxHeight &&
       player.boxHeight + player.boxY > enemy.boxY) {
-          console.log('collision!');
+          //console.log('collision!');
+          //console.log(Engine);
+          console.log(currentState);
     }
   });
 };
@@ -127,7 +131,6 @@ var b1 = new Enemy();
 var player = new Player();
 var allEnemies = [b1];
 
-
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function(e) {
@@ -135,7 +138,8 @@ document.addEventListener('keyup', function(e) {
         37: 'left',
         38: 'up',
         39: 'right',
-        40: 'down'
+        40: 'down',
+        32: 'space'
     };
 
     player.handleInput(allowedKeys[e.keyCode]);

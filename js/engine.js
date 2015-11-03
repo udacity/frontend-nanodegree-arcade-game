@@ -23,6 +23,14 @@ var Engine = (function(global) {
         win = global.window,
         canvas = doc.createElement('canvas'),
         ctx = canvas.getContext('2d'),
+        currentState = 'welcome',
+        states = [
+          'welcome',
+          'selectPlayer',
+          'paused',
+          'playing',
+          'end'
+        ],
         lastTime;
 
     canvas.width = 505;
@@ -47,6 +55,8 @@ var Engine = (function(global) {
          */
         update(dt);
         render();
+        
+        //console.log(global.currentState);
 
         /* Set our lastTime variable which is used to determine the time delta
          * for the next time this function is called.
@@ -180,4 +190,5 @@ var Engine = (function(global) {
      * from within their app.js files.
      */
     global.ctx = ctx;
+    global.currentState = currentState;
 })(this);
