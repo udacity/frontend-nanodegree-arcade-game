@@ -1,33 +1,50 @@
 // TODO: Make a sprite superclass!!
-var Sprite = function() {
-  this['x-default'] = 0;
-  this['y-default'] = 0;
+
+var Welcome = {
+  update: function() {
+
+  },
+  render: function() {
+    ctx.fillStyle = 'white';
+    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    ctx.font = '36pt Helvetica';
+    ctx.textSmoothingEnabled = true;
+    ctx.textAlign = 'center';
+    ctx.fillStyle = 'black';
+    ctx.fillText('FROGGER', ctx.canvas.width/2, ctx.canvas.height/2);
+  },
+  resetState: function() {
+    currentState = 'playing';
+  }
+};
+
+var Sprite = function(x, y) {
+  this['x-default'] = x;
+  this['y-default'] = y;
+  this.x = this['x-default'];
+  this.y = this['y-default'];
+  this.boxWidth = 101;
+  this.boxHeight = 70;
+};
+
+Sprite.prototype.reset = function(){
   this.x = this['x-default'];
   this.y = this['y-default'];
 };
-
-Sprite.prototype.setDefaultPosition = function(x, y) {
-  this['x-default'] = x;
-  this['y-default'] = y;
-};
 // Enemies our player must avoid
-var myCanvas = $('canvas');
-var myCanvasWidth = myCanvas.width();
-var myCanvasHeight = myCanvas.height();
+var myCanvasWidth = ctx.canvas.width;
+var myCanvasHeight = ctx.canvas.height;
 
-var Enemy = function() {
+var Enemy = function(x, y) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
-
-    this.x = 0;
-    this.y = 166;
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
+    Sprite.call(this, x, y);
+    this.speed = 100+Math.random()*200;
     this.sprite = 'images/enemy-bug.png';
     // Bug is 70 px tall and 101px wide
     // Offset is 75px
-    this.boxWidth = 101;
-    this.boxHeight = 70;
     this.boxTopOffset = 75;
     this.boxSideOffset = 0;
     //this.boxX = this.x + this.boxSideOffset;
@@ -35,17 +52,19 @@ var Enemy = function() {
     this.boxX = this.x;
 };
 
+Enemy.prototype = Object.create(Sprite.prototype);
+Enemy.prototype.constructor = Enemy;
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-    this.x += 200*dt;
+    this.x += this.speed*dt;
     this.boxX = this.x;
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-    if (this.x > 404) {
-      this.x = 0;
+    if (this.x > ctx.canvas.width + this.boxWidth) {
+      this.x = this['x-default'];
     }
 };
 
@@ -54,10 +73,6 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-Enemy.prototype.reset = function() {
-  this.x = this['x-default'];
-  this.y = this['y-default'];
-};
 
 // Now write your own player class
 // This class requires an update(), render() and
@@ -66,10 +81,8 @@ Enemy.prototype.reset = function() {
 var Player = function() {
   // Box is 70px wide by 80px tall
   // Offset at the top is 60px
-  this['x-default'] = 202;
-  this['y-default']= 405;
-  this.x = 202;
-  this.y = 405;
+  Sprite.call(this, 202, 405);
+
   this.dx = 0;
   this.dy = 0;
   this.sprite = 'images/char-boy.png';
@@ -80,6 +93,9 @@ var Player = function() {
   this.boxX = this.x + this.boxSideOffset;
   this.boxY = this.y + this.boxTopOffset;
 };
+
+Player.prototype = Object.create(Sprite.prototype);
+Player.prototype.constructor = Player;
 
 Player.prototype.update = function() {
   this.x += this.dx;
@@ -133,26 +149,21 @@ Player.prototype.checkCollsions = function() {
       player.boxX + player.boxWidth > enemy.boxX &&
       player.boxY < enemy.boxY + enemy.boxHeight &&
       player.boxHeight + player.boxY > enemy.boxY) {
-          //console.log('collision!');
-          //console.log(Engine);
           currentState = 'reset';
+          console.log(enemy['x-default']);
     }
   });
 };
-
-Player.prototype.reset = function() {
-  this.x = this['x-default'];
-  this.y = this['y-default'];
-  currentState = 'playing';
-};
-
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 
-var b1 = new Enemy();
-var player = new Player();
-var allEnemies = [b1];
+// TODO: randomize position and direction
+var b1 = new Enemy(-101, 65);
+var b2 = new Enemy(-101, 145);
+var b3 = new Enemy(-101, 225);
+var player = new Player(202, 405);
+var allEnemies = [b1, b2, b3];
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
