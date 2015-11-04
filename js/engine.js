@@ -24,6 +24,7 @@ var Engine = (function(global) {
         canvas = doc.createElement('canvas'),
         ctx = canvas.getContext('2d'),
         currentState = 'welcome',
+        startTime,
         lastTime;
 
     canvas.width = 505;
@@ -44,10 +45,17 @@ var Engine = (function(global) {
          var now = Date.now(),
              dt = (now - lastTime) / 1000.0;
 
+
           if (global.currentState === 'welcome') {
-            Welcome.render();
             setTimeout(Welcome.resetState, 2000);
+            // Set the FPS to 8 for the welcome screen
+            if(now-lastTime > 1000/8){
+              Welcome.render();
+              console.log(now-lastTime);
+              lastTime = now;
+            }
             win.requestAnimationFrame(main);
+
           } else if (global.currentState === 'reset') {
            // TODO: Reset the game instead?
            player.reset();
@@ -55,6 +63,7 @@ var Engine = (function(global) {
              enemy.reset();
            });
            global.currentState = 'playing';
+           lastTime = now;
            win.requestAnimationFrame(main);
          } else if (global.currentState === 'playing') {
            update(dt);
@@ -86,6 +95,7 @@ var Engine = (function(global) {
     function init() {
         reset();
         lastTime = Date.now();
+        startTime = lastTime;
         main();
     }
 
