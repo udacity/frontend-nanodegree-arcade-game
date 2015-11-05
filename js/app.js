@@ -1,5 +1,3 @@
-
-
 var Frog = function(options) {
   // Assumes that each tile of the sprite sheet is square
   // Build a frame-by-frame animation of the frog hopping
@@ -77,8 +75,6 @@ Sprite.prototype.reset = function(){
   this.y = this['y-default'];
 };
 // Enemies our player must avoid
-var myCanvasWidth = ctx.canvas.width;
-var myCanvasHeight = ctx.canvas.height;
 
 var Enemy = function(x, y) {
     // Variables applied to each of our instances go here,
@@ -117,11 +113,6 @@ Enemy.prototype.update = function(dt) {
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
-
-
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
 
 var Player = function() {
   // Box is 70px wide by 80px tall
@@ -199,9 +190,9 @@ Player.prototype.checkCollsions = function() {
     }
   });
 };
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
+
+var myCanvasWidth = ctx.canvas.width;
+var myCanvasHeight = ctx.canvas.height;
 
 // TODO: randomize position and direction
 var b1 = new Enemy(-101, 65);
