@@ -23,7 +23,7 @@ var Engine = (function(global) {
         win = global.window,
         canvas = doc.createElement('canvas'),
         ctx = canvas.getContext('2d'),
-        currentState = 'welcome',
+        currentState = 'playing',
         startTime,
         lastTime;
 
@@ -49,13 +49,12 @@ var Engine = (function(global) {
           if (global.currentState === 'welcome') {
             setTimeout(Welcome.resetState, 5000);
             // Set the FPS to 8 for the welcome screen
-            //console.log(dt);
+            // TODO: Should the downsampling of the frame rate
+            // take place in the object's render method?
             if(dt > 0.083333){
               Welcome.update(dt);
-              //console.log("hit dt");
               lastTime = now;
             }
-            // win.requestAnimationFrame(main);
 
           } else if (global.currentState === 'reset') {
              // TODO: Reset the game instead?
@@ -65,27 +64,15 @@ var Engine = (function(global) {
              });
              global.currentState = 'playing';
              lastTime = now;
-            //  win.requestAnimationFrame(main);
          } else if (global.currentState === 'playing') {
              update(dt);
              render();
              lastTime = now;
-            //  win.requestAnimationFrame(main);
+         } else if (global.currentState === 'win') {
+            Win.update(dt);
          }
-           /* Call our update/render functions, pass along the time delta to
-            * our update function since it may be used for smooth animation.
-            */
 
-           /* Set our lastTime variable which is used to determine the time delta
-            * for the next time this function is called.
-            */
-          //  lastTime = now;
-
-           /* Use the browser's requestAnimationFrame function to call this
-            * function again as soon as the browser is able to draw another frame.
-            */
-           win.requestAnimationFrame(main);
-
+         win.requestAnimationFrame(main);
 
     }
 

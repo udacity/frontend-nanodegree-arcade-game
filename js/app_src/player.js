@@ -24,6 +24,7 @@ Player.prototype.update = function() {
   this.boxY = this.y + this.boxTopOffset;
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
   this.checkCollsions();
+  this.checkForWin();
   this.dx = 0;
   this.dy = 0;
 };
@@ -70,7 +71,13 @@ Player.prototype.checkCollsions = function() {
       player.boxY < enemy.boxY + enemy.boxHeight &&
       player.boxHeight + player.boxY > enemy.boxY) {
           currentState = 'reset';
-          console.log(enemy['x-default']);
     }
   });
+};
+
+Player.prototype.checkForWin = function() {
+  if (this.y <= 83 ) {
+    currentState = 'win';
+    console.log('win');
+  }
 };

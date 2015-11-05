@@ -7,6 +7,7 @@ var sass = require('gulp-sass');
 var app_js_path = 'js/app_src/';
 var app_js = [
   'welcome.js',
+  'win.js',
   'sprite.js',
   'enemy.js',
   'player.js',
@@ -26,8 +27,16 @@ gulp.task('styles', function() {
         .pipe(gulp.dest('css/'));
 });
 
+gulp.task('concat-js', function(){
+  return gulp.src(app_js)
+    .pipe(concat('*.js'))
+    .pipe(rename('app.js'))
+    .pipe(gulp.dest('js/'));
+});
+
 gulp.task('watch', function(){
  gulp.watch('scss/**/*.scss', ['styles']);
+ gulp.watch( app_js, ['concat-js']);
 });
 
 gulp.task('min', function(){
@@ -37,11 +46,6 @@ gulp.task('min', function(){
 		.pipe(gulp.dest(''));
 });
 
-gulp.task('compile-js', function(){
-  return gulp.src(app_js)
-    .pipe(concat('*.js'))
-    .pipe(rename('app.js'))
-    .pipe(gulp.dest('js/'));
-});
+
 
 gulp.task('default', [ 'watch' ]);

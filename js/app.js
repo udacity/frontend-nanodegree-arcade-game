@@ -61,6 +61,25 @@ var Welcome = {
   }
 };
 
+// Bye
+var Win = {
+  update: function(dt) {
+    this.render();
+  },
+  render: function() {
+    ctx.fillStyle = 'white';
+    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    ctx.font = '36pt Helvetica';
+    ctx.textSmoothingEnabled = true;
+    ctx.textAlign = 'center';
+    ctx.fillStyle = 'black';
+    ctx.fillText('You Win', ctx.canvas.width/2, ctx.canvas.height/2);
+  },
+  resetState: function() {
+    currentState = 'playing';
+  }
+};
+
 var Sprite = function(x, y) {
   this['x-default'] = x;
   this['y-default'] = y;
@@ -140,6 +159,7 @@ Player.prototype.update = function() {
   this.boxY = this.y + this.boxTopOffset;
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
   this.checkCollsions();
+  this.checkForWin();
   this.dx = 0;
   this.dy = 0;
 };
@@ -186,9 +206,15 @@ Player.prototype.checkCollsions = function() {
       player.boxY < enemy.boxY + enemy.boxHeight &&
       player.boxHeight + player.boxY > enemy.boxY) {
           currentState = 'reset';
-          console.log(enemy['x-default']);
     }
   });
+};
+
+Player.prototype.checkForWin = function() {
+  if (this.y <= 83 ) {
+    currentState = 'win';
+    console.log('win');
+  }
 };
 
 var myCanvasWidth = ctx.canvas.width;
