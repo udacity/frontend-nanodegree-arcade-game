@@ -47,11 +47,12 @@ var Engine = (function(global) {
 
 
           if (global.currentState === 'welcome') {
-            setTimeout(Welcome.resetState, 2000);
+            setTimeout(Welcome.resetState, 5000);
             // Set the FPS to 8 for the welcome screen
-            if(now-lastTime > 1000/8){
-              Welcome.render();
-              console.log(now-lastTime);
+            //console.log(dt);
+            if(dt > 0.083333){
+              Welcome.update(dt);
+              //console.log("hit dt");
               lastTime = now;
             }
             win.requestAnimationFrame(main);
@@ -201,7 +202,8 @@ var Engine = (function(global) {
         'images/water-block.png',
         'images/grass-block.png',
         'images/enemy-bug.png',
-        'images/char-boy.png'
+        'images/char-boy.png',
+        'images/frog.png'
     ]);
     Resources.onReady(init);
 
