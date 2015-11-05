@@ -55,22 +55,22 @@ var Engine = (function(global) {
               //console.log("hit dt");
               lastTime = now;
             }
-            win.requestAnimationFrame(main);
+            // win.requestAnimationFrame(main);
 
           } else if (global.currentState === 'reset') {
-           // TODO: Reset the game instead?
-           player.reset();
-           allEnemies.forEach(function(enemy) {
-             enemy.reset();
-           });
-           global.currentState = 'playing';
-           lastTime = now;
-           win.requestAnimationFrame(main);
+             // TODO: Reset the game instead?
+             player.reset();
+             allEnemies.forEach(function(enemy) {
+               enemy.reset();
+             });
+             global.currentState = 'playing';
+             lastTime = now;
+            //  win.requestAnimationFrame(main);
          } else if (global.currentState === 'playing') {
-           update(dt);
-           render();
-           lastTime = now;
-           win.requestAnimationFrame(main);
+             update(dt);
+             render();
+             lastTime = now;
+            //  win.requestAnimationFrame(main);
          }
            /* Call our update/render functions, pass along the time delta to
             * our update function since it may be used for smooth animation.
@@ -84,7 +84,7 @@ var Engine = (function(global) {
            /* Use the browser's requestAnimationFrame function to call this
             * function again as soon as the browser is able to draw another frame.
             */
-          //  win.requestAnimationFrame(main);
+           win.requestAnimationFrame(main);
 
 
     }
