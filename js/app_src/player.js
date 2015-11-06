@@ -76,8 +76,12 @@ Player.prototype.checkCollsions = function() {
 };
 
 Player.prototype.checkForWin = function() {
-  if (this.y <= 83 ) {
-    currentState = 'win';
-    console.log('win');
+  if (this.y < 73 ) {
+    document.removeEventListener('keyup', function(e) {
+      player.handleInput(allowedKeys[e.keyCode]);
+    });
+    setTimeout(function(){
+      currentState = 'win';
+    },500);
   }
 };

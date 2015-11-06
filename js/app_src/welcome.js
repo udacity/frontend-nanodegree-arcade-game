@@ -57,6 +57,7 @@ var Welcome = {
     ctx.fillText('FROGGER', ctx.canvas.width/2, ctx.canvas.height/2);
   },
   resetState: function() {
+    document.addEventListener('keyup', player.handleInput(allowedKeys[e.keyCode]));
     currentState = 'playing';
   }
 };

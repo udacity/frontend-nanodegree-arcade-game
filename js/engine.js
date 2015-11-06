@@ -69,7 +69,8 @@ var Engine = (function(global) {
              render();
              lastTime = now;
          } else if (global.currentState === 'win') {
-            Win.update(dt);
+             render();
+             Win.update(dt);
          }
 
          win.requestAnimationFrame(main);
@@ -81,10 +82,12 @@ var Engine = (function(global) {
      * game loop.
      */
     function init() {
-        reset();
-        lastTime = Date.now();
-        startTime = lastTime;
-        main();
+      document.addEventListener('keyup',function(e) {
+        player.handleInput(allowedKeys[e.keyCode]);
+      });
+      lastTime = Date.now();
+      startTime = lastTime;
+      main();
     }
 
     /* This function is called by main (our game loop) and itself calls all
@@ -176,9 +179,6 @@ var Engine = (function(global) {
      * handle game reset states - maybe a new game menu or a game over screen
      * those sorts of things. It's only called once by the init() method.
      */
-    function reset() {
-        // noop
-    }
 
     /* Go ahead and load all of the images we know we're going to need to
      * draw our game level. Then set init as the callback method, so that when
@@ -200,4 +200,11 @@ var Engine = (function(global) {
      */
     global.ctx = ctx;
     global.currentState = currentState;
+    global.allowedKeys = {
+        37: 'left',
+        38: 'up',
+        39: 'right',
+        40: 'down',
+        32: 'space'
+    };
 })(this);
