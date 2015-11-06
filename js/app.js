@@ -1,5 +1,3 @@
-
-
 var Frog = function(options) {
   // Assumes that each tile of the sprite sheet is square
   // Build a frame-by-frame animation of the frog hopping
@@ -59,7 +57,33 @@ var Welcome = {
     ctx.fillText('FROGGER', ctx.canvas.width/2, ctx.canvas.height/2);
   },
   resetState: function() {
+    document.addEventListener('keyup', player.handleInput(allowedKeys[e.keyCode]));
     currentState = 'playing';
+  }
+};
+
+// Bye
+var Win = {
+  update: function(dt) {
+    this.render();
+    setTimeout(this.resetState, 2000);
+  },
+  render: function() {
+    // ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); 
+    ctx.fillStyle = 'rgba(255,255,255,0.5)';
+    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    ctx.font = '36pt Helvetica';
+    ctx.textSmoothingEnabled = true;
+    ctx.textAlign = 'center';
+    ctx.fillStyle = 'black';
+    ctx.fillText('You Win', ctx.canvas.width/2, ctx.canvas.height/2);
+  },
+  resetState: function() {
+    player.reset();
+    currentState = 'playing';
+    document.addEventListener('keyup', function(e){
+      player.handleInput(global.allowedKeys[e.keyCode]);
+    });
   }
 };
 
@@ -77,8 +101,6 @@ Sprite.prototype.reset = function(){
   this.y = this['y-default'];
 };
 // Enemies our player must avoid
-var myCanvasWidth = ctx.canvas.width;
-var myCanvasHeight = ctx.canvas.height;
 
 var Enemy = function(x, y) {
     // Variables applied to each of our instances go here,
@@ -118,11 +140,6 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
-
 var Player = function() {
   // Box is 70px wide by 80px tall
   // Offset at the top is 60px
@@ -149,6 +166,7 @@ Player.prototype.update = function() {
   this.boxY = this.y + this.boxTopOffset;
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
   this.checkCollsions();
+  this.checkForWin();
   this.dx = 0;
   this.dy = 0;
 };
@@ -195,13 +213,23 @@ Player.prototype.checkCollsions = function() {
       player.boxY < enemy.boxY + enemy.boxHeight &&
       player.boxHeight + player.boxY > enemy.boxY) {
           currentState = 'reset';
-          console.log(enemy['x-default']);
     }
   });
 };
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
+
+Player.prototype.checkForWin = function() {
+  if (this.y < 73 ) {
+    document.removeEventListener('keyup', function(e) {
+      player.handleInput(allowedKeys[e.keyCode]);
+    });
+    setTimeout(function(){
+      currentState = 'win';
+    },500);
+  }
+};
+
+// var myCanvasWidth = ctx.canvas.width;
+// var myCanvasHeight = ctx.canvas.height;
 
 // TODO: randomize position and direction
 var b1 = new Enemy(-101, 65);
@@ -212,14 +240,3 @@ var allEnemies = [b1, b2, b3];
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
-document.addEventListener('keyup', function(e) {
-    var allowedKeys = {
-        37: 'left',
-        38: 'up',
-        39: 'right',
-        40: 'down',
-        32: 'space'
-    };
-
-    player.handleInput(allowedKeys[e.keyCode]);
-});

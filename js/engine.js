@@ -23,7 +23,7 @@ var Engine = (function(global) {
         win = global.window,
         canvas = doc.createElement('canvas'),
         ctx = canvas.getContext('2d'),
-        currentState = 'welcome',
+        currentState = 'playing',
         startTime,
         lastTime;
 
@@ -49,43 +49,31 @@ var Engine = (function(global) {
           if (global.currentState === 'welcome') {
             setTimeout(Welcome.resetState, 5000);
             // Set the FPS to 8 for the welcome screen
-            //console.log(dt);
+            // TODO: Should the downsampling of the frame rate
+            // take place in the object's render method?
             if(dt > 0.083333){
               Welcome.update(dt);
-              //console.log("hit dt");
               lastTime = now;
             }
-            win.requestAnimationFrame(main);
 
           } else if (global.currentState === 'reset') {
-           // TODO: Reset the game instead?
-           player.reset();
-           allEnemies.forEach(function(enemy) {
-             enemy.reset();
-           });
-           global.currentState = 'playing';
-           lastTime = now;
-           win.requestAnimationFrame(main);
+             // TODO: Reset the game instead?
+             player.reset();
+             allEnemies.forEach(function(enemy) {
+               enemy.reset();
+             });
+             global.currentState = 'playing';
+             lastTime = now;
          } else if (global.currentState === 'playing') {
-           update(dt);
-           render();
-           lastTime = now;
-           win.requestAnimationFrame(main);
+             update(dt);
+             render();
+             lastTime = now;
+         } else if (global.currentState === 'win') {
+             render();
+             Win.update(dt);
          }
-           /* Call our update/render functions, pass along the time delta to
-            * our update function since it may be used for smooth animation.
-            */
 
-           /* Set our lastTime variable which is used to determine the time delta
-            * for the next time this function is called.
-            */
-          //  lastTime = now;
-
-           /* Use the browser's requestAnimationFrame function to call this
-            * function again as soon as the browser is able to draw another frame.
-            */
-          //  win.requestAnimationFrame(main);
-
+         win.requestAnimationFrame(main);
 
     }
 
@@ -94,10 +82,12 @@ var Engine = (function(global) {
      * game loop.
      */
     function init() {
-        reset();
-        lastTime = Date.now();
-        startTime = lastTime;
-        main();
+      document.addEventListener('keyup',function(e) {
+        player.handleInput(allowedKeys[e.keyCode]);
+      });
+      lastTime = Date.now();
+      startTime = lastTime;
+      main();
     }
 
     /* This function is called by main (our game loop) and itself calls all
@@ -189,9 +179,6 @@ var Engine = (function(global) {
      * handle game reset states - maybe a new game menu or a game over screen
      * those sorts of things. It's only called once by the init() method.
      */
-    function reset() {
-        // noop
-    }
 
     /* Go ahead and load all of the images we know we're going to need to
      * draw our game level. Then set init as the callback method, so that when
@@ -213,4 +200,11 @@ var Engine = (function(global) {
      */
     global.ctx = ctx;
     global.currentState = currentState;
+    global.allowedKeys = {
+        37: 'left',
+        38: 'up',
+        39: 'right',
+        40: 'down',
+        32: 'space'
+    };
 })(this);
