@@ -6,8 +6,8 @@ var Frog = function(options) {
     frog[prop] = options[prop];
   }
   frog.frameCounter = 0;
+  frog.timer = 0;
   frog.render = function(dt) {
-    frog.dx += frog.rate * dt;
     frog.context.drawImage(
       Resources.get(frog.image),
       frog.sx + frog.frameCounter * frog.dWidth,
@@ -19,10 +19,19 @@ var Frog = function(options) {
       frog.dWidth,
       frog.dHeight
     );
-    frog.frameCounter++;
     //console.log(dt);
-    if(frog.frameCounter * frog.dWidth >= frog.imageWidth){
-      frog.frameCounter = 0;
+
+  };
+  frog.update = function(dt) {
+    frog.timer += dt;
+    frog.render();
+    if(frog.timer >= 0.083333){
+      frog.timer = 0;
+      frog.frameCounter++;
+      frog.dx += frog.rate * 0.083333;
+      if(frog.frameCounter * frog.dWidth >= frog.imageWidth){
+        frog.frameCounter = 0;
+      }
     }
   };
   return frog;
@@ -45,7 +54,7 @@ var Welcome = {
   }),
   update: function(dt) {
     this.render();
-    this.introGraphic.render(dt);
+    this.introGraphic.update(dt);
   },
   render: function() {
     ctx.fillStyle = 'white';
@@ -57,7 +66,9 @@ var Welcome = {
     ctx.fillText('FROGGER', ctx.canvas.width/2, ctx.canvas.height/2);
   },
   resetState: function() {
-    document.addEventListener('keyup', player.handleInput(allowedKeys[e.keyCode]));
+    document.addEventListener('keyup', function(e) {
+      player.handleInput(allowedKeys[e.keyCode]);
+    });
     currentState = 'playing';
   }
 };
@@ -66,10 +77,11 @@ var Welcome = {
 var Win = {
   update: function(dt) {
     this.render();
-    setTimeout(this.resetState, 2000);
+    //setTimeout(this.resetState, 2000);
+    this.resetState();
   },
   render: function() {
-    // ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); 
+    // ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     ctx.fillStyle = 'rgba(255,255,255,0.5)';
     ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     ctx.font = '36pt Helvetica';
@@ -79,11 +91,15 @@ var Win = {
     ctx.fillText('You Win', ctx.canvas.width/2, ctx.canvas.height/2);
   },
   resetState: function() {
-    player.reset();
-    currentState = 'playing';
-    document.addEventListener('keyup', function(e){
-      player.handleInput(global.allowedKeys[e.keyCode]);
-    });
+
+    setTimeout(function(){
+      document.addEventListener('keyup', function(e){
+        player.handleInput(global.allowedKeys[e.keyCode]);
+      });
+      player.reset();
+      currentState = 'playing';
+    },2000);
+
   }
 };
 

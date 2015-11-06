@@ -23,7 +23,7 @@ var Engine = (function(global) {
         win = global.window,
         canvas = doc.createElement('canvas'),
         ctx = canvas.getContext('2d'),
-        currentState = 'playing',
+        currentState = 'welcome',
         startTime,
         lastTime;
 
@@ -51,10 +51,16 @@ var Engine = (function(global) {
             // Set the FPS to 8 for the welcome screen
             // TODO: Should the downsampling of the frame rate
             // take place in the object's render method?
+            // I think so. You would need to keep track of
+            // it like frog_dt, doing the test on that variable
+            /*
             if(dt > 0.083333){
               Welcome.update(dt);
               lastTime = now;
             }
+            */
+            Welcome.update(dt);
+            lastTime = now;
 
           } else if (global.currentState === 'reset') {
              // TODO: Reset the game instead?
@@ -82,12 +88,13 @@ var Engine = (function(global) {
      * game loop.
      */
     function init() {
-      document.addEventListener('keyup',function(e) {
-        player.handleInput(allowedKeys[e.keyCode]);
-      });
+
       lastTime = Date.now();
       startTime = lastTime;
       main();
+      document.addEventListener('keyup',function(e) {
+        player.handleInput(allowedKeys[e.keyCode]);
+      });
     }
 
     /* This function is called by main (our game loop) and itself calls all
