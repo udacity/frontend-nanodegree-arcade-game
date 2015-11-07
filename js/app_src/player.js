@@ -75,13 +75,11 @@ Player.prototype.checkCollsions = function() {
   });
 };
 
-Player.prototype.checkForWin = function() {
+Player.prototype.checkForWin = function(dt) {
   if (this.y < 73 ) {
     document.removeEventListener('keyup', function(e) {
       player.handleInput(allowedKeys[e.keyCode]);
     });
-    setTimeout(function(){
-      currentState = 'win';
-    },500);
+    currentState = 'win';
   }
 };

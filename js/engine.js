@@ -48,20 +48,8 @@ var Engine = (function(global) {
 
           if (global.currentState === 'welcome') {
             setTimeout(Welcome.resetState, 5000);
-            // Set the FPS to 8 for the welcome screen
-            // TODO: Should the downsampling of the frame rate
-            // take place in the object's render method?
-            // I think so. You would need to keep track of
-            // it like frog_dt, doing the test on that variable
-            /*
-            if(dt > 0.083333){
-              Welcome.update(dt);
-              lastTime = now;
-            }
-            */
             Welcome.update(dt);
             lastTime = now;
-
           } else if (global.currentState === 'reset') {
              // TODO: Reset the game instead?
              player.reset();
@@ -77,6 +65,7 @@ var Engine = (function(global) {
          } else if (global.currentState === 'win') {
              render();
              Win.update(dt);
+             lastTime = now;
          }
 
          win.requestAnimationFrame(main);

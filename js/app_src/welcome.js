@@ -7,6 +7,7 @@ var Frog = function(options) {
   }
   frog.frameCounter = 0;
   frog.timer = 0;
+  frog.fps = 1/12;
   frog.render = function(dt) {
     frog.context.drawImage(
       Resources.get(frog.image),
@@ -25,10 +26,10 @@ var Frog = function(options) {
   frog.update = function(dt) {
     frog.timer += dt;
     frog.render();
-    if(frog.timer >= 0.083333){
+    if(frog.timer >= frog.fps){
       frog.timer = 0;
       frog.frameCounter++;
-      frog.dx += frog.rate * 0.083333;
+      frog.dx += frog.rate * frog.fps;
       if(frog.frameCounter * frog.dWidth >= frog.imageWidth){
         frog.frameCounter = 0;
       }
