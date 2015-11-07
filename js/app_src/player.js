@@ -63,14 +63,13 @@ Player.prototype.handleInput = function(key) {
 Player.prototype.checkCollsions = function() {
   var player = this;
   allEnemies.forEach( function(enemy) {
-    //console.log(player.sprite);
-    // need to find the width
-    // console.log(enemy.boxX);
     if (player.boxX < enemy.boxX + enemy.boxWidth &&
       player.boxX + player.boxWidth > enemy.boxX &&
       player.boxY < enemy.boxY + enemy.boxHeight &&
       player.boxHeight + player.boxY > enemy.boxY) {
-          currentState = 'reset';
+        document.removeEventListener('keyup', player.handleInput);
+        // TODO: let the bug run over the character
+        currentState = 'lose';
     }
   });
 };

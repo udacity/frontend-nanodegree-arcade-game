@@ -1,8 +1,8 @@
-
-var Winner = {
+var Lose = {
   resetTimer: 0,
-  resetLength: 2,
+  resetLength: 1,
   update: function(dt) {
+    console.log('you lose');
     this.render();
     this.resetState(dt);
   },
@@ -13,7 +13,7 @@ var Winner = {
     ctx.textSmoothingEnabled = true;
     ctx.textAlign = 'center';
     ctx.fillStyle = 'black';
-    ctx.fillText('You Win', ctx.canvas.width/2, ctx.canvas.height/2);
+    ctx.fillText('You Lose', ctx.canvas.width/2, ctx.canvas.height/2);
   },
   resetState: function(dt) {
     this.resetTimer += dt;
@@ -22,6 +22,10 @@ var Winner = {
       player.reset();
       currentState = 'playing';
       this.resetTimer = 0;
+      player.reset();
+      allEnemies.forEach(function(enemy) {
+        enemy.reset();
+      });
     }
   }
 };

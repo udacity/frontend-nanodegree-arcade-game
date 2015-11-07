@@ -43,16 +43,13 @@ var Engine = (function(global) {
          */
 
          var now = Date.now(),
-             dt = (now - lastTime) / 1000.0;
+          // Convert milliseconds to seconds
+          dt = (now - lastTime) / 1000.0;
           if (global.currentState === 'welcome') {
             Welcome.update(dt);
-          } else if (global.currentState === 'reset') {
-             // TODO: Reset the game instead?
-             player.reset();
-             allEnemies.forEach(function(enemy) {
-               enemy.reset();
-             });
-             global.currentState = 'playing';
+          } else if (global.currentState === 'lose') {
+             render();
+             Lose.update(dt);
          } else if (global.currentState === 'playing') {
              update(dt);
              render();

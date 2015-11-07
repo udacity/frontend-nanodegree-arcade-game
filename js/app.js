@@ -77,7 +77,7 @@ var Welcome = {
   }
 };
 
-// Bye
+
 var Winner = {
   resetTimer: 0,
   resetLength: 2,
@@ -101,6 +101,38 @@ var Winner = {
       player.reset();
       currentState = 'playing';
       this.resetTimer = 0;
+    }
+  }
+};
+
+var Lose = {
+  resetTimer: 0,
+  resetLength: 1,
+  update: function(dt) {
+    console.log('you lose');
+    this.render();
+    this.resetState(dt);
+  },
+  render: function() {
+    ctx.fillStyle = 'rgba(255,255,255,0.5)';
+    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    ctx.font = '36pt Helvetica';
+    ctx.textSmoothingEnabled = true;
+    ctx.textAlign = 'center';
+    ctx.fillStyle = 'black';
+    ctx.fillText('You Lose', ctx.canvas.width/2, ctx.canvas.height/2);
+  },
+  resetState: function(dt) {
+    this.resetTimer += dt;
+    if ( this.resetTimer > this.resetLength ) {
+      document.addEventListener('keyup', player.handleInput);
+      player.reset();
+      currentState = 'playing';
+      this.resetTimer = 0;
+      player.reset();
+      allEnemies.forEach(function(enemy) {
+        enemy.reset();
+      });
     }
   }
 };
@@ -223,14 +255,13 @@ Player.prototype.handleInput = function(key) {
 Player.prototype.checkCollsions = function() {
   var player = this;
   allEnemies.forEach( function(enemy) {
-    //console.log(player.sprite);
-    // need to find the width
-    // console.log(enemy.boxX);
     if (player.boxX < enemy.boxX + enemy.boxWidth &&
       player.boxX + player.boxWidth > enemy.boxX &&
       player.boxY < enemy.boxY + enemy.boxHeight &&
       player.boxHeight + player.boxY > enemy.boxY) {
-          currentState = 'reset';
+        document.removeEventListener('keyup', player.handleInput);
+        // TODO: let the bug run over the character
+        currentState = 'lose';
     }
   });
 };
