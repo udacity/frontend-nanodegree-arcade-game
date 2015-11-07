@@ -39,6 +39,8 @@ var Frog = function(options) {
 };
 
 var Welcome = {
+  resetTimer: 0,
+  resetLength: 5,
   introGraphic: new Frog({
     image: 'images/frog.png',
     sx: 0,
@@ -56,6 +58,7 @@ var Welcome = {
   update: function(dt) {
     this.render();
     this.introGraphic.update(dt);
+    this.resetState(dt);
   },
   render: function() {
     ctx.fillStyle = 'white';
@@ -66,10 +69,10 @@ var Welcome = {
     ctx.fillStyle = 'black';
     ctx.fillText('FROGGER', ctx.canvas.width/2, ctx.canvas.height/2);
   },
-  resetState: function() {
-    document.addEventListener('keyup', function(e) {
-      player.handleInput(allowedKeys[e.keyCode]);
-    });
-    currentState = 'playing';
+  resetState: function(dt) {
+    this.resetTimer += dt;
+    if (this.resetTimer > this.resetLength ) {
+      currentState = 'playing';
+    }
   }
 };

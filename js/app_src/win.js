@@ -17,11 +17,8 @@ var Win = {
   },
   resetState: function(dt) {
     this.resetTimer += dt;
-    console.log(this.resetTimer);
     if ( this.resetTimer > this.resetLength ) {
-      document.addEventListener('keyup', function(e){
-        player.handleInput(allowedKeys[e.keyCode]);
-      });
+      document.addEventListener('keyup', player.handleInput);
       player.reset();
       currentState = 'playing';
       this.resetTimer = 0;

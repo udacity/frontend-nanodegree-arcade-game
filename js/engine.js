@@ -44,12 +44,9 @@ var Engine = (function(global) {
 
          var now = Date.now(),
              dt = (now - lastTime) / 1000.0;
-
-
           if (global.currentState === 'welcome') {
-            setTimeout(Welcome.resetState, 5000);
             Welcome.update(dt);
-            lastTime = now;
+            // lastTime = now;
           } else if (global.currentState === 'reset') {
              // TODO: Reset the game instead?
              player.reset();
@@ -57,17 +54,17 @@ var Engine = (function(global) {
                enemy.reset();
              });
              global.currentState = 'playing';
-             lastTime = now;
+            //  lastTime = now;
          } else if (global.currentState === 'playing') {
              update(dt);
              render();
-             lastTime = now;
+            //  lastTime = now;
          } else if (global.currentState === 'win') {
              render();
              Win.update(dt);
-             lastTime = now;
-         }
 
+         }
+        lastTime = now;
          win.requestAnimationFrame(main);
 
     }
