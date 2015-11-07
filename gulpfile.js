@@ -7,7 +7,8 @@ var sass = require('gulp-sass');
 var app_js_path = 'js/app_src/';
 var app_js = [
   'welcome.js',
-  'win.js',
+  'winner.js',
+  'lose.js',
   'sprite.js',
   'enemy.js',
   'player.js',
@@ -17,8 +18,6 @@ var app_js = [
 app_js.forEach(function(currentValue, index, app_js){
   app_js[index] = app_js_path + currentValue;
 });
-
-console.log(app_js);
 
 gulp.task('styles', function() {
     gulp.src('scss/**/*.scss')

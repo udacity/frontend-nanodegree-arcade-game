@@ -6,8 +6,9 @@ var Frog = function(options) {
     frog[prop] = options[prop];
   }
   frog.frameCounter = 0;
+  frog.timer = 0;
+  frog.fps = 1/12;
   frog.render = function(dt) {
-    frog.dx += frog.rate * dt;
     frog.context.drawImage(
       Resources.get(frog.image),
       frog.sx + frog.frameCounter * frog.dWidth,
@@ -19,16 +20,27 @@ var Frog = function(options) {
       frog.dWidth,
       frog.dHeight
     );
-    frog.frameCounter++;
     //console.log(dt);
-    if(frog.frameCounter * frog.dWidth >= frog.imageWidth){
-      frog.frameCounter = 0;
+
+  };
+  frog.update = function(dt) {
+    frog.timer += dt;
+    frog.render();
+    if(frog.timer >= frog.fps){
+      frog.timer = 0;
+      frog.frameCounter++;
+      frog.dx += frog.rate * frog.fps;
+      if(frog.frameCounter * frog.dWidth >= frog.imageWidth){
+        frog.frameCounter = 0;
+      }
     }
   };
   return frog;
 };
 
 var Welcome = {
+  resetTimer: 0,
+  resetLength: 5,
   introGraphic: new Frog({
     image: 'images/frog.png',
     sx: 0,
@@ -45,7 +57,8 @@ var Welcome = {
   }),
   update: function(dt) {
     this.render();
-    this.introGraphic.render(dt);
+    this.introGraphic.update(dt);
+    this.resetState(dt);
   },
   render: function() {
     ctx.fillStyle = 'white';
@@ -56,8 +69,10 @@ var Welcome = {
     ctx.fillStyle = 'black';
     ctx.fillText('FROGGER', ctx.canvas.width/2, ctx.canvas.height/2);
   },
-  resetState: function() {
-    document.addEventListener('keyup', player.handleInput(allowedKeys[e.keyCode]));
-    currentState = 'playing';
+  resetState: function(dt) {
+    this.resetTimer += dt;
+    if (this.resetTimer > this.resetLength ) {
+      currentState = 'playing';
+    }
   }
 };

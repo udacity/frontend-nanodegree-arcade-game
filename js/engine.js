@@ -23,7 +23,7 @@ var Engine = (function(global) {
         win = global.window,
         canvas = doc.createElement('canvas'),
         ctx = canvas.getContext('2d'),
-        currentState = 'playing',
+        currentState = 'welcome',
         startTime,
         lastTime;
 
@@ -43,37 +43,22 @@ var Engine = (function(global) {
          */
 
          var now = Date.now(),
-             dt = (now - lastTime) / 1000.0;
-
-
+          // Convert milliseconds to seconds
+          dt = (now - lastTime) / 1000.0;
           if (global.currentState === 'welcome') {
-            setTimeout(Welcome.resetState, 5000);
-            // Set the FPS to 8 for the welcome screen
-            // TODO: Should the downsampling of the frame rate
-            // take place in the object's render method?
-            if(dt > 0.083333){
-              Welcome.update(dt);
-              lastTime = now;
-            }
-
-          } else if (global.currentState === 'reset') {
-             // TODO: Reset the game instead?
-             player.reset();
-             allEnemies.forEach(function(enemy) {
-               enemy.reset();
-             });
-             global.currentState = 'playing';
-             lastTime = now;
+            Welcome.update(dt);
+          } else if (global.currentState === 'lose') {
+             render();
+             Lose.update(dt);
          } else if (global.currentState === 'playing') {
              update(dt);
              render();
-             lastTime = now;
          } else if (global.currentState === 'win') {
-             render();
-             Win.update(dt);
+            render();
+            Winner.update(dt);
          }
-
-         win.requestAnimationFrame(main);
+        lastTime = now;
+        win.requestAnimationFrame(main);
 
     }
 
@@ -82,12 +67,13 @@ var Engine = (function(global) {
      * game loop.
      */
     function init() {
-      document.addEventListener('keyup',function(e) {
-        player.handleInput(allowedKeys[e.keyCode]);
-      });
+
       lastTime = Date.now();
       startTime = lastTime;
       main();
+      document.addEventListener('keyup',function(e) {
+        player.handleInput(allowedKeys[e.keyCode]);
+      });
     }
 
     /* This function is called by main (our game loop) and itself calls all

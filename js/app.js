@@ -6,8 +6,9 @@ var Frog = function(options) {
     frog[prop] = options[prop];
   }
   frog.frameCounter = 0;
+  frog.timer = 0;
+  frog.fps = 1/12;
   frog.render = function(dt) {
-    frog.dx += frog.rate * dt;
     frog.context.drawImage(
       Resources.get(frog.image),
       frog.sx + frog.frameCounter * frog.dWidth,
@@ -19,16 +20,27 @@ var Frog = function(options) {
       frog.dWidth,
       frog.dHeight
     );
-    frog.frameCounter++;
     //console.log(dt);
-    if(frog.frameCounter * frog.dWidth >= frog.imageWidth){
-      frog.frameCounter = 0;
+
+  };
+  frog.update = function(dt) {
+    frog.timer += dt;
+    frog.render();
+    if(frog.timer >= frog.fps){
+      frog.timer = 0;
+      frog.frameCounter++;
+      frog.dx += frog.rate * frog.fps;
+      if(frog.frameCounter * frog.dWidth >= frog.imageWidth){
+        frog.frameCounter = 0;
+      }
     }
   };
   return frog;
 };
 
 var Welcome = {
+  resetTimer: 0,
+  resetLength: 5,
   introGraphic: new Frog({
     image: 'images/frog.png',
     sx: 0,
@@ -45,7 +57,8 @@ var Welcome = {
   }),
   update: function(dt) {
     this.render();
-    this.introGraphic.render(dt);
+    this.introGraphic.update(dt);
+    this.resetState(dt);
   },
   render: function() {
     ctx.fillStyle = 'white';
@@ -56,20 +69,23 @@ var Welcome = {
     ctx.fillStyle = 'black';
     ctx.fillText('FROGGER', ctx.canvas.width/2, ctx.canvas.height/2);
   },
-  resetState: function() {
-    document.addEventListener('keyup', player.handleInput(allowedKeys[e.keyCode]));
-    currentState = 'playing';
+  resetState: function(dt) {
+    this.resetTimer += dt;
+    if (this.resetTimer > this.resetLength ) {
+      currentState = 'playing';
+    }
   }
 };
 
-// Bye
-var Win = {
+
+var Winner = {
+  resetTimer: 0,
+  resetLength: 2,
   update: function(dt) {
     this.render();
-    setTimeout(this.resetState, 2000);
+    this.resetState(dt);
   },
   render: function() {
-    // ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); 
     ctx.fillStyle = 'rgba(255,255,255,0.5)';
     ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     ctx.font = '36pt Helvetica';
@@ -78,12 +94,46 @@ var Win = {
     ctx.fillStyle = 'black';
     ctx.fillText('You Win', ctx.canvas.width/2, ctx.canvas.height/2);
   },
-  resetState: function() {
-    player.reset();
-    currentState = 'playing';
-    document.addEventListener('keyup', function(e){
-      player.handleInput(global.allowedKeys[e.keyCode]);
-    });
+  resetState: function(dt) {
+    this.resetTimer += dt;
+    if ( this.resetTimer > this.resetLength ) {
+      document.addEventListener('keyup', player.handleInput);
+      player.reset();
+      currentState = 'playing';
+      this.resetTimer = 0;
+    }
+  }
+};
+
+var Lose = {
+  resetTimer: 0,
+  resetLength: 1,
+  update: function(dt) {
+    console.log('you lose');
+    this.render();
+    this.resetState(dt);
+  },
+  render: function() {
+    ctx.fillStyle = 'rgba(255,255,255,0.5)';
+    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    ctx.font = '36pt Helvetica';
+    ctx.textSmoothingEnabled = true;
+    ctx.textAlign = 'center';
+    ctx.fillStyle = 'black';
+    ctx.fillText('You Lose', ctx.canvas.width/2, ctx.canvas.height/2);
+  },
+  resetState: function(dt) {
+    this.resetTimer += dt;
+    if ( this.resetTimer > this.resetLength ) {
+      document.addEventListener('keyup', player.handleInput);
+      player.reset();
+      currentState = 'playing';
+      this.resetTimer = 0;
+      player.reset();
+      allEnemies.forEach(function(enemy) {
+        enemy.reset();
+      });
+    }
   }
 };
 
@@ -205,26 +255,23 @@ Player.prototype.handleInput = function(key) {
 Player.prototype.checkCollsions = function() {
   var player = this;
   allEnemies.forEach( function(enemy) {
-    //console.log(player.sprite);
-    // need to find the width
-    // console.log(enemy.boxX);
     if (player.boxX < enemy.boxX + enemy.boxWidth &&
       player.boxX + player.boxWidth > enemy.boxX &&
       player.boxY < enemy.boxY + enemy.boxHeight &&
       player.boxHeight + player.boxY > enemy.boxY) {
-          currentState = 'reset';
+        document.removeEventListener('keyup', player.handleInput);
+        // TODO: let the bug run over the character
+        currentState = 'lose';
     }
   });
 };
 
-Player.prototype.checkForWin = function() {
+Player.prototype.checkForWin = function(dt) {
   if (this.y < 73 ) {
     document.removeEventListener('keyup', function(e) {
       player.handleInput(allowedKeys[e.keyCode]);
     });
-    setTimeout(function(){
-      currentState = 'win';
-    },500);
+    currentState = 'win';
   }
 };
 
