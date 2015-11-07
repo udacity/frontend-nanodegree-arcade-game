@@ -7,7 +7,7 @@ var sass = require('gulp-sass');
 var app_js_path = 'js/app_src/';
 var app_js = [
   'welcome.js',
-  'win.js',
+  'winner.js',
   'sprite.js',
   'enemy.js',
   'player.js',

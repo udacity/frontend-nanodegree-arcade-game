@@ -1,5 +1,5 @@
 // Bye
-var Win = {
+var Winner = {
   resetTimer: 0,
   resetLength: 2,
   update: function(dt) {

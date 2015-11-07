@@ -46,7 +46,6 @@ var Engine = (function(global) {
              dt = (now - lastTime) / 1000.0;
           if (global.currentState === 'welcome') {
             Welcome.update(dt);
-            // lastTime = now;
           } else if (global.currentState === 'reset') {
              // TODO: Reset the game instead?
              player.reset();
@@ -54,18 +53,15 @@ var Engine = (function(global) {
                enemy.reset();
              });
              global.currentState = 'playing';
-            //  lastTime = now;
          } else if (global.currentState === 'playing') {
              update(dt);
              render();
-            //  lastTime = now;
          } else if (global.currentState === 'win') {
-             render();
-             Win.update(dt);
-
+            render();
+            Winner.update(dt);
          }
         lastTime = now;
-         win.requestAnimationFrame(main);
+        win.requestAnimationFrame(main);
 
     }
 
