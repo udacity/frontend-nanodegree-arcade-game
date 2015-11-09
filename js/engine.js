@@ -71,8 +71,15 @@ var Engine = (function(global) {
       lastTime = Date.now();
       startTime = lastTime;
       main();
+
+      // Collect Input
       document.addEventListener('keyup',function(e) {
         player.handleInput(allowedKeys[e.keyCode]);
+      });
+
+      // Check to see if button in welcome screen is hit
+      $('canvas').on('click', function(e) {
+        console.log('x: ', e.clientX, 'y: ', e.clientY);
       });
     }
 

@@ -38,6 +38,17 @@ var Frog = function(options) {
   return frog;
 };
 
+var Button = {
+  context: ctx,
+  render: function() {
+    ctx.fillStyle = 'blue';
+    ctx.fillRect(0, 0, 150, 50);
+    ctx.fillStyle = 'white';
+    ctx.textAlign = 'center';
+    ctx.fillText('Start', 75, 40);
+  }
+};
+
 var Welcome = {
   resetTimer: 0,
   resetLength: 5,
@@ -68,11 +79,18 @@ var Welcome = {
     ctx.textAlign = 'center';
     ctx.fillStyle = 'black';
     ctx.fillText('FROGGER', ctx.canvas.width/2, ctx.canvas.height/2);
+    ctx.save();
+    ctx.translate(ctx.canvas.width/2 - 75, ctx.canvas.height * 0.75);
+    Button.render();
+    ctx.restore();
   },
   resetState: function(dt) {
     this.resetTimer += dt;
     if (this.resetTimer > this.resetLength ) {
       currentState = 'playing';
     }
+  },
+  start: function() {
+    //TODO: Build a start button to skip intro
   }
 };

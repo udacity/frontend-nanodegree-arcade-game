@@ -1,8 +1,9 @@
 // Handles score data
 var Score = {
   score: 0,
+  winValue: 100,
   incrementScore: function() {
-    this.score += 100;
+    this.score += this.winValue;
   },
   getScore: function() {
     return this.score;

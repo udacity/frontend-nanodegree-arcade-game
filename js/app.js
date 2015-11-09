@@ -38,6 +38,17 @@ var Frog = function(options) {
   return frog;
 };
 
+var Button = {
+  context: ctx,
+  render: function() {
+    ctx.fillStyle = 'blue';
+    ctx.fillRect(0, 0, 150, 50);
+    ctx.fillStyle = 'white';
+    ctx.textAlign = 'center';
+    ctx.fillText('Start', 75, 40);
+  }
+};
+
 var Welcome = {
   resetTimer: 0,
   resetLength: 5,
@@ -68,12 +79,19 @@ var Welcome = {
     ctx.textAlign = 'center';
     ctx.fillStyle = 'black';
     ctx.fillText('FROGGER', ctx.canvas.width/2, ctx.canvas.height/2);
+    ctx.save();
+    ctx.translate(ctx.canvas.width/2 - 75, ctx.canvas.height * 0.75);
+    Button.render();
+    ctx.restore();
   },
   resetState: function(dt) {
     this.resetTimer += dt;
     if (this.resetTimer > this.resetLength ) {
       currentState = 'playing';
     }
+  },
+  start: function() {
+    //TODO: Build a start button to skip intro
   }
 };
 
@@ -279,8 +297,9 @@ Player.prototype.checkForWin = function(dt) {
 // Handles score data
 var Score = {
   score: 0,
+  winValue: 100,
   incrementScore: function() {
-    this.score += 100;
+    this.score += this.winValue;
   },
   getScore: function() {
     return this.score;
@@ -302,8 +321,6 @@ var Scorekeeper = {
   }
 };
 
-// var myCanvasWidth = ctx.canvas.width;
-// var myCanvasHeight = ctx.canvas.height;
 
 // TODO: randomize position and direction
 var b1 = new Enemy(-101, 65);
@@ -311,7 +328,6 @@ var b2 = new Enemy(-101, 145);
 var b3 = new Enemy(-101, 225);
 var player = new Player(202, 405);
 var allEnemies = [b1, b2, b3];
-Scorekeeper.render();
 
 // TODO: Create a sessionStorage score variable to
 // be updated with the Scorekeepr object
