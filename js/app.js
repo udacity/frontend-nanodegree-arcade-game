@@ -101,6 +101,7 @@ var Winner = {
       player.reset();
       currentState = 'playing';
       this.resetTimer = 0;
+      Scorekeeper.update();
     }
   }
 };
@@ -275,6 +276,32 @@ Player.prototype.checkForWin = function(dt) {
   }
 };
 
+// Handles score data
+var Score = {
+  score: 0,
+  incrementScore: function() {
+    this.score += 100;
+  },
+  getScore: function() {
+    return this.score;
+  }
+};
+
+// Handles the score view
+var Scorekeeper = {
+  $el: $(".scoreboard"),
+  recordScore: function() {
+    // update model
+  },
+  update: function() {
+    Score.incrementScore();
+    this.render();
+  },
+  render: function() {
+    this.$el.html(Score.getScore());
+  }
+};
+
 // var myCanvasWidth = ctx.canvas.width;
 // var myCanvasHeight = ctx.canvas.height;
 
@@ -284,6 +311,10 @@ var b2 = new Enemy(-101, 145);
 var b3 = new Enemy(-101, 225);
 var player = new Player(202, 405);
 var allEnemies = [b1, b2, b3];
+Scorekeeper.render();
+
+// TODO: Create a sessionStorage score variable to
+// be updated with the Scorekeepr object
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
