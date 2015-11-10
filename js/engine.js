@@ -53,6 +53,8 @@ var Engine = (function(global) {
          } else if (global.currentState === 'playing') {
              update(dt);
              render();
+         } else if (global.currentState === 'choosing') {
+            PlayerSelect.update(dt);
          } else if (global.currentState === 'win') {
             render();
             Winner.update(dt);
@@ -73,9 +75,7 @@ var Engine = (function(global) {
       main();
 
       // Collect Input
-      document.addEventListener('keyup',function(e) {
-        player.handleInput(allowedKeys[e.keyCode]);
-      });
+
 
       // Check to see if button in welcome screen is hit
       $('canvas').on('click', function(e) {

@@ -38,7 +38,12 @@ var Frog = function(options) {
   return frog;
 };
 
-var Button = {
+
+var Button = function() {
+
+};
+
+var StartButton = {
   // Hard-code the button
   x: ctx.canvas.width/2 - 75,
   y: ctx.canvas.height * 0.75,
@@ -53,6 +58,10 @@ var Button = {
     ctx.fillText('Start', this.width/2, this.height);
   }
 };
+
+
+// TODO: Add another button for selecting players?
+
 
 var Welcome = {
   resetTimer: 0,
@@ -85,23 +94,36 @@ var Welcome = {
     ctx.fillStyle = 'black';
     ctx.fillText('FROGGER', ctx.canvas.width/2, ctx.canvas.height/2);
     ctx.save();
-    ctx.translate(Button.x, Button.y);
-    Button.render();
+    ctx.translate(StartButton.x, StartButton.y);
+    StartButton.render();
     ctx.restore();
   },
   resetState: function(dt) {
     this.resetTimer += dt;
+
     if (this.resetTimer > this.resetLength ) {
+      document.addEventListener('keyup', function(e) {
+        player.handleInput(e.allowedKeys);
+      });
       currentState = 'playing';
     }
   },
   checkStartButton: function(loc) {
     // Check if the click point is within the Button bounding box
-    if (loc.x > Button.x &&
-        loc.x < Button.x + Button.width &&
-        loc.y > Button.y &&
-        loc.y < Button.y + Button.height) {
+    if (loc.x > StartButton.x &&
+        loc.x < StartButton.x + StartButton.width &&
+        loc.y > StartButton.y &&
+        loc.y < StartButton.y + StartButton.height) {
+          this.resetState();
           currentState = 'playing';
+        }
+  },
+  checkChoosePlayerButton: function(loc) {
+    if (loc.x > PlayerButton.x &&
+        loc.x < PlayerButton.x + PlayerButton.width &&
+        loc.y > PlayerButton.y &&
+        loc.y < PlayerButton.y + PlayerButton.height) {
+          currentState = 'choosing';
         }
   }
 };
