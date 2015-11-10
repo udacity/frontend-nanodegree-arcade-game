@@ -79,8 +79,21 @@ var Engine = (function(global) {
 
       // Check to see if button in welcome screen is hit
       $('canvas').on('click', function(e) {
-        console.log('x: ', e.clientX, 'y: ', e.clientY);
+        //console.log('x: ', e.clientX, 'y: ', e.clientY, "bbox: ", canvas.getBoundingClientRect());
+        var loc = handleClick(e.clientX, e.clientY);
+        //console.log(loc);
+        Welcome.checkStartButton(loc);
       });
+    }
+
+    // Process the click info into the canvas
+
+    function handleClick(x, y) {
+      // Adapted from Core HTML5 Canvas
+      var bbox = canvas.getBoundingClientRect();
+      return { x: x - bbox.left * (canvas.width / bbox.width),
+               y: y - bbox.top * (canvas.height / bbox.height)
+      };
     }
 
     /* This function is called by main (our game loop) and itself calls all

@@ -39,13 +39,18 @@ var Frog = function(options) {
 };
 
 var Button = {
+  // Hard-code the button
+  x: ctx.canvas.width/2 - 75,
+  y: ctx.canvas.height * 0.75,
+  width: 150,
+  height: 50,
   context: ctx,
   render: function() {
     ctx.fillStyle = 'blue';
-    ctx.fillRect(0, 0, 150, 50);
+    ctx.fillRect(0, 0, this.width, this.height);
     ctx.fillStyle = 'white';
     ctx.textAlign = 'center';
-    ctx.fillText('Start', 75, 40);
+    ctx.fillText('Start', this.width/2, this.height);
   }
 };
 
@@ -80,7 +85,7 @@ var Welcome = {
     ctx.fillStyle = 'black';
     ctx.fillText('FROGGER', ctx.canvas.width/2, ctx.canvas.height/2);
     ctx.save();
-    ctx.translate(ctx.canvas.width/2 - 75, ctx.canvas.height * 0.75);
+    ctx.translate(Button.x, Button.y);
     Button.render();
     ctx.restore();
   },
@@ -90,8 +95,14 @@ var Welcome = {
       currentState = 'playing';
     }
   },
-  start: function() {
-    //TODO: Build a start button to skip intro
+  checkStartButton: function(loc) {
+    // Check if the click point is within the Button bounding box
+    if (loc.x > Button.x &&
+        loc.x < Button.x + Button.width &&
+        loc.y > Button.y &&
+        loc.y < Button.y + Button.height) {
+          currentState = 'playing';
+        }
   }
 };
 
