@@ -100,10 +100,9 @@ var Welcome = {
   },
   resetState: function(dt) {
     this.resetTimer += dt;
-
-    if (this.resetTimer > this.resetLength ) {
+    if (this.resetTimer >= this.resetLength ) {
       document.addEventListener('keyup', function(e) {
-        player.handleInput(e.allowedKeys);
+        player.handleInput(allowedKeys[e.keyCode]);
       });
       currentState = 'playing';
     }
@@ -114,7 +113,7 @@ var Welcome = {
         loc.x < StartButton.x + StartButton.width &&
         loc.y > StartButton.y &&
         loc.y < StartButton.y + StartButton.height) {
-          this.resetState();
+          this.resetState(this.resetLength);
           currentState = 'playing';
         }
   },
@@ -279,6 +278,7 @@ Player.prototype.render = function() {
 
 Player.prototype.handleInput = function(key) {
   // Check the bounds, don't allow character to go out of screen
+  console.log(key);
   if(key === 'left'){
     // x-min = 0
     if( this.x > 0 ){
