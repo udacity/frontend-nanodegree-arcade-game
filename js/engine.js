@@ -54,7 +54,7 @@ var Engine = (function(global) {
              update(dt);
              render();
          } else if (global.currentState === 'choosing') {
-            PlayerSelect.update(dt);
+            AvatarSelect.update(dt);
          } else if (global.currentState === 'win') {
             render();
             Winner.update(dt);
@@ -82,7 +82,7 @@ var Engine = (function(global) {
         //console.log('x: ', e.clientX, 'y: ', e.clientY, "bbox: ", canvas.getBoundingClientRect());
         var loc = handleClick(e.clientX, e.clientY);
         //console.log(loc);
-        Welcome.checkStartButton(loc);
+        Welcome.checkAllButtons(loc);
       });
     }
 

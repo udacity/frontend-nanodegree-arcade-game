@@ -39,33 +39,32 @@ var Frog = function(options) {
 };
 
 
-var Button = function() {
-
+var Button = function(text, x, y, width, height, nextState) {
+  this.text = text;
+  this.x = x - width/2;
+  this.y = y;
+  this.width = width;
+  this.height = height;
+  this.nextState = nextState;
 };
 
-var StartButton = {
-  // Hard-code the button
-  x: ctx.canvas.width/2 - 75,
-  y: ctx.canvas.height * 0.75,
-  width: 150,
-  height: 50,
-  context: ctx,
-  render: function() {
-    ctx.fillStyle = 'blue';
-    ctx.fillRect(0, 0, this.width, this.height);
-    ctx.fillStyle = 'white';
-    ctx.textAlign = 'center';
-    ctx.fillText('Start', this.width/2, this.height);
-  }
+Button.prototype.render = function() {
+  ctx.fillStyle = 'blue';
+  ctx.fillRect(0, 0, this.width, this.height);
+  ctx.fillStyle = 'white';
+  ctx.textAlign = 'center';
+  ctx.fillText(this.text, this.width/2, this.height);
 };
 
+var StartButton = new Button('Start', ctx.canvas.width/2, ctx.canvas.height * 0.75, 150, 50, 'playing');
 
-// TODO: Add another button for selecting players?
+var AvatarButton = new Button('Choose Avatar', ctx.canvas.width/2, ctx.canvas.height * 0.6, 400, 50, 'choosing');
 
 
 var Welcome = {
   resetTimer: 0,
   resetLength: 5,
+  buttons: [StartButton, AvatarButton],
   introGraphic: new Frog({
     image: 'images/frog.png',
     sx: 0,
@@ -96,6 +95,9 @@ var Welcome = {
     ctx.save();
     ctx.translate(StartButton.x, StartButton.y);
     StartButton.render();
+    ctx.resetTransform();
+    ctx.translate(AvatarButton.x, AvatarButton.y);
+    AvatarButton.render();
     ctx.restore();
   },
   resetState: function(dt) {
@@ -107,14 +109,20 @@ var Welcome = {
       currentState = 'playing';
     }
   },
-  checkStartButton: function(loc) {
+  checkAllButtons: function(loc) {
     // Check if the click point is within the Button bounding box
-    if (loc.x > StartButton.x &&
-        loc.x < StartButton.x + StartButton.width &&
-        loc.y > StartButton.y &&
-        loc.y < StartButton.y + StartButton.height) {
+    var welcome_panel = this;
+    this.buttons.forEach(function(button){
+      welcome_panel.checkHitButton(loc, button);
+    });
+  },
+  checkHitButton: function(loc, button) {
+    if (loc.x > button.x &&
+        loc.x < button.x + button.width &&
+        loc.y > button.y &&
+        loc.y < button.y + button.height) {
           this.resetState(this.resetLength);
-          currentState = 'playing';
+          currentState = button.nextState;
         }
   },
   checkChoosePlayerButton: function(loc) {
