@@ -1,3 +1,5 @@
+// TODO: Just use bitmaps to draw buttons
+
 var Frog = function(options) {
   // Assumes that each tile of the sprite sheet is square
   // Build a frame-by-frame animation of the frog hopping
@@ -38,9 +40,33 @@ var Frog = function(options) {
   return frog;
 };
 
+
+var Button = function(text, x, y, width, height, nextState) {
+  this.text = text;
+  this.x = x - width/2;
+  this.y = y;
+  this.width = width;
+  this.height = height;
+  this.nextState = nextState;
+};
+
+Button.prototype.render = function() {
+  ctx.fillStyle = 'blue';
+  ctx.fillRect(0, 0, this.width, this.height);
+  ctx.fillStyle = 'white';
+  ctx.textAlign = 'center';
+  ctx.fillText(this.text, this.width/2, this.height);
+};
+
+var StartButton = new Button('Start', ctx.canvas.width/2, ctx.canvas.height * 0.75, 150, 50, 'playing');
+
+var AvatarButton = new Button('Choose Avatar', ctx.canvas.width/2, ctx.canvas.height * 0.6, 400, 50, 'choosing');
+
+
 var Welcome = {
   resetTimer: 0,
   resetLength: 5,
+  buttons: [StartButton, AvatarButton],
   introGraphic: new Frog({
     image: 'images/frog.png',
     sx: 0,
@@ -68,11 +94,43 @@ var Welcome = {
     ctx.textAlign = 'center';
     ctx.fillStyle = 'black';
     ctx.fillText('FROGGER', ctx.canvas.width/2, ctx.canvas.height/2);
+    ctx.save();
+    ctx.translate(StartButton.x, StartButton.y);
+    StartButton.render();
+    ctx.resetTransform();
+    ctx.translate(AvatarButton.x, AvatarButton.y);
+    AvatarButton.render();
+    ctx.restore();
   },
   resetState: function(dt) {
     this.resetTimer += dt;
-    if (this.resetTimer > this.resetLength ) {
+    if (this.resetTimer >= this.resetLength ) {
+      document.addEventListener('keyup', function(e) {
+        player.handleInput(allowedKeys[e.keyCode]);
+      });
       currentState = 'playing';
     }
+  },
+  checkAllButtons: function(loc) {
+    // Check if the click point is within the Button bounding box
+    var welcome_panel = this;
+    this.buttons.forEach(function(button){
+      welcome_panel.checkHitButton(loc, button);
+    });
+  },
+  checkHitButton: function(loc, button) {
+    if (loc.x > button.x &&
+        loc.x < button.x + button.width &&
+        loc.y > button.y &&
+        loc.y < button.y + button.height) {
+          this.resetState(this.resetLength);
+          if(button.nextState === 'choosing'){
+            $canvas.off().on('click',function(e){
+              var loc = handleClick(e.clientX, e.clientY);
+              AvatarSelect.checkAvatars(loc);
+            });
+          }
+          currentState = button.nextState;
+        }
   }
 };

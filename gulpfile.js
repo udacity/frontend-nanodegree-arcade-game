@@ -12,6 +12,8 @@ var app_js = [
   'sprite.js',
   'enemy.js',
   'player.js',
+  'scorekeeper.js',
+  'player-select.js',
   'init.js'
 ];
 

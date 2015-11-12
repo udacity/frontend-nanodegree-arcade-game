@@ -22,6 +22,7 @@ var Winner = {
       player.reset();
       currentState = 'playing';
       this.resetTimer = 0;
+      Scorekeeper.update();
     }
   }
 };

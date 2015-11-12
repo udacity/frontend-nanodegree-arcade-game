@@ -27,10 +27,11 @@ var Engine = (function(global) {
         startTime,
         lastTime;
 
+
     canvas.width = 505;
     canvas.height = 606;
     doc.body.appendChild(canvas);
-
+    global.$canvas = $('canvas');
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
      */
@@ -53,6 +54,8 @@ var Engine = (function(global) {
          } else if (global.currentState === 'playing') {
              update(dt);
              render();
+         } else if (global.currentState === 'choosing') {
+            AvatarSelect.update(dt);
          } else if (global.currentState === 'win') {
             render();
             Winner.update(dt);
@@ -71,11 +74,28 @@ var Engine = (function(global) {
       lastTime = Date.now();
       startTime = lastTime;
       main();
-      document.addEventListener('keyup',function(e) {
-        player.handleInput(allowedKeys[e.keyCode]);
+
+      // Collect Input
+      // Check to see if button in welcome screen is hit
+      $canvas.on('click', function(e) {
+        //console.log('x: ', e.clientX, 'y: ', e.clientY, "bbox: ", canvas.getBoundingClientRect());
+        var loc = handleClick(e.clientX, e.clientY);
+        //console.log(loc);
+        Welcome.checkAllButtons(loc);
       });
     }
 
+    // Process the click info into the canvas
+
+    function handleClick(x, y) {
+      // Adapted from Core HTML5 Canvas
+      var bbox = canvas.getBoundingClientRect();
+      return { x: x - bbox.left * (canvas.width / bbox.width),
+               y: y - bbox.top * (canvas.height / bbox.height)
+      };
+    }
+
+    global.handleClick = handleClick;
     /* This function is called by main (our game loop) and itself calls all
      * of the functions which may need to update entity's data. Based on how
      * you implement your collision detection (when two entities occupy the
@@ -176,6 +196,10 @@ var Engine = (function(global) {
         'images/grass-block.png',
         'images/enemy-bug.png',
         'images/char-boy.png',
+        'images/char-cat-girl.png',
+        'images/char-horn-girl.png',
+        'images/char-pink-girl.png',
+        'images/char-princess-girl.png',
         'images/frog.png'
     ]);
     Resources.onReady(init);

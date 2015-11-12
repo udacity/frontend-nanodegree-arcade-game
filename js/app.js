@@ -1,3 +1,5 @@
+// TODO: Just use bitmaps to draw buttons
+
 var Frog = function(options) {
   // Assumes that each tile of the sprite sheet is square
   // Build a frame-by-frame animation of the frog hopping
@@ -38,9 +40,33 @@ var Frog = function(options) {
   return frog;
 };
 
+
+var Button = function(text, x, y, width, height, nextState) {
+  this.text = text;
+  this.x = x - width/2;
+  this.y = y;
+  this.width = width;
+  this.height = height;
+  this.nextState = nextState;
+};
+
+Button.prototype.render = function() {
+  ctx.fillStyle = 'blue';
+  ctx.fillRect(0, 0, this.width, this.height);
+  ctx.fillStyle = 'white';
+  ctx.textAlign = 'center';
+  ctx.fillText(this.text, this.width/2, this.height);
+};
+
+var StartButton = new Button('Start', ctx.canvas.width/2, ctx.canvas.height * 0.75, 150, 50, 'playing');
+
+var AvatarButton = new Button('Choose Avatar', ctx.canvas.width/2, ctx.canvas.height * 0.6, 400, 50, 'choosing');
+
+
 var Welcome = {
   resetTimer: 0,
   resetLength: 5,
+  buttons: [StartButton, AvatarButton],
   introGraphic: new Frog({
     image: 'images/frog.png',
     sx: 0,
@@ -68,12 +94,44 @@ var Welcome = {
     ctx.textAlign = 'center';
     ctx.fillStyle = 'black';
     ctx.fillText('FROGGER', ctx.canvas.width/2, ctx.canvas.height/2);
+    ctx.save();
+    ctx.translate(StartButton.x, StartButton.y);
+    StartButton.render();
+    ctx.resetTransform();
+    ctx.translate(AvatarButton.x, AvatarButton.y);
+    AvatarButton.render();
+    ctx.restore();
   },
   resetState: function(dt) {
     this.resetTimer += dt;
-    if (this.resetTimer > this.resetLength ) {
+    if (this.resetTimer >= this.resetLength ) {
+      document.addEventListener('keyup', function(e) {
+        player.handleInput(allowedKeys[e.keyCode]);
+      });
       currentState = 'playing';
     }
+  },
+  checkAllButtons: function(loc) {
+    // Check if the click point is within the Button bounding box
+    var welcome_panel = this;
+    this.buttons.forEach(function(button){
+      welcome_panel.checkHitButton(loc, button);
+    });
+  },
+  checkHitButton: function(loc, button) {
+    if (loc.x > button.x &&
+        loc.x < button.x + button.width &&
+        loc.y > button.y &&
+        loc.y < button.y + button.height) {
+          this.resetState(this.resetLength);
+          if(button.nextState === 'choosing'){
+            $canvas.off().on('click',function(e){
+              var loc = handleClick(e.clientX, e.clientY);
+              AvatarSelect.checkAvatars(loc);
+            });
+          }
+          currentState = button.nextState;
+        }
   }
 };
 
@@ -101,6 +159,7 @@ var Winner = {
       player.reset();
       currentState = 'playing';
       this.resetTimer = 0;
+      Scorekeeper.update();
     }
   }
 };
@@ -227,6 +286,7 @@ Player.prototype.render = function() {
 
 Player.prototype.handleInput = function(key) {
   // Check the bounds, don't allow character to go out of screen
+  console.log(key);
   if(key === 'left'){
     // x-min = 0
     if( this.x > 0 ){
@@ -275,8 +335,104 @@ Player.prototype.checkForWin = function(dt) {
   }
 };
 
-// var myCanvasWidth = ctx.canvas.width;
-// var myCanvasHeight = ctx.canvas.height;
+// Handles score data
+var Score = {
+  score: 0,
+  winValue: 100,
+  incrementScore: function() {
+    this.score += this.winValue;
+  },
+  getScore: function() {
+    return this.score;
+  }
+};
+
+// Handles the score view
+var Scorekeeper = {
+  $el: $(".scoreboard"),
+  recordScore: function() {
+    // update model
+  },
+  update: function() {
+    Score.incrementScore();
+    this.render();
+  },
+  render: function() {
+    this.$el.html(Score.getScore());
+  }
+};
+
+
+
+var Avatar = function(sprite, x, y) {
+  this.x = x;
+  this.y = y;
+  this.width = 101;
+  this.height = 171;
+  this.sprite = sprite;
+};
+
+Avatar.prototype.render = function() {
+  // console.log(this.x, this.y);
+  ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+var AvatarSelect = {
+  avatarImages: [
+    'images/char-boy.png',
+    'images/char-cat-girl.png',
+    'images/char-horn-girl.png',
+    'images/char-pink-girl.png',
+    'images/char-princess-girl.png'
+  ],
+  avatars: [],
+  resetTimer: 0,
+  resetLength: 2,
+  init: function() {
+    var that = this;
+    var index = 0;
+    this.avatarImages.forEach(function(item){
+      var a = new Avatar(item, 101 * index, 300);
+      that.avatars.push(a);
+      index++;
+    });
+  },
+  update: function(dt) {
+    this.render();
+  },
+  render: function() {
+    ctx.fillStyle = 'white';
+    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    this.avatars.forEach(function(item){
+      item.render();
+    });
+  },
+  checkAvatars: function(loc) {
+    var that = this;
+    this.avatars.forEach(function(avatar){
+      that.checkHitButton(loc, avatar);
+    });
+  },
+  checkHitButton: function(loc, button) {
+    if (loc.x > button.x &&
+        loc.x < button.x + button.width &&
+        loc.y > button.y &&
+        loc.y < button.y + button.height) {
+          player.sprite = button.sprite;
+          this.resetState();
+        }
+  },
+  resetState: function() {
+    console.log('hi');
+      document.addEventListener('keyup', function(e) {
+        player.handleInput(allowedKeys[e.keyCode]);
+      });
+      currentState = 'playing';
+    }
+};
+
+AvatarSelect.init();
+
 
 // TODO: randomize position and direction
 var b1 = new Enemy(-101, 65);
@@ -284,6 +440,9 @@ var b2 = new Enemy(-101, 145);
 var b3 = new Enemy(-101, 225);
 var player = new Player(202, 405);
 var allEnemies = [b1, b2, b3];
+
+// TODO: Create a sessionStorage score variable to
+// be updated with the Scorekeepr object
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
