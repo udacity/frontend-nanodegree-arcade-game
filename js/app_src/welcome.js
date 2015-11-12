@@ -1,3 +1,5 @@
+// TODO: Just use bitmaps to draw buttons
+
 var Frog = function(options) {
   // Assumes that each tile of the sprite sheet is square
   // Build a frame-by-frame animation of the frog hopping

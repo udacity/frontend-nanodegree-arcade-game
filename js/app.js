@@ -1,3 +1,5 @@
+// TODO: Just use bitmaps to draw buttons
+
 var Frog = function(options) {
   // Assumes that each tile of the sprite sheet is square
   // Build a frame-by-frame animation of the frog hopping
@@ -362,6 +364,8 @@ var Scorekeeper = {
   }
 };
 
+
+
 var Avatar = function(sprite, x, y) {
   this.x = x;
   this.y = y;
@@ -369,36 +373,46 @@ var Avatar = function(sprite, x, y) {
 };
 
 Avatar.prototype.render = function() {
-  // this.x
-  // this.y
-  ctx.canvas.drawImage(this.sprite);
+  // console.log(this.x, this.y);
+  ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
 var AvatarSelect = {
-  avatars: [
+  avatarImages: [
     'images/char-boy.png',
     'images/char-cat-girl.png',
     'images/char-horn-girl.png',
     'images/char-pink-girl.png',
     'images/char-princess-girl.png'
   ],
+  avatars: [],
   resetTimer: 0,
   resetLength: 2,
+  init: function() {
+    var that = this;
+    var index = 0;
+    this.avatarImages.forEach(function(item){
+      var a = new Avatar(item, 90 * index, 300);
+      that.avatars.push(a);
+      index++;
+    });
+  },
   update: function(dt) {
-    // Hi
-    console.log('select avatar');
+    this.render();
     this.resetState(dt);
   },
   render: function() {
-    this.avatars.forEach(function(player){
-
+    ctx.fillStyle = 'white';
+    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    this.avatars.forEach(function(item){
+      item.render();
     });
   },
   handleInput: function() {
     // Use the mouse to select player
   },
   resetState: function(dt) {
-    this.resetTimer += dt;
+    // this.resetTimer += dt;
     if (this.resetTimer >= this.resetLength ) {
       document.addEventListener('keyup', function(e) {
         player.handleInput(allowedKeys[e.keyCode]);
@@ -407,6 +421,8 @@ var AvatarSelect = {
     }
   }
 };
+
+AvatarSelect.init();
 
 
 // TODO: randomize position and direction
