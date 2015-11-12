@@ -27,10 +27,11 @@ var Engine = (function(global) {
         startTime,
         lastTime;
 
+
     canvas.width = 505;
     canvas.height = 606;
     doc.body.appendChild(canvas);
-
+    global.$canvas = $('canvas');
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
      */
@@ -75,10 +76,8 @@ var Engine = (function(global) {
       main();
 
       // Collect Input
-
-
       // Check to see if button in welcome screen is hit
-      $('canvas').on('click', function(e) {
+      $canvas.on('click', function(e) {
         //console.log('x: ', e.clientX, 'y: ', e.clientY, "bbox: ", canvas.getBoundingClientRect());
         var loc = handleClick(e.clientX, e.clientY);
         //console.log(loc);
@@ -96,6 +95,7 @@ var Engine = (function(global) {
       };
     }
 
+    global.handleClick = handleClick;
     /* This function is called by main (our game loop) and itself calls all
      * of the functions which may need to update entity's data. Based on how
      * you implement your collision detection (when two entities occupy the

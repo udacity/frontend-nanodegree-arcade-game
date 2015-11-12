@@ -3,6 +3,8 @@
 var Avatar = function(sprite, x, y) {
   this.x = x;
   this.y = y;
+  this.width = 101;
+  this.height = 171;
   this.sprite = sprite;
 };
 
@@ -26,14 +28,13 @@ var AvatarSelect = {
     var that = this;
     var index = 0;
     this.avatarImages.forEach(function(item){
-      var a = new Avatar(item, 90 * index, 300);
+      var a = new Avatar(item, 101 * index, 300);
       that.avatars.push(a);
       index++;
     });
   },
   update: function(dt) {
     this.render();
-    this.resetState(dt);
   },
   render: function() {
     ctx.fillStyle = 'white';
@@ -42,18 +43,28 @@ var AvatarSelect = {
       item.render();
     });
   },
-  handleInput: function() {
-    // Use the mouse to select player
+  checkAvatars: function(loc) {
+    var that = this;
+    this.avatars.forEach(function(avatar){
+      that.checkHitButton(loc, avatar);
+    });
   },
-  resetState: function(dt) {
-    // this.resetTimer += dt;
-    if (this.resetTimer >= this.resetLength ) {
+  checkHitButton: function(loc, button) {
+    if (loc.x > button.x &&
+        loc.x < button.x + button.width &&
+        loc.y > button.y &&
+        loc.y < button.y + button.height) {
+          player.sprite = button.sprite;
+          this.resetState();
+        }
+  },
+  resetState: function() {
+    console.log('hi');
       document.addEventListener('keyup', function(e) {
         player.handleInput(allowedKeys[e.keyCode]);
       });
       currentState = 'playing';
     }
-  }
 };
 
 AvatarSelect.init();

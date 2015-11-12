@@ -124,15 +124,13 @@ var Welcome = {
         loc.y > button.y &&
         loc.y < button.y + button.height) {
           this.resetState(this.resetLength);
+          if(button.nextState === 'choosing'){
+            $canvas.off().on('click',function(e){
+              var loc = handleClick(e.clientX, e.clientY);
+              AvatarSelect.checkAvatars(loc);
+            });
+          }
           currentState = button.nextState;
-        }
-  },
-  checkChoosePlayerButton: function(loc) {
-    if (loc.x > PlayerButton.x &&
-        loc.x < PlayerButton.x + PlayerButton.width &&
-        loc.y > PlayerButton.y &&
-        loc.y < PlayerButton.y + PlayerButton.height) {
-          currentState = 'choosing';
         }
   }
 };
