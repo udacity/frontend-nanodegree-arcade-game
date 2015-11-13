@@ -40,24 +40,6 @@ var Frog = function(options) {
   return frog;
 };
 
-
-var Button = function(text, x, y, width, height, nextState) {
-  this.text = text;
-  this.x = x - width/2;
-  this.y = y;
-  this.width = width;
-  this.height = height;
-  this.nextState = nextState;
-};
-
-Button.prototype.render = function() {
-  ctx.fillStyle = 'blue';
-  ctx.fillRect(0, 0, this.width, this.height);
-  ctx.fillStyle = 'white';
-  ctx.textAlign = 'center';
-  ctx.fillText(this.text, this.width/2, this.height);
-};
-
 var StartButton = new Button('Start', ctx.canvas.width/2, ctx.canvas.height * 0.75, 150, 50, 'playing');
 
 var AvatarButton = new Button('Choose Avatar', ctx.canvas.width/2, ctx.canvas.height * 0.6, 400, 50, 'choosing');

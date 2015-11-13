@@ -1,18 +1,4 @@
 
-
-var Avatar = function(sprite, x, y) {
-  this.x = x;
-  this.y = y;
-  this.width = 101;
-  this.height = 171;
-  this.sprite = sprite;
-};
-
-Avatar.prototype.render = function() {
-  // console.log(this.x, this.y);
-  ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
-
 var AvatarSelect = {
   avatarImages: [
     'images/char-boy.png',
@@ -59,7 +45,6 @@ var AvatarSelect = {
         }
   },
   resetState: function() {
-    console.log('hi');
       document.addEventListener('keyup', function(e) {
         player.handleInput(allowedKeys[e.keyCode]);
       });

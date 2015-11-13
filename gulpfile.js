@@ -6,6 +6,7 @@ var autoprefixer = require('gulp-autoprefixer');
 var sass = require('gulp-sass');
 var app_js_path = 'js/app_src/';
 var app_js = [
+  'base.js',
   'welcome.js',
   'winner.js',
   'lose.js',
