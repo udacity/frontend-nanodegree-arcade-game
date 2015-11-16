@@ -40,9 +40,12 @@ var Frog = function(options) {
   return frog;
 };
 
-var StartButton = new Button('Start', ctx.canvas.width/2, ctx.canvas.height * 0.75, 150, 50, 'playing');
+// function(x, y, sprite, imageWidth, imageHeight, boxWidth, boxHeight, nextState)
+var Frogger = new Sprite(0, 100, 'images/phrogger.png', 505, 126);
 
-var AvatarButton = new Button('Choose Avatar', ctx.canvas.width/2, ctx.canvas.height * 0.6, 400, 50, 'choosing');
+var StartButton = new Button(ctx.canvas.width/2 - 36, ctx.canvas.height * 0.75, 'images/start-btn.png', 150, 41, 'playing');
+
+var AvatarButton = new Button(ctx.canvas.width/2 - 160, ctx.canvas.height * 0.5, 'images/avatar-btn.png', 330, 97, 'choosing');
 
 
 var Welcome = {
@@ -69,20 +72,12 @@ var Welcome = {
     this.resetState(dt);
   },
   render: function() {
-    ctx.fillStyle = 'white';
-    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    ctx.font = '36pt Helvetica';
-    ctx.textSmoothingEnabled = true;
-    ctx.textAlign = 'center';
-    ctx.fillStyle = 'black';
-    ctx.fillText('FROGGER', ctx.canvas.width/2, ctx.canvas.height/2);
     ctx.save();
-    ctx.translate(StartButton.x, StartButton.y);
+    ctx.fillStyle = 'black';
+    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    Frogger.render();
     StartButton.render();
-    ctx.resetTransform();
-    ctx.translate(AvatarButton.x, AvatarButton.y);
     AvatarButton.render();
-    ctx.restore();
   },
   resetState: function(dt) {
     this.resetTimer += dt;
@@ -90,6 +85,7 @@ var Welcome = {
       document.addEventListener('keyup', function(e) {
         player.handleInput(allowedKeys[e.keyCode]);
       });
+      ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
       currentState = 'playing';
     }
   },

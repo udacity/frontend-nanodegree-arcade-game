@@ -14,7 +14,7 @@ var AvatarSelect = {
     var that = this;
     var index = 0;
     this.avatarImages.forEach(function(item){
-      var a = new Sprite(101 * index, 300, item);
+      var a = new Sprite(101 * index, 300, item, 101, 171, 101, 70);
       that.avatars.push(a);
       index++;
     });

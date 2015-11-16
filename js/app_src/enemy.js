@@ -4,9 +4,9 @@ var Enemy = function(x, y) {
     // we've provided one for you to get started
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
-    Sprite.call(this, x, y);
+    Sprite.call(this, x, y, 'images/enemy-bug.png', 101, 171);
     this.speed = 100+Math.random()*200;
-    this.sprite = 'images/enemy-bug.png';
+    // this.sprite = 'images/enemy-bug.png';
     // Bug is 70 px tall and 101px wide
     // Offset is 75px
     this.boxTopOffset = 75;
@@ -26,13 +26,15 @@ Enemy.prototype.update = function(dt) {
     // all computers.
     this.x += this.speed*dt;
     this.boxX = this.x;
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    this.render();
     if (this.x > ctx.canvas.width + this.boxWidth) {
       this.x = this['x-default'];
     }
 };
 
 // Draw the enemy on the screen, required method for game
+/*
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
+*/

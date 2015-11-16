@@ -1,47 +1,30 @@
 // Establish base classes for use in game objects
 
-// A button is used in the welcome panel
-// It should probably also be used for the Avatars
-// Perhaps these should be 'Flash' inspired, with static
-// sprites and animated sprites based on different base
-// classes?
-
-var Button = function(text, x, y, width, height, nextState) {
-  this.text = text;
-  this.x = x - width/2;
-  this.y = y;
-  this.width = width;
-  this.height = height;
-  this.nextState = nextState;
-};
-
-// TODO: remove the canvas vector stuff from the Button
-// Draw these with bitmaps or svg
-Button.prototype.render = function() {
-  ctx.fillStyle = 'blue';
-  ctx.fillRect(0, 0, this.width, this.height);
-  ctx.fillStyle = 'white';
-  ctx.textAlign = 'center';
-  ctx.fillText(this.text, this.width/2, this.height);
-};
-
-/*
-Button.prototype.handleHit = function() {
-  currentState = this.nextState;
-};
-*/
-
 // TODO Add an update function to handle different rendering states
 // I want to make the characters go splat
-var Sprite = function(x, y, sprite) {
+
+/*
+frog.context.drawImage(
+  Resources.get(frog.image),
+  frog.sx + frog.frameCounter * frog.dWidth,
+  frog.sy,
+  frog.sWidth,
+  frog.sHeight,
+  frog.dx,
+  frog.dy,
+  frog.dWidth,
+  frog.dHeight
+*/
+  
+var Sprite = function(x, y, sprite, imageWidth, imageHeight, boxWidth, boxHeight) {
   this['x-default'] = x;
   this['y-default'] = y;
   this.x = this['x-default'];
   this.y = this['y-default'];
-  this.imageWidth = 101;
-  this.imageHeight = 171;
-  this.boxWidth = 101;
-  this.boxHeight = 70;
+  this.imageWidth = imageWidth;
+  this.imageHeight = imageHeight;
+  this.boxWidth = boxWidth || imageWidth;
+  this.boxHeight = boxHeight || imageWidth;
   this.sprite = sprite;
 };
 
@@ -52,6 +35,19 @@ Sprite.prototype.reset = function(){
 
 Sprite.prototype.render = function() {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+var Button = function(x, y, sprite, imageWidth, imageHeight, boxWidth, boxHeight, nextState) {
+  Sprite.call(this, x, y, sprite, imageWidth, imageHeight, boxWidth, boxHeight);
+  this.nextState = nextState;
+};
+
+Button.prototype = Object.create(Sprite.prototype);
+
+Button.constructor = Button;
+
+Button.prototype.handleHit = function() {
+  currentState = this.nextState;
 };
 
 // TODO add rendering capacity for sprites

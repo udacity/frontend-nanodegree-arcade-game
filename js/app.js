@@ -1,47 +1,30 @@
 // Establish base classes for use in game objects
 
-// A button is used in the welcome panel
-// It should probably also be used for the Avatars
-// Perhaps these should be 'Flash' inspired, with static
-// sprites and animated sprites based on different base
-// classes?
-
-var Button = function(text, x, y, width, height, nextState) {
-  this.text = text;
-  this.x = x - width/2;
-  this.y = y;
-  this.width = width;
-  this.height = height;
-  this.nextState = nextState;
-};
-
-// TODO: remove the canvas vector stuff from the Button
-// Draw these with bitmaps or svg
-Button.prototype.render = function() {
-  ctx.fillStyle = 'blue';
-  ctx.fillRect(0, 0, this.width, this.height);
-  ctx.fillStyle = 'white';
-  ctx.textAlign = 'center';
-  ctx.fillText(this.text, this.width/2, this.height);
-};
-
-/*
-Button.prototype.handleHit = function() {
-  currentState = this.nextState;
-};
-*/
-
 // TODO Add an update function to handle different rendering states
 // I want to make the characters go splat
-var Sprite = function(x, y, sprite) {
+
+/*
+frog.context.drawImage(
+  Resources.get(frog.image),
+  frog.sx + frog.frameCounter * frog.dWidth,
+  frog.sy,
+  frog.sWidth,
+  frog.sHeight,
+  frog.dx,
+  frog.dy,
+  frog.dWidth,
+  frog.dHeight
+*/
+  
+var Sprite = function(x, y, sprite, imageWidth, imageHeight, boxWidth, boxHeight) {
   this['x-default'] = x;
   this['y-default'] = y;
   this.x = this['x-default'];
   this.y = this['y-default'];
-  this.imageWidth = 101;
-  this.imageHeight = 171;
-  this.boxWidth = 101;
-  this.boxHeight = 70;
+  this.imageWidth = imageWidth;
+  this.imageHeight = imageHeight;
+  this.boxWidth = boxWidth || imageWidth;
+  this.boxHeight = boxHeight || imageWidth;
   this.sprite = sprite;
 };
 
@@ -52,6 +35,19 @@ Sprite.prototype.reset = function(){
 
 Sprite.prototype.render = function() {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+var Button = function(x, y, sprite, imageWidth, imageHeight, boxWidth, boxHeight, nextState) {
+  Sprite.call(this, x, y, sprite, imageWidth, imageHeight, boxWidth, boxHeight);
+  this.nextState = nextState;
+};
+
+Button.prototype = Object.create(Sprite.prototype);
+
+Button.constructor = Button;
+
+Button.prototype.handleHit = function() {
+  currentState = this.nextState;
 };
 
 // TODO add rendering capacity for sprites
@@ -142,9 +138,12 @@ var Frog = function(options) {
   return frog;
 };
 
-var StartButton = new Button('Start', ctx.canvas.width/2, ctx.canvas.height * 0.75, 150, 50, 'playing');
+// function(x, y, sprite, imageWidth, imageHeight, boxWidth, boxHeight, nextState)
+var Frogger = new Sprite(0, 100, 'images/phrogger.png', 505, 126);
 
-var AvatarButton = new Button('Choose Avatar', ctx.canvas.width/2, ctx.canvas.height * 0.6, 400, 50, 'choosing');
+var StartButton = new Button(ctx.canvas.width/2 - 36, ctx.canvas.height * 0.75, 'images/start-btn.png', 150, 41, 'playing');
+
+var AvatarButton = new Button(ctx.canvas.width/2 - 160, ctx.canvas.height * 0.5, 'images/avatar-btn.png', 330, 97, 'choosing');
 
 
 var Welcome = {
@@ -171,20 +170,12 @@ var Welcome = {
     this.resetState(dt);
   },
   render: function() {
-    ctx.fillStyle = 'white';
-    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    ctx.font = '36pt Helvetica';
-    ctx.textSmoothingEnabled = true;
-    ctx.textAlign = 'center';
-    ctx.fillStyle = 'black';
-    ctx.fillText('FROGGER', ctx.canvas.width/2, ctx.canvas.height/2);
     ctx.save();
-    ctx.translate(StartButton.x, StartButton.y);
+    ctx.fillStyle = 'black';
+    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    Frogger.render();
     StartButton.render();
-    ctx.resetTransform();
-    ctx.translate(AvatarButton.x, AvatarButton.y);
     AvatarButton.render();
-    ctx.restore();
   },
   resetState: function(dt) {
     this.resetTimer += dt;
@@ -192,6 +183,7 @@ var Welcome = {
       document.addEventListener('keyup', function(e) {
         player.handleInput(allowedKeys[e.keyCode]);
       });
+      ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
       currentState = 'playing';
     }
   },
@@ -286,9 +278,9 @@ var Enemy = function(x, y) {
     // we've provided one for you to get started
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
-    Sprite.call(this, x, y);
+    Sprite.call(this, x, y, 'images/enemy-bug.png', 101, 171);
     this.speed = 100+Math.random()*200;
-    this.sprite = 'images/enemy-bug.png';
+    // this.sprite = 'images/enemy-bug.png';
     // Bug is 70 px tall and 101px wide
     // Offset is 75px
     this.boxTopOffset = 75;
@@ -308,25 +300,27 @@ Enemy.prototype.update = function(dt) {
     // all computers.
     this.x += this.speed*dt;
     this.boxX = this.x;
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    this.render();
     if (this.x > ctx.canvas.width + this.boxWidth) {
       this.x = this['x-default'];
     }
 };
 
 // Draw the enemy on the screen, required method for game
+/*
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
+*/
 
 var Player = function() {
   // Box is 70px wide by 80px tall
   // Offset at the top is 60px
-  Sprite.call(this, 202, 405);
+  Sprite.call(this, 202, 405, 'images/char-boy.png');
 
   this.dx = 0;
   this.dy = 0;
-  this.sprite = 'images/char-boy.png';
+  // this.sprite = 'images/char-boy.png';
   this.boxWidth = 70;
   this.boxHeight = 80;
   this.boxTopOffset = 60;
@@ -447,7 +441,7 @@ var AvatarSelect = {
     var that = this;
     var index = 0;
     this.avatarImages.forEach(function(item){
-      var a = new Sprite(101 * index, 300, item);
+      var a = new Sprite(101 * index, 300, item, 101, 171, 101, 70);
       that.avatars.push(a);
       index++;
     });

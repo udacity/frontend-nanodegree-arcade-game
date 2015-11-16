@@ -200,7 +200,10 @@ var Engine = (function(global) {
         'images/char-horn-girl.png',
         'images/char-pink-girl.png',
         'images/char-princess-girl.png',
-        'images/frog.png'
+        'images/frog.png',
+        'images/avatar-btn.png',
+        'images/start-btn.png',
+        'images/phrogger.png'
     ]);
     Resources.onReady(init);
 

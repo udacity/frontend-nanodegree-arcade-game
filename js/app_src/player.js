@@ -1,11 +1,11 @@
 var Player = function() {
   // Box is 70px wide by 80px tall
   // Offset at the top is 60px
-  Sprite.call(this, 202, 405);
+  Sprite.call(this, 202, 405, 'images/char-boy.png');
 
   this.dx = 0;
   this.dy = 0;
-  this.sprite = 'images/char-boy.png';
+  // this.sprite = 'images/char-boy.png';
   this.boxWidth = 70;
   this.boxHeight = 80;
   this.boxTopOffset = 60;
