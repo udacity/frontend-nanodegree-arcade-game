@@ -29,35 +29,29 @@ Button.prototype.render = function() {
 Button.prototype.handleHit = function() {
   currentState = this.nextState;
 };
-
-// The Avatar class is just used in the avatar select panel
-var Avatar = function(sprite, x, y) {
-  this.x = x;
-  this.y = y;
-  this.width = 101;
-  this.height = 171;
-  this.sprite = sprite;
-};
-
-Avatar.prototype.render = function() {
-  // console.log(this.x, this.y);
-  ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
+*/
 
 // TODO Add an update function to handle different rendering states
 // I want to make the characters go splat
-var Sprite = function(x, y) {
+var Sprite = function(x, y, sprite) {
   this['x-default'] = x;
   this['y-default'] = y;
   this.x = this['x-default'];
   this.y = this['y-default'];
+  this.imageWidth = 101;
+  this.imageHeight = 171;
   this.boxWidth = 101;
   this.boxHeight = 70;
+  this.sprite = sprite;
 };
 
 Sprite.prototype.reset = function(){
   this.x = this['x-default'];
   this.y = this['y-default'];
+};
+
+Sprite.prototype.render = function() {
+  ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
 // TODO add rendering capacity for sprites

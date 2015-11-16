@@ -10,7 +10,6 @@ var app_js = [
   'welcome.js',
   'winner.js',
   'lose.js',
-  'sprite.js',
   'enemy.js',
   'player.js',
   'scorekeeper.js',

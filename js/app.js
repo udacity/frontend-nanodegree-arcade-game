@@ -29,35 +29,29 @@ Button.prototype.render = function() {
 Button.prototype.handleHit = function() {
   currentState = this.nextState;
 };
-
-// The Avatar class is just used in the avatar select panel
-var Avatar = function(sprite, x, y) {
-  this.x = x;
-  this.y = y;
-  this.width = 101;
-  this.height = 171;
-  this.sprite = sprite;
-};
-
-Avatar.prototype.render = function() {
-  // console.log(this.x, this.y);
-  ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
+*/
 
 // TODO Add an update function to handle different rendering states
 // I want to make the characters go splat
-var Sprite = function(x, y) {
+var Sprite = function(x, y, sprite) {
   this['x-default'] = x;
   this['y-default'] = y;
   this.x = this['x-default'];
   this.y = this['y-default'];
+  this.imageWidth = 101;
+  this.imageHeight = 171;
   this.boxWidth = 101;
   this.boxHeight = 70;
+  this.sprite = sprite;
 };
 
 Sprite.prototype.reset = function(){
   this.x = this['x-default'];
   this.y = this['y-default'];
+};
+
+Sprite.prototype.render = function() {
+  ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
 // TODO add rendering capacity for sprites
@@ -362,7 +356,6 @@ Player.prototype.render = function() {
 
 Player.prototype.handleInput = function(key) {
   // Check the bounds, don't allow character to go out of screen
-  console.log(key);
   if(key === 'left'){
     // x-min = 0
     if( this.x > 0 ){
@@ -454,7 +447,7 @@ var AvatarSelect = {
     var that = this;
     var index = 0;
     this.avatarImages.forEach(function(item){
-      var a = new Avatar(item, 101 * index, 300);
+      var a = new Sprite(101 * index, 300, item);
       that.avatars.push(a);
       index++;
     });
@@ -475,12 +468,15 @@ var AvatarSelect = {
       that.checkHitButton(loc, avatar);
     });
   },
-  checkHitButton: function(loc, button) {
-    if (loc.x > button.x &&
-        loc.x < button.x + button.width &&
-        loc.y > button.y &&
-        loc.y < button.y + button.height) {
-          player.sprite = button.sprite;
+  checkHitButton: function(loc, target) {
+    // Assumes target is a Sprite
+
+    if (loc.x > target.x  &&
+        loc.x < target.x + target.imageWidth &&
+        loc.y > target.y &&
+        loc.y < target.y + target.imageHeight) {
+          // console.log('yo');
+          player.sprite = target.sprite;
           this.resetState();
         }
   },

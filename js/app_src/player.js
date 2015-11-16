@@ -35,7 +35,6 @@ Player.prototype.render = function() {
 
 Player.prototype.handleInput = function(key) {
   // Check the bounds, don't allow character to go out of screen
-  console.log(key);
   if(key === 'left'){
     // x-min = 0
     if( this.x > 0 ){

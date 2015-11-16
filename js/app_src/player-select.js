@@ -14,7 +14,7 @@ var AvatarSelect = {
     var that = this;
     var index = 0;
     this.avatarImages.forEach(function(item){
-      var a = new Avatar(item, 101 * index, 300);
+      var a = new Sprite(101 * index, 300, item);
       that.avatars.push(a);
       index++;
     });
@@ -35,12 +35,15 @@ var AvatarSelect = {
       that.checkHitButton(loc, avatar);
     });
   },
-  checkHitButton: function(loc, button) {
-    if (loc.x > button.x &&
-        loc.x < button.x + button.width &&
-        loc.y > button.y &&
-        loc.y < button.y + button.height) {
-          player.sprite = button.sprite;
+  checkHitButton: function(loc, target) {
+    // Assumes target is a Sprite
+
+    if (loc.x > target.x  &&
+        loc.x < target.x + target.imageWidth &&
+        loc.y > target.y &&
+        loc.y < target.y + target.imageHeight) {
+          // console.log('yo');
+          player.sprite = target.sprite;
           this.resetState();
         }
   },
