@@ -38,7 +38,7 @@ var Frog = new Sprite({
   fps: 1/12,
   anim: 1,
   tween: function(dt) {
-    this.dx += 75 * dt;
+    this.moveX(75 * dt);
   }
 });
 
