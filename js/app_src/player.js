@@ -1,6 +1,5 @@
 var Player = function() {
-  // Box is 70px wide by 80px tall
-  // Offset at the top is 60px
+
   var player_options = {
     sprite: 'images/char-boy.png',
     dWidth: 70,
@@ -14,7 +13,6 @@ var Player = function() {
   };
 
   Sprite.call(this, player_options);
-
   // ddx and ddy are the amounts to move the player
   // on each step
   this.ddx = 0;

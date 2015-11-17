@@ -43,7 +43,6 @@ var AvatarSelect = {
   },
   checkHitButton: function(loc, target) {
     // Assumes target is a Sprite
-
     if (loc.x > target.dx  &&
         loc.x < target.dx + target.dWidth &&
         loc.y > target.dy &&

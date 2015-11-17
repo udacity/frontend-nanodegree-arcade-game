@@ -36,7 +36,10 @@ var Frog = new Sprite({
   dHeight: 100,
   spriteSheetWidth: 900,
   fps: 1/12,
-  anim: 1
+  anim: 1,
+  tween: function(dt) {
+    this.dx += 75 * dt;
+  }
 });
 
 var Welcome = {
@@ -45,14 +48,8 @@ var Welcome = {
   sprites: [FroggerLogo, StartButton, AvatarButton, Frog],
   update: function(dt) {
     this.render(dt);
-    //this.introGraphic.update(dt);
-    //this.sprites[this.sprites.indexOf(Frog)].moveX(100*dt);
     this.sprites.forEach(function(sprite) {
-      if(sprite.anim){
-        sprite.update(dt);
-        sprite.moveX(100*dt);
-      }
-      sprite.render();
+      sprite.render(dt);
     });
     this.resetState(dt);
   },

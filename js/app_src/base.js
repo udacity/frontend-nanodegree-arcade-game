@@ -29,6 +29,7 @@ var Sprite = function(options) {
   this.timer = 0;
   this.spriteSheetWidth = options.spriteSheetWidth || options.dWidth;
   this.anim = options.anim || 0;
+  this.tween = options.tween;
 
   // Rendering options
   this.showBoundingBox = false;
@@ -39,8 +40,11 @@ Sprite.prototype.reset = function(){
   this.dy = this['dy-default'];
 };
 
-Sprite.prototype.render = function() {
+Sprite.prototype.render = function(dt) {
   //ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
+  if(this.anim) {
+    this.update(dt);
+  }
   ctx.drawImage( Resources.get(this.sprite), this.sx, this.sy, this.sWidth, this.sHeight, this.dx, this.dy, this.dWidth, this.dHeight );
   if( this.showBoundingBox ) {
     this.drawBoundingBox();
@@ -61,16 +65,16 @@ Sprite.prototype.drawBoundingBox = function() {
 };
 
 Sprite.prototype.update = function(dt) {
-  // this.sx = this.currentFrame * this.dWidth;
-  this.timer += dt;
-  if(this.timer >= this.fps){
-    this.timer = 0;
-    if(this.currentFrame * this.dWidth >= this.spriteSheetWidth){
-      this.currentFrame = 0;
+    this.timer += dt;
+    if(this.timer >= this.fps){
+      this.timer = 0;
+      if(this.currentFrame * this.dWidth >= this.spriteSheetWidth){
+        this.currentFrame = 0;
+      }
+      this.sx = this.currentFrame * this.dWidth;
+      this.currentFrame++;
     }
-    this.sx = this.currentFrame * this.dWidth;
-    this.currentFrame++;
-  }
+    this.tween(dt);
 };
 
 Sprite.prototype.moveX = function(ddx) {
@@ -91,25 +95,42 @@ Button.prototype = Object.create(Sprite.prototype);
 
 Button.constructor = Button;
 
-// TODO add rendering capacity for sprites
-/*
-frog.frameCounter = 0;
-frog.timer = 0;
-frog.fps = 1/12;
-frog.render = function(dt) {
-  frog.context.drawImage(
-    Resources.get(frog.image),
-    frog.sx + frog.frameCounter * frog.dWidth,
-    frog.sy,
-    frog.sWidth,
-    frog.sHeight,
-    frog.dx,
-    frog.dy,
-    frog.dWidth,
-    frog.dHeight
-  );
-*/
+var Stage = function(options) {
+  // The Stage class keeps a list of sprites
+  // The global context is hardcoded in here
 
+  this.sprites = options.sprites;
+  this.backgroundColor = options.backgroundColor;
+  // It can check to see if the Player sprite
+  // Collides with Enemy sprites
+  // TODO: Generalize into a one to many collision detection?
+
+};
+
+Stage.prototype.render = function() {
+  // Render the stage itself
+  ctx.save();
+  ctx.fillStyle = this.backgroundColor;
+  ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+};
+
+Stage.prototype.update = function(dt) {
+  // Update the sprites in the stage
+};
+
+Stage.prototype.reset = function() {
+  // Reset the sprites in the stage
+};
+
+Stage.prototype.checkButtons = function(loc) {
+  // Takes a location object
+  // Checks to see if it is within the
+  // boundary of any sprites that are buttons
+};
+
+Stage.prototype.checkButtonHit = function(loc, button) {
+  // Utility to check a location object against each button
+};
 
 /*
 // The Panel class is for the 'avatar select' and 'welcome' panels
