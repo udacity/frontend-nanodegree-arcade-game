@@ -70,7 +70,6 @@ Sprite.prototype.update = function(dt) {
     }
     this.sx = this.currentFrame * this.dWidth;
     this.currentFrame++;
-
   }
 };
 
@@ -85,15 +84,12 @@ Sprite.prototype.moveY = function(ddy) {
 var Button = function(options, nextState) {
   Sprite.call(this, options);
   this.nextState = nextState;
+  this.clickable = true;
 };
 
 Button.prototype = Object.create(Sprite.prototype);
 
 Button.constructor = Button;
-
-Button.prototype.handleHit = function() {
-  currentState = this.nextState;
-};
 
 // TODO add rendering capacity for sprites
 /*

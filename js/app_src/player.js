@@ -15,6 +15,8 @@ var Player = function() {
 
   Sprite.call(this, player_options);
 
+  // ddx and ddy are the amounts to move the player
+  // on each step
   this.ddx = 0;
   this.ddy = 0;
 };

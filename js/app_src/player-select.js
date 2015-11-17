@@ -14,7 +14,13 @@ var AvatarSelect = {
     var that = this;
     var index = 0;
     this.avatarImages.forEach(function(item){
-      var a = new Sprite(101 * index, 300, item, 101, 171, 101, 70);
+      var a = new Sprite({
+        sprite: item,
+        dx: 101 * index,
+        dy: 300,
+        dWidth: 101,
+        dHeight: 171
+      });
       that.avatars.push(a);
       index++;
     });
@@ -25,8 +31,8 @@ var AvatarSelect = {
   render: function() {
     ctx.fillStyle = 'white';
     ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    this.avatars.forEach(function(item){
-      item.render();
+    this.avatars.forEach(function(avatar){
+      avatar.render();
     });
   },
   checkAvatars: function(loc) {
@@ -38,10 +44,10 @@ var AvatarSelect = {
   checkHitButton: function(loc, target) {
     // Assumes target is a Sprite
 
-    if (loc.x > target.x  &&
-        loc.x < target.x + target.imageWidth &&
-        loc.y > target.y &&
-        loc.y < target.y + target.imageHeight) {
+    if (loc.x > target.dx  &&
+        loc.x < target.dx + target.dWidth &&
+        loc.y > target.dy &&
+        loc.y < target.dy + target.dHeight) {
           // console.log('yo');
           player.sprite = target.sprite;
           this.resetState();

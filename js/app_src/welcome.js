@@ -46,19 +46,20 @@ var Welcome = {
   update: function(dt) {
     this.render(dt);
     //this.introGraphic.update(dt);
-    this.sprites[this.sprites.indexOf(Frog)].moveX(100*dt);
+    //this.sprites[this.sprites.indexOf(Frog)].moveX(100*dt);
+    this.sprites.forEach(function(sprite) {
+      if(sprite.anim){
+        sprite.update(dt);
+        sprite.moveX(100*dt);
+      }
+      sprite.render();
+    });
     this.resetState(dt);
   },
   render: function(dt) {
     ctx.save();
     ctx.fillStyle = 'black';
     ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    this.sprites.forEach(function(item){
-      item.render();
-      if(item.anim){
-        item.update(dt);
-      }
-    });
   },
   resetState: function(dt) {
     this.resetTimer += dt;
@@ -73,15 +74,17 @@ var Welcome = {
   checkAllButtons: function(loc) {
     // Check if the click point is within the Button bounding box
     var welcome_panel = this;
-    this.buttons.forEach(function(button){
-      welcome_panel.checkHitButton(loc, button);
+    this.sprites.forEach(function(sprite){
+      if(sprite.clickable){
+        welcome_panel.checkHitButton(loc, sprite);
+      }
     });
   },
   checkHitButton: function(loc, button) {
-    if (loc.x > button.x &&
-        loc.x < button.x + button.width &&
-        loc.y > button.y &&
-        loc.y < button.y + button.height) {
+    if (loc.x > button.dx &&
+        loc.x < button.dx + button.dWidth &&
+        loc.y > button.dy &&
+        loc.y < button.dy + button.dHeight) {
           this.resetState(this.resetLength);
           if(button.nextState === 'choosing'){
             $canvas.off().on('click',function(e){

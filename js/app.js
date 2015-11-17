@@ -70,7 +70,6 @@ Sprite.prototype.update = function(dt) {
     }
     this.sx = this.currentFrame * this.dWidth;
     this.currentFrame++;
-
   }
 };
 
@@ -85,15 +84,12 @@ Sprite.prototype.moveY = function(ddy) {
 var Button = function(options, nextState) {
   Sprite.call(this, options);
   this.nextState = nextState;
+  this.clickable = true;
 };
 
 Button.prototype = Object.create(Sprite.prototype);
 
 Button.constructor = Button;
-
-Button.prototype.handleHit = function() {
-  currentState = this.nextState;
-};
 
 // TODO add rendering capacity for sprites
 /*
@@ -189,19 +185,20 @@ var Welcome = {
   update: function(dt) {
     this.render(dt);
     //this.introGraphic.update(dt);
-    this.sprites[this.sprites.indexOf(Frog)].moveX(100*dt);
+    //this.sprites[this.sprites.indexOf(Frog)].moveX(100*dt);
+    this.sprites.forEach(function(sprite) {
+      if(sprite.anim){
+        sprite.update(dt);
+        sprite.moveX(100*dt);
+      }
+      sprite.render();
+    });
     this.resetState(dt);
   },
   render: function(dt) {
     ctx.save();
     ctx.fillStyle = 'black';
     ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    this.sprites.forEach(function(item){
-      item.render();
-      if(item.anim){
-        item.update(dt);
-      }
-    });
   },
   resetState: function(dt) {
     this.resetTimer += dt;
@@ -216,15 +213,17 @@ var Welcome = {
   checkAllButtons: function(loc) {
     // Check if the click point is within the Button bounding box
     var welcome_panel = this;
-    this.buttons.forEach(function(button){
-      welcome_panel.checkHitButton(loc, button);
+    this.sprites.forEach(function(sprite){
+      if(sprite.clickable){
+        welcome_panel.checkHitButton(loc, sprite);
+      }
     });
   },
   checkHitButton: function(loc, button) {
-    if (loc.x > button.x &&
-        loc.x < button.x + button.width &&
-        loc.y > button.y &&
-        loc.y < button.y + button.height) {
+    if (loc.x > button.dx &&
+        loc.x < button.dx + button.dWidth &&
+        loc.y > button.dy &&
+        loc.y < button.dy + button.dHeight) {
           this.resetState(this.resetLength);
           if(button.nextState === 'choosing'){
             $canvas.off().on('click',function(e){
@@ -359,6 +358,8 @@ var Player = function() {
 
   Sprite.call(this, player_options);
 
+  // ddx and ddy are the amounts to move the player
+  // on each step
   this.ddx = 0;
   this.ddy = 0;
 };
@@ -469,7 +470,13 @@ var AvatarSelect = {
     var that = this;
     var index = 0;
     this.avatarImages.forEach(function(item){
-      var a = new Sprite(101 * index, 300, item, 101, 171, 101, 70);
+      var a = new Sprite({
+        sprite: item,
+        dx: 101 * index,
+        dy: 300,
+        dWidth: 101,
+        dHeight: 171
+      });
       that.avatars.push(a);
       index++;
     });
@@ -480,8 +487,8 @@ var AvatarSelect = {
   render: function() {
     ctx.fillStyle = 'white';
     ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    this.avatars.forEach(function(item){
-      item.render();
+    this.avatars.forEach(function(avatar){
+      avatar.render();
     });
   },
   checkAvatars: function(loc) {
@@ -493,10 +500,10 @@ var AvatarSelect = {
   checkHitButton: function(loc, target) {
     // Assumes target is a Sprite
 
-    if (loc.x > target.x  &&
-        loc.x < target.x + target.imageWidth &&
-        loc.y > target.y &&
-        loc.y < target.y + target.imageHeight) {
+    if (loc.x > target.dx  &&
+        loc.x < target.dx + target.dWidth &&
+        loc.y > target.dy &&
+        loc.y < target.dy + target.dHeight) {
           // console.log('yo');
           player.sprite = target.sprite;
           this.resetState();
