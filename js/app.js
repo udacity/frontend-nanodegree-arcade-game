@@ -15,30 +15,69 @@ frog.context.drawImage(
   frog.dWidth,
   frog.dHeight
 */
-  
-var Sprite = function(x, y, sprite, imageWidth, imageHeight, boxWidth, boxHeight) {
-  this['x-default'] = x;
-  this['y-default'] = y;
-  this.x = this['x-default'];
-  this.y = this['y-default'];
-  this.imageWidth = imageWidth;
-  this.imageHeight = imageHeight;
-  this.boxWidth = boxWidth || imageWidth;
-  this.boxHeight = boxHeight || imageWidth;
-  this.sprite = sprite;
+
+var Sprite = function(options) {
+  // Sprite takes an options object
+
+  // Coordinates for game stage
+  this['x-default'] = this.dx = options.dx;
+  this['y-default'] = this.dy = options.dy;
+
+  // The url of the image
+  this.sprite = options.sprite;
+
+  // The width of the image on the destination canvas
+  this.dWidth = options.dWidth;
+  this.dHeight = options.dHeight;
+
+  // Coordinates of the source image for clipping
+  this.sx = options.sx || 0;
+  this.sy = options.sy || 0;
+  this.sWidth = options.sWidth || options.dWidth;
+  this.sHeight = options.sHeight || options.dHeight;
+
+  // Animation options
+  this.currentFrame = options.currentFrame || 0;
+  this.fps = options.fps || 0;
+  this.timer = 0;
+  this.spriteSheetWidth = options.spriteSheetWidth || options.dWidth;
+  this.anim = options.anim || 0;
 };
 
 Sprite.prototype.reset = function(){
-  this.x = this['x-default'];
-  this.y = this['y-default'];
+  this.dx = this['x-default'];
+  this.dy = this['y-default'];
 };
 
 Sprite.prototype.render = function() {
-  ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+  //ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
+  ctx.drawImage(Resources.get(this.sprite), this.sx, this.sy, this.sWidth, this.sHeight, this.dx, this.dy, this.dWidth, this.dHeight);
 };
 
-var Button = function(x, y, sprite, imageWidth, imageHeight, boxWidth, boxHeight, nextState) {
-  Sprite.call(this, x, y, sprite, imageWidth, imageHeight, boxWidth, boxHeight);
+Sprite.prototype.update = function(dt) {
+  // this.sx = this.currentFrame * this.dWidth;
+  this.timer += dt;
+  if(this.timer >= this.fps){
+    this.timer = 0;
+    if(this.currentFrame * this.dWidth >= this.spriteSheetWidth){
+      this.currentFrame = 0;
+    }
+    this.sx = this.currentFrame * this.dWidth;
+    this.currentFrame++;
+
+  }
+};
+
+Sprite.prototype.moveX = function(ddx) {
+  this.dx += ddx;
+};
+
+Sprite.prototype.moveY = function(ddy) {
+  this.dy += ddy;
+};
+
+var Button = function(options, nextState) {
+  Sprite.call(this, options);
   this.nextState = nextState;
 };
 
@@ -138,44 +177,66 @@ var Frog = function(options) {
   return frog;
 };
 
-// function(x, y, sprite, imageWidth, imageHeight, boxWidth, boxHeight, nextState)
-var Frogger = new Sprite(0, 100, 'images/phrogger.png', 505, 126);
+// Set up the graphic assets of the scene
+var FroggerLogo = new Sprite({
+  sprite: 'images/phrogger.png',
+  dx: 0,
+  dy: 0,
+  dWidth: 505,
+  dHeight: 126
+});
 
-var StartButton = new Button(ctx.canvas.width/2 - 36, ctx.canvas.height * 0.75, 'images/start-btn.png', 150, 41, 'playing');
+var StartButton = new Button({
+  sprite: 'images/start-btn.png',
+  dWidth: 163,
+  dHeight: 41,
+  dx: ctx.canvas.width/2 - 30,
+  dy: ctx.canvas.height * 0.75,
+},'playing');
 
-var AvatarButton = new Button(ctx.canvas.width/2 - 160, ctx.canvas.height * 0.5, 'images/avatar-btn.png', 330, 97, 'choosing');
+var AvatarButton = new Button({
+  sprite: 'images/avatar-btn.png',
+  dWidth: 330,
+  dHeight: 97,
+  dx: ctx.canvas.width/2 - 160,
+  dy: ctx.canvas.height * 0.3
+},'choosing');
 
+var F = new Sprite({
+  sprite: 'images/frog.png',
+  sx: 0,
+  sy: 0,
+  sWidth: 100,
+  sHeight: 100,
+  dx: -100,
+  dy: ctx.canvas.height/2,
+  dWidth: 100,
+  dHeight: 100,
+  spriteSheetWidth: 900,
+  fps: 1/12,
+  anim: 1
+});
 
 var Welcome = {
   resetTimer: 0,
   resetLength: 5,
-  buttons: [StartButton, AvatarButton],
-  introGraphic: new Frog({
-    image: 'images/frog.png',
-    sx: 0,
-    sy: 0,
-    sWidth: 100,
-    sHeight: 100,
-    dx: -100,
-    dy: ctx.canvas.height/2,
-    dWidth: 100,
-    dHeight: 100,
-    imageWidth: 900,
-    rate: 120,
-    context: ctx
-  }),
+  sprites: [FroggerLogo, StartButton, AvatarButton, F],
   update: function(dt) {
-    this.render();
-    this.introGraphic.update(dt);
+    this.render(dt);
+    //this.introGraphic.update(dt);
+    this.sprites[this.sprites.indexOf(F)].moveX(100*dt);
     this.resetState(dt);
   },
-  render: function() {
+  render: function(dt) {
     ctx.save();
     ctx.fillStyle = 'black';
     ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    Frogger.render();
-    StartButton.render();
-    AvatarButton.render();
+    this.sprites.forEach(function(item){
+      item.render();
+      if(item.anim){
+        item.update(dt);
+      }
+    });
   },
   resetState: function(dt) {
     this.resetTimer += dt;
@@ -273,7 +334,7 @@ var Lose = {
 };
 
 // Enemies our player must avoid
-var Enemy = function(x, y) {
+var Enemy = function(options) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
     // The image/sprite for our enemies, this uses
@@ -486,11 +547,13 @@ AvatarSelect.init();
 
 
 // TODO: randomize position and direction
+/*
 var b1 = new Enemy(-101, 65);
 var b2 = new Enemy(-101, 145);
 var b3 = new Enemy(-101, 225);
 var player = new Player(202, 405);
 var allEnemies = [b1, b2, b3];
+*/
 
 // TODO: Create a sessionStorage score variable to
 // be updated with the Scorekeepr object

@@ -40,44 +40,66 @@ var Frog = function(options) {
   return frog;
 };
 
-// function(x, y, sprite, imageWidth, imageHeight, boxWidth, boxHeight, nextState)
-var Frogger = new Sprite(0, 100, 'images/phrogger.png', 505, 126);
+// Set up the graphic assets of the scene
+var FroggerLogo = new Sprite({
+  sprite: 'images/phrogger.png',
+  dx: 0,
+  dy: 0,
+  dWidth: 505,
+  dHeight: 126
+});
 
-var StartButton = new Button(ctx.canvas.width/2 - 36, ctx.canvas.height * 0.75, 'images/start-btn.png', 150, 41, 'playing');
+var StartButton = new Button({
+  sprite: 'images/start-btn.png',
+  dWidth: 163,
+  dHeight: 41,
+  dx: ctx.canvas.width/2 - 30,
+  dy: ctx.canvas.height * 0.75,
+},'playing');
 
-var AvatarButton = new Button(ctx.canvas.width/2 - 160, ctx.canvas.height * 0.5, 'images/avatar-btn.png', 330, 97, 'choosing');
+var AvatarButton = new Button({
+  sprite: 'images/avatar-btn.png',
+  dWidth: 330,
+  dHeight: 97,
+  dx: ctx.canvas.width/2 - 160,
+  dy: ctx.canvas.height * 0.3
+},'choosing');
 
+var F = new Sprite({
+  sprite: 'images/frog.png',
+  sx: 0,
+  sy: 0,
+  sWidth: 100,
+  sHeight: 100,
+  dx: -100,
+  dy: ctx.canvas.height/2,
+  dWidth: 100,
+  dHeight: 100,
+  spriteSheetWidth: 900,
+  fps: 1/12,
+  anim: 1
+});
 
 var Welcome = {
   resetTimer: 0,
   resetLength: 5,
-  buttons: [StartButton, AvatarButton],
-  introGraphic: new Frog({
-    image: 'images/frog.png',
-    sx: 0,
-    sy: 0,
-    sWidth: 100,
-    sHeight: 100,
-    dx: -100,
-    dy: ctx.canvas.height/2,
-    dWidth: 100,
-    dHeight: 100,
-    imageWidth: 900,
-    rate: 120,
-    context: ctx
-  }),
+  sprites: [FroggerLogo, StartButton, AvatarButton, F],
   update: function(dt) {
-    this.render();
-    this.introGraphic.update(dt);
+    this.render(dt);
+    //this.introGraphic.update(dt);
+    this.sprites[this.sprites.indexOf(F)].moveX(100*dt);
     this.resetState(dt);
   },
-  render: function() {
+  render: function(dt) {
     ctx.save();
     ctx.fillStyle = 'black';
     ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    Frogger.render();
-    StartButton.render();
-    AvatarButton.render();
+    this.sprites.forEach(function(item){
+      item.render();
+      if(item.anim){
+        item.update(dt);
+      }
+    });
   },
   resetState: function(dt) {
     this.resetTimer += dt;

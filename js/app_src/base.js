@@ -15,30 +15,69 @@ frog.context.drawImage(
   frog.dWidth,
   frog.dHeight
 */
-  
-var Sprite = function(x, y, sprite, imageWidth, imageHeight, boxWidth, boxHeight) {
-  this['x-default'] = x;
-  this['y-default'] = y;
-  this.x = this['x-default'];
-  this.y = this['y-default'];
-  this.imageWidth = imageWidth;
-  this.imageHeight = imageHeight;
-  this.boxWidth = boxWidth || imageWidth;
-  this.boxHeight = boxHeight || imageWidth;
-  this.sprite = sprite;
+
+var Sprite = function(options) {
+  // Sprite takes an options object
+
+  // Coordinates for game stage
+  this['x-default'] = this.dx = options.dx;
+  this['y-default'] = this.dy = options.dy;
+
+  // The url of the image
+  this.sprite = options.sprite;
+
+  // The width of the image on the destination canvas
+  this.dWidth = options.dWidth;
+  this.dHeight = options.dHeight;
+
+  // Coordinates of the source image for clipping
+  this.sx = options.sx || 0;
+  this.sy = options.sy || 0;
+  this.sWidth = options.sWidth || options.dWidth;
+  this.sHeight = options.sHeight || options.dHeight;
+
+  // Animation options
+  this.currentFrame = options.currentFrame || 0;
+  this.fps = options.fps || 0;
+  this.timer = 0;
+  this.spriteSheetWidth = options.spriteSheetWidth || options.dWidth;
+  this.anim = options.anim || 0;
 };
 
 Sprite.prototype.reset = function(){
-  this.x = this['x-default'];
-  this.y = this['y-default'];
+  this.dx = this['x-default'];
+  this.dy = this['y-default'];
 };
 
 Sprite.prototype.render = function() {
-  ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+  //ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
+  ctx.drawImage(Resources.get(this.sprite), this.sx, this.sy, this.sWidth, this.sHeight, this.dx, this.dy, this.dWidth, this.dHeight);
 };
 
-var Button = function(x, y, sprite, imageWidth, imageHeight, boxWidth, boxHeight, nextState) {
-  Sprite.call(this, x, y, sprite, imageWidth, imageHeight, boxWidth, boxHeight);
+Sprite.prototype.update = function(dt) {
+  // this.sx = this.currentFrame * this.dWidth;
+  this.timer += dt;
+  if(this.timer >= this.fps){
+    this.timer = 0;
+    if(this.currentFrame * this.dWidth >= this.spriteSheetWidth){
+      this.currentFrame = 0;
+    }
+    this.sx = this.currentFrame * this.dWidth;
+    this.currentFrame++;
+
+  }
+};
+
+Sprite.prototype.moveX = function(ddx) {
+  this.dx += ddx;
+};
+
+Sprite.prototype.moveY = function(ddy) {
+  this.dy += ddy;
+};
+
+var Button = function(options, nextState) {
+  Sprite.call(this, options);
   this.nextState = nextState;
 };
 
