@@ -1,19 +1,23 @@
 // Enemies our player must avoid
-var Enemy = function(options) {
+var Enemy = function(dx, dy) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
-    Sprite.call(this, x, y, 'images/enemy-bug.png', 101, 171);
+    var enemy_defaults = {
+      sprite: 'images/enemy-bug.png',
+      dWidth: 101,
+      dHeight: 80,
+      dx: dx,
+      dy: dy,
+      sx: 0,
+      sy: 75,
+      sHeight: 80
+    };
+
+    Sprite.call(this, enemy_defaults);
+
     this.speed = 100+Math.random()*200;
-    // this.sprite = 'images/enemy-bug.png';
-    // Bug is 70 px tall and 101px wide
-    // Offset is 75px
-    this.boxTopOffset = 75;
-    this.boxSideOffset = 0;
-    //this.boxX = this.x + this.boxSideOffset;
-    this.boxY = this.y + this.boxTopOffset;
-    this.boxX = this.x;
 };
 
 Enemy.prototype = Object.create(Sprite.prototype);
@@ -24,11 +28,10 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-    this.x += this.speed*dt;
-    this.boxX = this.x;
+    this.dx += this.speed*dt;
     this.render();
-    if (this.x > ctx.canvas.width + this.boxWidth) {
-      this.x = this['x-default'];
+    if (this.dx > ctx.canvas.width + this.dWidth) {
+      this.dx = this['dx-default'];
     }
 };
 

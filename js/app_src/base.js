@@ -3,25 +3,12 @@
 // TODO Add an update function to handle different rendering states
 // I want to make the characters go splat
 
-/*
-frog.context.drawImage(
-  Resources.get(frog.image),
-  frog.sx + frog.frameCounter * frog.dWidth,
-  frog.sy,
-  frog.sWidth,
-  frog.sHeight,
-  frog.dx,
-  frog.dy,
-  frog.dWidth,
-  frog.dHeight
-*/
-
 var Sprite = function(options) {
   // Sprite takes an options object
 
   // Coordinates for game stage
-  this['x-default'] = this.dx = options.dx;
-  this['y-default'] = this.dy = options.dy;
+  this['dx-default'] = this.dx = options.dx;
+  this['dy-default'] = this.dy = options.dy;
 
   // The url of the image
   this.sprite = options.sprite;
@@ -42,16 +29,35 @@ var Sprite = function(options) {
   this.timer = 0;
   this.spriteSheetWidth = options.spriteSheetWidth || options.dWidth;
   this.anim = options.anim || 0;
+
+  // Rendering options
+  this.showBoundingBox = false;
 };
 
 Sprite.prototype.reset = function(){
-  this.dx = this['x-default'];
-  this.dy = this['y-default'];
+  this.dx = this['dx-default'];
+  this.dy = this['dy-default'];
 };
 
 Sprite.prototype.render = function() {
   //ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
-  ctx.drawImage(Resources.get(this.sprite), this.sx, this.sy, this.sWidth, this.sHeight, this.dx, this.dy, this.dWidth, this.dHeight);
+  ctx.drawImage( Resources.get(this.sprite), this.sx, this.sy, this.sWidth, this.sHeight, this.dx, this.dy, this.dWidth, this.dHeight );
+  if( this.showBoundingBox ) {
+    this.drawBoundingBox();
+  }
+};
+
+Sprite.prototype.drawBoundingBox = function() {
+  ctx.save();
+  ctx.strokeStyle = 'red';
+  ctx.beginPath();
+  ctx.moveTo(this.dx, this.dy);
+  ctx.lineTo(this.dx + this.dWidth, this.dy);
+  ctx.lineTo(this.dx + this.dWidth, this.dy + this.dHeight);
+  ctx.lineTo(this.dx, this.dy + this.dHeight);
+  ctx.lineTo(this.dx, this.dy);
+  ctx.stroke();
+  ctx.restore();
 };
 
 Sprite.prototype.update = function(dt) {

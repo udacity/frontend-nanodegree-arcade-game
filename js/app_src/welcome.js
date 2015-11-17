@@ -1,46 +1,5 @@
-// TODO: Just use bitmaps to draw buttons
-
-var Frog = function(options) {
-  // Assumes that each tile of the sprite sheet is square
-  // Build a frame-by-frame animation of the frog hopping
-  var frog = {};
-  for (var prop in options){
-    frog[prop] = options[prop];
-  }
-  frog.frameCounter = 0;
-  frog.timer = 0;
-  frog.fps = 1/12;
-  frog.render = function(dt) {
-    frog.context.drawImage(
-      Resources.get(frog.image),
-      frog.sx + frog.frameCounter * frog.dWidth,
-      frog.sy,
-      frog.sWidth,
-      frog.sHeight,
-      frog.dx,
-      frog.dy,
-      frog.dWidth,
-      frog.dHeight
-    );
-    //console.log(dt);
-
-  };
-  frog.update = function(dt) {
-    frog.timer += dt;
-    frog.render();
-    if(frog.timer >= frog.fps){
-      frog.timer = 0;
-      frog.frameCounter++;
-      frog.dx += frog.rate * frog.fps;
-      if(frog.frameCounter * frog.dWidth >= frog.imageWidth){
-        frog.frameCounter = 0;
-      }
-    }
-  };
-  return frog;
-};
-
 // Set up the graphic assets of the scene
+
 var FroggerLogo = new Sprite({
   sprite: 'images/phrogger.png',
   dx: 0,
@@ -65,7 +24,7 @@ var AvatarButton = new Button({
   dy: ctx.canvas.height * 0.3
 },'choosing');
 
-var F = new Sprite({
+var Frog = new Sprite({
   sprite: 'images/frog.png',
   sx: 0,
   sy: 0,
@@ -83,11 +42,11 @@ var F = new Sprite({
 var Welcome = {
   resetTimer: 0,
   resetLength: 5,
-  sprites: [FroggerLogo, StartButton, AvatarButton, F],
+  sprites: [FroggerLogo, StartButton, AvatarButton, Frog],
   update: function(dt) {
     this.render(dt);
     //this.introGraphic.update(dt);
-    this.sprites[this.sprites.indexOf(F)].moveX(100*dt);
+    this.sprites[this.sprites.indexOf(Frog)].moveX(100*dt);
     this.resetState(dt);
   },
   render: function(dt) {

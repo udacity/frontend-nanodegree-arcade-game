@@ -52,6 +52,7 @@ var Engine = (function(global) {
              render();
              Lose.update(dt);
          } else if (global.currentState === 'playing') {
+           //TODO: Something like Play.update()
              update(dt);
              render();
          } else if (global.currentState === 'choosing') {
