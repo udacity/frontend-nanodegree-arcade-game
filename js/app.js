@@ -56,7 +56,7 @@ Sprite.prototype.drawBoundingBox = function() {
   // This is just a method to draw a square around
   // the bounding box of each sprite. This is useful
   // for establishing the correct position settings for
-  // initializing the sprites. 
+  // initializing the sprites.
   ctx.save();
   ctx.strokeStyle = 'red';
   ctx.beginPath();
@@ -124,7 +124,7 @@ Stage.prototype.render = function() {
 };
 
 Stage.prototype.update = function(dt) {
-  // Update the sprites in the stage
+  // Render all sprites
 };
 
 Stage.prototype.reset = function() {
@@ -448,7 +448,7 @@ Player.prototype.checkForWin = function(dt) {
     document.removeEventListener('keyup', function(e) {
       player.handleInput(allowedKeys[e.keyCode]);
     });
-    currentState = 'win';
+    currentState = 'winner';
   }
 };
 

@@ -78,6 +78,6 @@ Player.prototype.checkForWin = function(dt) {
     document.removeEventListener('keyup', function(e) {
       player.handleInput(allowedKeys[e.keyCode]);
     });
-    currentState = 'win';
+    currentState = 'winner';
   }
 };

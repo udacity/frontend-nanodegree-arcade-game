@@ -57,7 +57,7 @@ var Engine = (function(global) {
              render();
          } else if (global.currentState === 'choosing') {
             AvatarSelect.update(dt);
-         } else if (global.currentState === 'win') {
+         } else if (global.currentState === 'winner') {
             render();
             Winner.update(dt);
          }
