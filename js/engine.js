@@ -82,7 +82,7 @@ var Engine = (function(global) {
         //console.log('x: ', e.clientX, 'y: ', e.clientY, "bbox: ", canvas.getBoundingClientRect());
         var loc = handleClick(e.clientX, e.clientY);
         //console.log(loc);
-        Welcome.checkAllButtons(loc);
+        Welcome.checkButtons(loc);
       });
     }
 

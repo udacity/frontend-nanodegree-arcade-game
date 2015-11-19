@@ -42,7 +42,13 @@ var Frog = new Sprite({
   }
 });
 
-var Welcome = {
+var Welcome = new Stage({
+  resetLength: 5,
+  sprites: [FroggerLogo, StartButton, AvatarButton, Frog],
+  backgroundColor: 'black'
+});
+
+var oldWelcome = {
   resetTimer: 0,
   resetLength: 5,
   sprites: [FroggerLogo, StartButton, AvatarButton, Frog],

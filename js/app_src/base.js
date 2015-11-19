@@ -104,11 +104,14 @@ Button.prototype = Object.create(Sprite.prototype);
 
 Button.constructor = Button;
 
+// The Stage class keeps a list of sprites
+// The global context is hardcoded in here
+
 var Stage = function(options) {
-  // The Stage class keeps a list of sprites
-  // The global context is hardcoded in here
 
   this.sprites = options.sprites;
+  this.resetTimer = 0;
+  this.resetLength = options.resetLength;
   this.backgroundColor = options.backgroundColor;
   // It can check to see if the Player sprite
   // Collides with Enemy sprites
@@ -125,44 +128,46 @@ Stage.prototype.render = function() {
 
 Stage.prototype.update = function(dt) {
   // Render all sprites
+  this.render();
+  this.sprites.forEach(function(sprite){
+    sprite.render(dt);
+  });
 };
 
-Stage.prototype.reset = function() {
+Stage.prototype.reset = function(dt) {
   // Reset the sprites in the stage
-};
-
-Stage.prototype.checkButtons = function(loc) {
-  // Takes a location object
-  // Checks to see if it is within the
-  // boundary of any sprites that are buttons
-};
-
-Stage.prototype.checkButtonHit = function(loc, button) {
-  // Utility to check a location object against each button
-};
-
-/*
-// The Panel class is for the 'avatar select' and 'welcome' panels
-// It could support similar 'toasts' where user input is needed
-// outside of the main gameplay
-
-var Panel = function(options) {
-  var panel = {};
-  for (var prop in options){
-    panel[prop] = options[prop];
+  this.resetTimer += dt;
+  if (this.resetTimer >= this.resetLength ) {
+    document.addEventListener('keyup', function(e) {
+      player.handleInput(allowedKeys[e.keyCode]);
+    });
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    currentState = 'playing';
   }
 };
 
-Panel.prototype.render() {
+Stage.prototype.checkButtons = function(loc) {
+  // Check if the click point is within the Button bounding box
+  var that = this;
+  this.sprites.forEach(function(sprite){
+    if(sprite.clickable){
+      that.checkButtonHit(loc, sprite);
+    }
+  });
+};
 
-}
-
-Panel.prototype.checkButtons(loc) {
-
-}
-
-Panel.prototype.checkIfHit(loc, button) {
-  // check if callback is a function
-}
-
-*/
+Stage.prototype.checkButtonHit = function(loc, button) {
+  if (loc.x > button.dx &&
+      loc.x < button.dx + button.dWidth &&
+      loc.y > button.dy &&
+      loc.y < button.dy + button.dHeight) {
+        this.reset(this.resetLength);
+        if(button.nextState === 'choosing'){
+          $canvas.off().on('click',function(e){
+            var loc = handleClick(e.clientX, e.clientY);
+            AvatarSelect.checkAvatars(loc);
+          });
+        }
+        currentState = button.nextState;
+      }
+};
