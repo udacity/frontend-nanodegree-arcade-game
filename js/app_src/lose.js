@@ -2,7 +2,7 @@ var Lose = {
   resetTimer: 0,
   resetLength: 1,
   update: function(dt) {
-    console.log('you lose');
+    // console.log('you lose');
     this.render();
     this.resetState(dt);
   },

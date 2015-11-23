@@ -1,7 +1,7 @@
 var Player = function() {
 
   var player_options = {
-    sprite: 'images/char-boy.png',
+    sprite: playerImg,
     dWidth: 70,
     dHeight: 80,
     dx: 218,
@@ -80,4 +80,8 @@ Player.prototype.checkForWin = function(dt) {
     });
     currentState = 'winner';
   }
+};
+
+Player.prototype.setSprite = function() {
+  this.sprite = playerImg;
 };

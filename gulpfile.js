@@ -12,6 +12,7 @@ var app_js = [
   'lose.js',
   'enemy.js',
   'player.js',
+  'play.js',
   'scorekeeper.js',
   'player-select.js',
   'init.js'

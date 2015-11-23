@@ -56,7 +56,7 @@ var Engine = (function(global) {
              update(dt);
              render();
          } else if (global.currentState === 'choosing') {
-            AvatarSelect.update(dt);
+            newAvatarSelect.update(dt);
          } else if (global.currentState === 'winner') {
             render();
             Winner.update(dt);
@@ -76,14 +76,7 @@ var Engine = (function(global) {
       startTime = lastTime;
       main();
 
-      // Collect Input
-      // Check to see if button in welcome screen is hit
-      $canvas.on('click', function(e) {
-        //console.log('x: ', e.clientX, 'y: ', e.clientY, "bbox: ", canvas.getBoundingClientRect());
-        var loc = handleClick(e.clientX, e.clientY);
-        //console.log(loc);
-        Welcome.checkButtons(loc);
-      });
+      initWelcome();
     }
 
     // Process the click info into the canvas
@@ -96,7 +89,7 @@ var Engine = (function(global) {
       };
     }
 
-    global.handleClick = handleClick;
+
     /* This function is called by main (our game loop) and itself calls all
      * of the functions which may need to update entity's data. Based on how
      * you implement your collision detection (when two entities occupy the
@@ -124,6 +117,26 @@ var Engine = (function(global) {
         player.update();
     }
 
+    function initWelcome() {
+      $canvas.on('click', function(e) {
+        var loc = handleClick(e.clientX, e.clientY);
+        Welcome.checkButtons(loc);
+      });
+    }
+
+    function initChoose() {
+      $canvas.off().on('click', function(e) {
+        var loc = handleClick(e.clientX, e.clientY);
+        newAvatarSelect.checkButtons(loc);
+      });
+    }
+
+    function initPlay() {
+      $(document).on('keyup', function(e) {
+        player.handleInput(allowedKeys[e.keyCode]);
+      });
+      ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    }
     /* This function initially draws the "game level", it will then call
      * the renderEntities function. Remember, this function is called every
      * game tick (or loop of the game engine) because that's how games work -
@@ -221,4 +234,8 @@ var Engine = (function(global) {
         40: 'down',
         32: 'space'
     };
+    global.playerImg = 'images/char-boy.png';
+    global.handleClick = handleClick;
+    global.initPlay = initPlay;
+    global.initChoose = initChoose;
 })(this);

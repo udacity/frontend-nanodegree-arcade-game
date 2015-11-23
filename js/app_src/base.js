@@ -31,6 +31,12 @@ var Sprite = function(options) {
   this.anim = options.anim || 0;
   this.tween = options.tween;
 
+  // Interactive options
+  this.clickable = options.clickable || false;
+  this.nextState = options.nextState || currentState;
+  this.handleClick = options.handleClick || 'null';
+  this.handleHit = options.handleHit || 'null';
+
   // Rendering options
   this.showBoundingBox = false;
 };
@@ -94,6 +100,9 @@ Sprite.prototype.moveY = function(ddy) {
   this.dy += ddy;
 };
 
+//
+
+/*
 var Button = function(options, nextState) {
   Sprite.call(this, options);
   this.nextState = nextState;
@@ -103,6 +112,8 @@ var Button = function(options, nextState) {
 Button.prototype = Object.create(Sprite.prototype);
 
 Button.constructor = Button;
+
+*/
 
 // The Stage class keeps a list of sprites
 // The global context is hardcoded in here
@@ -138,10 +149,7 @@ Stage.prototype.reset = function(dt) {
   // Reset the sprites in the stage
   this.resetTimer += dt;
   if (this.resetTimer >= this.resetLength ) {
-    document.addEventListener('keyup', function(e) {
-      player.handleInput(allowedKeys[e.keyCode]);
-    });
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
     currentState = 'playing';
   }
 };
@@ -161,13 +169,6 @@ Stage.prototype.checkButtonHit = function(loc, button) {
       loc.x < button.dx + button.dWidth &&
       loc.y > button.dy &&
       loc.y < button.dy + button.dHeight) {
-        this.reset(this.resetLength);
-        if(button.nextState === 'choosing'){
-          $canvas.off().on('click',function(e){
-            var loc = handleClick(e.clientX, e.clientY);
-            AvatarSelect.checkAvatars(loc);
-          });
-        }
-        currentState = button.nextState;
+        button.handleClick();
       }
 };

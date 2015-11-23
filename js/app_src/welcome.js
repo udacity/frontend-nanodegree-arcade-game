@@ -8,21 +8,33 @@ var FroggerLogo = new Sprite({
   dHeight: 126
 });
 
-var StartButton = new Button({
+var StartButton = new Sprite({
   sprite: 'images/start-btn.png',
   dWidth: 163,
   dHeight: 41,
   dx: ctx.canvas.width/2 - 30,
   dy: ctx.canvas.height * 0.75,
-},'playing');
+  clickable: true,
+  nextState: 'playing',
+  handleClick: function(){
+    currentState = this.nextState;
+    initPlay();
+  }
+});
 
-var AvatarButton = new Button({
+var AvatarButton = new Sprite({
   sprite: 'images/avatar-btn.png',
   dWidth: 330,
   dHeight: 97,
   dx: ctx.canvas.width/2 - 160,
-  dy: ctx.canvas.height * 0.3
-},'choosing');
+  dy: ctx.canvas.height * 0.3,
+  clickable: true,
+  nextState: 'choosing',
+  handleClick: function() {
+    currentState = this.nextState;
+    initChoose();
+  }
+});
 
 var Frog = new Sprite({
   sprite: 'images/frog.png',
@@ -47,55 +59,3 @@ var Welcome = new Stage({
   sprites: [FroggerLogo, StartButton, AvatarButton, Frog],
   backgroundColor: 'black'
 });
-
-var oldWelcome = {
-  resetTimer: 0,
-  resetLength: 5,
-  sprites: [FroggerLogo, StartButton, AvatarButton, Frog],
-  update: function(dt) {
-    this.render(dt);
-    this.sprites.forEach(function(sprite) {
-      sprite.render(dt);
-    });
-    this.resetState(dt);
-  },
-  render: function(dt) {
-    ctx.save();
-    ctx.fillStyle = 'black';
-    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-  },
-  resetState: function(dt) {
-    this.resetTimer += dt;
-    if (this.resetTimer >= this.resetLength ) {
-      document.addEventListener('keyup', function(e) {
-        player.handleInput(allowedKeys[e.keyCode]);
-      });
-      ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-      currentState = 'playing';
-    }
-  },
-  checkAllButtons: function(loc) {
-    // Check if the click point is within the Button bounding box
-    var welcome_panel = this;
-    this.sprites.forEach(function(sprite){
-      if(sprite.clickable){
-        welcome_panel.checkHitButton(loc, sprite);
-      }
-    });
-  },
-  checkHitButton: function(loc, button) {
-    if (loc.x > button.dx &&
-        loc.x < button.dx + button.dWidth &&
-        loc.y > button.dy &&
-        loc.y < button.dy + button.dHeight) {
-          this.resetState(this.resetLength);
-          if(button.nextState === 'choosing'){
-            $canvas.off().on('click',function(e){
-              var loc = handleClick(e.clientX, e.clientY);
-              AvatarSelect.checkAvatars(loc);
-            });
-          }
-          currentState = button.nextState;
-        }
-  }
-};

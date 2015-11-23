@@ -31,6 +31,12 @@ var Sprite = function(options) {
   this.anim = options.anim || 0;
   this.tween = options.tween;
 
+  // Interactive options
+  this.clickable = options.clickable || false;
+  this.nextState = options.nextState || currentState;
+  this.handleClick = options.handleClick || 'null';
+  this.handleHit = options.handleHit || 'null';
+
   // Rendering options
   this.showBoundingBox = false;
 };
@@ -94,6 +100,9 @@ Sprite.prototype.moveY = function(ddy) {
   this.dy += ddy;
 };
 
+//
+
+/*
 var Button = function(options, nextState) {
   Sprite.call(this, options);
   this.nextState = nextState;
@@ -103,6 +112,8 @@ var Button = function(options, nextState) {
 Button.prototype = Object.create(Sprite.prototype);
 
 Button.constructor = Button;
+
+*/
 
 // The Stage class keeps a list of sprites
 // The global context is hardcoded in here
@@ -138,10 +149,7 @@ Stage.prototype.reset = function(dt) {
   // Reset the sprites in the stage
   this.resetTimer += dt;
   if (this.resetTimer >= this.resetLength ) {
-    document.addEventListener('keyup', function(e) {
-      player.handleInput(allowedKeys[e.keyCode]);
-    });
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
     currentState = 'playing';
   }
 };
@@ -161,14 +169,7 @@ Stage.prototype.checkButtonHit = function(loc, button) {
       loc.x < button.dx + button.dWidth &&
       loc.y > button.dy &&
       loc.y < button.dy + button.dHeight) {
-        this.reset(this.resetLength);
-        if(button.nextState === 'choosing'){
-          $canvas.off().on('click',function(e){
-            var loc = handleClick(e.clientX, e.clientY);
-            AvatarSelect.checkAvatars(loc);
-          });
-        }
-        currentState = button.nextState;
+        button.handleClick();
       }
 };
 
@@ -182,21 +183,33 @@ var FroggerLogo = new Sprite({
   dHeight: 126
 });
 
-var StartButton = new Button({
+var StartButton = new Sprite({
   sprite: 'images/start-btn.png',
   dWidth: 163,
   dHeight: 41,
   dx: ctx.canvas.width/2 - 30,
   dy: ctx.canvas.height * 0.75,
-},'playing');
+  clickable: true,
+  nextState: 'playing',
+  handleClick: function(){
+    currentState = this.nextState;
+    initPlay();
+  }
+});
 
-var AvatarButton = new Button({
+var AvatarButton = new Sprite({
   sprite: 'images/avatar-btn.png',
   dWidth: 330,
   dHeight: 97,
   dx: ctx.canvas.width/2 - 160,
-  dy: ctx.canvas.height * 0.3
-},'choosing');
+  dy: ctx.canvas.height * 0.3,
+  clickable: true,
+  nextState: 'choosing',
+  handleClick: function() {
+    currentState = this.nextState;
+    initChoose();
+  }
+});
 
 var Frog = new Sprite({
   sprite: 'images/frog.png',
@@ -221,58 +234,6 @@ var Welcome = new Stage({
   sprites: [FroggerLogo, StartButton, AvatarButton, Frog],
   backgroundColor: 'black'
 });
-
-var oldWelcome = {
-  resetTimer: 0,
-  resetLength: 5,
-  sprites: [FroggerLogo, StartButton, AvatarButton, Frog],
-  update: function(dt) {
-    this.render(dt);
-    this.sprites.forEach(function(sprite) {
-      sprite.render(dt);
-    });
-    this.resetState(dt);
-  },
-  render: function(dt) {
-    ctx.save();
-    ctx.fillStyle = 'black';
-    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-  },
-  resetState: function(dt) {
-    this.resetTimer += dt;
-    if (this.resetTimer >= this.resetLength ) {
-      document.addEventListener('keyup', function(e) {
-        player.handleInput(allowedKeys[e.keyCode]);
-      });
-      ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-      currentState = 'playing';
-    }
-  },
-  checkAllButtons: function(loc) {
-    // Check if the click point is within the Button bounding box
-    var welcome_panel = this;
-    this.sprites.forEach(function(sprite){
-      if(sprite.clickable){
-        welcome_panel.checkHitButton(loc, sprite);
-      }
-    });
-  },
-  checkHitButton: function(loc, button) {
-    if (loc.x > button.dx &&
-        loc.x < button.dx + button.dWidth &&
-        loc.y > button.dy &&
-        loc.y < button.dy + button.dHeight) {
-          this.resetState(this.resetLength);
-          if(button.nextState === 'choosing'){
-            $canvas.off().on('click',function(e){
-              var loc = handleClick(e.clientX, e.clientY);
-              AvatarSelect.checkAvatars(loc);
-            });
-          }
-          currentState = button.nextState;
-        }
-  }
-};
 
 
 var Winner = {
@@ -307,7 +268,7 @@ var Lose = {
   resetTimer: 0,
   resetLength: 1,
   update: function(dt) {
-    console.log('you lose');
+    // console.log('you lose');
     this.render();
     this.resetState(dt);
   },
@@ -382,7 +343,7 @@ Enemy.prototype.render = function() {
 var Player = function() {
 
   var player_options = {
-    sprite: 'images/char-boy.png',
+    sprite: playerImg,
     dWidth: 70,
     dHeight: 80,
     dx: 218,
@@ -463,6 +424,10 @@ Player.prototype.checkForWin = function(dt) {
   }
 };
 
+Player.prototype.setSprite = function() {
+  this.sprite = playerImg;
+};
+
 // Handles score data
 var Score = {
   score: 0,
@@ -490,7 +455,41 @@ var Scorekeeper = {
   }
 };
 
+var avatar_source_sprites = [
+  'images/char-boy.png',
+  'images/char-cat-girl.png',
+  'images/char-horn-girl.png',
+  'images/char-pink-girl.png',
+  'images/char-princess-girl.png'
+];
 
+var avatars = avatar_source_sprites.map(function(item, index){
+  return new Sprite({
+    sprite: item,
+    clickable: true,
+    dx: index * 101,
+    dy: (ctx.canvas.height - 170) / 2,
+    dWidth: 101,
+    dHeight: 170,
+    nextState: 'playing',
+    handleClick: function(){
+      playerImg = item;
+      player.setSprite();
+      currentState = this.nextState;
+      initPlay();
+    }
+  });
+});
+
+// console.log(avatars);
+
+var newAvatarSelect = new Stage({
+  sprites: avatars,
+  backgroundColor: 'white'
+});
+
+
+// TODO: rewrite
 var AvatarSelect = {
   avatarImages: [
     'images/char-boy.png',
