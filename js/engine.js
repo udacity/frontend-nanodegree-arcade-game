@@ -27,14 +27,16 @@ var Engine = (function(global) {
         startTime,
         lastTime;
 
-
     canvas.width = 505;
     canvas.height = 606;
-    doc.body.appendChild(canvas);
+    $('.gameboard').append(canvas);
     global.$canvas = $('canvas');
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
      */
+    $('#resetGame').on('click',function(){
+      resetGame();
+    });
     function main() {
         /* Get our time delta information which is required if your game
          * requires smooth animation. Because everyone's computer processes
@@ -55,7 +57,6 @@ var Engine = (function(global) {
            //TODO: Something like Play.update()
            render();
              update(dt);
-
          } else if (global.currentState === 'choosing') {
             AvatarSelect.update(dt);
          } else if (global.currentState === 'winner') {
@@ -118,7 +119,14 @@ var Engine = (function(global) {
         player.update();
     }
 
+    function resetGame() {
+      global.currentState = 'welcome';
+      initWelcome();
+      Scorekeeper.reset();
+    }
+
     function initWelcome() {
+      Welcome.reset();
       $canvas.on('click', function(e) {
         var loc = handleClick(e.clientX, e.clientY);
         Welcome.checkButtons(loc);
@@ -133,6 +141,7 @@ var Engine = (function(global) {
     }
 
     function initPlay() {
+      Scorekeeper.render();
       $(document).on('keyup', function(e) {
         player.handleInput(allowedKeys[e.keyCode]);
       });

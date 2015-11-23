@@ -21,6 +21,9 @@ var Scorekeeper = {
     this.render();
   },
   render: function() {
-    this.$el.html(Score.getScore());
+    this.$el.html('Score: ' + Score.getScore());
+  },
+  reset: function() {
+    this.$el.html('');
   }
 };

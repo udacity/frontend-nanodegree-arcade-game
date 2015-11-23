@@ -44,6 +44,8 @@ var Sprite = function(options) {
 Sprite.prototype.reset = function(){
   this.dx = this['dx-default'];
   this.dy = this['dy-default'];
+  this.currentFrame = 0;
+  this.timer = 0;
 };
 
 Sprite.prototype.render = function(dt) {
@@ -147,11 +149,9 @@ Stage.prototype.update = function(dt) {
 
 Stage.prototype.reset = function(dt) {
   // Reset the sprites in the stage
-  this.resetTimer += dt;
-  if (this.resetTimer >= this.resetLength ) {
-
-    currentState = 'playing';
-  }
+  this.sprites.forEach(function(sprite){
+    sprite.reset();
+  });
 };
 
 Stage.prototype.checkButtons = function(loc) {
@@ -451,7 +451,10 @@ var Scorekeeper = {
     this.render();
   },
   render: function() {
-    this.$el.html(Score.getScore());
+    this.$el.html('Score: ' + Score.getScore());
+  },
+  reset: function() {
+    this.$el.html('');
   }
 };
 
