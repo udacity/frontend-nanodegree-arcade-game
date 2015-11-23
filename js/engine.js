@@ -53,10 +53,11 @@ var Engine = (function(global) {
              Lose.update(dt);
          } else if (global.currentState === 'playing') {
            //TODO: Something like Play.update()
+           render();
              update(dt);
-             render();
+
          } else if (global.currentState === 'choosing') {
-            newAvatarSelect.update(dt);
+            AvatarSelect.update(dt);
          } else if (global.currentState === 'winner') {
             render();
             Winner.update(dt);
@@ -127,7 +128,7 @@ var Engine = (function(global) {
     function initChoose() {
       $canvas.off().on('click', function(e) {
         var loc = handleClick(e.clientX, e.clientY);
-        newAvatarSelect.checkButtons(loc);
+        AvatarSelect.checkButtons(loc);
       });
     }
 
