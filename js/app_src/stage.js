@@ -67,3 +67,7 @@ Stage.prototype.checkButtonHit = function(loc, button) {
 Stage.prototype.pause = function(){
   this.paused = true;
 };
+
+Stage.prototype.resume = function(){
+  this.paused = false;
+};

@@ -172,6 +172,10 @@ Stage.prototype.pause = function(){
   this.paused = true;
 };
 
+Stage.prototype.resume = function(){
+  this.paused = false;
+};
+
 // Set up the graphic assets of the scene
 
 var FroggerLogo = new Sprite({
@@ -423,7 +427,7 @@ Player.prototype.checkForWin = function(dt) {
     document.removeEventListener('keyup', function(e) {
       player.handleInput(allowedKeys[e.keyCode]);
     });
-    currentState = 'winner';
+    currentState = 'win';
   }
 };
 
@@ -447,8 +451,9 @@ var Play = new Stage({
   sprites: [player, b1, b2, b3],
   backgroundColor: 'white',
   states: {
-    'win': function(){
+    'win': function(stage){
       ctx.drawImage(Resources.get('images/win-screen.png'), 0, 0, 505, 606);
+      stage.pause();
     },
     'lose': function(stage) {
       ctx.drawImage(Resources.get('images/lose-screen.png'), 0, 0, 505, 606);
