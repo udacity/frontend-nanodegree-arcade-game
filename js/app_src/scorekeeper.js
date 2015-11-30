@@ -7,6 +7,9 @@ var Score = {
   },
   getScore: function() {
     return this.score;
+  },
+  resetScore: function() {
+    this.score = 0;
   }
 };
 
@@ -24,6 +27,7 @@ var Scorekeeper = {
     this.$el.html('Score: ' + Score.getScore());
   },
   reset: function() {
+    Score.resetScore();
     this.$el.html('');
   }
 };

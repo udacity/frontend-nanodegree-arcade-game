@@ -153,6 +153,8 @@ var Engine = (function(global) {
      * they are flipbooks creating the illusion of animation but in reality
      * they are just drawing the entire screen over and over.
      */
+
+     // > This could be moved to Play()
     function render() {
         /* This array holds the relative URL to the image used
          * for that particular row of the game level.

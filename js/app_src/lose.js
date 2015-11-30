@@ -1,3 +1,6 @@
+// TODO supercede as a state of
+// the Stage class
+
 var Lose = {
   resetTimer: 0,
   resetLength: 1,

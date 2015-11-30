@@ -229,12 +229,15 @@ var Frog = new Sprite({
   }
 });
 
+// Make the Stage
 var Welcome = new Stage({
   resetLength: 5,
   sprites: [FroggerLogo, StartButton, AvatarButton, Frog],
   backgroundColor: 'black'
 });
 
+// TODO supercede as a state of
+// the Stage class
 
 var Winner = {
   resetTimer: 0,
@@ -263,6 +266,9 @@ var Winner = {
     }
   }
 };
+
+// TODO supercede as a state of
+// the Stage class
 
 var Lose = {
   resetTimer: 0,
@@ -437,6 +443,9 @@ var Score = {
   },
   getScore: function() {
     return this.score;
+  },
+  resetScore: function() {
+    this.score = 0;
   }
 };
 
@@ -454,6 +463,7 @@ var Scorekeeper = {
     this.$el.html('Score: ' + Score.getScore());
   },
   reset: function() {
+    Score.resetScore();
     this.$el.html('');
   }
 };

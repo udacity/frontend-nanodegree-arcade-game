@@ -1,3 +1,5 @@
+// TODO supercede as a state of
+// the Stage class
 
 var Winner = {
   resetTimer: 0,
