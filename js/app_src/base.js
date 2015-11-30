@@ -29,7 +29,7 @@ var Sprite = function(options) {
   this.timer = 0;
   this.spriteSheetWidth = options.spriteSheetWidth || options.dWidth;
   this.anim = options.anim || 0;
-  this.tween = options.tween;
+  this.tween = options.tween || function(dt) { };
 
   // Interactive options
   this.clickable = options.clickable || false;
@@ -51,7 +51,7 @@ Sprite.prototype.reset = function(){
 Sprite.prototype.render = function(dt) {
   if(this.anim) {
     // Only update the sprite if it's flagged to be animated
-    this.update(dt);
+    this.animate(dt);
   }
   // API reference: drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight)
   ctx.drawImage( Resources.get(this.sprite), this.sx, this.sy, this.sWidth, this.sHeight, this.dx, this.dy, this.dWidth, this.dHeight );
@@ -59,6 +59,7 @@ Sprite.prototype.render = function(dt) {
     this.drawBoundingBox();
   }
 };
+
 
 Sprite.prototype.drawBoundingBox = function() {
   // This is just a method to draw a square around
@@ -77,7 +78,7 @@ Sprite.prototype.drawBoundingBox = function() {
   ctx.restore();
 };
 
-Sprite.prototype.update = function(dt) {
+Sprite.prototype.animate = function(dt) {
   // Update will animate the frames of a sprite sheet
   // It assumes that each frame is spaced a distance
   // equivalent to the width of the sprite on stage
@@ -100,6 +101,10 @@ Sprite.prototype.moveX = function(ddx) {
 
 Sprite.prototype.moveY = function(ddy) {
   this.dy += ddy;
+};
+
+Sprite.prototype.update = function(dt) {
+
 };
 
 //
@@ -129,10 +134,10 @@ var Stage = function(options) {
   // It can check to see if the Player sprite
   // Collides with Enemy sprites
   // TODO: Generalize into a one to many collision detection?
-
+  this.render = options.render || function() {};
 };
 
-Stage.prototype.render = function() {
+Stage.prototype.renderBackground = function() {
   // Render the stage itself
   ctx.save();
   ctx.fillStyle = this.backgroundColor;
@@ -141,8 +146,10 @@ Stage.prototype.render = function() {
 
 Stage.prototype.update = function(dt) {
   // Render all sprites
+  this.renderBackground();
   this.render();
   this.sprites.forEach(function(sprite){
+    sprite.update(dt);
     sprite.render(dt);
   });
 };

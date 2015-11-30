@@ -16,7 +16,7 @@ var Enemy = function(dx, dy) {
     };
 
     Sprite.call(this, enemy_defaults);
-
+    
     this.speed = 100+Math.random()*200;
 };
 

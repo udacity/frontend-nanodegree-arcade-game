@@ -29,7 +29,7 @@ var Sprite = function(options) {
   this.timer = 0;
   this.spriteSheetWidth = options.spriteSheetWidth || options.dWidth;
   this.anim = options.anim || 0;
-  this.tween = options.tween;
+  this.tween = options.tween || function(dt) { };
 
   // Interactive options
   this.clickable = options.clickable || false;
@@ -51,7 +51,7 @@ Sprite.prototype.reset = function(){
 Sprite.prototype.render = function(dt) {
   if(this.anim) {
     // Only update the sprite if it's flagged to be animated
-    this.update(dt);
+    this.animate(dt);
   }
   // API reference: drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight)
   ctx.drawImage( Resources.get(this.sprite), this.sx, this.sy, this.sWidth, this.sHeight, this.dx, this.dy, this.dWidth, this.dHeight );
@@ -59,6 +59,7 @@ Sprite.prototype.render = function(dt) {
     this.drawBoundingBox();
   }
 };
+
 
 Sprite.prototype.drawBoundingBox = function() {
   // This is just a method to draw a square around
@@ -77,7 +78,7 @@ Sprite.prototype.drawBoundingBox = function() {
   ctx.restore();
 };
 
-Sprite.prototype.update = function(dt) {
+Sprite.prototype.animate = function(dt) {
   // Update will animate the frames of a sprite sheet
   // It assumes that each frame is spaced a distance
   // equivalent to the width of the sprite on stage
@@ -100,6 +101,10 @@ Sprite.prototype.moveX = function(ddx) {
 
 Sprite.prototype.moveY = function(ddy) {
   this.dy += ddy;
+};
+
+Sprite.prototype.update = function(dt) {
+
 };
 
 //
@@ -129,10 +134,10 @@ var Stage = function(options) {
   // It can check to see if the Player sprite
   // Collides with Enemy sprites
   // TODO: Generalize into a one to many collision detection?
-
+  this.render = options.render || function() {};
 };
 
-Stage.prototype.render = function() {
+Stage.prototype.renderBackground = function() {
   // Render the stage itself
   ctx.save();
   ctx.fillStyle = this.backgroundColor;
@@ -141,8 +146,10 @@ Stage.prototype.render = function() {
 
 Stage.prototype.update = function(dt) {
   // Render all sprites
+  this.renderBackground();
   this.render();
   this.sprites.forEach(function(sprite){
+    sprite.update(dt);
     sprite.render(dt);
   });
 };
@@ -231,7 +238,6 @@ var Frog = new Sprite({
 
 // Make the Stage
 var Welcome = new Stage({
-  resetLength: 5,
   sprites: [FroggerLogo, StartButton, AvatarButton, Frog],
   backgroundColor: 'black'
 });
@@ -320,7 +326,7 @@ var Enemy = function(dx, dy) {
     };
 
     Sprite.call(this, enemy_defaults);
-
+    
     this.speed = 100+Math.random()*200;
 };
 
@@ -346,7 +352,7 @@ Enemy.prototype.render = function() {
 };
 */
 
-var Player = function() {
+var Player = function(options) {
 
   var player_options = {
     sprite: playerImg,
@@ -365,6 +371,12 @@ var Player = function() {
   // on each step
   this.ddx = 0;
   this.ddy = 0;
+
+  // Enemies array
+  this.enemies = options.enemies;
+
+  // Power-ups
+  this.powerups = options.powerups;
 };
 
 Player.prototype = Object.create(Sprite.prototype);
@@ -373,7 +385,7 @@ Player.prototype.constructor = Player;
 Player.prototype.update = function() {
   this.dx += this.ddx;
   this.dy += this.ddy;
-  this.render();
+  //this.render();
   this.checkCollsions();
   this.checkForWin();
   this.ddx = 0;
@@ -409,7 +421,7 @@ Player.prototype.handleInput = function(key) {
 
 Player.prototype.checkCollsions = function() {
   var player = this;
-  allEnemies.forEach( function(enemy) {
+  this.enemies.forEach( function(enemy) {
     if (player.dx < enemy.dx + enemy.dWidth &&
       player.dx + player.dWidth > enemy.dx &&
       player.dy < enemy.dy + enemy.dHeight &&
@@ -433,6 +445,42 @@ Player.prototype.checkForWin = function(dt) {
 Player.prototype.setSprite = function() {
   this.sprite = playerImg;
 };
+
+
+var b1 = new Enemy(-101, 135);
+var b2 = new Enemy(-101, 218);
+var b3 = new Enemy(-101, 300);
+
+var options = {
+  enemies: [b1, b2, b3],
+  powerups: []
+};
+
+var player = new Player(options);
+
+var Play = new Stage({
+  sprites: [player, b1, b2, b3],
+  backgroundColor: 'white',
+  render: function() {
+    var rowImages = [
+          'images/water-block.png',   // Top row is water
+          'images/stone-block.png',   // Row 1 of 3 of stone
+          'images/stone-block.png',   // Row 2 of 3 of stone
+          'images/stone-block.png',   // Row 3 of 3 of stone
+          'images/grass-block.png',   // Row 1 of 2 of grass
+          'images/grass-block.png'    // Row 2 of 2 of grass
+      ],
+      numRows = 6,
+      numCols = 5,
+      row, col;
+
+      for (row = 0; row < numRows; row++) {
+          for (col = 0; col < numCols; col++) {
+              ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
+          }
+      }
+  }
+});
 
 // Handles score data
 var Score = {
@@ -498,19 +546,3 @@ var AvatarSelect = new Stage({
   sprites: avatars,
   backgroundColor: 'white'
 });
-
-
-// TODO: randomize position and direction
-
-var b1 = new Enemy(-101, 135);
-var b2 = new Enemy(-101, 218);
-var b3 = new Enemy(-101, 300);
-var player = new Player();
-var allEnemies = [b1, b2, b3];
-
-
-// TODO: Create a sessionStorage score variable to
-// be updated with the Scorekeepr object
-
-// This listens for key presses and sends the keys to your
-// Player.handleInput() method. You don't need to modify this.
