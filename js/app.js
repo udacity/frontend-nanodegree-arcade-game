@@ -399,13 +399,14 @@ var Play = new Stage({
       ctx.drawImage(Resources.get('images/win-screen.png'), 0, 0, 505, 606);
       stage.pause();
       stage.resetTimer += dt;
+      if(stage.resetTimer > stage.resetLength){
+        Scorekeeper.update();
+      }
     },
     'lose': function(dt, stage) {
       ctx.drawImage(Resources.get('images/lose-screen.png'), 0, 0, 505, 606);
       stage.pause();
       stage.resetTimer += dt;
-    },
-    'playing': function() {
     }
   },
   render: function() {
