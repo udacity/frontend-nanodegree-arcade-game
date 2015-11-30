@@ -27,14 +27,16 @@ var Engine = (function(global) {
         startTime,
         lastTime;
 
-
     canvas.width = 505;
     canvas.height = 606;
-    doc.body.appendChild(canvas);
+    $('.gameboard').append(canvas);
     global.$canvas = $('canvas');
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
      */
+    $('#resetGame').on('click',function(){
+      resetGame();
+    });
     function main() {
         /* Get our time delta information which is required if your game
          * requires smooth animation. Because everyone's computer processes
@@ -52,11 +54,12 @@ var Engine = (function(global) {
              render();
              Lose.update(dt);
          } else if (global.currentState === 'playing') {
+           //TODO: Something like Play.update()
+           render();
              update(dt);
-             render();
          } else if (global.currentState === 'choosing') {
             AvatarSelect.update(dt);
-         } else if (global.currentState === 'win') {
+         } else if (global.currentState === 'winner') {
             render();
             Winner.update(dt);
          }
@@ -75,14 +78,7 @@ var Engine = (function(global) {
       startTime = lastTime;
       main();
 
-      // Collect Input
-      // Check to see if button in welcome screen is hit
-      $canvas.on('click', function(e) {
-        //console.log('x: ', e.clientX, 'y: ', e.clientY, "bbox: ", canvas.getBoundingClientRect());
-        var loc = handleClick(e.clientX, e.clientY);
-        //console.log(loc);
-        Welcome.checkAllButtons(loc);
-      });
+      initWelcome();
     }
 
     // Process the click info into the canvas
@@ -95,7 +91,7 @@ var Engine = (function(global) {
       };
     }
 
-    global.handleClick = handleClick;
+
     /* This function is called by main (our game loop) and itself calls all
      * of the functions which may need to update entity's data. Based on how
      * you implement your collision detection (when two entities occupy the
@@ -123,6 +119,34 @@ var Engine = (function(global) {
         player.update();
     }
 
+    function resetGame() {
+      global.currentState = 'welcome';
+      initWelcome();
+      Scorekeeper.reset();
+    }
+
+    function initWelcome() {
+      Welcome.reset();
+      $canvas.on('click', function(e) {
+        var loc = handleClick(e.clientX, e.clientY);
+        Welcome.checkButtons(loc);
+      });
+    }
+
+    function initChoose() {
+      $canvas.off().on('click', function(e) {
+        var loc = handleClick(e.clientX, e.clientY);
+        AvatarSelect.checkButtons(loc);
+      });
+    }
+
+    function initPlay() {
+      Scorekeeper.render();
+      $(document).on('keyup', function(e) {
+        player.handleInput(allowedKeys[e.keyCode]);
+      });
+      ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    }
     /* This function initially draws the "game level", it will then call
      * the renderEntities function. Remember, this function is called every
      * game tick (or loop of the game engine) because that's how games work -
@@ -200,7 +224,10 @@ var Engine = (function(global) {
         'images/char-horn-girl.png',
         'images/char-pink-girl.png',
         'images/char-princess-girl.png',
-        'images/frog.png'
+        'images/frog.png',
+        'images/avatar-btn.png',
+        'images/start-btn.png',
+        'images/phrogger.png'
     ]);
     Resources.onReady(init);
 
@@ -217,4 +244,8 @@ var Engine = (function(global) {
         40: 'down',
         32: 'space'
     };
+    global.playerImg = 'images/char-boy.png';
+    global.handleClick = handleClick;
+    global.initPlay = initPlay;
+    global.initChoose = initChoose;
 })(this);
