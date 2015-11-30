@@ -3,13 +3,14 @@ var Stage = function(options) {
 
   this.sprites = options.sprites;
   this.resetTimer = 0;
-  this.resetLength = options.resetLength;
+  this.resetLength = options.resetLength || 3;
   this.backgroundColor = options.backgroundColor;
   // It can check to see if the Player sprite
   // Collides with Enemy sprites
   // TODO: Generalize into a one to many collision detection?
   this.render = options.render || function() {};
   this.states = options.states || {};
+  this.defaultState = options.defaultState || '';
   this.paused = options.paused || false;
 };
 
@@ -34,7 +35,11 @@ Stage.prototype.update = function(dt) {
   });
 
   if(this.states[currentState] !== undefined){
-    this.states[currentState](this);
+    this.states[currentState](dt, this);
+  }
+
+  if(this.resetTimer > this.resetLength){
+    this.reset();
   }
 };
 
@@ -43,6 +48,9 @@ Stage.prototype.reset = function(dt) {
   this.sprites.forEach(function(sprite){
     sprite.reset();
   });
+  this.resume();
+  this.resetTimer = 0;
+  currentState = this.defaultState;
 };
 
 Stage.prototype.checkButtons = function(loc) {

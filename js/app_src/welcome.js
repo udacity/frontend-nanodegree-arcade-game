@@ -57,5 +57,6 @@ var Frog = new Sprite({
 // Make the Stage
 var Welcome = new Stage({
   sprites: [FroggerLogo, StartButton, AvatarButton, Frog],
-  backgroundColor: 'black'
+  backgroundColor: 'black',
+  defaultState: 'welcome'
 });

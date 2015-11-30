@@ -108,6 +108,7 @@ var Engine = (function(global) {
 
     function initPlay() {
       Scorekeeper.render();
+      Play.reset();
       $(document).on('keyup', function(e) {
         player.handleInput(allowedKeys[e.keyCode]);
       });

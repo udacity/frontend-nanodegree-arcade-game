@@ -107,13 +107,14 @@ var Stage = function(options) {
 
   this.sprites = options.sprites;
   this.resetTimer = 0;
-  this.resetLength = options.resetLength;
+  this.resetLength = options.resetLength || 3;
   this.backgroundColor = options.backgroundColor;
   // It can check to see if the Player sprite
   // Collides with Enemy sprites
   // TODO: Generalize into a one to many collision detection?
   this.render = options.render || function() {};
   this.states = options.states || {};
+  this.defaultState = options.defaultState || '';
   this.paused = options.paused || false;
 };
 
@@ -138,7 +139,11 @@ Stage.prototype.update = function(dt) {
   });
 
   if(this.states[currentState] !== undefined){
-    this.states[currentState](this);
+    this.states[currentState](dt, this);
+  }
+
+  if(this.resetTimer > this.resetLength){
+    this.reset();
   }
 };
 
@@ -147,6 +152,9 @@ Stage.prototype.reset = function(dt) {
   this.sprites.forEach(function(sprite){
     sprite.reset();
   });
+  this.resume();
+  this.resetTimer = 0;
+  currentState = this.defaultState;
 };
 
 Stage.prototype.checkButtons = function(loc) {
@@ -235,74 +243,9 @@ var Frog = new Sprite({
 // Make the Stage
 var Welcome = new Stage({
   sprites: [FroggerLogo, StartButton, AvatarButton, Frog],
-  backgroundColor: 'black'
+  backgroundColor: 'black',
+  defaultState: 'welcome'
 });
-
-// TODO supercede as a state of
-// the Stage class
-
-var Winner = {
-  resetTimer: 0,
-  resetLength: 2,
-  update: function(dt) {
-    this.render();
-    this.resetState(dt);
-  },
-  render: function() {
-    ctx.fillStyle = 'rgba(255,255,255,0.5)';
-    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    ctx.font = '36pt Helvetica';
-    ctx.textSmoothingEnabled = true;
-    ctx.textAlign = 'center';
-    ctx.fillStyle = 'black';
-    ctx.fillText('You Win', ctx.canvas.width/2, ctx.canvas.height/2);
-  },
-  resetState: function(dt) {
-    this.resetTimer += dt;
-    if ( this.resetTimer > this.resetLength ) {
-      document.addEventListener('keyup', player.handleInput);
-      player.reset();
-      currentState = 'playing';
-      this.resetTimer = 0;
-      Scorekeeper.update();
-    }
-  }
-};
-
-// TODO supercede as a state of
-// the Stage class
-
-var Lose = {
-  resetTimer: 0,
-  resetLength: 1,
-  update: function(dt) {
-    // console.log('you lose');
-    this.render();
-    this.resetState(dt);
-  },
-  render: function() {
-    ctx.fillStyle = 'rgba(255,255,255,0.5)';
-    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    ctx.font = '36pt Helvetica';
-    ctx.textSmoothingEnabled = true;
-    ctx.textAlign = 'center';
-    ctx.fillStyle = 'black';
-    ctx.fillText('You Lose', ctx.canvas.width/2, ctx.canvas.height/2);
-  },
-  resetState: function(dt) {
-    this.resetTimer += dt;
-    if ( this.resetTimer > this.resetLength ) {
-      document.addEventListener('keyup', player.handleInput);
-      player.reset();
-      currentState = 'playing';
-      this.resetTimer = 0;
-      player.reset();
-      allEnemies.forEach(function(enemy) {
-        enemy.reset();
-      });
-    }
-  }
-};
 
 // Enemies our player must avoid
 var Enemy = function(dx, dy) {
@@ -450,17 +393,19 @@ var player = new Player(options);
 var Play = new Stage({
   sprites: [player, b1, b2, b3],
   backgroundColor: 'white',
+  defaultState: 'playing',
   states: {
-    'win': function(stage){
+    'win': function(dt, stage){
       ctx.drawImage(Resources.get('images/win-screen.png'), 0, 0, 505, 606);
       stage.pause();
+      stage.resetTimer += dt;
     },
-    'lose': function(stage) {
+    'lose': function(dt, stage) {
       ctx.drawImage(Resources.get('images/lose-screen.png'), 0, 0, 505, 606);
       stage.pause();
+      stage.resetTimer += dt;
     },
     'playing': function() {
-
     }
   },
   render: function() {

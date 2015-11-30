@@ -13,17 +13,19 @@ var player = new Player(options);
 var Play = new Stage({
   sprites: [player, b1, b2, b3],
   backgroundColor: 'white',
+  defaultState: 'playing',
   states: {
-    'win': function(stage){
+    'win': function(dt, stage){
       ctx.drawImage(Resources.get('images/win-screen.png'), 0, 0, 505, 606);
       stage.pause();
+      stage.resetTimer += dt;
     },
-    'lose': function(stage) {
+    'lose': function(dt, stage) {
       ctx.drawImage(Resources.get('images/lose-screen.png'), 0, 0, 505, 606);
       stage.pause();
+      stage.resetTimer += dt;
     },
     'playing': function() {
-
     }
   },
   render: function() {
