@@ -1,8 +1,3 @@
-// Establish base classes for use in game objects
-
-// TODO Add an update function to handle different rendering states
-// I want to make the characters go splat
-
 var Sprite = function(options) {
   // Sprite takes an options object
 
@@ -107,23 +102,6 @@ Sprite.prototype.update = function(dt) {
 
 };
 
-//
-
-/*
-var Button = function(options, nextState) {
-  Sprite.call(this, options);
-  this.nextState = nextState;
-  this.clickable = true;
-};
-
-Button.prototype = Object.create(Sprite.prototype);
-
-Button.constructor = Button;
-
-*/
-
-// The Stage class keeps a list of sprites
-// The global context is hardcoded in here
 
 var Stage = function(options) {
 
@@ -135,6 +113,8 @@ var Stage = function(options) {
   // Collides with Enemy sprites
   // TODO: Generalize into a one to many collision detection?
   this.render = options.render || function() {};
+  this.states = options.states || {};
+  this.paused = options.paused || false;
 };
 
 Stage.prototype.renderBackground = function() {
@@ -148,10 +128,18 @@ Stage.prototype.update = function(dt) {
   // Render all sprites
   this.renderBackground();
   this.render();
+  // Render the state of the stage
+  var is_paused = this.paused;
   this.sprites.forEach(function(sprite){
-    sprite.update(dt);
+    if(!is_paused){
+      sprite.update(dt);
+    }
     sprite.render(dt);
   });
+
+  if(this.states[currentState] !== undefined){
+    this.states[currentState](this);
+  }
 };
 
 Stage.prototype.reset = function(dt) {
@@ -178,6 +166,10 @@ Stage.prototype.checkButtonHit = function(loc, button) {
       loc.y < button.dy + button.dHeight) {
         button.handleClick();
       }
+};
+
+Stage.prototype.pause = function(){
+  this.paused = true;
 };
 
 // Set up the graphic assets of the scene
@@ -326,7 +318,7 @@ var Enemy = function(dx, dy) {
     };
 
     Sprite.call(this, enemy_defaults);
-    
+
     this.speed = 100+Math.random()*200;
 };
 
@@ -344,13 +336,6 @@ Enemy.prototype.update = function(dt) {
       this.dx = this['dx-default'];
     }
 };
-
-// Draw the enemy on the screen, required method for game
-/*
-Enemy.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
-*/
 
 var Player = function(options) {
 
@@ -461,6 +446,18 @@ var player = new Player(options);
 var Play = new Stage({
   sprites: [player, b1, b2, b3],
   backgroundColor: 'white',
+  states: {
+    'win': function(){
+      ctx.drawImage(Resources.get('images/win-screen.png'), 0, 0, 505, 606);
+    },
+    'lose': function(stage) {
+      ctx.drawImage(Resources.get('images/lose-screen.png'), 0, 0, 505, 606);
+      stage.pause();
+    },
+    'playing': function() {
+
+    }
+  },
   render: function() {
     var rowImages = [
           'images/water-block.png',   // Top row is water

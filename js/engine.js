@@ -48,22 +48,16 @@ var Engine = (function(global) {
          var now = Date.now(),
           // Convert milliseconds to seconds
           dt = (now - lastTime) / 1000.0;
+
+          // Handle state
           if (global.currentState === 'welcome') {
             Welcome.update(dt);
-          } else if (global.currentState === 'lose') {
-             render();
-             Lose.update(dt);
-         } else if (global.currentState === 'playing') {
-           //TODO: Something like Play.update()
-          // render();
-             //update(dt);
-             Play.update(dt);
-         } else if (global.currentState === 'choosing') {
-            AvatarSelect.update(dt);
-         } else if (global.currentState === 'winner') {
-            render();
-            Winner.update(dt);
          }
+         else if (global.currentState === 'choosing') {
+            AvatarSelect.update(dt);
+         } else {
+           Play.update(dt);
+        }
         lastTime = now;
         win.requestAnimationFrame(main);
 
@@ -83,9 +77,8 @@ var Engine = (function(global) {
     }
 
     // Process the click info into the canvas
-
     function handleClick(x, y) {
-      // Adapted from Core HTML5 Canvas
+      // Adapted from 'Core HTML5 Canvas'
       var bbox = canvas.getBoundingClientRect();
       return { x: x - bbox.left * (canvas.width / bbox.width),
                y: y - bbox.top * (canvas.height / bbox.height)
@@ -134,7 +127,9 @@ var Engine = (function(global) {
         'images/frog.png',
         'images/avatar-btn.png',
         'images/start-btn.png',
-        'images/phrogger.png'
+        'images/phrogger.png',
+        'images/win-screen.png',
+        'images/lose-screen.png'
     ]);
     Resources.onReady(init);
 

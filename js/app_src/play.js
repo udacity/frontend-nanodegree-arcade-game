@@ -13,6 +13,18 @@ var player = new Player(options);
 var Play = new Stage({
   sprites: [player, b1, b2, b3],
   backgroundColor: 'white',
+  states: {
+    'win': function(){
+      ctx.drawImage(Resources.get('images/win-screen.png'), 0, 0, 505, 606);
+    },
+    'lose': function(stage) {
+      ctx.drawImage(Resources.get('images/lose-screen.png'), 0, 0, 505, 606);
+      stage.pause();
+    },
+    'playing': function() {
+
+    }
+  },
   render: function() {
     var rowImages = [
           'images/water-block.png',   // Top row is water
