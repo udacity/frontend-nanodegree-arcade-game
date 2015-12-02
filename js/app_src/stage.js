@@ -34,10 +34,14 @@ Stage.prototype.update = function(dt) {
     sprite.render(dt);
   });
 
+  // If the state of the game matches a state of the
+  // stage, render it
   if(this.states[currentState] !== undefined){
     this.states[currentState](dt, this);
   }
-
+  
+  // Checks if the stage needs to be reset
+  // after a certain length of time
   if(this.resetTimer > this.resetLength){
     this.reset();
   }

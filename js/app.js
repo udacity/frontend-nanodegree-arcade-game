@@ -138,10 +138,14 @@ Stage.prototype.update = function(dt) {
     sprite.render(dt);
   });
 
+  // If the state of the game matches a state of the
+  // stage, render it
   if(this.states[currentState] !== undefined){
     this.states[currentState](dt, this);
   }
-
+  
+  // Checks if the stage needs to be reset
+  // after a certain length of time
   if(this.resetTimer > this.resetLength){
     this.reset();
   }
@@ -236,7 +240,7 @@ var Frog = new Sprite({
   fps: 1/12,
   anim: 1,
   tween: function(dt) {
-    this.moveX(75 * dt);
+    this.moveX(50 * dt);
   }
 });
 
@@ -267,6 +271,7 @@ var Enemy = function(dx, dy) {
     Sprite.call(this, enemy_defaults);
 
     this.speed = 100+Math.random()*200;
+    this.nextState = 'lose';
 };
 
 Enemy.prototype = Object.create(Sprite.prototype);
@@ -304,11 +309,8 @@ var Player = function(options) {
   this.ddx = 0;
   this.ddy = 0;
 
-  // Enemies array
-  this.enemies = options.enemies;
-
-  // Power-ups
-  this.powerups = options.powerups;
+  // All other Sprites
+  this.otherSprites = options.otherSprites || [];
 };
 
 Player.prototype = Object.create(Sprite.prototype);
@@ -353,23 +355,18 @@ Player.prototype.handleInput = function(key) {
 
 Player.prototype.checkCollsions = function() {
   var player = this;
-  this.enemies.forEach( function(enemy) {
-    if (player.dx < enemy.dx + enemy.dWidth &&
-      player.dx + player.dWidth > enemy.dx &&
-      player.dy < enemy.dy + enemy.dHeight &&
-      player.dy + player.dHeight > enemy.dy) {
-        document.removeEventListener('keyup', player.handleInput);
-        // TODO: let the bug run over the character
-        currentState = 'lose';
+  this.otherSprites.forEach( function(sprite) {
+    if (player.dx < sprite.dx + sprite.dWidth &&
+      player.dx + player.dWidth > sprite.dx &&
+      player.dy < sprite.dy + sprite.dHeight &&
+      player.dy + player.dHeight > sprite.dy) {
+        currentState = sprite.nextState;
     }
   });
 };
 
 Player.prototype.checkForWin = function(dt) {
   if (this.dy < 73 ) {
-    document.removeEventListener('keyup', function(e) {
-      player.handleInput(allowedKeys[e.keyCode]);
-    });
     currentState = 'win';
   }
 };
@@ -383,17 +380,29 @@ var b1 = new Enemy(-101, 135);
 var b2 = new Enemy(-101, 218);
 var b3 = new Enemy(-101, 300);
 
+var powerupOptions = {
+  sprite: 'images/Gem Orange.png',
+  dx: 101,
+  dy: 183,
+  sy: 58,
+  dWidth: 101,
+  dHeight: 111,
+  nextState: 'powerup'
+};
+
+var powerup = new Sprite(powerupOptions);
+
 var options = {
-  enemies: [b1, b2, b3],
-  powerups: []
+  otherSprites: [powerup, b1, b2, b3]
 };
 
 var player = new Player(options);
 
 var Play = new Stage({
-  sprites: [player, b1, b2, b3],
+  sprites: [powerup, b1, b2, b3, player],
   backgroundColor: 'black',
   defaultState: 'playing',
+  resetLength: 1,
   states: {
     'win': function(dt, stage){
       ctx.drawImage(Resources.get('images/win-screen.png'), 0, 0, 505, 606);
@@ -402,11 +411,21 @@ var Play = new Stage({
       if(stage.resetTimer > stage.resetLength){
         Scorekeeper.update();
       }
+      document.removeEventListener('keyup', function(e) {
+        player.handleInput(allowedKeys[e.keyCode]);
+      });
     },
     'lose': function(dt, stage) {
       ctx.drawImage(Resources.get('images/lose-screen.png'), 0, 0, 505, 606);
       stage.pause();
       stage.resetTimer += dt;
+      document.removeEventListener('keyup', player.handleInput);
+    },
+    'powerup': function(dt, stage) {
+      stage.sprites.shift();
+      player.otherSprites.shift();
+      Scorekeeper.update();
+      currentState = stage.defaultState;
     }
   },
   render: function() {

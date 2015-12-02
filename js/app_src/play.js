@@ -3,17 +3,29 @@ var b1 = new Enemy(-101, 135);
 var b2 = new Enemy(-101, 218);
 var b3 = new Enemy(-101, 300);
 
+var powerupOptions = {
+  sprite: 'images/Gem Orange.png',
+  dx: 101,
+  dy: 183,
+  sy: 58,
+  dWidth: 101,
+  dHeight: 111,
+  nextState: 'powerup'
+};
+
+var powerup = new Sprite(powerupOptions);
+
 var options = {
-  enemies: [b1, b2, b3],
-  powerups: []
+  otherSprites: [powerup, b1, b2, b3]
 };
 
 var player = new Player(options);
 
 var Play = new Stage({
-  sprites: [player, b1, b2, b3],
+  sprites: [powerup, b1, b2, b3, player],
   backgroundColor: 'black',
   defaultState: 'playing',
+  resetLength: 1,
   states: {
     'win': function(dt, stage){
       ctx.drawImage(Resources.get('images/win-screen.png'), 0, 0, 505, 606);
@@ -22,11 +34,21 @@ var Play = new Stage({
       if(stage.resetTimer > stage.resetLength){
         Scorekeeper.update();
       }
+      document.removeEventListener('keyup', function(e) {
+        player.handleInput(allowedKeys[e.keyCode]);
+      });
     },
     'lose': function(dt, stage) {
       ctx.drawImage(Resources.get('images/lose-screen.png'), 0, 0, 505, 606);
       stage.pause();
       stage.resetTimer += dt;
+      document.removeEventListener('keyup', player.handleInput);
+    },
+    'powerup': function(dt, stage) {
+      stage.sprites.shift();
+      player.otherSprites.shift();
+      Scorekeeper.update();
+      currentState = stage.defaultState;
     }
   },
   render: function() {

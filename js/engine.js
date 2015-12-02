@@ -130,7 +130,8 @@ var Engine = (function(global) {
         'images/start-btn.png',
         'images/phrogger.png',
         'images/win-screen.png',
-        'images/lose-screen.png'
+        'images/lose-screen.png',
+        'images/Gem Orange.png'
     ]);
     Resources.onReady(init);
 

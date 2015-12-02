@@ -18,11 +18,8 @@ var Player = function(options) {
   this.ddx = 0;
   this.ddy = 0;
 
-  // Enemies array
-  this.enemies = options.enemies;
-
-  // Power-ups
-  this.powerups = options.powerups;
+  // All other Sprites
+  this.otherSprites = options.otherSprites || [];
 };
 
 Player.prototype = Object.create(Sprite.prototype);
@@ -67,23 +64,18 @@ Player.prototype.handleInput = function(key) {
 
 Player.prototype.checkCollsions = function() {
   var player = this;
-  this.enemies.forEach( function(enemy) {
-    if (player.dx < enemy.dx + enemy.dWidth &&
-      player.dx + player.dWidth > enemy.dx &&
-      player.dy < enemy.dy + enemy.dHeight &&
-      player.dy + player.dHeight > enemy.dy) {
-        document.removeEventListener('keyup', player.handleInput);
-        // TODO: let the bug run over the character
-        currentState = 'lose';
+  this.otherSprites.forEach( function(sprite) {
+    if (player.dx < sprite.dx + sprite.dWidth &&
+      player.dx + player.dWidth > sprite.dx &&
+      player.dy < sprite.dy + sprite.dHeight &&
+      player.dy + player.dHeight > sprite.dy) {
+        currentState = sprite.nextState;
     }
   });
 };
 
 Player.prototype.checkForWin = function(dt) {
   if (this.dy < 73 ) {
-    document.removeEventListener('keyup', function(e) {
-      player.handleInput(allowedKeys[e.keyCode]);
-    });
     currentState = 'win';
   }
 };
