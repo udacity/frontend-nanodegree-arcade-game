@@ -392,7 +392,7 @@ var player = new Player(options);
 
 var Play = new Stage({
   sprites: [player, b1, b2, b3],
-  backgroundColor: 'white',
+  backgroundColor: 'black',
   defaultState: 'playing',
   states: {
     'win': function(dt, stage){
@@ -492,5 +492,24 @@ var avatars = avatar_source_sprites.map(function(item, index){
 
 var AvatarSelect = new Stage({
   sprites: avatars,
-  backgroundColor: 'white'
+  backgroundColor: 'black',
+  render: function() {
+    var rowImages = [
+          'images/stone-block.png',   // Top row is water
+          'images/stone-block.png',   // Row 1 of 3 of stone
+          'images/stone-block.png',   // Row 2 of 3 of stone
+          'images/stone-block.png',   // Row 3 of 3 of stone
+          'images/stone-block.png',   // Row 1 of 2 of grass
+          'images/stone-block.png'    // Row 2 of 2 of grass
+      ],
+      numRows = 6,
+      numCols = 5,
+      row, col;
+
+      for (row = 0; row < numRows; row++) {
+          for (col = 0; col < numCols; col++) {
+              ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
+          }
+      }
+  }
 });

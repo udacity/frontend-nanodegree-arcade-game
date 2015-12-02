@@ -12,7 +12,7 @@ var player = new Player(options);
 
 var Play = new Stage({
   sprites: [player, b1, b2, b3],
-  backgroundColor: 'white',
+  backgroundColor: 'black',
   defaultState: 'playing',
   states: {
     'win': function(dt, stage){
