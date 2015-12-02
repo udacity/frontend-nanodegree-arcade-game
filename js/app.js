@@ -143,22 +143,6 @@ Stage.prototype.update = function(dt) {
   if(this.states[currentState] !== undefined){
     this.states[currentState](dt, this);
   }
-  
-  // Checks if the stage needs to be reset
-  // after a certain length of time
-  if(this.resetTimer > this.resetLength){
-    this.reset();
-  }
-};
-
-Stage.prototype.reset = function(dt) {
-  // Reset the sprites in the stage
-  this.sprites.forEach(function(sprite){
-    sprite.reset();
-  });
-  this.resume();
-  this.resetTimer = 0;
-  currentState = this.defaultState;
 };
 
 Stage.prototype.checkButtons = function(loc) {
@@ -248,7 +232,18 @@ var Frog = new Sprite({
 var Welcome = new Stage({
   sprites: [FroggerLogo, StartButton, AvatarButton, Frog],
   backgroundColor: 'black',
-  defaultState: 'welcome'
+  defaultState: 'welcome',
+  states: {
+    'reset': function(dt, stage) {
+      // Reset the sprites in the stage
+      stage.sprites.forEach(function(sprite){
+        sprite.reset();
+      });
+      stage.resume();
+      stage.resetTimer = 0;
+      currentState = stage.defaultState;
+    }
+  }
 });
 
 // Enemies our player must avoid
@@ -403,28 +398,50 @@ var Play = new Stage({
   backgroundColor: 'black',
   defaultState: 'playing',
   resetLength: 1,
+  // These are additional rendering functions
+  // for handling states of the Play stage
   states: {
     'win': function(dt, stage){
+      document.removeEventListener('keyup', function(e) {
+        player.handleInput(allowedKeys[e.keyCode]);
+      });
       ctx.drawImage(Resources.get('images/win-screen.png'), 0, 0, 505, 606);
       stage.pause();
       stage.resetTimer += dt;
       if(stage.resetTimer > stage.resetLength){
         Scorekeeper.update();
+        currentState = 'reset';
       }
-      document.removeEventListener('keyup', function(e) {
-        player.handleInput(allowedKeys[e.keyCode]);
-      });
     },
     'lose': function(dt, stage) {
+      document.removeEventListener('keyup', player.handleInput);
       ctx.drawImage(Resources.get('images/lose-screen.png'), 0, 0, 505, 606);
       stage.pause();
       stage.resetTimer += dt;
-      document.removeEventListener('keyup', player.handleInput);
+      if(stage.resetTimer > stage.resetLength){
+        currentState = 'reset';
+      }
+
     },
     'powerup': function(dt, stage) {
+      // Take the gem off the stage
+      // Assumes that the powerup is the first
+      // item in the array
       stage.sprites.shift();
+      // Take the gem out of the list of sprites
+      // which the player checks for collisions
       player.otherSprites.shift();
       Scorekeeper.update();
+      currentState = stage.defaultState;
+    },
+    'reset': function(dt, stage) {
+      // Check if a powerup has been collected
+      // Reset the sprites in the stage
+      stage.sprites.forEach(function(sprite){
+        sprite.reset();
+      });
+      stage.resume();
+      stage.resetTimer = 0;
       currentState = stage.defaultState;
     }
   },

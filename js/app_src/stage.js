@@ -39,22 +39,6 @@ Stage.prototype.update = function(dt) {
   if(this.states[currentState] !== undefined){
     this.states[currentState](dt, this);
   }
-  
-  // Checks if the stage needs to be reset
-  // after a certain length of time
-  if(this.resetTimer > this.resetLength){
-    this.reset();
-  }
-};
-
-Stage.prototype.reset = function(dt) {
-  // Reset the sprites in the stage
-  this.sprites.forEach(function(sprite){
-    sprite.reset();
-  });
-  this.resume();
-  this.resetTimer = 0;
-  currentState = this.defaultState;
 };
 
 Stage.prototype.checkButtons = function(loc) {

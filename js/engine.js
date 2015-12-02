@@ -86,13 +86,26 @@ var Engine = (function(global) {
     }
 
     function resetGame() {
-      global.currentState = 'welcome';
       initWelcome();
+      // add powerups back on game reset
+      var powerupCount = 0;
+      for(var i = 0; i < Play.sprites.length; i++){
+        if(Play.sprites[i].nextState == 'powerup'){
+          powerupCount++;
+        }
+      }
+      if (powerupCount === 0) {
+        Play.sprites.unshift(powerup);
+        player.otherSprites.unshift(powerup);
+      }
+
       Scorekeeper.reset();
     }
 
     function initWelcome() {
-      Welcome.reset();
+      global.currentState = 'reset';
+      Welcome.update();
+      global.currentState = 'welcome';
       $canvas.on('click', function(e) {
         var loc = handleClick(e.clientX, e.clientY);
         Welcome.checkButtons(loc);
@@ -108,7 +121,7 @@ var Engine = (function(global) {
 
     function initPlay() {
       Scorekeeper.render();
-      Play.reset();
+      global.currentState = 'reset';
       $(document).on('keyup', function(e) {
         player.handleInput(allowedKeys[e.keyCode]);
       });

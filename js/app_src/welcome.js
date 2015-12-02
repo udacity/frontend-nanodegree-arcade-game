@@ -58,5 +58,16 @@ var Frog = new Sprite({
 var Welcome = new Stage({
   sprites: [FroggerLogo, StartButton, AvatarButton, Frog],
   backgroundColor: 'black',
-  defaultState: 'welcome'
+  defaultState: 'welcome',
+  states: {
+    'reset': function(dt, stage) {
+      // Reset the sprites in the stage
+      stage.sprites.forEach(function(sprite){
+        sprite.reset();
+      });
+      stage.resume();
+      stage.resetTimer = 0;
+      currentState = stage.defaultState;
+    }
+  }
 });
