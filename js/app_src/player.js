@@ -1,60 +1,64 @@
-var Player = function() {
-  // Box is 70px wide by 80px tall
-  // Offset at the top is 60px
-  Sprite.call(this, 202, 405);
+var Player = function(options) {
 
-  this.dx = 0;
-  this.dy = 0;
-  this.sprite = 'images/char-boy.png';
-  this.boxWidth = 70;
-  this.boxHeight = 80;
-  this.boxTopOffset = 60;
-  this.boxSideOffset = 15;
-  this.boxX = this.x + this.boxSideOffset;
-  this.boxY = this.y + this.boxTopOffset;
+  var player_options = {
+    sprite: playerImg,
+    dWidth: 70,
+    dHeight: 80,
+    dx: 218,
+    dy: 468,
+    sx: 15,
+    sy: 63,
+    sHeight: 90,
+    sWidth: 70
+  };
+
+  Sprite.call(this, player_options);
+  // ddx and ddy are the amounts to move the player
+  // on each step
+  this.ddx = 0;
+  this.ddy = 0;
+
+  // Enemies array
+  this.enemies = options.enemies;
+
+  // Power-ups
+  this.powerups = options.powerups;
 };
 
 Player.prototype = Object.create(Sprite.prototype);
 Player.prototype.constructor = Player;
 
 Player.prototype.update = function() {
-  this.x += this.dx;
-  this.y += this.dy;
-  this.boxX = this.x + this.boxSideOffset;
-  this.boxY = this.y + this.boxTopOffset;
-  ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+  this.dx += this.ddx;
+  this.dy += this.ddy;
+  //this.render();
   this.checkCollsions();
   this.checkForWin();
-  this.dx = 0;
-  this.dy = 0;
-};
-
-Player.prototype.render = function() {
-  ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+  this.ddx = 0;
+  this.ddy = 0;
 };
 
 Player.prototype.handleInput = function(key) {
   // Check the bounds, don't allow character to go out of screen
-  console.log(key);
   if(key === 'left'){
     // x-min = 0
-    if( this.x > 0 ){
-      this.dx = -101;
+    if( this.dx > 0 ){
+      this.ddx = -101;
     }
   } else if (key === 'up') {
-    if( this.y > -10 ){
+    if( this.dy > -10 ){
       // y-max = -10
-      this.dy = -83;
+      this.ddy = -83;
     }
   } else if (key === 'down') {
-    if( this.y < 405 ){
+    if( this.dy < 405 ){
       // y-min = 405
-      this.dy = 83;
+      this.ddy = 83;
     }
   } else if (key === 'right') {
-    if( this.x < 404 ){
+    if( this.dx < 404 ){
       // x-max = 404
-      this.dx = 101;
+      this.ddx = 101;
     }
   } else if (key === 'space') {
     currentState = 'pause';
@@ -63,11 +67,11 @@ Player.prototype.handleInput = function(key) {
 
 Player.prototype.checkCollsions = function() {
   var player = this;
-  allEnemies.forEach( function(enemy) {
-    if (player.boxX < enemy.boxX + enemy.boxWidth &&
-      player.boxX + player.boxWidth > enemy.boxX &&
-      player.boxY < enemy.boxY + enemy.boxHeight &&
-      player.boxHeight + player.boxY > enemy.boxY) {
+  this.enemies.forEach( function(enemy) {
+    if (player.dx < enemy.dx + enemy.dWidth &&
+      player.dx + player.dWidth > enemy.dx &&
+      player.dy < enemy.dy + enemy.dHeight &&
+      player.dy + player.dHeight > enemy.dy) {
         document.removeEventListener('keyup', player.handleInput);
         // TODO: let the bug run over the character
         currentState = 'lose';
@@ -76,10 +80,14 @@ Player.prototype.checkCollsions = function() {
 };
 
 Player.prototype.checkForWin = function(dt) {
-  if (this.y < 73 ) {
+  if (this.dy < 73 ) {
     document.removeEventListener('keyup', function(e) {
       player.handleInput(allowedKeys[e.keyCode]);
     });
     currentState = 'win';
   }
+};
+
+Player.prototype.setSprite = function() {
+  this.sprite = playerImg;
 };

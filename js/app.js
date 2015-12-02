@@ -1,231 +1,272 @@
-// TODO: Just use bitmaps to draw buttons
+var Sprite = function(options) {
+  // Sprite takes an options object
 
-var Frog = function(options) {
-  // Assumes that each tile of the sprite sheet is square
-  // Build a frame-by-frame animation of the frog hopping
-  var frog = {};
-  for (var prop in options){
-    frog[prop] = options[prop];
-  }
-  frog.frameCounter = 0;
-  frog.timer = 0;
-  frog.fps = 1/12;
-  frog.render = function(dt) {
-    frog.context.drawImage(
-      Resources.get(frog.image),
-      frog.sx + frog.frameCounter * frog.dWidth,
-      frog.sy,
-      frog.sWidth,
-      frog.sHeight,
-      frog.dx,
-      frog.dy,
-      frog.dWidth,
-      frog.dHeight
-    );
-    //console.log(dt);
+  // Coordinates for game stage
+  this['dx-default'] = this.dx = options.dx;
+  this['dy-default'] = this.dy = options.dy;
 
-  };
-  frog.update = function(dt) {
-    frog.timer += dt;
-    frog.render();
-    if(frog.timer >= frog.fps){
-      frog.timer = 0;
-      frog.frameCounter++;
-      frog.dx += frog.rate * frog.fps;
-      if(frog.frameCounter * frog.dWidth >= frog.imageWidth){
-        frog.frameCounter = 0;
-      }
-    }
-  };
-  return frog;
-};
+  // The url of the image
+  this.sprite = options.sprite;
 
+  // The width of the image on the destination canvas
+  this.dWidth = options.dWidth;
+  this.dHeight = options.dHeight;
 
-var Button = function(text, x, y, width, height, nextState) {
-  this.text = text;
-  this.x = x - width/2;
-  this.y = y;
-  this.width = width;
-  this.height = height;
-  this.nextState = nextState;
-};
+  // Coordinates of the source image for clipping
+  this.sx = options.sx || 0;
+  this.sy = options.sy || 0;
+  this.sWidth = options.sWidth || options.dWidth;
+  this.sHeight = options.sHeight || options.dHeight;
 
-Button.prototype.render = function() {
-  ctx.fillStyle = 'blue';
-  ctx.fillRect(0, 0, this.width, this.height);
-  ctx.fillStyle = 'white';
-  ctx.textAlign = 'center';
-  ctx.fillText(this.text, this.width/2, this.height);
-};
+  // Animation options
+  this.currentFrame = options.currentFrame || 0;
+  this.fps = options.fps || 0;
+  this.timer = 0;
+  this.spriteSheetWidth = options.spriteSheetWidth || options.dWidth;
+  this.anim = options.anim || 0;
+  this.tween = options.tween || function(dt) { };
 
-var StartButton = new Button('Start', ctx.canvas.width/2, ctx.canvas.height * 0.75, 150, 50, 'playing');
+  // Interactive options
+  this.clickable = options.clickable || false;
+  this.nextState = options.nextState || currentState;
+  this.handleClick = options.handleClick || 'null';
+  this.handleHit = options.handleHit || 'null';
 
-var AvatarButton = new Button('Choose Avatar', ctx.canvas.width/2, ctx.canvas.height * 0.6, 400, 50, 'choosing');
-
-
-var Welcome = {
-  resetTimer: 0,
-  resetLength: 5,
-  buttons: [StartButton, AvatarButton],
-  introGraphic: new Frog({
-    image: 'images/frog.png',
-    sx: 0,
-    sy: 0,
-    sWidth: 100,
-    sHeight: 100,
-    dx: -100,
-    dy: ctx.canvas.height/2,
-    dWidth: 100,
-    dHeight: 100,
-    imageWidth: 900,
-    rate: 120,
-    context: ctx
-  }),
-  update: function(dt) {
-    this.render();
-    this.introGraphic.update(dt);
-    this.resetState(dt);
-  },
-  render: function() {
-    ctx.fillStyle = 'white';
-    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    ctx.font = '36pt Helvetica';
-    ctx.textSmoothingEnabled = true;
-    ctx.textAlign = 'center';
-    ctx.fillStyle = 'black';
-    ctx.fillText('FROGGER', ctx.canvas.width/2, ctx.canvas.height/2);
-    ctx.save();
-    ctx.translate(StartButton.x, StartButton.y);
-    StartButton.render();
-    ctx.resetTransform();
-    ctx.translate(AvatarButton.x, AvatarButton.y);
-    AvatarButton.render();
-    ctx.restore();
-  },
-  resetState: function(dt) {
-    this.resetTimer += dt;
-    if (this.resetTimer >= this.resetLength ) {
-      document.addEventListener('keyup', function(e) {
-        player.handleInput(allowedKeys[e.keyCode]);
-      });
-      currentState = 'playing';
-    }
-  },
-  checkAllButtons: function(loc) {
-    // Check if the click point is within the Button bounding box
-    var welcome_panel = this;
-    this.buttons.forEach(function(button){
-      welcome_panel.checkHitButton(loc, button);
-    });
-  },
-  checkHitButton: function(loc, button) {
-    if (loc.x > button.x &&
-        loc.x < button.x + button.width &&
-        loc.y > button.y &&
-        loc.y < button.y + button.height) {
-          this.resetState(this.resetLength);
-          if(button.nextState === 'choosing'){
-            $canvas.off().on('click',function(e){
-              var loc = handleClick(e.clientX, e.clientY);
-              AvatarSelect.checkAvatars(loc);
-            });
-          }
-          currentState = button.nextState;
-        }
-  }
-};
-
-
-var Winner = {
-  resetTimer: 0,
-  resetLength: 2,
-  update: function(dt) {
-    this.render();
-    this.resetState(dt);
-  },
-  render: function() {
-    ctx.fillStyle = 'rgba(255,255,255,0.5)';
-    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    ctx.font = '36pt Helvetica';
-    ctx.textSmoothingEnabled = true;
-    ctx.textAlign = 'center';
-    ctx.fillStyle = 'black';
-    ctx.fillText('You Win', ctx.canvas.width/2, ctx.canvas.height/2);
-  },
-  resetState: function(dt) {
-    this.resetTimer += dt;
-    if ( this.resetTimer > this.resetLength ) {
-      document.addEventListener('keyup', player.handleInput);
-      player.reset();
-      currentState = 'playing';
-      this.resetTimer = 0;
-      Scorekeeper.update();
-    }
-  }
-};
-
-var Lose = {
-  resetTimer: 0,
-  resetLength: 1,
-  update: function(dt) {
-    console.log('you lose');
-    this.render();
-    this.resetState(dt);
-  },
-  render: function() {
-    ctx.fillStyle = 'rgba(255,255,255,0.5)';
-    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    ctx.font = '36pt Helvetica';
-    ctx.textSmoothingEnabled = true;
-    ctx.textAlign = 'center';
-    ctx.fillStyle = 'black';
-    ctx.fillText('You Lose', ctx.canvas.width/2, ctx.canvas.height/2);
-  },
-  resetState: function(dt) {
-    this.resetTimer += dt;
-    if ( this.resetTimer > this.resetLength ) {
-      document.addEventListener('keyup', player.handleInput);
-      player.reset();
-      currentState = 'playing';
-      this.resetTimer = 0;
-      player.reset();
-      allEnemies.forEach(function(enemy) {
-        enemy.reset();
-      });
-    }
-  }
-};
-
-var Sprite = function(x, y) {
-  this['x-default'] = x;
-  this['y-default'] = y;
-  this.x = this['x-default'];
-  this.y = this['y-default'];
-  this.boxWidth = 101;
-  this.boxHeight = 70;
+  // Rendering options
+  this.showBoundingBox = false;
 };
 
 Sprite.prototype.reset = function(){
-  this.x = this['x-default'];
-  this.y = this['y-default'];
+  this.dx = this['dx-default'];
+  this.dy = this['dy-default'];
+  this.currentFrame = 0;
+  this.timer = 0;
 };
-// Enemies our player must avoid
 
-var Enemy = function(x, y) {
+Sprite.prototype.render = function(dt) {
+  if(this.anim) {
+    // Only update the sprite if it's flagged to be animated
+    this.animate(dt);
+  }
+  // API reference: drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight)
+  ctx.drawImage( Resources.get(this.sprite), this.sx, this.sy, this.sWidth, this.sHeight, this.dx, this.dy, this.dWidth, this.dHeight );
+  if( this.showBoundingBox ) {
+    this.drawBoundingBox();
+  }
+};
+
+
+Sprite.prototype.drawBoundingBox = function() {
+  // This is just a method to draw a square around
+  // the bounding box of each sprite. This is useful
+  // for establishing the correct position settings for
+  // initializing the sprites.
+  ctx.save();
+  ctx.strokeStyle = 'red';
+  ctx.beginPath();
+  ctx.moveTo(this.dx, this.dy);
+  ctx.lineTo(this.dx + this.dWidth, this.dy);
+  ctx.lineTo(this.dx + this.dWidth, this.dy + this.dHeight);
+  ctx.lineTo(this.dx, this.dy + this.dHeight);
+  ctx.lineTo(this.dx, this.dy);
+  ctx.stroke();
+  ctx.restore();
+};
+
+Sprite.prototype.animate = function(dt) {
+  // Update will animate the frames of a sprite sheet
+  // It assumes that each frame is spaced a distance
+  // equivalent to the width of the sprite on stage
+  this.timer += dt;
+  if(this.timer >= this.fps){
+    this.timer = 0;
+    if(this.currentFrame * this.dWidth >= this.spriteSheetWidth){
+      this.currentFrame = 0;
+    }
+    this.sx = this.currentFrame * this.dWidth;
+    this.currentFrame++;
+  }
+  // The tween is a function custom to each instance
+  this.tween(dt);
+};
+
+Sprite.prototype.moveX = function(ddx) {
+  this.dx += ddx;
+};
+
+Sprite.prototype.moveY = function(ddy) {
+  this.dy += ddy;
+};
+
+Sprite.prototype.update = function(dt) {
+
+};
+
+
+var Stage = function(options) {
+
+  this.sprites = options.sprites;
+  this.resetTimer = 0;
+  this.resetLength = options.resetLength || 3;
+  this.backgroundColor = options.backgroundColor;
+  // It can check to see if the Player sprite
+  // Collides with Enemy sprites
+  // TODO: Generalize into a one to many collision detection?
+  this.render = options.render || function() {};
+  this.states = options.states || {};
+  this.defaultState = options.defaultState || '';
+  this.paused = options.paused || false;
+};
+
+Stage.prototype.renderBackground = function() {
+  // Render the stage itself
+  ctx.save();
+  ctx.fillStyle = this.backgroundColor;
+  ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+};
+
+Stage.prototype.update = function(dt) {
+  // Render all sprites
+  this.renderBackground();
+  this.render();
+  // Render the state of the stage
+  var is_paused = this.paused;
+  this.sprites.forEach(function(sprite){
+    if(!is_paused){
+      sprite.update(dt);
+    }
+    sprite.render(dt);
+  });
+
+  if(this.states[currentState] !== undefined){
+    this.states[currentState](dt, this);
+  }
+
+  if(this.resetTimer > this.resetLength){
+    this.reset();
+  }
+};
+
+Stage.prototype.reset = function(dt) {
+  // Reset the sprites in the stage
+  this.sprites.forEach(function(sprite){
+    sprite.reset();
+  });
+  this.resume();
+  this.resetTimer = 0;
+  currentState = this.defaultState;
+};
+
+Stage.prototype.checkButtons = function(loc) {
+  // Check if the click point is within the Button bounding box
+  var that = this;
+  this.sprites.forEach(function(sprite){
+    if(sprite.clickable){
+      that.checkButtonHit(loc, sprite);
+    }
+  });
+};
+
+Stage.prototype.checkButtonHit = function(loc, button) {
+  if (loc.x > button.dx &&
+      loc.x < button.dx + button.dWidth &&
+      loc.y > button.dy &&
+      loc.y < button.dy + button.dHeight) {
+        button.handleClick();
+      }
+};
+
+Stage.prototype.pause = function(){
+  this.paused = true;
+};
+
+Stage.prototype.resume = function(){
+  this.paused = false;
+};
+
+// Set up the graphic assets of the scene
+
+var FroggerLogo = new Sprite({
+  sprite: 'images/phrogger.png',
+  dx: 0,
+  dy: 0,
+  dWidth: 505,
+  dHeight: 126
+});
+
+var StartButton = new Sprite({
+  sprite: 'images/start-btn.png',
+  dWidth: 163,
+  dHeight: 41,
+  dx: ctx.canvas.width/2 - 30,
+  dy: ctx.canvas.height * 0.75,
+  clickable: true,
+  nextState: 'playing',
+  handleClick: function(){
+    currentState = this.nextState;
+    initPlay();
+  }
+});
+
+var AvatarButton = new Sprite({
+  sprite: 'images/avatar-btn.png',
+  dWidth: 330,
+  dHeight: 97,
+  dx: ctx.canvas.width/2 - 160,
+  dy: ctx.canvas.height * 0.3,
+  clickable: true,
+  nextState: 'choosing',
+  handleClick: function() {
+    currentState = this.nextState;
+    initChoose();
+  }
+});
+
+var Frog = new Sprite({
+  sprite: 'images/frog.png',
+  sx: 0,
+  sy: 0,
+  sWidth: 100,
+  sHeight: 100,
+  dx: -100,
+  dy: ctx.canvas.height/2,
+  dWidth: 100,
+  dHeight: 100,
+  spriteSheetWidth: 900,
+  fps: 1/12,
+  anim: 1,
+  tween: function(dt) {
+    this.moveX(75 * dt);
+  }
+});
+
+// Make the Stage
+var Welcome = new Stage({
+  sprites: [FroggerLogo, StartButton, AvatarButton, Frog],
+  backgroundColor: 'black',
+  defaultState: 'welcome'
+});
+
+// Enemies our player must avoid
+var Enemy = function(dx, dy) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
-    Sprite.call(this, x, y);
+    var enemy_defaults = {
+      sprite: 'images/enemy-bug.png',
+      dWidth: 101,
+      dHeight: 80,
+      dx: dx,
+      dy: dy,
+      sx: 0,
+      sy: 75,
+      sHeight: 80
+    };
+
+    Sprite.call(this, enemy_defaults);
+
     this.speed = 100+Math.random()*200;
-    this.sprite = 'images/enemy-bug.png';
-    // Bug is 70 px tall and 101px wide
-    // Offset is 75px
-    this.boxTopOffset = 75;
-    this.boxSideOffset = 0;
-    //this.boxX = this.x + this.boxSideOffset;
-    this.boxY = this.y + this.boxTopOffset;
-    this.boxX = this.x;
 };
 
 Enemy.prototype = Object.create(Sprite.prototype);
@@ -236,76 +277,74 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-    this.x += this.speed*dt;
-    this.boxX = this.x;
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-    if (this.x > ctx.canvas.width + this.boxWidth) {
-      this.x = this['x-default'];
+    this.dx += this.speed*dt;
+    this.render();
+    if (this.dx > ctx.canvas.width + this.dWidth) {
+      this.dx = this['dx-default'];
     }
 };
 
-// Draw the enemy on the screen, required method for game
-Enemy.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
+var Player = function(options) {
 
-var Player = function() {
-  // Box is 70px wide by 80px tall
-  // Offset at the top is 60px
-  Sprite.call(this, 202, 405);
+  var player_options = {
+    sprite: playerImg,
+    dWidth: 70,
+    dHeight: 80,
+    dx: 218,
+    dy: 468,
+    sx: 15,
+    sy: 63,
+    sHeight: 90,
+    sWidth: 70
+  };
 
-  this.dx = 0;
-  this.dy = 0;
-  this.sprite = 'images/char-boy.png';
-  this.boxWidth = 70;
-  this.boxHeight = 80;
-  this.boxTopOffset = 60;
-  this.boxSideOffset = 15;
-  this.boxX = this.x + this.boxSideOffset;
-  this.boxY = this.y + this.boxTopOffset;
+  Sprite.call(this, player_options);
+  // ddx and ddy are the amounts to move the player
+  // on each step
+  this.ddx = 0;
+  this.ddy = 0;
+
+  // Enemies array
+  this.enemies = options.enemies;
+
+  // Power-ups
+  this.powerups = options.powerups;
 };
 
 Player.prototype = Object.create(Sprite.prototype);
 Player.prototype.constructor = Player;
 
 Player.prototype.update = function() {
-  this.x += this.dx;
-  this.y += this.dy;
-  this.boxX = this.x + this.boxSideOffset;
-  this.boxY = this.y + this.boxTopOffset;
-  ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+  this.dx += this.ddx;
+  this.dy += this.ddy;
+  //this.render();
   this.checkCollsions();
   this.checkForWin();
-  this.dx = 0;
-  this.dy = 0;
-};
-
-Player.prototype.render = function() {
-  ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+  this.ddx = 0;
+  this.ddy = 0;
 };
 
 Player.prototype.handleInput = function(key) {
   // Check the bounds, don't allow character to go out of screen
-  console.log(key);
   if(key === 'left'){
     // x-min = 0
-    if( this.x > 0 ){
-      this.dx = -101;
+    if( this.dx > 0 ){
+      this.ddx = -101;
     }
   } else if (key === 'up') {
-    if( this.y > -10 ){
+    if( this.dy > -10 ){
       // y-max = -10
-      this.dy = -83;
+      this.ddy = -83;
     }
   } else if (key === 'down') {
-    if( this.y < 405 ){
+    if( this.dy < 405 ){
       // y-min = 405
-      this.dy = 83;
+      this.ddy = 83;
     }
   } else if (key === 'right') {
-    if( this.x < 404 ){
+    if( this.dx < 404 ){
       // x-max = 404
-      this.dx = 101;
+      this.ddx = 101;
     }
   } else if (key === 'space') {
     currentState = 'pause';
@@ -314,11 +353,11 @@ Player.prototype.handleInput = function(key) {
 
 Player.prototype.checkCollsions = function() {
   var player = this;
-  allEnemies.forEach( function(enemy) {
-    if (player.boxX < enemy.boxX + enemy.boxWidth &&
-      player.boxX + player.boxWidth > enemy.boxX &&
-      player.boxY < enemy.boxY + enemy.boxHeight &&
-      player.boxHeight + player.boxY > enemy.boxY) {
+  this.enemies.forEach( function(enemy) {
+    if (player.dx < enemy.dx + enemy.dWidth &&
+      player.dx + player.dWidth > enemy.dx &&
+      player.dy < enemy.dy + enemy.dHeight &&
+      player.dy + player.dHeight > enemy.dy) {
         document.removeEventListener('keyup', player.handleInput);
         // TODO: let the bug run over the character
         currentState = 'lose';
@@ -327,13 +366,69 @@ Player.prototype.checkCollsions = function() {
 };
 
 Player.prototype.checkForWin = function(dt) {
-  if (this.y < 73 ) {
+  if (this.dy < 73 ) {
     document.removeEventListener('keyup', function(e) {
       player.handleInput(allowedKeys[e.keyCode]);
     });
     currentState = 'win';
   }
 };
+
+Player.prototype.setSprite = function() {
+  this.sprite = playerImg;
+};
+
+
+var b1 = new Enemy(-101, 135);
+var b2 = new Enemy(-101, 218);
+var b3 = new Enemy(-101, 300);
+
+var options = {
+  enemies: [b1, b2, b3],
+  powerups: []
+};
+
+var player = new Player(options);
+
+var Play = new Stage({
+  sprites: [player, b1, b2, b3],
+  backgroundColor: 'white',
+  defaultState: 'playing',
+  states: {
+    'win': function(dt, stage){
+      ctx.drawImage(Resources.get('images/win-screen.png'), 0, 0, 505, 606);
+      stage.pause();
+      stage.resetTimer += dt;
+      if(stage.resetTimer > stage.resetLength){
+        Scorekeeper.update();
+      }
+    },
+    'lose': function(dt, stage) {
+      ctx.drawImage(Resources.get('images/lose-screen.png'), 0, 0, 505, 606);
+      stage.pause();
+      stage.resetTimer += dt;
+    }
+  },
+  render: function() {
+    var rowImages = [
+          'images/water-block.png',   // Top row is water
+          'images/stone-block.png',   // Row 1 of 3 of stone
+          'images/stone-block.png',   // Row 2 of 3 of stone
+          'images/stone-block.png',   // Row 3 of 3 of stone
+          'images/grass-block.png',   // Row 1 of 2 of grass
+          'images/grass-block.png'    // Row 2 of 2 of grass
+      ],
+      numRows = 6,
+      numCols = 5,
+      row, col;
+
+      for (row = 0; row < numRows; row++) {
+          for (col = 0; col < numCols; col++) {
+              ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
+          }
+      }
+  }
+});
 
 // Handles score data
 var Score = {
@@ -344,6 +439,9 @@ var Score = {
   },
   getScore: function() {
     return this.score;
+  },
+  resetScore: function() {
+    this.score = 0;
   }
 };
 
@@ -358,91 +456,41 @@ var Scorekeeper = {
     this.render();
   },
   render: function() {
-    this.$el.html(Score.getScore());
+    this.$el.html('Score: ' + Score.getScore());
+  },
+  reset: function() {
+    Score.resetScore();
+    this.$el.html('');
   }
 };
 
+var avatar_source_sprites = [
+  'images/char-boy.png',
+  'images/char-cat-girl.png',
+  'images/char-horn-girl.png',
+  'images/char-pink-girl.png',
+  'images/char-princess-girl.png'
+];
 
-
-var Avatar = function(sprite, x, y) {
-  this.x = x;
-  this.y = y;
-  this.width = 101;
-  this.height = 171;
-  this.sprite = sprite;
-};
-
-Avatar.prototype.render = function() {
-  // console.log(this.x, this.y);
-  ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
-
-var AvatarSelect = {
-  avatarImages: [
-    'images/char-boy.png',
-    'images/char-cat-girl.png',
-    'images/char-horn-girl.png',
-    'images/char-pink-girl.png',
-    'images/char-princess-girl.png'
-  ],
-  avatars: [],
-  resetTimer: 0,
-  resetLength: 2,
-  init: function() {
-    var that = this;
-    var index = 0;
-    this.avatarImages.forEach(function(item){
-      var a = new Avatar(item, 101 * index, 300);
-      that.avatars.push(a);
-      index++;
-    });
-  },
-  update: function(dt) {
-    this.render();
-  },
-  render: function() {
-    ctx.fillStyle = 'white';
-    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    this.avatars.forEach(function(item){
-      item.render();
-    });
-  },
-  checkAvatars: function(loc) {
-    var that = this;
-    this.avatars.forEach(function(avatar){
-      that.checkHitButton(loc, avatar);
-    });
-  },
-  checkHitButton: function(loc, button) {
-    if (loc.x > button.x &&
-        loc.x < button.x + button.width &&
-        loc.y > button.y &&
-        loc.y < button.y + button.height) {
-          player.sprite = button.sprite;
-          this.resetState();
-        }
-  },
-  resetState: function() {
-    console.log('hi');
-      document.addEventListener('keyup', function(e) {
-        player.handleInput(allowedKeys[e.keyCode]);
-      });
-      currentState = 'playing';
+var avatars = avatar_source_sprites.map(function(item, index){
+  return new Sprite({
+    sprite: item,
+    clickable: true,
+    dx: index * 101,
+    dy: (ctx.canvas.height - 170) / 2,
+    dWidth: 101,
+    dHeight: 170,
+    nextState: 'playing',
+    handleClick: function(){
+      playerImg = item;
+      player.setSprite();
+      currentState = this.nextState;
+      initPlay();
     }
-};
+  });
+});
 
-AvatarSelect.init();
-
-
-// TODO: randomize position and direction
-var b1 = new Enemy(-101, 65);
-var b2 = new Enemy(-101, 145);
-var b3 = new Enemy(-101, 225);
-var player = new Player(202, 405);
-var allEnemies = [b1, b2, b3];
-
-// TODO: Create a sessionStorage score variable to
-// be updated with the Scorekeepr object
-
-// This listens for key presses and sends the keys to your
-// Player.handleInput() method. You don't need to modify this.
+var AvatarSelect = new Stage({
+  sprites: avatars,
+  backgroundColor: 'white'
+});

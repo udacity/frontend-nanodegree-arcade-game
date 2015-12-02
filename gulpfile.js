@@ -6,12 +6,14 @@ var autoprefixer = require('gulp-autoprefixer');
 var sass = require('gulp-sass');
 var app_js_path = 'js/app_src/';
 var app_js = [
+  'sprite.js',
+  'stage.js',
   'welcome.js',
   'winner.js',
   'lose.js',
-  'sprite.js',
   'enemy.js',
   'player.js',
+  'play.js',
   'scorekeeper.js',
   'player-select.js',
   'init.js'
