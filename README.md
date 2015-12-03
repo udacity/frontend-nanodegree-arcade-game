@@ -1,6 +1,7 @@
 frontend-nanodegree-arcade-game
+Frogger:
+Use arrows to navigate across. 
+When enemy runs into you, game will reset.
+When player runs into water, game will reset.
 ===============================
 
-Students should use this rubric: https://www.udacity.com/course/viewer#!/c-ud015/l-3072058665/m-3072588797
-
-for self-checking their submission.
