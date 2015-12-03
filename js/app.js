@@ -1,5 +1,14 @@
+// Front-End Nanodegree Arcade Game Clone
+// Benjamin Ritter
+
+
+// The Sprite class is designed to serve
+// as a base class for all the 'graphics'
+// in the game, from the buttons on the
+// welcome panel to the bugs and player.
+// Several of its properties match the
+// Canvas object's. Sprite takes an options object.
 var Sprite = function(options) {
-  // Sprite takes an options object
 
   // Coordinates for game stage
   this['dx-default'] = this.dx = options.dx;
@@ -36,6 +45,7 @@ var Sprite = function(options) {
   this.showBoundingBox = false;
 };
 
+// Resets the internal timer and postion of the sprite
 Sprite.prototype.reset = function(){
   this.dx = this['dx-default'];
   this.dy = this['dy-default'];
@@ -44,23 +54,26 @@ Sprite.prototype.reset = function(){
 };
 
 Sprite.prototype.render = function(dt) {
+  // Only update the sprite if it's flagged to be animated
   if(this.anim) {
-    // Only update the sprite if it's flagged to be animated
     this.animate(dt);
   }
-  // API reference: drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight)
+
+  // Canvas API: drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight)
   ctx.drawImage( Resources.get(this.sprite), this.sx, this.sy, this.sWidth, this.sHeight, this.dx, this.dy, this.dWidth, this.dHeight );
+
+  // Drawing the bounding box is used only to visualize
+  // the hit test mechanism. See drawBoundingBox method below.
   if( this.showBoundingBox ) {
     this.drawBoundingBox();
   }
 };
 
-
+// This is just a method to draw a square around
+// the bounding box of each sprite. This is useful
+// for establishing the correct position settings for
+// initializing the sprites.
 Sprite.prototype.drawBoundingBox = function() {
-  // This is just a method to draw a square around
-  // the bounding box of each sprite. This is useful
-  // for establishing the correct position settings for
-  // initializing the sprites.
   ctx.save();
   ctx.strokeStyle = 'red';
   ctx.beginPath();
@@ -73,10 +86,11 @@ Sprite.prototype.drawBoundingBox = function() {
   ctx.restore();
 };
 
+// Animates the frames of a sprite sheet
+// It assumes that each frame is spaced a distance
+// equivalent to the width of the sprite on stage
 Sprite.prototype.animate = function(dt) {
-  // Update will animate the frames of a sprite sheet
-  // It assumes that each frame is spaced a distance
-  // equivalent to the width of the sprite on stage
+
   this.timer += dt;
   if(this.timer >= this.fps){
     this.timer = 0;
@@ -98,10 +112,17 @@ Sprite.prototype.moveY = function(ddy) {
   this.dy += ddy;
 };
 
+// This method gets overridden in the
+// Enemy and Player classes
 Sprite.prototype.update = function(dt) {
 
 };
 
+// The Stage class is designed to serve
+// as a base class for all the main
+// 'states' of the game: 1) the welcome panel,
+// 2) the player choosing panel, 3) the game
+// playing state.
 
 var Stage = function(options) {
 
@@ -109,9 +130,9 @@ var Stage = function(options) {
   this.resetTimer = 0;
   this.resetLength = options.resetLength || 3;
   this.backgroundColor = options.backgroundColor;
+
   // It can check to see if the Player sprite
   // Collides with Enemy sprites
-  // TODO: Generalize into a one to many collision detection?
   this.render = options.render || function() {};
   this.states = options.states || {};
   this.defaultState = options.defaultState || '';
@@ -145,8 +166,9 @@ Stage.prototype.update = function(dt) {
   }
 };
 
+// Check if the click point is within the Button bounding box
 Stage.prototype.checkButtons = function(loc) {
-  // Check if the click point is within the Button bounding box
+  // 'that' refers to the stage
   var that = this;
   this.sprites.forEach(function(sprite){
     if(sprite.clickable){
@@ -172,7 +194,8 @@ Stage.prototype.resume = function(){
   this.paused = false;
 };
 
-// Set up the graphic assets of the scene
+// Set up the graphic assets of the welcome panel
+// The frog and buttons all 'extend' the Sprite class
 
 var FroggerLogo = new Sprite({
   sprite: 'images/phrogger.png',
@@ -228,7 +251,7 @@ var Frog = new Sprite({
   }
 });
 
-// Make the Stage
+// The welcome panel is an instance of a Stage
 var Welcome = new Stage({
   sprites: [FroggerLogo, StartButton, AvatarButton, Frog],
   backgroundColor: 'black',
@@ -247,6 +270,8 @@ var Welcome = new Stage({
 });
 
 // Enemies our player must avoid
+// 'extends' the Sprite class
+
 var Enemy = function(dx, dy) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
@@ -265,24 +290,37 @@ var Enemy = function(dx, dy) {
 
     Sprite.call(this, enemy_defaults);
 
+    // Make the bugs move at different speeds
     this.speed = 100+Math.random()*200;
+
+    // What state to change to after the player hits the bug
     this.nextState = 'lose';
 };
 
 Enemy.prototype = Object.create(Sprite.prototype);
+
 Enemy.prototype.constructor = Enemy;
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
+
 Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
     this.dx += this.speed*dt;
+
+    // Draw the bug
     this.render();
+
+    // Sets the bug to its initial position on the left of the screen
     if (this.dx > ctx.canvas.width + this.dWidth) {
       this.dx = this['dx-default'];
     }
 };
+
+// Player 'extends' the Sprite class but adds
+// methods to handle input and collisions with
+// enemies.
 
 var Player = function(options) {
 
@@ -370,7 +408,7 @@ Player.prototype.setSprite = function() {
   this.sprite = playerImg;
 };
 
-
+// Here is the game itself!
 var b1 = new Enemy(-101, 135);
 var b2 = new Enemy(-101, 218);
 var b3 = new Enemy(-101, 300);
@@ -385,23 +423,31 @@ var powerupOptions = {
   nextState: 'powerup'
 };
 
+// The powerup is the gem that the player can collect
 var powerup = new Sprite(powerupOptions);
 
 var options = {
   otherSprites: [powerup, b1, b2, b3]
 };
 
+// The player is our 'hero'
 var player = new Player(options);
 
 var Play = new Stage({
+  // powerup is assumed to be the first
+  // element in the array for simplicity's sake
   sprites: [powerup, b1, b2, b3, player],
   backgroundColor: 'black',
   defaultState: 'playing',
+
+  // The length of delay after a 'win' or 'lose' display
   resetLength: 1,
+
   // These are additional rendering functions
   // for handling states of the Play stage
   states: {
     'win': function(dt, stage){
+      // Disable keyvboard input temporarily
       document.removeEventListener('keyup', function(e) {
         player.handleInput(allowedKeys[e.keyCode]);
       });
@@ -428,10 +474,15 @@ var Play = new Stage({
       // Assumes that the powerup is the first
       // item in the array
       stage.sprites.shift();
+
       // Take the gem out of the list of sprites
       // which the player checks for collisions
       player.otherSprites.shift();
+
+      // Increase the score for collecting a gem
       Scorekeeper.update();
+
+      // Set the state back to 'playing'
       currentState = stage.defaultState;
     },
     'reset': function(dt, stage) {
@@ -500,6 +551,7 @@ var Scorekeeper = {
   }
 };
 
+// Screen for selecting the character
 var avatar_source_sprites = [
   'images/char-boy.png',
   'images/char-cat-girl.png',

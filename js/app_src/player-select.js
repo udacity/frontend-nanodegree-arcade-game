@@ -1,3 +1,4 @@
+// Screen for selecting the character
 var avatar_source_sprites = [
   'images/char-boy.png',
   'images/char-cat-girl.png',

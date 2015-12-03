@@ -1,4 +1,5 @@
-// Set up the graphic assets of the scene
+// Set up the graphic assets of the welcome panel
+// The frog and buttons all 'extend' the Sprite class
 
 var FroggerLogo = new Sprite({
   sprite: 'images/phrogger.png',
@@ -54,7 +55,7 @@ var Frog = new Sprite({
   }
 });
 
-// Make the Stage
+// The welcome panel is an instance of a Stage
 var Welcome = new Stage({
   sprites: [FroggerLogo, StartButton, AvatarButton, Frog],
   backgroundColor: 'black',

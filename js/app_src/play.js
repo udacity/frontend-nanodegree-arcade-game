@@ -1,4 +1,4 @@
-
+// Here is the game itself!
 var b1 = new Enemy(-101, 135);
 var b2 = new Enemy(-101, 218);
 var b3 = new Enemy(-101, 300);
@@ -13,23 +13,31 @@ var powerupOptions = {
   nextState: 'powerup'
 };
 
+// The powerup is the gem that the player can collect
 var powerup = new Sprite(powerupOptions);
 
 var options = {
   otherSprites: [powerup, b1, b2, b3]
 };
 
+// The player is our 'hero'
 var player = new Player(options);
 
 var Play = new Stage({
+  // powerup is assumed to be the first
+  // element in the array for simplicity's sake
   sprites: [powerup, b1, b2, b3, player],
   backgroundColor: 'black',
   defaultState: 'playing',
+
+  // The length of delay after a 'win' or 'lose' display
   resetLength: 1,
+
   // These are additional rendering functions
   // for handling states of the Play stage
   states: {
     'win': function(dt, stage){
+      // Disable keyvboard input temporarily
       document.removeEventListener('keyup', function(e) {
         player.handleInput(allowedKeys[e.keyCode]);
       });
@@ -56,10 +64,15 @@ var Play = new Stage({
       // Assumes that the powerup is the first
       // item in the array
       stage.sprites.shift();
+
       // Take the gem out of the list of sprites
       // which the player checks for collisions
       player.otherSprites.shift();
+
+      // Increase the score for collecting a gem
       Scorekeeper.update();
+
+      // Set the state back to 'playing'
       currentState = stage.defaultState;
     },
     'reset': function(dt, stage) {

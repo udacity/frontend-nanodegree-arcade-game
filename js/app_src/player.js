@@ -1,3 +1,7 @@
+// Player 'extends' the Sprite class but adds
+// methods to handle input and collisions with
+// enemies.
+
 var Player = function(options) {
 
   var player_options = {
