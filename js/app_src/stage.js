@@ -1,3 +1,8 @@
+// The Stage class is designed to serve
+// as a base class for all the main
+// 'states' of the game: 1) the welcome panel,
+// 2) the player choosing panel, 3) the game
+// playing state.
 
 var Stage = function(options) {
 
@@ -5,9 +10,9 @@ var Stage = function(options) {
   this.resetTimer = 0;
   this.resetLength = options.resetLength || 3;
   this.backgroundColor = options.backgroundColor;
+
   // It can check to see if the Player sprite
   // Collides with Enemy sprites
-  // TODO: Generalize into a one to many collision detection?
   this.render = options.render || function() {};
   this.states = options.states || {};
   this.defaultState = options.defaultState || '';
@@ -34,27 +39,16 @@ Stage.prototype.update = function(dt) {
     sprite.render(dt);
   });
 
+  // If the state of the game matches a state of the
+  // stage, render it
   if(this.states[currentState] !== undefined){
     this.states[currentState](dt, this);
   }
-
-  if(this.resetTimer > this.resetLength){
-    this.reset();
-  }
 };
 
-Stage.prototype.reset = function(dt) {
-  // Reset the sprites in the stage
-  this.sprites.forEach(function(sprite){
-    sprite.reset();
-  });
-  this.resume();
-  this.resetTimer = 0;
-  currentState = this.defaultState;
-};
-
+// Check if the click point is within the Button bounding box
 Stage.prototype.checkButtons = function(loc) {
-  // Check if the click point is within the Button bounding box
+  // 'that' refers to the stage
   var that = this;
   this.sprites.forEach(function(sprite){
     if(sprite.clickable){
