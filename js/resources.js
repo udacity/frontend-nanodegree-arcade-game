@@ -1,5 +1,5 @@
 /* Resources.js
- * This is simple an image loading utility. It eases the process of loading
+ * This is simply an image loading utility. It eases the process of loading
  * image files so that they can be used within your game. It also includes
  * a simple "caching" layer so it will reuse cached images if you attempt
  * to load the same image multiple times.
@@ -63,7 +63,7 @@
 
             /* Set the initial cache value to false, this will change when
              * the image's onload event handler is called. Finally, point
-             * the images src attribute to the passed in URL.
+             * the image's src attribute to the passed in URL.
              */
             resourceCache[url] = false;
             img.src = url;
