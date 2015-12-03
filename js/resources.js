@@ -70,7 +70,7 @@
         }
     }
 
-    /* This is used by developer's to grab references to images they know
+    /* This is used by developers to grab references to images they know
      * have been previously loaded. If an image is cached, this functions
      * the same as calling load() on that URL.
      */
@@ -79,7 +79,7 @@
     }
 
     /* This function determines if all of the images that have been requested
-     * for loading have in fact been completed loaded.
+     * for loading have in fact been properly loaded.
      */
     function isReady() {
         var ready = true;
