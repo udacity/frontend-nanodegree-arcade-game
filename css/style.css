@@ -1,3 +1,6 @@
 body {
     text-align: center;
+    background-color: #000;
+    font-family: 'Press Start 2p', monospace;
+    color: #ff0;
 }
