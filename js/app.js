@@ -6,6 +6,14 @@ var Enemy = function() {
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
+    enemyInit.call(this);
+};
+
+// Initialize enemy location and speed
+var enemyInit = function() {
+    this.x = -100;
+    this.y = 51 + (83 * Math.floor(Math.random() * (4-1)));
+    this.speed = 75*(Math.floor(Math.random() * (6-1)) + 1);
 };
 
 // Update the enemy's position, required method for game
@@ -14,6 +22,11 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
+    this.x += this.speed*dt;
+    if (this.x > 600) {
+        enemyInit.call(this);
+
+    }
 };
 
 // Draw the enemy on the screen, required method for game
@@ -26,9 +39,52 @@ Enemy.prototype.render = function() {
 // a handleInput() method.
 
 
+var Player = function() {
+    this.sprite = 'images/char-boy.png';
+    this.playerInit(200, 300);
+};
+
+Player.prototype.playerInit = function(x, y) {
+    this.x = x;
+    this.y = y;
+};
+
+Player.prototype.update = function() {
+
+};
+
+Player.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+Player.prototype.move = function(x,y) {
+    if((this.x+x >= 0 && this.y+y >= -32) && (this.x+x <= 400 && this.y+y <= 383)) {
+        this.x += x;
+        this.y += y;
+    }
+};
+
+Player.prototype.handleInput = function(key) {
+    if (key === "left") {
+        player.move(-100,0);
+    }
+    if (key === "right") {
+        player.move(100,0);
+    }
+    if (key === "up") {
+        player.move(0,-83);
+    }
+    if (key === "down") {
+        player.move(0,83);
+    }
+};
+
+
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
+var allEnemies = [new Enemy(),new Enemy(),new Enemy(),new Enemy()];
+var player = new Player();
 
 
 
