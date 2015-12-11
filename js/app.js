@@ -4,11 +4,6 @@ var Status = function() {
     this.levelUp = false;
 };
 
-Status.prototype.update = function() {
-    // Draw level and number to game...
-
-};
-
 Status.prototype.scoreBoard = function() {
     // Lets keep track of the level...
     level = 'Level: ' + this.level;
@@ -24,21 +19,29 @@ Status.prototype.message = function(message,again) {
     ctx.fillStyle = "black";
     ctx.font = "36px monospace";
     ctx.textAlign = "center";
-    ctx.globalAlpha = 0.3;
+    ctx.globalAlpha = 0.7;
     ctx.fillRect(101,200,303,150);
     ctx.globalAlpha = 1;
+    ctx.fillStyle = "white";
     ctx.fillText(message,252.5,275);
     if(again) {
         ctx.font = "16px monospace";
         ctx.fillText('press [space] to play again',252.5,325);
     }
     ctx.textAlign = "left";
+    ctx.fillStyle = "black";
 };
 
 Status.prototype.nextLevel = function() {
     this.message("Level Up!");
     setTimeout(function() {
         gamestatus.levelUp = false;
+        // Add an enemy because we're sadistic :D
+        allEnemies.push(new Enemy());
+        // Reposition player
+        player.init(202.5,300);
+        // Start the game loop again
+        main();
     },3000);
 
 };
@@ -85,7 +88,7 @@ Enemy.prototype.render = function() {
 // There goes my hero...
 var Player = function() {
     this.sprite = 'images/char-boy.png';
-    this.init(202, 300);
+    this.init(202.5, 300);
 };
 
 Player.prototype.init = function(x,y) {
@@ -99,10 +102,6 @@ Player.prototype.update = function() {
         // Flag to display level up message
         gamestatus.levelUp = true;
         gamestatus.level++;
-        // Add an enemy because we're sadistic :D
-        allEnemies.push(new Enemy());
-        // Reposition player
-        player.init(202,300);
     }
 };
 
@@ -133,10 +132,13 @@ Player.prototype.handleInput = function(key) {
             player.move(0,83);
         }
     } else {
+        // When game is over reset player and enemies
         if (key === 'space') {
             gamestatus.gameOver = false;
             allEnemies = [new Enemy(),new Enemy(),new Enemy(),new Enemy()];
+            gamestatus.level = 1;
             player.init(202.5,300);
+            main();
         }
     }
 

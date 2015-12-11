@@ -33,7 +33,8 @@ var Engine = (function(global) {
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
      */
-    function main() {
+    // Main main() available globally for use in app.js
+    global.main = function() {
         /* Get our time delta information which is required if your game
          * requires smooth animation. Because everyone's computer processes
          * instructions at different speeds we need a constant value that
@@ -57,8 +58,9 @@ var Engine = (function(global) {
         /* Use the browser's requestAnimationFrame function to call this
          * function again as soon as the browser is able to draw another frame.
          */
-
-        win.requestAnimationFrame(main);
+        if(!gamestatus.gameOver && !gamestatus.levelUp) {
+            win.requestAnimationFrame(main);
+        }
     }
 
     /* This function does some initial setup that should only occur once,
@@ -109,7 +111,6 @@ var Engine = (function(global) {
             enemy.update(dt);
         });
         player.update();
-        gamestatus.update();
 
     }
 
@@ -180,12 +181,12 @@ var Engine = (function(global) {
      * handle game reset states - maybe a new game menu or a game over screen
      * those sorts of things. It's only called once by the init() method.
      */
-    function reset(gameOver) {
-        if(gameOver) {
-            player.init(202,300);
-            player.level = 1;
-            allEnemies = [new Enemy(),new Enemy(),new Enemy(),new Enemy()];
-        }
+    function reset() {
+        // Select a character
+
+
+
+
     }
 
     /* Go ahead and load all of the images we know we're going to need to
