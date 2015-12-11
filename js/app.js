@@ -20,22 +20,35 @@ Status.prototype.scoreBoard = function() {
     ctx.fillText(enemies,200,40);
 };
 
-Status.prototype.nextLevel = function() {
-    ctx.clearRect(250,250,250,250);
-    ctx.strokeText("YOU LOSE!",300,300);
-    setTimeout(function() { gamestatus.levelUp = false; },3000);
+Status.prototype.message = function(message,again) {
+    ctx.fillStyle = "black";
+    ctx.font = "36px monospace";
+    ctx.textAlign = "center";
+    ctx.globalAlpha = 0.3;
+    ctx.fillRect(101,200,303,150);
+    ctx.globalAlpha = 1;
+    ctx.fillText(message,252.5,275);
+    if(again) {
+        ctx.font = "16px monospace";
+        ctx.fillText('press [space] to play again',252.5,325);
+    }
+    ctx.textAlign = "left";
 };
 
-Status.prototype.youLose = function() {
-    ctx.clearRect(250,250,250,250);
-    ctx.strokeText("YOU LOSE!",300,300);
+Status.prototype.nextLevel = function() {
+    this.message("Level Up!");
+    setTimeout(function() {
+        gamestatus.levelUp = false;
+    },3000);
+
 };
+
 
 Status.prototype.render = function() {
     this.scoreBoard();
 
     if(this.gameOver) {
-        this.youLose();
+        this.message('GAME OVER!',true);
     }
     // Display the level up dialogue between levels
     if(this.levelUp) {
@@ -81,12 +94,15 @@ Player.prototype.init = function(x,y) {
 };
 
 Player.prototype.update = function() {
-    // If complete level do something...
-    if(this.y === -32) {
-        gamestatus.level++;
+    // When player reaches water level up
+    if(this.y === -32 && gamestatus.levelUp === false) {
+        // Flag to display level up message
         gamestatus.levelUp = true;
+        gamestatus.level++;
+        // Add an enemy because we're sadistic :D
         allEnemies.push(new Enemy());
-        this.init(202,300);
+        // Reposition player
+        player.init(202,300);
     }
 };
 
@@ -103,18 +119,27 @@ Player.prototype.move = function(x,y) {
 };
 
 Player.prototype.handleInput = function(key) {
-    if (key === 'left') {
-        player.move(-101,0);
+    if(!gamestatus.gameOver) {
+        if (key === 'left') {
+            player.move(-101,0);
+        }
+        if (key === 'right') {
+            player.move(101,0);
+        }
+        if (key === 'up') {
+            player.move(0,-83);
+        }
+        if (key === 'down') {
+            player.move(0,83);
+        }
+    } else {
+        if (key === 'space') {
+            gamestatus.gameOver = false;
+            allEnemies = [new Enemy(),new Enemy(),new Enemy(),new Enemy()];
+            player.init(202.5,300);
+        }
     }
-    if (key === 'right') {
-        player.move(101,0);
-    }
-    if (key === 'up') {
-        player.move(0,-83);
-    }
-    if (key === 'down') {
-        player.move(0,83);
-    }
+
 };
 
 // Initialize our objects
@@ -129,7 +154,8 @@ document.addEventListener('keyup', function(e) {
         37: 'left',
         38: 'up',
         39: 'right',
-        40: 'down'
+        40: 'down',
+        32: 'space'
     };
 
     player.handleInput(allowedKeys[e.keyCode]);
