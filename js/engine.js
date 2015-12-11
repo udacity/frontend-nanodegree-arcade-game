@@ -57,6 +57,7 @@ var Engine = (function(global) {
         /* Use the browser's requestAnimationFrame function to call this
          * function again as soon as the browser is able to draw another frame.
          */
+
         win.requestAnimationFrame(main);
     }
 
@@ -95,8 +96,8 @@ var Engine = (function(global) {
     function checkCollisions() {
         allEnemies.forEach(function(enemy) {
             if(enemy.y === player.y) {
-                if(enemy.x > player.x && enemy.x < player.x+100) {
-                    player.playerInit(200,300);
+                if(enemy.x+60 > player.x && enemy.x-60 < player.x) {
+                    gamestatus.gameOver = true;
                 }
             }
 
@@ -108,7 +109,11 @@ var Engine = (function(global) {
             enemy.update(dt);
         });
         player.update();
+        gamestatus.update();
+
     }
+
+
 
     /* This function initially draws the "game level", it will then call
      * the renderEntities function. Remember, this function is called every
@@ -150,6 +155,8 @@ var Engine = (function(global) {
         }
 
 
+
+
         renderEntities();
     }
 
@@ -166,14 +173,19 @@ var Engine = (function(global) {
         });
 
         player.render();
+        gamestatus.render();
     }
 
     /* This function does nothing but it could have been a good place to
      * handle game reset states - maybe a new game menu or a game over screen
      * those sorts of things. It's only called once by the init() method.
      */
-    function reset() {
-        // noop
+    function reset(gameOver) {
+        if(gameOver) {
+            player.init(202,300);
+            player.level = 1;
+            allEnemies = [new Enemy(),new Enemy(),new Enemy(),new Enemy()];
+        }
     }
 
     /* Go ahead and load all of the images we know we're going to need to
