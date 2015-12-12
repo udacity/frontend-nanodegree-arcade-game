@@ -1,18 +1,25 @@
-Udacity Front-end Nanodegree Project 3
-======================================================
-Frogger Clone
+#Ladybugger
 
-TODO:
-====
+Ladybugger is a HTML5 Canvas & JavaScript project for Udacity's Front-end Nanodegree program.
 
-> Collision detection - improve target areas
+##Demo
 
-> White space - work out why our hero's head does funny things at the top
+**Live demo:**  [Ladybugger demo](http://slooptb.github.io/ladybugger)
 
-> Message function - write messages to game screen
+##Controls
 
-> Welcome screen - hit space to continue...
+- **Character select:** Use [<] [>] and [space] to select your character.
+- **Game play:** Use arrow keys to move player.
+- **Game over:** Use [space] to restart game.
 
-> Player select
+##Download
 
-> Levels - after completion of level game restarts with extra and faster enemies
+No other libraries required to run, just clone repo
+
+`git clone https://github.com/slooptb/ladybugger.git`
+
+##Author
+
+app.js and game functionality built by Tom Butterworth ([@SloopTomB](https://twitter.com/SloopTomB)).
+
+Graphics and game engine provided by Udacity.
