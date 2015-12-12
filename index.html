@@ -3,12 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <title>Ladybugger</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/css/materialize.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="teal lighten-3">
+<div class="container">
+    <div class="row">
+        <section class="col m12 l8" id="gameContainer"></section>
+        <aside class="col m12 l4">
+            <div class="card teal lighten-1">
+                <div class="card-content white-text">
+                    <span class="card-title">Ladybugger</span>
+                    <p><i class="fa fa-info-circle"></i>&nbsp; The goal is to reach the water without
+                    being trampled by evil ladybugs. Every successful navigation adds enemy bugs to the
+                    next level. It's not really a nice game :D</p>
+                    <br>
+                    <p><i class="fa fa-arrows-h"></i>&nbsp; select hero</p>
+                    <p><i class="fa fa-arrows"></i>&nbsp; move hero</p>
+                </div>
+                <div class="card-action">
+                    <a href="https://github.com/slooptb/ladybugger"><i class="fa fa-github"></i>&nbsp; Source</a>
+                    <a href="https://plus.google.com/u/0/113719955138657019890"><i class="fa fa-google-plus"></i>&nbsp; Author</a>
+                </div>
+            </div>
+        </aside>
+    </div>
+</div>
 
-    <script src="js/resources.js"></script>
-    <script src="js/app.js"></script>
-    <script src="js/engine.js"></script>
+<script src="js/resources.js"></script>
+<script src="js/app.js"></script>
+<script src="js/engine.js"></script>
+
 </body>
 </html>

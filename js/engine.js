@@ -12,7 +12,7 @@ var Engine = (function(global) {
 
     canvas.width = 505;
     canvas.height = 606;
-    doc.body.appendChild(canvas);
+    doc.getElementById('gameContainer').appendChild(canvas);
 
     // Main main() available globally for use in app.js
     global.main = function() {
