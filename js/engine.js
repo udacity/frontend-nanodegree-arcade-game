@@ -10,8 +10,8 @@ var Engine = (function(global) {
         ctx = canvas.getContext('2d'),
         lastTime;
 
-    canvas.width = 505;
-    canvas.height = 606;
+    canvas.width = CANVAS_WIDTH;
+    canvas.height = CANVAS_HEIGHT;
     doc.getElementById('gameContainer').appendChild(canvas);
 
     // Main main() available globally for use in app.js
@@ -26,7 +26,7 @@ var Engine = (function(global) {
         lastTime = now;
 
         // Check game isn't in a paused status before requesting new frame
-        if(!gamestatus.gameOver && !gamestatus.levelUp) {
+        if(!gameStatus.gameOver && !gameStatus.levelUp) {
             win.requestAnimationFrame(main);
         }
     };
@@ -62,7 +62,7 @@ var Engine = (function(global) {
             if(enemy.y === player.y) {
                 if(enemy.x+60 > player.x && enemy.x-60 < player.x) {
                     // gameOver flag generates dialogue box in app.js
-                    gamestatus.gameOver = true;
+                    gameStatus.gameOver = true;
                 }
             }
         });
@@ -106,7 +106,7 @@ var Engine = (function(global) {
         player.render();
 
         // Draw scoreboard and display game messages if necessary
-        gamestatus.render();
+        gameStatus.render();
     }
 
     // Load our images
