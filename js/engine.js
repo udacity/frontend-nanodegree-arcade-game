@@ -29,9 +29,11 @@ var Engine = (function(global) {
     canvas.height = 606;
     doc.body.appendChild(canvas);
 
+
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
      */
+
     function main() {
         /* Get our time delta information which is required if your game
          * requires smooth animation. Because everyone's computer processes
@@ -81,6 +83,13 @@ var Engine = (function(global) {
     function update(dt) {
         updateEntities(dt);
         // checkCollisions();
+
+        //check for collisions
+        checkCollisions();
+
+    }
+    function checkCollisions() {
+
     }
 
     /* This is called by the update function and loops through all of the
@@ -126,12 +135,9 @@ var Engine = (function(global) {
         for (row = 0; row < numRows; row++) {
             for (col = 0; col < numCols; col++) {
                 /* The drawImage function of the canvas' context element
-                 * requires 3 parameters: the image to draw, the x coordinate
-                 * to start drawing and the y coordinate to start drawing.
-                 * We're using our Resources helpers to refer to our images
-                 * so that we get the benefits of caching these images, since
-                 * we're using them over and over.
-                 */
+                 * requires 3 parameters: the image to draw, the x coordinate to start drawing and the y coordinate to start drawing.
+                 * We're using our Resources helpers to refer to our images so that we get the benefits of caching these images, since
+                 * we're using them over and over.*/
                 ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
             }
         }
@@ -150,7 +156,6 @@ var Engine = (function(global) {
         allEnemies.forEach(function(enemy) {
             enemy.render();
         });
-
         player.render();
     }
 
@@ -171,7 +176,11 @@ var Engine = (function(global) {
         'images/water-block.png',
         'images/grass-block.png',
         'images/enemy-bug.png',
-        'images/char-boy.png'
+        'images/char-boy.png',
+        'images/char-pink-girl.png',
+        'images/char-princess-girl.png',
+        'images/char-cat-girl.png',
+        'images/char-horn-girl.png'
     ]);
     Resources.onReady(init);
 
