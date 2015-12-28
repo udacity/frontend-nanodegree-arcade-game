@@ -1,22 +1,23 @@
 // @author yayomanosalva@gmail.com 2015
-// Enemies our player must avoid
 
-var positionEnemy = [];
+var posEnemy = [];
 
 var Enemy = function() {
     // Variables applied to each of our instances go here, we've provided one for you to get started
     this.speed = 150;
-    //position
-    this.x = 0;
-    this.y = y;
+    
 
     this.updatePosition = function() {
-        while(positionEnemy != 0) {
-            this.random = Math.floor(Math.random() * positionEnemy.length);
+        while(posEnemy != 0) {
+            this.random = Math.floor(Math.random() * posEnemy.length);
 
-            var pos = updatePosition[this.random];
+            var posEnemy = updatePosition[this.random];
 
             updatePosition.splice(2, this.random);
+
+            //position
+            this.x = posEnemy[0];
+            this.y = posEnemy[1];
         }
 
     };
@@ -49,10 +50,18 @@ Enemy.prototype.render = function() {
 var Player = function() {
 
     // initial position
-    this.x = 360;
-    this.y = 320;
+    this.x = 200;
+    this.y = 390;
     
-    this.sprite = 'images/char-pink-girl.png';
+    this.playerImage = [
+        'images/char-boy.png',
+        'images/char-pink-girl.png',
+        'images/char-princess-girl.png',
+        'images/char-cat-girl.png',
+        'images/char-horn-girl.png'
+    ];
+
+    this.sprite = this.playerImage[0];
 }
 
 Player.prototype.update =function(){
@@ -62,9 +71,7 @@ Player.prototype.update =function(){
 
 var player = new Player();
 
-var render = function() {
 
-}
 //begin position player
 Player.prototype.begin = function() {
     this.x = 100;
@@ -76,8 +83,29 @@ Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-var handleInput = function() {
-    
+Player.prototype.handleInput = function(position) {
+
+
+    this.constX = 80;
+    this.constY = 90;
+
+    this.newPosX = this.x;
+    this.newPosY = this.y;
+
+    switch(position){
+        case 'left':
+            this.newPosX = this.x - this.constX;
+            break;
+        case 'right':
+            this.newPosX = this.x - this.constX;
+            break;
+        case 'up':
+            this.newPosY = this.y - this.constY;
+            break;
+        case 'down':
+            this.newPosY = this.y - this.constY;
+            break;
+    }
 }
 
 Player.prototype.update =function(){
