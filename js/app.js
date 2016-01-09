@@ -6,20 +6,18 @@
 //=  ENEMY CLASS =
 //================
 
-var Enemy = function() {
+var Enemy = function(x, y) {
     //Variables applied to each of our instances go here, we've provided one for you to get started
     //The image/sprite for our enemies, this uses a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
-    this.speed = 233; // velocity's enemy
+    this.speed = 550; // velocity's enemy
 };
 
 var posEnemy = [];
 Enemy.prototype.generate = function() {
     if (posEnemy.length != 0) {
         this.random = Math.floor(Math.random() * posEnemy.length);
-
         var pos = posEnemy[this.random];
-
         posEnemy.splice(this.random, 1);
         this.x = pos[0];
         this.y = pos[1];
@@ -27,17 +25,19 @@ Enemy.prototype.generate = function() {
         generatePos();
     }
     function generatePos() {
-        for (var i = 0; i < 3; i++) {
-            for (var j = 0; j < 3; j++) {
-                var pos = [-200 * (j += 1) - (Math.floor(Math.random() * 2)), i * 80 + 60];
+        for (var i = 0; i < 5; i++) {
+            for (var j = 0; j < 5; j++) {
+                var pos = [-300 * (j += 1) - (Math.floor(Math.random() * 3)), i * 90 + 50];
                 posEnemy.push(pos);
             }
         }
     }
 }
+
 Enemy.prototype.checkCollision = function(player) {
-    if (Math.abs(Player.x - this.x) < this.collisionWidth && Math.abs(Player.y - this.y) < this.collisionHeight) {
-        player.reset();
+    if (Math.abs(Player.x < this.x) < this.Width && Math.abs(Player.y - this.y) < this.height) {
+        Player.reset();
+        console.log("choque");
     }
 };
 
@@ -75,8 +75,8 @@ Enemy.prototype.render = function() {
 // Now write your own player class
 var Player = function() {
     // initial position
-    this.x = 200;
-    this.y = 390;
+    this.x = 300;
+    this.y = 490;
     this.playerImage = [
         'images/char-boy.png',
         'images/char-pink-girl.png',
@@ -127,18 +127,19 @@ Player.prototype.handleInput = function(position) {
     if (this.x < 0) { // left border
         this.x = 1;
     }
-    if (this.x > 400) { // right border
-        this.x = 400;
+    if (this.x > 600) { // right border
+        this.x = 600;
     }
-    if (this.y > 400) { // bottom border
-        this.y = 390;
+    if (this.y > 490) { // bottom border
+        this.y = 490;
     }
 
     if (this.y < 1) { // Player reaches the water, top border
-        this.x = 200;
-        this.y = 390;
-        
-        console.log('goal');
+        this.x = 300;
+        this.y = 490;
+        var goal = 0 ;
+        goal = ++goal;
+        console.log('goal'+ goal);
     }
 }
 
@@ -150,15 +151,14 @@ Player.prototype.getPos = function() {
     this.pos = [];
     this.pos.push(this.x);
     this.pos.push(this.y);
-
     return this.pos;
 };
 
 // reset the position of player
 Player.prototype.reset = function() {
     // initial position
-    this.x = 200;
-    this.y = 390;
+    this.x = 300;
+    this.y = 490;
 };
 // Place all enemy objects in an array called allEnemies
 //var enemy = new Enemy();
