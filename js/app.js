@@ -10,40 +10,34 @@ var Enemy = function(x, y) {
     //Variables applied to each of our instances go here, we've provided one for you to get started
     //The image/sprite for our enemies, this uses a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
-    this.speed = 550; // velocity's enemy
+    this.speed = 800; // velocity's enemy
 };
 
 var posEnemy = [];
 Enemy.prototype.generate = function() {
+    //validates enemy position
     if (posEnemy.length != 0) {
         this.random = Math.floor(Math.random() * posEnemy.length);
         var pos = posEnemy[this.random];
-        posEnemy.splice(this.random, 1);
+        posEnemy.splice(this.random, 4);
         this.x = pos[0];
         this.y = pos[1];
     } else {
         generatePos();
     }
+    //method
     function generatePos() {
         for (var i = 0; i < 5; i++) {
             for (var j = 0; j < 5; j++) {
-                var pos = [-300 * (j += 1) - (Math.floor(Math.random() * 3)), i * 90 + 50];
+                var pos = [-200 * (j += 1) - (Math.floor(Math.random() * 9)), i * 80 + 70];
                 posEnemy.push(pos);
             }
         }
     }
 }
 
-Enemy.prototype.checkCollision = function(player) {
-    if (Math.abs(Player.x < this.x) < this.Width && Math.abs(Player.y - this.y) < this.height) {
-        Player.reset();
-        console.log("choque");
-    }
-};
-
 // Update the enemy's position, required method for game Parameter: dt, a time delta between ticks
-Enemy.prototype.update = function(dt, player) {
-    this.checkCollision(player);
+Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter which will ensure 
     //the game runs at the same speed for all computers.
     //crea otros Enemy
@@ -53,14 +47,6 @@ Enemy.prototype.update = function(dt, player) {
 
     //actualiza x    
     this.x += dt * this.speed;
-};
-
-Enemy.prototype.getPos = function() {
-    this.pos = [];
-    this.pos.push(this.x);
-    this.pos.push(this.y);
-
-    return this.pos;
 };
 
 // Draw the enemy on the screen, required method for game
@@ -92,8 +78,6 @@ var Player = function() {
 // This class requires an update(), render() and a handleInput() method.
 Player.prototype.update = function() {
     //update
-    Player.prototype.collision();
-    this.checkCollision(Enemy);
 };
 
 // Draw the enemy on the screen, required method for game
@@ -106,8 +90,10 @@ var player = new Player();
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
-Player.prototype.handleInput = function(position) {
 
+var goal = 0;
+Player.prototype.handleInput = function(position) {
+    
     switch (position) {
         case 'left':
             this.newPosX = this.x -= 100; // move left
@@ -124,35 +110,26 @@ Player.prototype.handleInput = function(position) {
     }
 
     // constraints on movement
-    if (this.x < 0) { // left border
+    if (this.x < 0) { 
         this.x = 1;
     }
-    if (this.x > 600) { // right border
+    if (this.x > 600) { 
         this.x = 600;
     }
-    if (this.y > 490) { // bottom border
+    if (this.y > 490) { 
         this.y = 490;
     }
-
-    if (this.y < 1) { // Player reaches the water, top border
-        this.x = 300;
-        this.y = 490;
-        var goal = 0 ;
-        goal = ++goal;
-        console.log('goal'+ goal);
+    if (this.y < 1) { 
+        console.log("Goal "+ player.winner());
     }
-}
+} 
 
-Player.prototype.update = function() {
-    //update
+Player.prototype.winner = function() {
+    this.x = 300;
+    this.y = 490;
+    var result =  goal++;
+    return result;
 }
-
-Player.prototype.getPos = function() {
-    this.pos = [];
-    this.pos.push(this.x);
-    this.pos.push(this.y);
-    return this.pos;
-};
 
 // reset the position of player
 Player.prototype.reset = function() {
@@ -160,6 +137,7 @@ Player.prototype.reset = function() {
     this.x = 300;
     this.y = 490;
 };
+
 // Place all enemy objects in an array called allEnemies
 //var enemy = new Enemy();
 var allEnemies = [];
@@ -173,6 +151,19 @@ for (var i = 0; i < NUM_BUG; i++) {
     // add the enemy to array
     allEnemies.push(enemy);
 }
+Enemy.prototype.lastPos = function() {
+    this.pos = [];
+    this.pos.push(this.x);
+    this.pos.push(this.y);
+    return this.pos;
+};
+
+Player.prototype.lastPos = function() {
+    this.pos = [];
+    this.pos.push(this.x);
+    this.pos.push(this.y);
+    return this.pos;
+};
 
 document.addEventListener('keyup', function(e) {
     var allowedKeys = {
@@ -181,6 +172,7 @@ document.addEventListener('keyup', function(e) {
         39: 'right',
         40: 'down'
     };
-
     player.handleInput(allowedKeys[e.keyCode]);
 });
+
+

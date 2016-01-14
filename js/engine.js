@@ -14,6 +14,7 @@
  * a little simpler to work with.
  */
 'use strict';
+
 var Engine = (function(global) {
     /* Predefine the variables we'll be using within this scope,
      * create the canvas element, grab the 2D context for that canvas
@@ -81,18 +82,42 @@ var Engine = (function(global) {
      * functionality this way (you could just implement collision detection
      * on the entities themselves within your app.js file).
      */
+
+    
+    var collision = false;
     function update(dt) {
-        updateEntities(dt);
-        // checkCollisions();
-
-        //check for collisions
-        checkCollisions();
-
+        if (collision) {
+            collision = false;
+            reset();
+        }else {
+            updateEntities(dt);
+            checkCollisions();
+        };
     }
 
-    function checkCollisions() {
-        // checkCollisions()  
-        
+    function checkCollisions() { 
+        allEnemies.forEach(function(enemy) {
+            if (!collision)
+            {               
+                var position = enemy.lastPos();
+                var enemyX = position[0] ;
+                var enemyY = position[1] ;
+
+                var position = player.lastPos();
+                var playerX = position[0];
+                var playerY = position[1];
+
+                var dx = enemyX - playerX;
+                var dy = enemyY - playerY;
+                
+                var distance = Math.sqrt(dx * dx + dy * dy);
+                
+                var radius = 60;
+
+                if (distance < radius)
+                    collision = true;
+            }
+        }); 
     }
 
     /* This is called by the update function  and loops through all of the
@@ -117,7 +142,8 @@ var Engine = (function(global) {
      * they are flipbooks creating the illusion of animation but in reality
      * they are just drawing the entire screen over and over.
      */
-    var goal = 0 ;
+
+    
     function render() {
         /* This array holds the relative URL to the image used
          * for that particular row of the game level.
@@ -129,9 +155,7 @@ var Engine = (function(global) {
                 'images/stone-block.png', // Row 3 of 5 of stone
                 'images/stone-block.png', // Row 4 of 5 of stone
                 'images/stone-block.png', // Row 5 of 5 of stone
-                'images/grass-block.png', // Row 1 of 2 of grass
-                'images/grass-block.png', // Row 1 of 2 of grass
-                'images/grass-block.png' // Row 2 of 2 of grass
+                'images/grass-block.png', // Row 1 of 2 of grass               
             ],
             numRows = 7,
             numCols = 7,
@@ -149,15 +173,7 @@ var Engine = (function(global) {
                  * we're using them over and over.*/
                 ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
             }
-        }
-
-        //render score and high score
-        
-        ctx.font = "30px Georgia";
-        ctx.fillStyle = 'white';
-        ctx.fillText("Goals: " + goal, 7, 80);
-        //ctx.fillText("Gem: ", 327, 80);
-        
+        }    
         renderEntities();
     }
 
@@ -182,7 +198,8 @@ var Engine = (function(global) {
         // noop
         // Reset player's position
         player.reset();
-        console.log('reset Play');
+
+        console.log('Init Game');
     }
 
     /* Go ahead and load all of the images we know we're going to need to
