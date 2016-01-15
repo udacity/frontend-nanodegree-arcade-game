@@ -105,7 +105,7 @@ var Engine = (function(global) {
 
             enemyLoc = grid(enemy.x, enemy.y);
             playerLoc = grid(player.x, player.y);
-            console.log( "enemy: " + enemyLoc.x + ", " + enemyLoc.y + " | player: " + playerLoc.x + ", " + playerLoc.y )
+            //console.log( "enemy: " + enemyLoc.x + ", " + enemyLoc.y + " | player: " + playerLoc.x + ", " + playerLoc.y )
             if( enemyLoc.x === playerLoc.x && enemyLoc.y === playerLoc.y ){
                 //collision
                 //playerDied();
