@@ -54,12 +54,10 @@ var Player = function() {
 
 Player.prototype.reset = function() {
     this.x = 202;
-    this.y = 404;
+    this.y = 385;
 }
 
-Player.prototype.update = function(dt) {
-
-}
+Player.prototype.update = function(dt) { }
 
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
@@ -68,32 +66,32 @@ Player.prototype.render = function() {
 Player.prototype.handleInput = function(input) {
     switch(input) {
     case 'left':
-        this.x -= 25;
-        if( this.x < 0 ) {
-            this.x = 0;
+        this.x -= 100;
+        if( this.x < 4 ) {
+            this.x = 4;
         }
         break;
     case 'up':
-        this.y -= 25;
-        if( this.y < -10 ) {
-            this.y = -10;
+        this.y -= 85;
+        if( this.y < 0 ) {
+            this.y = 0;
         }
         break;
     case 'right':
-        this.x += 25;
-        if( this.x > 404 ){
-            this.x = 404;
+        this.x += 100;
+        if( this.x > 400 ){
+            this.x = 400;
         }
         break;
     case 'down':
-        this.y += 25;
-        if( this.y > 404 ) {
-            this.y = 404;
+        this.y += 85;
+        if( this.y > 400 ) {
+            this.y = 400;
         }
         break;
     default:
         console.log("Something went wrong! Can't move character!");
-}
+    }
 }
 
 // Now instantiate your objects.
