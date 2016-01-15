@@ -46,7 +46,7 @@ Enemy.prototype.set = function() {
 // a handleInput() method.
 
 var Player = function() {
-    this.sprite = 'images/char-boy.png';
+    this.sprite = 'images/char-girl.png';
     this.x = 202;
     this.y = 404;
     this.speed = 1;
