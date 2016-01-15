@@ -81,6 +81,7 @@ var Engine = (function(global) {
     function update(dt) {
         updateEntities(dt);
         checkCollisions();
+        checkWin();
     }
 
     function grid( xLoc, yLoc ) {
@@ -111,6 +112,13 @@ var Engine = (function(global) {
                 player.reset();
             }
         });
+    }
+
+    function checkWin() {
+        if( grid( player.x, player.y ).y === 0 ) {
+            //win();
+            player.reset();
+        }
     }
 
     /* This is called by the update function  and loops through all of the
