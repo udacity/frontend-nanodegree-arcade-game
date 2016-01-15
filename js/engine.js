@@ -83,36 +83,32 @@ var Engine = (function(global) {
         checkCollisions();
     }
 
+    function grid( xLoc, yLoc ) {
+        var gridX = Math.ceil( xLoc / 100 );
+        var gridY = Math.ceil( yLoc / 85 );
+
+        //console.log( "X : " + gridX + "; Y : " + gridY );
+
+        return {x: gridX, y: gridY};
+    }
+
     function checkCollisions() {
-        //Enemy : x + 100 | y + 70
-        //Player : x + 75 | y + 90
         allEnemies.forEach(function(enemy) {
-            //have to add 20 to base .y values because of the invisible portion at the top of the images
-            enemyY = enemy.y + 20;
-            //have to add 10 to base .y values because of the invisible portion at the top of the images
-            playerY = player.y + 10;
-            //player needs 12.5 added to .x values because of the invisible portion at the left of the images
-            playerX = player.x + 12.5;
-            enemyX = enemy.x;
-            if( enemyX > playerX && enemyX < playerX + 75 ) {
-                if( enemyY > playerY && enemyY < playerY + 90 ) {
-                    reset();
-                }
-            }
-            if( enemyX + 100 > playerX && enemyX + 100 < playerX + 75 ) {
-                if( enemyY + 70 > playerY && enemyY + 70 < playerY + 90 ) {
-                    reset();
-                }
-            }
-            if( enemyX > playerX && enemyX < playerX + 75 ) {
-                if( enemyY + 70 > playerY && enemyY + 70 < playerY + 90 ) {
-                    reset();
-                }
-            }
-            if( enemyX + 100 > playerX && enemyX + 100 < playerX + 75 ) {
-                if( enemyY > playerY && enemyY < playerY + 90 ) {
-                    reset();
-                }
+            /*      1 |_|_|_|_|_| <- water
+                    2 |_|_|_|_|_|
+                    3 |_|_|_|_|_|
+                    4 |_|_|_|_|_|
+                    5 |_|_|_|_|_| <- grass
+                    6 |_|_|_|_|_| <- grass
+                       1 2 3 4 5                */
+
+            enemyLoc = grid(enemy.x, enemy.y);
+            playerLoc = grid(player.x, player.y);
+            console.log( "enemy: " + enemyLoc.x + ", " + enemyLoc.y + " | player: " + playerLoc.x + ", " + playerLoc.y )
+            if( enemyLoc.x === playerLoc.x && enemyLoc.y === playerLoc.y ){
+                //collision
+                //playerDied();
+                player.reset();
             }
         });
     }
