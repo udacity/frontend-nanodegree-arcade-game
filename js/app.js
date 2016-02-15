@@ -50,6 +50,15 @@ Player.prototype.update = function() {
     if (this.y < 15){
         this.restart();
     }
+    if (this.y > 395){
+        this.y = 395;
+    }
+    if (this.x < 10){
+        this.x = 10;
+    }
+    if (this.x > 390){
+        this.x = 390;
+    }
 };
 
 Player.prototype.render = function() {
