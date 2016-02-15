@@ -47,10 +47,18 @@ var Player = function() {
 
 Player.prototype.update = function() {
 
+    if (this.y < 15){
+        this.restart();
+    }
 };
 
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+Player.prototype.restart = function(){
+    this.x = 200;
+    this.y = 300;
 };
 
 Player.prototype.handleInput = function(key){
