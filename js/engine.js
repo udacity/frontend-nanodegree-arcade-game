@@ -26,7 +26,7 @@ var Engine = (function(global) {
         lastTime;
 
     canvas.width = 505;
-    canvas.height = 909;
+    canvas.height = 757;
     doc.body.appendChild(canvas);
 
     /* This function serves as the kickoff point for the game loop itself
@@ -114,16 +114,15 @@ var Engine = (function(global) {
                 'images/stone-block.png',   // Row 3 of 3 of stone
 				'images/stone-block.png',   // Row 4 of 4 of stone
                 'images/stone-block.png',   // Row 5 of 5 of stone
-				'images/stone-block.png',   // Row 6 of 6 of stone
                 'images/grass-block.png',   // Row 1 of 2 of grass
                 'images/grass-block.png'    // Row 2 of 2 of grass
             ],
-            numRows = 9,
+            numRows = 8,
             numCols = 5,
             row, col;
 
-        /* Loop through the number of rows and columns we've defined above
-         * and, using the rowImages array, draw the correct image for that
+        /* the "for" loop is going through the number of rows and columns that had been defined above
+         * It uses the rowImages array to draw the correct image for each
          * portion of the "grid"
          */
         for (row = 0; row < numRows; row++) {
@@ -138,8 +137,6 @@ var Engine = (function(global) {
                 ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
             }
         }
-
-
         renderEntities();
     }
 
@@ -176,7 +173,7 @@ var Engine = (function(global) {
         'images/grass-block.png',
         'images/enemy-bug.png',
         'images/char-boy.png',
-		'images/Rock.png'101
+		'images/Rock.png'
     ]);
     Resources.onReady(init);
 
