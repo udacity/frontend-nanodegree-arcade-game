@@ -1,6 +1,7 @@
-frontend-nanodegree-arcade-game
+# Froggernator
 ===============================
 
-Students should use this [rubric](https://www.udacity.com/course/viewer/#!/c-nd001/l-2696458597/m-2687128535) for self-checking their submission.
-
-For detailed instructions on how to get started, check out this [guide](https://docs.google.com/document/d/1v01aScPjSWCCWQLIpFqvg3-vXLH2e8_SZQKC8jNO0Dc/pub?embedded=true).
+<h2>Welcome to Froggernator!</h2>
+<p>This is my second project out of the Front-End Developer course through Udacity. I was tasked with recreating the classic top down (or in this case down top) strategy game Frogger Revamped!</p>
+<h3>How does it work?</h3>
+<p>I'm glad you asked! The basic rendering and animation functionality is found in the [engine](engine.js) file. In a nutshell, the canvas is updating at 1000.0 delta ticks per second which creates the illusion that the game is moving in smooth transitions.</p>
