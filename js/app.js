@@ -2,23 +2,31 @@
 var speedNumber = 1;
 var count = 0;
 
+function gameOver() {
+    alert("Congratulations, You Win!")
+};
+
 $("#count").text(count);
 
-function updateCount(str) {
-
+function updateCount(str, player) {
+  console.log(player);
   if(str == "pass") {
+    console.log("Passed count before is " + count);
     count++;
+    console.log("Passed count after is " + count);
+    count < 15 ? player.resetPlayer() : gameOver();
   }
   else if(str == "fail") {
     count--;
+    player.resetPlayer();
   }
   else {
-    //Nothing
+    //nothing
   }
 
   $("#count").text(count);
 
-}
+};
 
 var Enemy = function(startX, startY, speed) {
     // Variables applied to each of our instances go here,
@@ -47,7 +55,7 @@ Enemy.prototype.update = function(dt) {
   var enemyYBottomMax = this.y + 65;
 
   if(player.x > enemyXleftMax && player.x < enemyXRightMax && player.y > enemyYTopMax &&        player.y < enemyYBottomMax) {
-    updateCount("fail");
+    updateCount("fail", player);
     player.resetPlayer();
   }
 
@@ -103,9 +111,10 @@ Player.prototype.handleInput = function(keyInput) {
     this.x += moveLeftRight;
   }
   if(keyInput === 'up'){
+    var player = this;
     if(this.y <= 100) {
-      updateCount("pass");
-     this.resetPlayer();
+      console.log("Reached top");
+      updateCount("pass", player);
     }
     else {
       this.y -= moveUpDown;
@@ -139,6 +148,7 @@ Player.prototype.checkPosition = function () {
 Player.prototype.resetPlayer = function() {
   this.x = startX;
   this.y = 395;
+  console.log("I have been reset.");
 };
 
 Player.prototype.HorizontalCheck = function(leftWallState, rightWallState) {
@@ -150,7 +160,7 @@ Player.prototype.HorizontalCheck = function(leftWallState, rightWallState) {
 // Place all enemy objects in an array called allEnemies
 
 var allEnemies = [];
-for(var i = 0; i < 3; i++){
+for(var i = 0; i < 4; i++){
   var aSpeed = Math.floor(Math.random() * 2 + 1) * 15;
   allEnemies.push(new Enemy(-80, 60 + 80 * i, aSpeed));
 }
