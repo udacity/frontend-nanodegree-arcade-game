@@ -94,7 +94,7 @@ var Engine = (function(global) {
         allEnemies.forEach(function(enemy) {
             enemy.update(dt);
         });
-        player.update();
+        player.render();
     }
 
     /* This function initially draws the "game level", it will then call
@@ -132,7 +132,12 @@ var Engine = (function(global) {
                  * so that we get the benefits of caching these images, since
                  * we're using them over and over.
                  */
-                ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
+                ctx.drawImage(Resources.get(rowImages[0]), col * 101, 0 * 83);
+                ctx.drawImage(Resources.get(rowImages[1]), col * 101, 1 * 83);
+                ctx.drawImage(Resources.get(rowImages[1]), col * 101, 2 * 83);
+                ctx.drawImage(Resources.get(rowImages[1]), col * 101, 3 * 83);
+                ctx.drawImage(Resources.get(rowImages[1]), col * 101, 4 * 83);
+                ctx.drawImage(Resources.get(rowImages[4]), col * 101, 5 * 83);
             }
         }
 
