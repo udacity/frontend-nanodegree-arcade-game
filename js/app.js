@@ -1,3 +1,33 @@
+var makeChoice = prompt ("Please select your player: boy, cat-girl, horn-girl, pink-girl, princess-girl?");
+
+
+function choicePlayer(makeYourChoice){
+  var choice;
+  if (makeYourChoice==="boy"){
+    choice = "images/char-boy.png";
+  }
+  else if(makeYourChoice==="cat-girl"){
+    choice = "images/char-cat-girl.png";
+  }
+
+  else if (makeYourChoice==="horn-girl"){
+      choice = "images/char-horn-girl.png";
+  }
+
+  else if (makeYourChoice==="pink-girl"){
+    choice ="images/char-pink-girl.png";
+  }
+
+  else if (makeYourChoice==="princess-girl"){
+    choice =  "images/char-princess-girl.png";
+  }
+  else {
+      choice = "images/char-boy.png";
+  }
+  return choice;
+};
+
+
 // Enemies our player must avoid
 var Enemy = function(x, y, speed) {
     // Variables applied to each of our instances go here,
@@ -5,12 +35,10 @@ var Enemy = function(x, y, speed) {
 
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
-
     this.x = x;
     this.y = y;
     this.speed = Math.floor(Math.random() * (200)) +100;
-
-    this.sprite = 'images/enemy-bug.png';
+    this.sprite = "images/enemy-bug.png";
 };
 
 // Update the enemy's position, required method for game
@@ -44,7 +72,7 @@ var Player = function(x,y) {
     // a helper we've provided to easily load images
     this.x = x;
     this.y = y;
-    this.sprite = 'images/char-boy.png';
+    this.sprite = choicePlayer(makeChoice);
 };
 
 // Update the enemy's position, required method for game
@@ -54,6 +82,7 @@ Player.prototype.update = function(dt) {
     // which will ensure the game runs at the same speed for
     // all computers.
 
+    this.checkCollisions(dt);
 };
 
 
@@ -74,10 +103,10 @@ allEnemies.prototype.render= function(){
 
 
 };
-var allEnemies = [new Enemy(200, 100), new Enemy(-200, 50), new Enemy(300, 200), new Enemy(-400, 50)];
+var allEnemies = [new Enemy(300, 55.5), new Enemy(200, 135), new Enemy(300, 225), new Enemy(-400, 135)];
 // Place the player object in a variable called player
 
-var player = new Player(200, 390);
+var player = new Player(203, 400);
 
 Player.prototype.handleInput = function(direction) {
   if(direction == "left" && this.x > 25){
@@ -87,16 +116,32 @@ Player.prototype.handleInput = function(direction) {
     this.x += 100;
   }
   else if(direction == "up" && this.y > 0){
-    this.y -= 80;
+    this.y -= 82.5;
   }
   else if(direction == "down" && this.y < 400){
-    this.y += 80;
+    this.y += 82.5;
   }
 };
 
 Player.prototype.reset = function() {
   this.x = 200;
-  this.y = 360;
+  this.y = 400;
+};
+
+Player.prototype.checkCollisions = function() {
+  for (var i=0; i < allEnemies.length; i++){
+    var enemy = allEnemies[i];
+    if (this.x >= enemy.x + 0 &&
+        this.x < enemy.x + 50 &&
+        this.y >= enemy.y + 0 &&
+        this.y < enemy.y + 50)
+{
+  this.reset();
+}
+  if(this.y < 50) {
+        this.reset();
+    }
+  }
 };
 
 // This listens for key presses and sends the keys to your
