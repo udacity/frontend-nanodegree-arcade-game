@@ -1,3 +1,4 @@
+//function for chosing different player
 var makeChoice = prompt ("Please select your player: boy, cat-girl, horn-girl, pink-girl, princess-girl?");
 
 
