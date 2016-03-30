@@ -132,7 +132,7 @@ var Engine = (function(global) {
                  * so that we get the benefits of caching these images, since
                  * we're using them over and over.
                  */
-
+                 
                 ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
             }
         }
@@ -172,11 +172,7 @@ var Engine = (function(global) {
         'images/water-block.png',
         'images/grass-block.png',
         'images/enemy-bug.png',
-        'images/char-boy.png',
-        "images/char-cat-girl.png",
-        "images/char-horn-girl.png",
-        "images/char-pink-girl.png",
-        "images/char-princess-girl.png"
+        'images/char-boy.png'
     ]);
     Resources.onReady(init);
 

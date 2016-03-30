@@ -1,34 +1,3 @@
-//function for chosing different player
-var makeChoice = prompt ("Please select your player: boy, cat-girl, horn-girl, pink-girl, princess-girl?");
-
-
-function choicePlayer(makeYourChoice){
-  var choice;
-  if (makeYourChoice==="boy"){
-    choice = "images/char-boy.png";
-  }
-  else if(makeYourChoice==="cat-girl"){
-    choice = "images/char-cat-girl.png";
-  }
-
-  else if (makeYourChoice==="horn-girl"){
-      choice = "images/char-horn-girl.png";
-  }
-
-  else if (makeYourChoice==="pink-girl"){
-    choice ="images/char-pink-girl.png";
-  }
-
-  else if (makeYourChoice==="princess-girl"){
-    choice =  "images/char-princess-girl.png";
-  }
-  else {
-      choice = "images/char-boy.png";
-  }
-  return choice;
-};
-
-
 // Enemies our player must avoid
 var Enemy = function(x, y, speed) {
     // Variables applied to each of our instances go here,
@@ -36,10 +5,12 @@ var Enemy = function(x, y, speed) {
 
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
+
     this.x = x;
     this.y = y;
     this.speed = Math.floor(Math.random() * (200)) +100;
-    this.sprite = "images/enemy-bug.png";
+
+    this.sprite = 'images/enemy-bug.png';
 };
 
 // Update the enemy's position, required method for game
@@ -73,7 +44,7 @@ var Player = function(x,y) {
     // a helper we've provided to easily load images
     this.x = x;
     this.y = y;
-    this.sprite = choicePlayer(makeChoice);
+    this.sprite = 'images/char-boy.png';
 };
 
 // Update the enemy's position, required method for game
@@ -139,9 +110,6 @@ Player.prototype.checkCollisions = function() {
 {
   this.reset();
 }
-  if(this.y < 50) {
-        this.reset();
-    }
   }
 };
 
