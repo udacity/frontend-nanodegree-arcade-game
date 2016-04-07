@@ -1,3 +1,13 @@
+var CANVAS_WIDTH = 505;
+var CANVAS_HEIGHT = 606;
+var NUM_ROWS = 6;
+var NUM_COLS = 5;
+
+/*
+
+    function update(dt) {
+*/
+
 // Enemies our player must avoid
 var Enemy = function() {
     // Variables applied to each of our instances go here,
