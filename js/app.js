@@ -18,9 +18,9 @@ var Enemy = function() {
   // or player
   // this.y = -20 + STREET_TILES_Y[Math.floor(Math.random() *
     //                            STREET_TILES_Y.length)];   
-
-  this.y = -20 + STREET_TILES_Y[Math.floor(Math.random() *
-                                STREET_TILES_Y.length)] * 82.5;   
+  this.tile = STREET_TILES_Y[Math.floor(Math.random() *
+                                STREET_TILES_Y.length)];
+  this.y = -20 + this.tile * 82.5;   
 
   this.velocity = 100;
 };
@@ -31,8 +31,9 @@ Enemy.prototype.update = function(dt) {
   this.x = this.x + this.velocity * dt;
   if (this.x > CANVAS_WIDTH) {
     this.x = -100 - Math.random() * 300;
-    this.y = -20 + STREET_TILES_Y[Math.floor(Math.random() *
-                                  STREET_TILES_Y.length)] * 82.5;   
+    this.tile = STREET_TILES_Y[Math.floor(Math.random() *
+                                  STREET_TILES_Y.length)];
+    this.y = -20 + this.tile * 82.5;   
   }
 };
 
@@ -47,7 +48,8 @@ Enemy.prototype.render = function() {
 var Player = function() {
   this.sprite = "images/char-boy.png";
   this.x = 101*2;
-  this.y = -20 + 4 * 82.5;
+  this.tile = 4;
+  this.y = -20 + this.tile * 82.5;
 }
 
 Player.prototype.update = function() {
@@ -57,18 +59,28 @@ Player.prototype.handleInput = function(direction) {
   console.log("(x, y) = (" + this.x + ", " + this.y + ")");
   if (direction == 'up' && this.y > -20) {
     this.y -= 82.5;
+    this.tile -= 1;
   } else if (direction == 'down' && this.y < (CANVAS_HEIGHT - 220)) {
     this.y += 82.5;
+    this.tile += 1;
   } else if (direction == 'left' && this.x > 0) {
     this.x -= 101;
   } else if (direction == 'right' && this.x < (CANVAS_WIDTH - 101)) {
     this.x += 101;
   }
+  this.render();
 }
 
 Player.prototype.render = function() {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
+
+Player.prototype.reset = function() {
+  this.x = 101*2;
+  this.tile = 4;
+  this.y = -20 + this.tile * 82.5;
+}
+
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
@@ -76,6 +88,31 @@ Player.prototype.render = function() {
 var allEnemies = [new Enemy(), new Enemy(), new Enemy()];
 var player = new Player();
 
+var checkCollisions = function() {
+  for (var i = 0; i < allEnemies.length; i++) {
+    if (checkCollisionBox(allEnemies[i], player)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+var showGameOver = function() {
+  player.render();
+}
+
+var checkCollisionBox = function(enemy, player) {
+  if (enemy.tile == player.tile) {
+    enemy.xLo = enemy.x;
+    enemy.xHi = enemy.x + 79;
+    player.xLo = player.x;
+    player.xHi = player.x + 50;
+    if (enemy.xHi >= player.xLo && enemy.xLo <= player.xHi) {
+      return true;
+    }
+  }
+  return false;
+}
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
