@@ -1,13 +1,27 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>Bugger</title>
-    <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bugs!</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Slabo+27px" rel="stylesheet" type="text/css">
 </head>
 <body>
-    <script src="js/resources.js"></script>
-    <script src="js/app.js"></script>
-    <script src="js/engine.js"></script>
+  <div class="container-fluid game">
+    <div class="col-xs-12">
+      <h1 class="title">Bugs!</h1>
+    </div>
+    <div class="col-xs-12 col-md-8 col-lg-6" id="game"></div>
+    <div class="col-xs-12 col-md-4 col-lg-6" id="description">
+      <h3 id="keys">Pause: Press SPACE</h3>
+      <h3>Move: Press Up, Left, Right, Down</h3>
+    </div>
+  </div>
+  <script src="js/resources.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/engine.js"></script>
 </body>
 </html>

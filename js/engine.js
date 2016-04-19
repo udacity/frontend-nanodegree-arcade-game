@@ -22,11 +22,15 @@
         win = global.window,
         canvas = doc.createElement('canvas'),
         ctx = canvas.getContext('2d'),
-        lastTime;
+        lastTime,
+        pause = false;
 
+    var game = doc.getElementById("game");
+    var description = doc.getElementById("description");
     canvas.width = 505;
     canvas.height = 606;
-    doc.body.appendChild(canvas);
+    game.appendChild(canvas);
+
 
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
@@ -44,8 +48,10 @@
         /* Call our update/render functions, pass along the time delta to
          * our update function since it may be used for smooth animation.
          */
-        update(dt);
-        render();
+        if (!getPause()) {
+          update(dt);
+          render();
+        }
 
         /* Set our lastTime variable which is used to determine the time delta
          * for the next time this function is called.
@@ -126,7 +132,7 @@
          * and, using the rowImages array, draw the correct image for that
          * portion of the "grid"
          */
-        ctx.fillStyle = "white";
+        ctx.fillStyle = "#9FABE7";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         for (row = 0; row < numRows; row++) {
             for (col = 0; col < numCols; col++) {
@@ -142,6 +148,7 @@
         }
 
         renderEntities();
+        renderGameScore();
     }
 
     /* This function is called by the render function and is called on each game
@@ -157,6 +164,12 @@
         });
 
         player.render();
+    }
+
+    function renderGameScore() {
+      var text = "Try to reach the water!";
+      // var textNode = doc.createTextNode(text);
+      // divText.appendChild(textNode);
     }
 
     /* This function does nothing but it could have been a good place to

@@ -4,6 +4,11 @@ var CANVAS_HEIGHT = 606;
 var NUM_ROWS = 6;
 var NUM_COLS = 5;
 var STREET_TILES_Y = [1, 2, 3];
+var NUMBER_LIFES_START = 3;
+
+var pause = false;
+var game = document.getElementById("game");
+var description = document.getElementById("description");
 
 // enemies the player must avoid
 var Enemy = function() {
@@ -17,10 +22,10 @@ var Enemy = function() {
   // the tile (yPosition - 20) is perfect placement for a bug
   // or player
   // this.y = -20 + STREET_TILES_Y[Math.floor(Math.random() *
-    //                            STREET_TILES_Y.length)];   
+    //                            STREET_TILES_Y.length)];
   this.tile = STREET_TILES_Y[Math.floor(Math.random() *
                                 STREET_TILES_Y.length)];
-  this.y = -20 + this.tile * 82.5;   
+  this.y = -20 + this.tile * 82.5;
 
   this.velocity = 100;
 };
@@ -33,7 +38,7 @@ Enemy.prototype.update = function(dt) {
     this.x = -100 - Math.random() * 300;
     this.tile = STREET_TILES_Y[Math.floor(Math.random() *
                                   STREET_TILES_Y.length)];
-    this.y = -20 + this.tile * 82.5;   
+    this.y = -20 + this.tile * 82.5; 
   }
 };
 
@@ -47,28 +52,38 @@ Enemy.prototype.render = function() {
 // a handleInput() method.
 var Player = function() {
   this.sprite = "images/char-boy.png";
+  this.name = "char boy";
   this.x = 101*2;
   this.tile = 4;
   this.y = -20 + this.tile * 82.5;
+  this.lifes = NUMBER_LIFES_START;
+  this.score = 0;
 }
 
 Player.prototype.update = function() {
 }
 
 Player.prototype.handleInput = function(direction) {
-  console.log("(x, y) = (" + this.x + ", " + this.y + ")");
-  if (direction == 'up' && this.y > -20) {
+  if (direction === 'up' && this.y > -20) {
     this.y -= 82.5;
     this.tile -= 1;
-  } else if (direction == 'down' && this.y < (CANVAS_HEIGHT - 220)) {
+  } else if (direction === 'down' && this.y < (CANVAS_HEIGHT - 220)) {
     this.y += 82.5;
     this.tile += 1;
-  } else if (direction == 'left' && this.x > 0) {
+  } else if (direction === 'left' && this.x > 0) {
     this.x -= 101;
-  } else if (direction == 'right' && this.x < (CANVAS_WIDTH - 101)) {
+  } else if (direction === 'right' && this.x < (CANVAS_WIDTH - 101)) {
     this.x += 101;
+  } else if (direction === 'pause' && pause) {
+    pause = false;
+    console.log("toggle pause: " + pause);
+  } else if (direction === 'pause' && !pause) {
+    pause = true;
+    console.log("toggle pause: " + pause);
   }
-  this.render();
+  console.log("direction: " + direction);
+  // console.log("(x, y) = (" + this.x + ", " + this.y + ")");
+  // this.render();
 }
 
 Player.prototype.render = function() {
@@ -97,8 +112,31 @@ var checkCollisions = function() {
   return false;
 }
 
+var showWhilePlaying = function() {
+  var heading = document.createElement("h1");
+  var text_heading = document.createTextNode("Help " + player.name + " reach the water!");
+  var lifes = document.createElement("h2");
+  var text_lifes = document.createTextNode("Lifes: " + player.lifes);
+  var score = document.createElement("h2");
+  var text_score = document.createTextNode("ScorePoints: " + player.score);
+  heading.appendChild(text_heading);
+  lifes.appendChild(text_lifes);
+  score.appendChild(text_score);
+
+  
+  var keys = document.getElementById("keys");
+  description.insertBefore(heading, keys);
+  description.appendChild(lifes);
+  description.appendChild(score);
+}
+
 var showGameOver = function() {
   player.render();
+  console.log("(x, y) = (" + player.x + ", " + player.y + ")");
+  var heading = document.createElement("h1");
+  var heading_text = document.createTextNode("Game Over!");
+  heading.appendChild(heading_text);
+  description.appendChild(heading);
 }
 
 var checkCollisionBox = function(enemy, player) {
@@ -114,15 +152,23 @@ var checkCollisionBox = function(enemy, player) {
   return false;
 }
 
+var getPause = function() {
+  return pause;
+}
+
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
-document.addEventListener('keyup', function(e) {
+document.addEventListener('keydown', function(e) {
   var allowedKeys = {
+    32: 'pause',
     37: 'left',
     38: 'up',
     39: 'right',
     40: 'down'
   };
+  console.log(allowedKeys[e.keyCode]);
 
   player.handleInput(allowedKeys[e.keyCode]);
 });
+
+showWhilePlaying();
