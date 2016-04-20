@@ -8,7 +8,10 @@ var NUMBER_LIFES_START = 3;
 
 var pause = false;
 var game = document.getElementById("game");
+var scoring = document.getElementById("scoring");
 var description = document.getElementById("description");
+var level_counter = 0;
+var levelup = false;
 
 // enemies the player must avoid
 var Enemy = function() {
@@ -61,6 +64,11 @@ var Player = function() {
 }
 
 Player.prototype.update = function() {
+  if (this.reachWater()) {
+    level_counter++;
+    updateScoring();
+    this.reset();
+  }
 }
 
 Player.prototype.handleInput = function(direction) {
@@ -96,6 +104,12 @@ Player.prototype.reset = function() {
   this.y = -20 + this.tile * 82.5;
 }
 
+Player.prototype.reachWater = function() {
+  if (this.y == -20) {
+    return true;
+  }
+  return false;
+}
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
@@ -106,6 +120,8 @@ var player = new Player();
 var checkCollisions = function() {
   for (var i = 0; i < allEnemies.length; i++) {
     if (checkCollisionBox(allEnemies[i], player)) {
+      player.lifes--;
+      updateScoring();
       return true;
     }
   }
@@ -113,30 +129,36 @@ var checkCollisions = function() {
 }
 
 var showWhilePlaying = function() {
-  var heading = document.createElement("h1");
+  var heading = document.createElement("h2");
+  heading.setAttribute("id", "heading");
   var text_heading = document.createTextNode("Help " + player.name + " reach the water!");
-  var lifes = document.createElement("h2");
-  var text_lifes = document.createTextNode("Lifes: " + player.lifes);
-  var score = document.createElement("h2");
-  var text_score = document.createTextNode("ScorePoints: " + player.score);
+  var score = document.createElement("h3");
+  score.setAttribute("id", "score");
+  var text_score = document.createTextNode("Lifes: " + player.lifes + "\t ScorePoints: " + player.score + "\t Level: " + level_counter);
   heading.appendChild(text_heading);
-  lifes.appendChild(text_lifes);
   score.appendChild(text_score);
 
-  
   var keys = document.getElementById("keys");
   description.insertBefore(heading, keys);
-  description.appendChild(lifes);
-  description.appendChild(score);
+  scoring.appendChild(score);
+}
+
+var updateScoring = function() {
+  var scoring = document.getElementById("scoring");
+  var oldScore = document.getElementById("score");
+  var score = document.createElement("h3");
+  score.setAttribute("id", "score");
+  var text_score = document.createTextNode("Lifes: " + player.lifes + "    ScorePoints: " + player.score + "      Level: " + level_counter);
+  score.appendChild(text_score);
+  scoring.replaceChild(score, oldScore);
 }
 
 var showGameOver = function() {
   player.render();
-  console.log("(x, y) = (" + player.x + ", " + player.y + ")");
   var heading = document.createElement("h1");
   var heading_text = document.createTextNode("Game Over!");
   heading.appendChild(heading_text);
-  description.appendChild(heading);
+  scoring.appendChild(heading);
 }
 
 var checkCollisionBox = function(enemy, player) {

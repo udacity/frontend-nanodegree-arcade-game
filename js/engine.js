@@ -86,7 +86,9 @@
     function update(dt) {
         updateEntities(dt);
         if (checkCollisions()) {
-          showGameOver();
+          if (player.lifes === 0) {
+            showGameOver();
+          }
           // window.setTimeout(init, 2000);
           init();
         }
