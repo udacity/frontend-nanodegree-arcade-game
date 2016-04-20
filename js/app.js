@@ -7,11 +7,11 @@ var STREET_TILES_Y = [1, 2, 3];
 var NUMBER_LIFES_START = 3;
 
 var pause = false;
+var gameover = false;
 var game = document.getElementById("game");
 var scoring = document.getElementById("scoring");
 var description = document.getElementById("description");
 var level_counter = 0;
-var levelup = false;
 
 // enemies the player must avoid
 var Enemy = function() {
@@ -82,6 +82,9 @@ Player.prototype.handleInput = function(direction) {
     this.x -= 101;
   } else if (direction === 'right' && this.x < (CANVAS_WIDTH - 101)) {
     this.x += 101;
+  } else if (direction === 'pause' && gameover) {
+    gameover = false;
+    resetGame();
   } else if (direction === 'pause' && pause) {
     pause = false;
     console.log("toggle pause: " + pause);
@@ -89,9 +92,6 @@ Player.prototype.handleInput = function(direction) {
     pause = true;
     console.log("toggle pause: " + pause);
   }
-  console.log("direction: " + direction);
-  // console.log("(x, y) = (" + this.x + ", " + this.y + ")");
-  // this.render();
 }
 
 Player.prototype.render = function() {
@@ -154,11 +154,15 @@ var updateScoring = function() {
 }
 
 var showGameOver = function() {
-  player.render();
-  var heading = document.createElement("h1");
-  var heading_text = document.createTextNode("Game Over!");
-  heading.appendChild(heading_text);
-  scoring.appendChild(heading);
+  pause = true;
+  gameover = true;
+  ctx.fillStyle = "rgba(0,0,0,0.3)";
+  ctx.fillRect(0, CANVAS_HEIGHT/2-100, CANVAS_WIDTH, 200);
+  ctx.fillStyle = "white";
+  ctx.font = "40px serif";
+  ctx.textAlign = "center";
+  ctx.fillText("Game Over!", CANVAS_WIDTH/2, CANVAS_HEIGHT/2 - 30);
+  ctx.fillText("Press [space] to restart", CANVAS_WIDTH/2, CANVAS_HEIGHT/2 + 30);
 }
 
 var checkCollisionBox = function(enemy, player) {
@@ -176,6 +180,17 @@ var checkCollisionBox = function(enemy, player) {
 
 var getPause = function() {
   return pause;
+}
+
+var resetGame = function() {
+  player.lifes = 3;
+  player.score = 0;
+  level_counter = 0;
+  gameover = false;
+  pause = false;
+  updateScoring();
+  player.reset();
+  player.render();
 }
 
 // This listens for key presses and sends the keys to your

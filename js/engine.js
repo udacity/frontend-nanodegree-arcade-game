@@ -48,10 +48,16 @@
         /* Call our update/render functions, pass along the time delta to
          * our update function since it may be used for smooth animation.
          */
-        if (!getPause()) {
+        if (!getPause() && !gameover) {
+          console.log("rendering");
           update(dt);
           render();
         }
+      if (gameover) {
+        console.log("showing game over");
+        render();
+        showGameOver();
+      }
 
         /* Set our lastTime variable which is used to determine the time delta
          * for the next time this function is called.
@@ -88,9 +94,15 @@
         if (checkCollisions()) {
           if (player.lifes === 0) {
             showGameOver();
+            if (!gameover) {
+              init();
+              resetGame();
+            }
+          }
+          if (!gameover) {
+            init();
           }
           // window.setTimeout(init, 2000);
-          init();
         }
     }
 
@@ -150,7 +162,6 @@
         }
 
         renderEntities();
-        renderGameScore();
     }
 
     /* This function is called by the render function and is called on each game
@@ -166,12 +177,6 @@
         });
 
         player.render();
-    }
-
-    function renderGameScore() {
-      var text = "Try to reach the water!";
-      // var textNode = doc.createTextNode(text);
-      // divText.appendChild(textNode);
     }
 
     /* This function does nothing but it could have been a good place to
