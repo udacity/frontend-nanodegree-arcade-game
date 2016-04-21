@@ -20,6 +20,7 @@ body {
     max-width: 505px;
     border: 2px solid;
     border-color: white;
+    border-radius: 10px;
     -webkit-box-shadow: 10px 10px 15px 0px rgba(255,255,255,1);
     -moz-box-shadow: 10px 10px 15px 0px rgba(255,255,255,1);
     box-shadow: 10px 10px 15px 0px rgba(255,255,255,1);
@@ -31,4 +32,12 @@ body {
     #description {
         margin: 50px 0;
     }
+}
+
+#scoring {
+  white-space: pre;
+}
+
+#ignore-me {
+  min-height: 56px;
 }

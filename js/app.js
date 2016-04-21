@@ -1,22 +1,36 @@
-// constants
-var CANVAS_WIDTH = 505;
-var CANVAS_HEIGHT = 606;
-var NUM_ROWS = 6;
-var NUM_COLS = 5;
-var STREET_TILES_Y = [1, 2, 3];
-var NUMBER_LIFES_START = 3;
+var CANVAS_WIDTH = 505,
+    CANVAS_HEIGHT = 606,
+    STREET_TILES_Y = [1, 2, 3],
+    NUMBER_LIFES_START = 3;
+// -----------------------------------------------
+// Player and Enemy are later derived from Entitiy
+// -----------------------------------------------
+var Entity = function() {
+  // all entities are by default represented as a bug
+  this.sprite = 'images/enemy-bug.png';
+  this.x = 0;
+  this.y = 0;
+  this.velocity = 0;
+};
 
-var pause = false;
-var gameover = false;
-var game = document.getElementById("game");
-var scoring = document.getElementById("scoring");
-var description = document.getElementById("description");
-var level_counter = 0;
+// Draw the entity on the screen
+Entity.prototype.render = function() {
+  ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
 
-// enemies the player must avoid
-var Enemy = function() {
-  // The image/sprite for our enemies, this uses
-  // a helper we've provided to easily load images
+
+// -----------------------------------------------
+// Enemy - the player must avoid these
+// -----------------------------------------------
+function Enemy() {
+  this.init();
+};
+
+// JavaScript inheritance
+Enemy.prototype = Object.create(Entity.prototype);
+Enemy.prototype.constructor = Enemy;
+
+Enemy.prototype.init = function() {
   this.sprite = 'images/enemy-bug.png';
   // Get a random position for x and y
   // The random position for x will delay when the bug appears on screen
@@ -24,12 +38,11 @@ var Enemy = function() {
 
   // the tile (yPosition - 20) is perfect placement for a bug
   // or player
-  // this.y = -20 + STREET_TILES_Y[Math.floor(Math.random() *
-    //                            STREET_TILES_Y.length)];
   this.tile = STREET_TILES_Y[Math.floor(Math.random() *
-                                STREET_TILES_Y.length)];
+                                        STREET_TILES_Y.length)];
+  // These values were mostly found by trial and error, there is no
+  // science behind those numbers, unfortunately.
   this.y = -20 + this.tile * 82.5;
-
   this.velocity = 100;
 };
 
@@ -40,122 +53,132 @@ Enemy.prototype.update = function(dt) {
   if (this.x > CANVAS_WIDTH) {
     this.x = -100 - Math.random() * 300;
     this.tile = STREET_TILES_Y[Math.floor(Math.random() *
-                                  STREET_TILES_Y.length)];
-    this.y = -20 + this.tile * 82.5; 
+                                          STREET_TILES_Y.length)];
+    this.y = -20 + this.tile * 82.5;
   }
 };
 
-// Draw the enemy on the screen, required method for game
-Enemy.prototype.render = function() {
-  ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
+// -----------------------------------------------
+// Player - the player can control the hero
+// -----------------------------------------------
+function Player(sprite, name) {
+  this.init(sprite, name);
+}
 
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
-var Player = function() {
-  this.sprite = "images/char-boy.png";
-  this.name = "char boy";
+// JavaScript inheritance
+Player.prototype = Object.create(Entity.prototype);
+Player.prototype.constructor = Player;
+
+Player.prototype.init = function(newSprite, newName) {
+  this.sprite = newSprite;
+  this.name = newName;
   this.x = 101*2;
   this.tile = 4;
   this.y = -20 + this.tile * 82.5;
   this.lifes = NUMBER_LIFES_START;
-  this.score = 0;
-}
-
-Player.prototype.update = function() {
-  if (this.reachWater()) {
-    level_counter++;
-    updateScoring();
-    this.reset();
-  }
-}
-
-Player.prototype.handleInput = function(direction) {
-  if (direction === 'up' && this.y > -20) {
-    this.y -= 82.5;
-    this.tile -= 1;
-  } else if (direction === 'down' && this.y < (CANVAS_HEIGHT - 220)) {
-    this.y += 82.5;
-    this.tile += 1;
-  } else if (direction === 'left' && this.x > 0) {
-    this.x -= 101;
-  } else if (direction === 'right' && this.x < (CANVAS_WIDTH - 101)) {
-    this.x += 101;
-  } else if (direction === 'pause' && gameover) {
-    gameover = false;
-    resetGame();
-  } else if (direction === 'pause' && pause) {
-    pause = false;
-    console.log("toggle pause: " + pause);
-  } else if (direction === 'pause' && !pause) {
-    pause = true;
-    console.log("toggle pause: " + pause);
-  }
-}
-
-Player.prototype.render = function() {
-  ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-}
+};
 
 Player.prototype.reset = function() {
   this.x = 101*2;
   this.tile = 4;
   this.y = -20 + this.tile * 82.5;
-}
+};
 
 Player.prototype.reachWater = function() {
   if (this.y == -20) {
     return true;
   }
   return false;
+};
+
+
+
+// -----------------------------------------------
+// Game - play, pause, levelup, game over
+// -----------------------------------------------
+var Game = function() {
+  this.pause = false,
+  this.gameover = false,
+  this.level = 0,
+  this.score = 0,
+  this.gameElement = document.getElementById("game"),
+  this.scoreElement = document.getElementById("scoring"),
+  this.descriptionElement = document.getElementById("description");
+  this.init();
+  this.showWhilePlaying();
 }
 
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
-var allEnemies = [new Enemy(), new Enemy(), new Enemy()];
-var player = new Player();
+// Ask player to choose a hero, start game
+Game.prototype.init = function() {
+  this.player = new Player("images/char-boy.png", "Char Boy");
+  this.allEnemies = [new Enemy(), new Enemy(), new Enemy()];
+}
 
-var checkCollisions = function() {
-  for (var i = 0; i < allEnemies.length; i++) {
-    if (checkCollisionBox(allEnemies[i], player)) {
-      player.lifes--;
-      updateScoring();
+Game.prototype.getPause = function() {
+  return this.pause;
+}
+
+Game.prototype.checkCollisions = function() {
+  for (var i = 0; i < this.allEnemies.length; i++) {
+    if (this.checkCollisionBox(this.allEnemies[i])) {
+      this.player.lifes--;
+      this.updateScoring();
       return true;
     }
   }
   return false;
 }
 
-var showWhilePlaying = function() {
+Game.prototype.update = function() {
+  if (this.player.reachWater()) {
+    this.level++;
+    this.increaseScore('levelup');
+    this.updateScoring();
+    this.player.reset();
+  }
+}
+
+Game.prototype.checkCollisionBox = function(enemy) {
+  if (enemy.tile == this.player.tile) {
+    enemy.xLo = enemy.x;
+    enemy.xHi = enemy.x + 79;
+    this.player.xLo = this.player.x;
+    this.player.xHi = this.player.x + 50;
+    if (enemy.xHi >= this.player.xLo && enemy.xLo <= this.player.xHi) {
+      return true;
+    }
+  }
+  return false;
+}
+
+Game.prototype.showWhilePlaying = function() {
   var heading = document.createElement("h2");
   heading.setAttribute("id", "heading");
-  var text_heading = document.createTextNode("Help " + player.name + " reach the water!");
-  var score = document.createElement("h3");
-  score.setAttribute("id", "score");
-  var text_score = document.createTextNode("Lifes: " + player.lifes + "\t ScorePoints: " + player.score + "\t Level: " + level_counter);
+  var text_heading = document.createTextNode("Help " + this.player.name + " reach the water!");
+  var scoreh3 = document.createElement("h3");
+  scoreh3.setAttribute("id", "score");
+  var text_score = document.createTextNode("Lifes: " + this.player.lifes + "      Level: " + this.level + "    Score: " + this.score);
   heading.appendChild(text_heading);
-  score.appendChild(text_score);
+  scoreh3.appendChild(text_score);
 
   var keys = document.getElementById("keys");
-  description.insertBefore(heading, keys);
-  scoring.appendChild(score);
+  this.descriptionElement.insertBefore(heading, keys);
+  this.scoreElement.appendChild(scoreh3);
 }
 
-var updateScoring = function() {
-  var scoring = document.getElementById("scoring");
-  var oldScore = document.getElementById("score");
-  var score = document.createElement("h3");
-  score.setAttribute("id", "score");
-  var text_score = document.createTextNode("Lifes: " + player.lifes + "    ScorePoints: " + player.score + "      Level: " + level_counter);
-  score.appendChild(text_score);
-  scoring.replaceChild(score, oldScore);
+Game.prototype.updateScoring = function() {
+  var scoreElement = document.getElementById("scoring");
+  var oldScoreElement = document.getElementById("score");
+  var scoreh3 = document.createElement("h3");
+  scoreh3.setAttribute("id", "score");
+  var text_score = document.createTextNode("Lifes: " + this.player.lifes + "      Level: " + this.level + "    Score: " + this.score);
+  scoreh3.appendChild(text_score);
+  scoreElement.replaceChild(scoreh3, oldScoreElement);
 }
 
-var showGameOver = function() {
-  pause = true;
-  gameover = true;
+Game.prototype.showGameOver = function() {
+  this.pause = true;
+  this.gameover = true;
   ctx.fillStyle = "rgba(0,0,0,0.3)";
   ctx.fillRect(0, CANVAS_HEIGHT/2-100, CANVAS_WIDTH, 200);
   ctx.fillStyle = "white";
@@ -165,33 +188,44 @@ var showGameOver = function() {
   ctx.fillText("Press [space] to restart", CANVAS_WIDTH/2, CANVAS_HEIGHT/2 + 30);
 }
 
-var checkCollisionBox = function(enemy, player) {
-  if (enemy.tile == player.tile) {
-    enemy.xLo = enemy.x;
-    enemy.xHi = enemy.x + 79;
-    player.xLo = player.x;
-    player.xHi = player.x + 50;
-    if (enemy.xHi >= player.xLo && enemy.xLo <= player.xHi) {
-      return true;
-    }
+Game.prototype.resetGame = function() {
+  this.score = 0;
+  this.level = 0;
+  this.gameover = false;
+  this.pause = false;
+  this.player.lifes = 3;
+  this.player.reset();
+  this.player.render();
+  this.updateScoring();
+}
+
+Game.prototype.increaseScore = function(event) {
+  if (event === 'levelup') {
+    this.score += 10;
   }
-  return false;
 }
 
-var getPause = function() {
-  return pause;
+Game.prototype.handleInput = function(direction) {
+  if (direction === 'up' && this.player.y > -20) {
+    this.player.y -= 82.5;
+    this.player.tile -= 1;
+  } else if (direction === 'down' && this.player.y < (CANVAS_HEIGHT - 220)) {
+    this.player.y += 82.5;
+    this.player.tile += 1;
+  } else if (direction === 'left' && this.player.x > 0) {
+    this.player.x -= 101;
+  } else if (direction === 'right' && this.player.x < (CANVAS_WIDTH - 101)) {
+    this.player.x += 101;
+  } else if (direction === 'pause' && this.gameover) {
+    this.gameover = false;
+    this.resetGame();
+  } else if (direction === 'pause' && this.pause) {
+    this.pause = false;
+  } else if (direction === 'pause' && !this.pause) {
+    this.pause = true;
+  }
 }
 
-var resetGame = function() {
-  player.lifes = 3;
-  player.score = 0;
-  level_counter = 0;
-  gameover = false;
-  pause = false;
-  updateScoring();
-  player.reset();
-  player.render();
-}
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
@@ -205,7 +239,12 @@ document.addEventListener('keydown', function(e) {
   };
   console.log(allowedKeys[e.keyCode]);
 
-  player.handleInput(allowedKeys[e.keyCode]);
+  game.handleInput(allowedKeys[e.keyCode]);
 });
 
-showWhilePlaying();
+
+
+// -----------------------------------------------
+// Initialize Game, Enemies and Player
+// -----------------------------------------------
+var game = new Game();
