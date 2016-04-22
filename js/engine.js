@@ -92,6 +92,7 @@
    */
   function update(dt) {
     updateEntities(dt);
+    game.checkCollisionsGems();
     if (game.checkCollisions()) {
       if (game.player.lifes === 0) {
         game.showGameOver();
@@ -100,7 +101,7 @@
           game.resetGame();
         }
       }
-      if (!game.gameover) {
+      if (!game.squishmode && !game.gameover) {
         game.pause = true;
         game.player.render();
         setTimeout(function() {
@@ -179,8 +180,12 @@
     game.allEnemies.forEach(function(enemy) {
       enemy.render();
     });
-
     game.player.render();
+    if (game.specialTiles.length > 0) {
+      game.specialTiles.forEach(function(tile) {
+        tile.render();
+      });
+    }
   }
 
   /* This function does nothing but it could have been a good place to
@@ -200,7 +205,19 @@
     'images/water-block.png',
     'images/grass-block.png',
     'images/enemy-bug.png',
-    'images/char-boy.png'
+    'images/char-boy.png',
+    'images/char-cat-girl.png',
+    'images/char-horn-girl.png',
+    'images/char-pink-girl.png',
+    'images/char-princess-girl.png',
+    'images/gem-blue.png',
+    'images/gem-green.png',
+    'images/gem-orange.png',
+    'images/heart.png',
+    'images/key.png',
+    'images/rock.png',
+    'images/selector.png',
+    'images/star.png'
   ]);
   Resources.onReady(init);
 

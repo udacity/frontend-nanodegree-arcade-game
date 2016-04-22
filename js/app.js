@@ -19,6 +19,43 @@ Entity.prototype.render = function() {
 };
 
 // -----------------------------------------------
+// Tile - added when player levels up
+// -----------------------------------------------
+function Tile(type) {
+  if (type === 'gem') {
+    var randomTileNumber = Math.floor(Math.random() * 3);
+    if (randomTileNumber === 1) {
+      this.sprite = 'images/gem-blue.png';
+      this.name = 'gem-blue';
+    } else if (randomTileNumber === 2) {
+      this.sprite = 'images/gem-green.png';
+      this.name = 'gem-green';
+    } else {
+        this.sprite = 'images/gem-orange.png';
+      this.name = 'gem-orange';
+    }
+  } else if (type === 'star') {
+    this.sprite = 'images/star.png';
+    this.name = 'star';
+  } else if (type === 'heart') {
+    this.sprite = 'images/heart.png';
+    this.name = 'heart';
+  } else if (type === 'key') {
+    this.sprite = 'images/key.png';
+    this.name = 'key';
+  }
+  this.row = Math.floor(Math.random()*6);
+  this.col = Math.floor(Math.random()*5);
+  this.tile = this.row;
+  this.x = this.col * 101;
+  this.y = this.row * 83 - 20;
+}
+
+// JavaScript inheritance
+Tile.prototype = Object.create(Entity.prototype);
+Tile.prototype.constructor = Tile;
+
+// -----------------------------------------------
 // Enemy - the player must avoid these
 // -----------------------------------------------
 function Enemy(velocity) {
@@ -99,6 +136,7 @@ var Game = function() {
   this.pause = false,
   this.gameover = false,
   this.levelup = false,
+  this.squishmode = false,
   this.level = 1,
   this.score = 0,
   this.enemyVelocity = 100,
@@ -115,33 +153,65 @@ Game.prototype.init = function() {
   this.allEnemies = [new Enemy(this.enemyVelocity),
                      new Enemy(this.enemyVelocity),
                      new Enemy(this.enemyVelocity)];
+  this.specialTiles = [];
 }
 
 Game.prototype.checkCollisions = function() {
   for (var i = 0; i < this.allEnemies.length; i++) {
     if (this.checkCollisionBox(this.allEnemies[i])) {
-      this.player.lifes--;
-      this.updateScoring();
+      if (this.squishmode) {
+        this.allEnemies.splice(i,1);
+        i--;
+        if (this.allEnemies.length < 3) {
+          this.allEnemies.push(new Enemy(this.enemyVelocity));
+          this.allEnemies.push(new Enemy(this.enemyVelocity));
+        }
+      } else {
+        this.player.lifes--;
+        this.updateScoring();
+      }
       return true;
     }
   }
   return false;
 }
 
-Game.prototype.update = function() {
-  if (this.player.reachWater()) {
-    this.level++;
-    this.increaseScore('levelup');
-    this.updateScoring();
-    this.player.render();
-    this.pause = true;
-    this.showLevelUp();
-    setTimeout(function() {
-      this.player.reset();
-      this.pause = false;
-      this.levelup = false;
-    }.bind(this), 800);
+Game.prototype.checkCollisionsGems = function() {
+  for (var i = 0; i < this.specialTiles.length; i++) {
+    if (this.checkCollisionBox(this.specialTiles[i])) {
+      if (this.specialTiles[i].name === 'gem-blue') {
+        this.score += 20;
+    	} else if (this.specialTiles[i].name === 'gem-green') {
+        this.score += 25;
+    	} else if (this.specialTiles[i].name === 'gem-orange') {
+        this.score += 30;
+    	} else if (this.specialTiles[i].name === 'key') {
+        this.score += 100;
+    	} else if (this.specialTiles[i].name === 'heart') {
+        this.player.lifes += 1;
+    	} else if (this.specialTiles[i].name === 'star') {
+        this.squishMode();
+      }
+      if (this.squishmode) {
+        this.showWhileSquishing();
+      } else {
+        this.updateScoring();
+      }
+      this.specialTiles.splice(i,1);
+      i--;
+    }
   }
+}
+
+Game.prototype.squishMode = function() {
+  this.squishmode = true;
+  this.showWhileSquishing();
+  setTimeout(function() {
+    this.updateScoring();
+  }.bind(this), 7000);
+  setTimeout(function() {
+    this.squishmode = false;
+  }.bind(this), 10000);
 }
 
 Game.prototype.checkCollisionBox = function(enemy) {
@@ -157,6 +227,24 @@ Game.prototype.checkCollisionBox = function(enemy) {
   return false;
 }
 
+
+Game.prototype.update = function() {
+  if (this.player.reachWater()) {
+    this.level++;
+    this.increaseScore('levelup');
+    this.updateScoring();
+    this.player.render();
+    this.pause = true;
+    this.showLevelUp();
+    setTimeout(function() {
+      this.player.reset();
+      this.pause = false;
+      this.levelup = false;
+      this.squishmode = false;
+    }.bind(this), 800);
+  }
+}
+
 Game.prototype.showWhilePlaying = function() {
   var heading = document.createElement("h2");
   heading.setAttribute("id", "heading");
@@ -170,6 +258,17 @@ Game.prototype.showWhilePlaying = function() {
   var keys = document.getElementById("keys");
   this.descriptionElement.insertBefore(heading, keys);
   this.scoreElement.appendChild(scoreh3);
+}
+
+Game.prototype.showWhileSquishing = function() {
+  var scoreElement = document.getElementById("scoring");
+  var oldScoreElement = document.getElementById("score");
+  var scoreh1 = document.createElement("h1");
+  scoreh1.setAttribute("id", "score");
+  var text_score = document.createTextNode("Squish those bugs!");
+  scoreh1.appendChild(text_score);
+  scoreh1.style.color = "Red";
+  scoreElement.replaceChild(scoreh1, oldScoreElement);
 }
 
 Game.prototype.updateScoring = function() {
@@ -226,7 +325,41 @@ Game.prototype.increaseScore = function(event) {
     this.score += 10;
     this.enemyVelocity += 20;
     this.allEnemies.push(new Enemy(this.enemyVelocity));
+    this.specialTiles.push(new Tile('gem'));
+    if (this.level > 3 && this.player.lifes < 8) {
+      if (this.containsSpecialTile('heart')) {
+        this.deleteSpecialTile('heart');
+      }
+      this.specialTiles.push(new Tile('heart'));
+    }
+    if (this.level > 6 && !this.containsSpecialTile('key')) {
+      this.specialTiles.push(new Tile('key'));
+    }
+    if (this.allEnemies.length > 8 || this.enemyVelocity > 450) {
+      if (this.containsSpecialTile('star')) {
+        this.deleteSpecialTile('star');
+      }
+      this.specialTiles.push(new Tile('star'));
+    }
   }
+}
+
+Game.prototype.deleteSpecialTile = function(type) {
+  for (var i = 0; i < this.specialTiles.length; i++) {
+    if (this.specialTiles[i].name === type) {
+      this.specialTiles.splice(i,1);
+      i--;
+    }
+  }
+}
+
+Game.prototype.containsSpecialTile = function(type) {
+  for (var i = 0; i < this.specialTiles.length; i++) {
+    if (this.specialTiles[i].name === type) {
+      return true;
+    }
+  }
+  return false;
 }
 
 Game.prototype.handleInput = function(direction) {
@@ -261,8 +394,6 @@ document.addEventListener('keydown', function(e) {
     39: 'right',
     40: 'down'
   };
-  console.log(allowedKeys[e.keyCode]);
-
   game.handleInput(allowedKeys[e.keyCode]);
 });
 
