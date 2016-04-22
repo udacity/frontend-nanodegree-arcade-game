@@ -48,7 +48,7 @@
     /* Call our update/render functions, pass along the time delta to
      * our update function since it may be used for smooth animation.
      */
-    if (!game.getPause() && !game.gameover) {
+    if (!game.pause && !game.gameover && !game.levelup) {
       update(dt);
       game.update();
       render();
@@ -56,6 +56,9 @@
     if (game.gameover) {
       render();
       game.showGameOver();
+    } else if (game.levelup) {
+      render();
+      game.showLevelUp();
     }
 
     /* Set our lastTime variable which is used to determine the time delta
@@ -101,7 +104,9 @@
       if (!game.gameover) {
         init();
       }
-      // window.setTimeout(init, 2000);
+    }
+    if (game.levelup) {
+      
     }
   }
 

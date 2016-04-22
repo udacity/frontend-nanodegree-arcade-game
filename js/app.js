@@ -22,15 +22,15 @@ Entity.prototype.render = function() {
 // -----------------------------------------------
 // Enemy - the player must avoid these
 // -----------------------------------------------
-function Enemy() {
-  this.init();
+function Enemy(velocity) {
+  this.init(velocity);
 };
 
 // JavaScript inheritance
 Enemy.prototype = Object.create(Entity.prototype);
 Enemy.prototype.constructor = Enemy;
 
-Enemy.prototype.init = function() {
+Enemy.prototype.init = function(velocity) {
   this.sprite = 'images/enemy-bug.png';
   // Get a random position for x and y
   // The random position for x will delay when the bug appears on screen
@@ -43,7 +43,7 @@ Enemy.prototype.init = function() {
   // These values were mostly found by trial and error, there is no
   // science behind those numbers, unfortunately.
   this.y = -20 + this.tile * 82.5;
-  this.velocity = 100;
+  this.velocity = velocity;
 };
 
 // Update the enemy's position, required method for game
@@ -99,8 +99,10 @@ Player.prototype.reachWater = function() {
 var Game = function() {
   this.pause = false,
   this.gameover = false,
-  this.level = 0,
+  this.levelup = false,
+  this.level = 1,
   this.score = 0,
+  this.enemyVelocity = 100,
   this.gameElement = document.getElementById("game"),
   this.scoreElement = document.getElementById("scoring"),
   this.descriptionElement = document.getElementById("description");
@@ -111,11 +113,9 @@ var Game = function() {
 // Ask player to choose a hero, start game
 Game.prototype.init = function() {
   this.player = new Player("images/char-boy.png", "Char Boy");
-  this.allEnemies = [new Enemy(), new Enemy(), new Enemy()];
-}
-
-Game.prototype.getPause = function() {
-  return this.pause;
+  this.allEnemies = [new Enemy(this.enemyVelocity),
+                     new Enemy(this.enemyVelocity),
+                     new Enemy(this.enemyVelocity)];
 }
 
 Game.prototype.checkCollisions = function() {
@@ -134,7 +134,10 @@ Game.prototype.update = function() {
     this.level++;
     this.increaseScore('levelup');
     this.updateScoring();
-    this.player.reset();
+    this.player.render();
+    this.pause = true;
+    this.showLevelUp();
+    // this.player.reset();
   }
 }
 
@@ -188,11 +191,28 @@ Game.prototype.showGameOver = function() {
   ctx.fillText("Press [space] to restart", CANVAS_WIDTH/2, CANVAS_HEIGHT/2 + 30);
 }
 
+Game.prototype.showLevelUp = function() {
+  this.pause = true;
+  this.levelup = true;
+  ctx.fillStyle = "rgba(0,0,0,0.3)";
+  ctx.fillRect(0, CANVAS_HEIGHT/2-140, CANVAS_WIDTH, 200);
+  ctx.fillStyle = "white";
+  ctx.font = "40px serif";
+  ctx.textAlign = "center";
+  ctx.fillText("Level up! :D", CANVAS_WIDTH/2, CANVAS_HEIGHT/2 - 90);
+  ctx.fillText("More Bugs!", CANVAS_WIDTH/2, CANVAS_HEIGHT/2 - 30);
+  ctx.fillText("Press [space] to continue", CANVAS_WIDTH/2, CANVAS_HEIGHT/2 + 30);
+}
+
 Game.prototype.resetGame = function() {
   this.score = 0;
   this.level = 0;
   this.gameover = false;
   this.pause = false;
+  this.enemyVelocity = 100;
+  this.allEnemies = [new Enemy(this.enemyVelocity),
+                     new Enemy(this.enemyVelocity),
+                     new Enemy(this.enemyVelocity)];
   this.player.lifes = 3;
   this.player.reset();
   this.player.render();
@@ -202,6 +222,8 @@ Game.prototype.resetGame = function() {
 Game.prototype.increaseScore = function(event) {
   if (event === 'levelup') {
     this.score += 10;
+    this.enemyVelocity += 20;
+    this.allEnemies.push(new Enemy(this.enemyVelocity));
   }
 }
 
@@ -219,6 +241,10 @@ Game.prototype.handleInput = function(direction) {
   } else if (direction === 'pause' && this.gameover) {
     this.gameover = false;
     this.resetGame();
+  } else if (direction === 'pause' && this.levelup) {
+    this.levelup = false;
+    this.pause = false;
+    this.player.reset();
   } else if (direction === 'pause' && this.pause) {
     this.pause = false;
   } else if (direction === 'pause' && !this.pause) {
