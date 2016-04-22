@@ -18,7 +18,6 @@ Entity.prototype.render = function() {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-
 // -----------------------------------------------
 // Enemy - the player must avoid these
 // -----------------------------------------------
@@ -137,7 +136,11 @@ Game.prototype.update = function() {
     this.player.render();
     this.pause = true;
     this.showLevelUp();
-    // this.player.reset();
+    setTimeout(function() {
+      this.player.reset();
+      this.pause = false;
+      this.levelup = false;
+    }.bind(this), 800);
   }
 }
 
@@ -195,13 +198,12 @@ Game.prototype.showLevelUp = function() {
   this.pause = true;
   this.levelup = true;
   ctx.fillStyle = "rgba(0,0,0,0.3)";
-  ctx.fillRect(0, CANVAS_HEIGHT/2-140, CANVAS_WIDTH, 200);
+  ctx.fillRect(0, CANVAS_HEIGHT/2-100, CANVAS_WIDTH, 200);
   ctx.fillStyle = "white";
   ctx.font = "40px serif";
   ctx.textAlign = "center";
-  ctx.fillText("Level up! :D", CANVAS_WIDTH/2, CANVAS_HEIGHT/2 - 90);
-  ctx.fillText("More Bugs!", CANVAS_WIDTH/2, CANVAS_HEIGHT/2 - 30);
-  ctx.fillText("Press [space] to continue", CANVAS_WIDTH/2, CANVAS_HEIGHT/2 + 30);
+  ctx.fillText("Level up! :D", CANVAS_WIDTH/2, CANVAS_HEIGHT/2 - 30);
+  ctx.fillText("More Bugs!", CANVAS_WIDTH/2, CANVAS_HEIGHT/2 + 30);
 }
 
 Game.prototype.resetGame = function() {
@@ -241,10 +243,6 @@ Game.prototype.handleInput = function(direction) {
   } else if (direction === 'pause' && this.gameover) {
     this.gameover = false;
     this.resetGame();
-  } else if (direction === 'pause' && this.levelup) {
-    this.levelup = false;
-    this.pause = false;
-    this.player.reset();
   } else if (direction === 'pause' && this.pause) {
     this.pause = false;
   } else if (direction === 'pause' && !this.pause) {

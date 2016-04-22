@@ -23,7 +23,6 @@
       canvas = doc.createElement('canvas'),
       ctx = canvas.getContext('2d'),
       lastTime,
-      pause = false,
       gameElement = doc.getElementById("game"),
       description = doc.getElementById("description");
 
@@ -102,11 +101,13 @@
         }
       }
       if (!game.gameover) {
-        init();
+        game.pause = true;
+        game.player.render();
+        setTimeout(function() {
+          init();
+          game.pause = false;
+        }.bind(this), 500);
       }
-    }
-    if (game.levelup) {
-      
     }
   }
 
