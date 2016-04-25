@@ -5,6 +5,10 @@ This project is part of the [Udacity Frontend Nanodegree](https://www.udacity.co
 ## Play the game
 Play the game: [Bugs!](http://katharinaxeniakufieta.github.io/frontend-nanodegree-arcade-game/).
 
+Move the hero by pressing the arrows Up, Down, Left or Right.
+Pause the game by pressing SPACE.
+Avoid the bugs, collect the gems, hearts, keys and stars. When you get a star, you can kill the bugs and reduce their number.
+
 ## Download
 There are no dependencies, simply clone the game with
 
