@@ -16,6 +16,10 @@ body {
     font-size: 3em;
 }
 
+.row {
+  display: flex;
+}
+
 #description {
     max-width: 505px;
     border: 2px solid;

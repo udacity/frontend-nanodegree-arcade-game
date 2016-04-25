@@ -143,6 +143,7 @@ var Game = function() {
   this.gameElement = document.getElementById("game"),
   this.scoreElement = document.getElementById("scoring"),
   this.descriptionElement = document.getElementById("description");
+  // Initiate the game
   this.init();
   this.showWhilePlaying();
 }
@@ -335,7 +336,7 @@ Game.prototype.increaseScore = function(event) {
     if (this.level > 6 && !this.containsSpecialTile('key')) {
       this.specialTiles.push(new Tile('key'));
     }
-    if (this.allEnemies.length > 8 || this.enemyVelocity > 450) {
+    if (this.allEnemies.length > 8 || this.enemyVelocity > 700) {
       if (this.containsSpecialTile('star')) {
         this.deleteSpecialTile('star');
       }
