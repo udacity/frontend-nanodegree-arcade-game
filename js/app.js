@@ -19,7 +19,7 @@ Entity.prototype.render = function() {
 };
 
 // -----------------------------------------------
-// Tile - added when player levels up
+// Special tiles - added when player levels up
 // -----------------------------------------------
 function Tile(type) {
   if (type === 'gem') {
@@ -66,6 +66,7 @@ function Enemy(velocity) {
 Enemy.prototype = Object.create(Entity.prototype);
 Enemy.prototype.constructor = Enemy;
 
+// Initialize enemy with given velocity
 Enemy.prototype.init = function(velocity) {
   this.sprite = 'images/enemy-bug.png';
   // Get a random position for x and y
@@ -105,6 +106,7 @@ function Player(sprite, name) {
 Player.prototype = Object.create(Entity.prototype);
 Player.prototype.constructor = Player;
 
+// Initialize hero with given sprite and name
 Player.prototype.init = function(newSprite, newName) {
   this.sprite = newSprite;
   this.name = newName;
@@ -114,20 +116,21 @@ Player.prototype.init = function(newSprite, newName) {
   this.lifes = NUMBER_LIFES_START;
 };
 
+// Reset the player position when collision with enemy or when
+// it reached the water
 Player.prototype.reset = function() {
   this.x = 101*2;
   this.tile = 4;
   this.y = -20 + this.tile * 82.5;
 };
 
+// Check whether hero reached the water
 Player.prototype.reachWater = function() {
   if (this.y == -20) {
     return true;
   }
   return false;
 };
-
-
 
 // -----------------------------------------------
 // Game - play, pause, levelup, game over
@@ -148,7 +151,7 @@ var Game = function() {
   this.showWhilePlaying();
 }
 
-// Ask player to choose a hero, start game
+// TO DO: Ask player to choose a hero
 Game.prototype.init = function() {
   this.player = new Player("images/char-boy.png", "Char Boy");
   this.allEnemies = [new Enemy(this.enemyVelocity),
@@ -157,6 +160,9 @@ Game.prototype.init = function() {
   this.specialTiles = [];
 }
 
+// Check for collisions between hero and enemies
+// Treat collisions differently depending whether game is in
+// squishmode (i.e. player took a star and can kill bugs now)
 Game.prototype.checkCollisions = function() {
   for (var i = 0; i < this.allEnemies.length; i++) {
     if (this.checkCollisionBox(this.allEnemies[i])) {
@@ -177,6 +183,11 @@ Game.prototype.checkCollisions = function() {
   return false;
 }
 
+// Check whether player picked up a gem, star, heart or other special
+// items.
+// Hearts increase the lifes of the player, stars lead to squish mode
+// where the player can kill bugs and reduce their number. Everything else gives
+// merely points.
 Game.prototype.checkCollisionsGems = function() {
   for (var i = 0; i < this.specialTiles.length; i++) {
     if (this.checkCollisionBox(this.specialTiles[i])) {
@@ -204,6 +215,7 @@ Game.prototype.checkCollisionsGems = function() {
   }
 }
 
+// Set game to squish mode where the player can kill bugs.
 Game.prototype.squishMode = function() {
   this.squishmode = true;
   this.showWhileSquishing();
@@ -215,6 +227,8 @@ Game.prototype.squishMode = function() {
   }.bind(this), 10000);
 }
 
+// Check for collision within a box, i.e. there is a margin
+// that counts as a collision.
 Game.prototype.checkCollisionBox = function(enemy) {
   if (enemy.tile == this.player.tile) {
     enemy.xLo = enemy.x;
@@ -228,7 +242,7 @@ Game.prototype.checkCollisionBox = function(enemy) {
   return false;
 }
 
-
+// Update the game statistics when player reaches the water
 Game.prototype.update = function() {
   if (this.player.reachWater()) {
     this.level++;
@@ -246,13 +260,17 @@ Game.prototype.update = function() {
   }
 }
 
+// Statistics to show while the game is being played.
+// This might have to be changed later when the player can choose his own hero.
 Game.prototype.showWhilePlaying = function() {
   var heading = document.createElement("h2");
   heading.setAttribute("id", "heading");
   var text_heading = document.createTextNode("Help " + this.player.name + " reach the water!");
   var scoreh3 = document.createElement("h3");
   scoreh3.setAttribute("id", "score");
-  var text_score = document.createTextNode("Lifes: " + this.player.lifes + "      Level: " + this.level + "    Score: " + this.score);
+  var text_score = document.createTextNode("Lifes: " + this.player.lifes +
+                                           "      Level: " + this.level +
+                                           "    Score: " + this.score);
   heading.appendChild(text_heading);
   scoreh3.appendChild(text_score);
 
@@ -261,6 +279,8 @@ Game.prototype.showWhilePlaying = function() {
   this.scoreElement.appendChild(scoreh3);
 }
 
+// Show different text while the player can squish bugs instead
+// to avoid them
 Game.prototype.showWhileSquishing = function() {
   var scoreElement = document.getElementById("scoring");
   var oldScoreElement = document.getElementById("score");
@@ -272,16 +292,21 @@ Game.prototype.showWhileSquishing = function() {
   scoreElement.replaceChild(scoreh1, oldScoreElement);
 }
 
+// Update the score
 Game.prototype.updateScoring = function() {
   var scoreElement = document.getElementById("scoring");
   var oldScoreElement = document.getElementById("score");
   var scoreh3 = document.createElement("h3");
   scoreh3.setAttribute("id", "score");
-  var text_score = document.createTextNode("Lifes: " + this.player.lifes + "      Level: " + this.level + "    Score: " + this.score);
+  var text_score = document.createTextNode("Lifes: " + this.player.lifes +
+                                           "      Level: " + this.level +
+                                           "    Score: " + this.score);
   scoreh3.appendChild(text_score);
   scoreElement.replaceChild(scoreh3, oldScoreElement);
 }
 
+// Show that the game is over and that the player can restart the game
+// by pressing SPACE
 Game.prototype.showGameOver = function() {
   this.pause = true;
   this.gameover = true;
@@ -294,6 +319,7 @@ Game.prototype.showGameOver = function() {
   ctx.fillText("Press [space] to restart", CANVAS_WIDTH/2, CANVAS_HEIGHT/2 + 30);
 }
 
+// Show that the player leveled up
 Game.prototype.showLevelUp = function() {
   this.pause = true;
   this.levelup = true;
@@ -306,6 +332,7 @@ Game.prototype.showLevelUp = function() {
   ctx.fillText("More Bugs!", CANVAS_WIDTH/2, CANVAS_HEIGHT/2 + 30);
 }
 
+// Reset the game in the case of a game over and restart
 Game.prototype.resetGame = function() {
   this.score = 0;
   this.level = 0;
@@ -321,6 +348,9 @@ Game.prototype.resetGame = function() {
   this.updateScoring();
 }
 
+// Increase the score when there was a level up
+// Give stars and keys a new position if level up is reached,
+// in case that they were in a hard to reach position before
 Game.prototype.increaseScore = function(event) {
   if (event === 'levelup') {
     this.score += 10;
@@ -345,6 +375,7 @@ Game.prototype.increaseScore = function(event) {
   }
 }
 
+// Find and delete a special tile (e.g. heart or star)
 Game.prototype.deleteSpecialTile = function(type) {
   for (var i = 0; i < this.specialTiles.length; i++) {
     if (this.specialTiles[i].name === type) {
@@ -354,6 +385,7 @@ Game.prototype.deleteSpecialTile = function(type) {
   }
 }
 
+// Find out if game contains a special tile (e.g. heart or star)
 Game.prototype.containsSpecialTile = function(type) {
   for (var i = 0; i < this.specialTiles.length; i++) {
     if (this.specialTiles[i].name === type) {
@@ -363,6 +395,8 @@ Game.prototype.containsSpecialTile = function(type) {
   return false;
 }
 
+// Handle the input from the plaer, such as space, arrows up, down,
+// left and right
 Game.prototype.handleInput = function(direction) {
   if (direction === 'up' && this.player.y > -20) {
     this.player.y -= 82.5;
@@ -384,7 +418,6 @@ Game.prototype.handleInput = function(direction) {
   }
 }
 
-
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keydown', function(e) {
@@ -397,8 +430,6 @@ document.addEventListener('keydown', function(e) {
   };
   game.handleInput(allowedKeys[e.keyCode]);
 });
-
-
 
 // -----------------------------------------------
 // Initialize Game, Enemies and Player

@@ -52,6 +52,8 @@
       game.update();
       render();
     }
+    // Render the game differently depending on whether the player leveled
+    // up or whether the game is over.
     if (game.gameover) {
       render();
       game.showGameOver();
