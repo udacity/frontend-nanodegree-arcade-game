@@ -16,6 +16,9 @@ There are no dependencies, simply clone the game with
 
 or [download it here](https://github.com/KatharinaXeniaKufieta/frontend-nanodegree-arcade-game/archive/master.zip).
 
+## Known issues
+The board (at least the special tiles such as gems) should be reset when the player collides with a bug, or when the game is over and is reset again to the initial setup.
+
 ## Author
 Game functionality was written by [Katharina Kufieta](https://www.linkedin.com/in/katharinakufieta).
 
