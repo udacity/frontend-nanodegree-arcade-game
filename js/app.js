@@ -5,6 +5,10 @@ var CANVAS_WIDTH = 505,
 // -----------------------------------------------
 // Player and Enemy are later derived from Entitiy
 // -----------------------------------------------
+/**
+   * @description Represents Tiles such as Heros, Enemies, Gems and Hearts
+   * @constructor
+   */
 var Entity = function() {
   // all entities are by default represented as a bug
   this.sprite = 'images/enemy-bug.png';
@@ -13,7 +17,9 @@ var Entity = function() {
   this.velocity = 0;
 };
 
-// Draw the entity on the screen
+/**
+ * @description Draws the entity on the screen
+ */
 Entity.prototype.render = function() {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
@@ -21,6 +27,12 @@ Entity.prototype.render = function() {
 // -----------------------------------------------
 // Special tiles - added when player levels up
 // -----------------------------------------------
+/**
+ * @description Special tiles such as hearts, keys, stars. These show up when
+ * @constructor
+ * the player levels up
+ * @param {string} type - type of tile
+ */
 function Tile(type) {
   if (type === 'gem') {
     var randomTileNumber = Math.floor(Math.random() * 3);
@@ -58,6 +70,12 @@ Tile.prototype.constructor = Tile;
 // -----------------------------------------------
 // Enemy - the player must avoid these
 // -----------------------------------------------
+/**
+ * @description Enemy moves across the screen and has to be avoided
+ * by the player
+ * @constructor
+ * @param {number} velocity - velocity of the enemies
+ */
 function Enemy(velocity) {
   this.init(velocity);
 };
@@ -66,7 +84,10 @@ function Enemy(velocity) {
 Enemy.prototype = Object.create(Entity.prototype);
 Enemy.prototype.constructor = Enemy;
 
-// Initialize enemy with given velocity
+/**
+ * @description Initialize enemy with given velocity
+ * @param {number} velocity
+ */
 Enemy.prototype.init = function(velocity) {
   this.sprite = 'images/enemy-bug.png';
   // Get a random position for x and y
@@ -83,8 +104,11 @@ Enemy.prototype.init = function(velocity) {
   this.velocity = velocity;
 };
 
-// Update the enemy's position, required method for game
-// Parameter: dt, a time delta between ticks
+/**
+ * @description Update the enemies position, required method for game
+ * @param {number} dt - time step between updates
+ */
+s
 Enemy.prototype.update = function(dt) {
   this.x = this.x + this.velocity * dt;
   if (this.x > CANVAS_WIDTH) {
@@ -97,7 +121,13 @@ Enemy.prototype.update = function(dt) {
 
 // -----------------------------------------------
 // Player - the player can control the hero
-// -----------------------------------------------
+// ----------------------------------------------
+/**
+ * @description Player is the hero controlled by the player
+ * @constructor
+ * @param {string} sprite - path to the sprite (image) of the hero
+ * @param {string} name - name of the hero
+ */
 function Player(sprite, name) {
   this.init(sprite, name);
 }
@@ -106,25 +136,35 @@ function Player(sprite, name) {
 Player.prototype = Object.create(Entity.prototype);
 Player.prototype.constructor = Player;
 
-// Initialize hero with given sprite and name
-Player.prototype.init = function(newSprite, newName) {
-  this.sprite = newSprite;
-  this.name = newName;
+/**
+ * @description Initialize hero with given sprite and name
+ * @param {string} sprite - path to the sprite (image) of the hero
+ * @param {string} name - name of the hero
+ */
+Player.prototype.init = function(sprite, name) {
+  this.sprite = sprite;
+  this.name = name;
   this.x = 101*2;
   this.tile = 4;
   this.y = -20 + this.tile * 82.5;
   this.lifes = NUMBER_LIFES_START;
 };
 
-// Reset the player position when collision with enemy or when
-// it reached the water
+/**
+ * @description Reset the player position when collision with enemy or when
+ * it reached the water
+ */
 Player.prototype.reset = function() {
   this.x = 101*2;
   this.tile = 4;
   this.y = -20 + this.tile * 82.5;
 };
 
-// Check whether hero reached the water
+/**
+ * @description Check whether hero reached the water
+ * it reached the water
+ * @returns {boolean} True if player reached water
+ */
 Player.prototype.reachWater = function() {
   if (this.y == -20) {
     return true;
@@ -135,6 +175,10 @@ Player.prototype.reachWater = function() {
 // -----------------------------------------------
 // Game - play, pause, levelup, game over
 // -----------------------------------------------
+/**
+ * @description Game functionality such as play, pause, levelup, game over
+ * @constructor
+ */
 var Game = function() {
   this.pause = false,
   this.gameover = false,
@@ -152,6 +196,9 @@ var Game = function() {
 }
 
 // TO DO: Ask player to choose a hero
+/**
+ * @description Initialie game with player and a few enemies
+ */
 Game.prototype.init = function() {
   this.player = new Player("images/char-boy.png", "Char Boy");
   this.allEnemies = [new Enemy(this.enemyVelocity),
@@ -160,9 +207,12 @@ Game.prototype.init = function() {
   this.specialTiles = [];
 }
 
-// Check for collisions between hero and enemies
-// Treat collisions differently depending whether game is in
-// squishmode (i.e. player took a star and can kill bugs now)
+/**
+  * @description Check for collisions between hero and enemies
+  * Treat collisions differently depending whether game is in
+  * squishmode (i.e. player took a star and can kill bugs now)
+  * @returns {boolean} True if collision occured between player and enemy
+ */
 Game.prototype.checkCollisions = function() {
   for (var i = 0; i < this.allEnemies.length; i++) {
     if (this.checkCollisionBox(this.allEnemies[i])) {
@@ -183,11 +233,14 @@ Game.prototype.checkCollisions = function() {
   return false;
 }
 
-// Check whether player picked up a gem, star, heart or other special
-// items.
-// Hearts increase the lifes of the player, stars lead to squish mode
-// where the player can kill bugs and reduce their number. Everything else gives
-// merely points.
+/**
+ * @description Check whether player picked up a gem, star, heart or other special items.
+ * Hearts increase the lifes of the player, stars lead to squish mode
+ * where the player can kill bugs and reduce their number. Everything else gives
+ * merely points.
+ * Treat collisions differently depending whether game is in
+ * squishmode (i.e. player took a star and can kill bugs now)
+ */
 Game.prototype.checkCollisionsGems = function() {
   for (var i = 0; i < this.specialTiles.length; i++) {
     if (this.checkCollisionBox(this.specialTiles[i])) {
@@ -215,7 +268,9 @@ Game.prototype.checkCollisionsGems = function() {
   }
 }
 
-// Set game to squish mode where the player can kill bugs.
+/**
+ * @description Set game to squish mode where the player can kill bugs.
+ */
 Game.prototype.squishMode = function() {
   this.squishmode = true;
   this.showWhileSquishing();
@@ -227,8 +282,12 @@ Game.prototype.squishMode = function() {
   }.bind(this), 10000);
 }
 
-// Check for collision within a box, i.e. there is a margin
-// that counts as a collision.
+/**
+ * @description Check for collision within a box, i.e. there is a margin
+ * that counts as a collision.
+ * @param {Enemy} enemy
+ * @returns {boolean} True if collision occured between player and the enemy
+ */
 Game.prototype.checkCollisionBox = function(enemy) {
   if (enemy.tile == this.player.tile) {
     enemy.xLo = enemy.x;
@@ -242,7 +301,9 @@ Game.prototype.checkCollisionBox = function(enemy) {
   return false;
 }
 
-// Update the game statistics when player reaches the water
+/**
+ * @description Update the game statistics when player reaches the water
+ */
 Game.prototype.update = function() {
   if (this.player.reachWater()) {
     this.level++;
@@ -260,8 +321,10 @@ Game.prototype.update = function() {
   }
 }
 
-// Statistics to show while the game is being played.
-// This might have to be changed later when the player can choose his own hero.
+/**
+ * @description Statistics to show while the game is being played.
+ * This might have to be changed later when the player can choose his own hero.
+ */
 Game.prototype.showWhilePlaying = function() {
   var heading = document.createElement("h2");
   heading.setAttribute("id", "heading");
@@ -279,8 +342,10 @@ Game.prototype.showWhilePlaying = function() {
   this.scoreElement.appendChild(scoreh3);
 }
 
-// Show different text while the player can squish bugs instead
-// to avoid them
+/**
+ * @description Show different text while the player can squish bugs instead
+ * to avoid them
+ */
 Game.prototype.showWhileSquishing = function() {
   var scoreElement = document.getElementById("scoring");
   var oldScoreElement = document.getElementById("score");
@@ -292,7 +357,9 @@ Game.prototype.showWhileSquishing = function() {
   scoreElement.replaceChild(scoreh1, oldScoreElement);
 }
 
-// Update the score
+/**
+ * @description Update the score
+ */
 Game.prototype.updateScoring = function() {
   var scoreElement = document.getElementById("scoring");
   var oldScoreElement = document.getElementById("score");
@@ -305,8 +372,10 @@ Game.prototype.updateScoring = function() {
   scoreElement.replaceChild(scoreh3, oldScoreElement);
 }
 
-// Show that the game is over and that the player can restart the game
-// by pressing SPACE
+/**
+ * @description Show that the game is over and that the player can restart the game
+ * by pressing SPACE
+ */
 Game.prototype.showGameOver = function() {
   this.pause = true;
   this.gameover = true;
@@ -319,7 +388,9 @@ Game.prototype.showGameOver = function() {
   ctx.fillText("Press [space] to restart", CANVAS_WIDTH/2, CANVAS_HEIGHT/2 + 30);
 }
 
-// Show that the player leveled up
+/**
+ * @description Show that the player leveled up
+ */
 Game.prototype.showLevelUp = function() {
   this.pause = true;
   this.levelup = true;
