@@ -78,7 +78,7 @@ Tile.prototype.constructor = Tile;
  */
 function Enemy(velocity) {
   this.init(velocity);
-};
+}
 
 // JavaScript inheritance
 Enemy.prototype = Object.create(Entity.prototype);
@@ -186,25 +186,25 @@ var Game = function() {
   this.level = 1,
   this.score = 0,
   this.enemyVelocity = 100,
-  this.gameElement = document.getElementById("game"),
-  this.scoreElement = document.getElementById("scoring"),
-  this.descriptionElement = document.getElementById("description");
+  this.gameElement = document.getElementById('game'),
+  this.scoreElement = document.getElementById('scoring'),
+  this.descriptionElement = document.getElementById('description');
   // Initiate the game
   this.init();
   this.showWhilePlaying();
 }
 
-// TO DO: Ask player to choose a hero
+// TODO: Ask player to choose a hero
 /**
  * @description Initialie game with player and a few enemies
  */
 Game.prototype.init = function() {
-  this.player = new Player("images/char-boy.png", "Char Boy");
+  this.player = new Player('images/char-boy.png', 'Char Boy');
   this.allEnemies = [new Enemy(this.enemyVelocity),
                      new Enemy(this.enemyVelocity),
                      new Enemy(this.enemyVelocity)];
   this.specialTiles = [];
-}
+};
 
 /**
   * @description Check for collisions between hero and enemies
@@ -325,18 +325,18 @@ Game.prototype.update = function() {
  * This might have to be changed later when the player can choose his own hero.
  */
 Game.prototype.showWhilePlaying = function() {
-  var heading = document.createElement("h2");
-  heading.setAttribute("id", "heading");
-  var text_heading = document.createTextNode("Help " + this.player.name + " reach the water!");
-  var scoreh3 = document.createElement("h3");
-  scoreh3.setAttribute("id", "score");
-  var text_score = document.createTextNode("Lifes: " + this.player.lifes +
-                                           "      Level: " + this.level +
-                                           "    Score: " + this.score);
+  var heading = document.createElement('h2');
+  heading.setAttribute('id', 'heading');
+  var text_heading = document.createTextNode('Help ' + this.player.name + ' reach the water!');
+  var scoreh3 = document.createElement('h3');
+  scoreh3.setAttribute('id', 'score');
+  var text_score = document.createTextNode('Lifes: ' + this.player.lifes +
+                                           '      Level: ' + this.level +
+                                           '    Score: ' + this.score);
   heading.appendChild(text_heading);
   scoreh3.appendChild(text_score);
 
-  var keys = document.getElementById("keys");
+  var keys = document.getElementById('keys');
   this.descriptionElement.insertBefore(heading, keys);
   this.scoreElement.appendChild(scoreh3);
 }
@@ -346,13 +346,13 @@ Game.prototype.showWhilePlaying = function() {
  * to avoid them
  */
 Game.prototype.showWhileSquishing = function() {
-  var scoreElement = document.getElementById("scoring");
-  var oldScoreElement = document.getElementById("score");
-  var scoreh1 = document.createElement("h1");
-  scoreh1.setAttribute("id", "score");
-  var text_score = document.createTextNode("Squish those bugs!");
+  var scoreElement = document.getElementById('scoring');
+  var oldScoreElement = document.getElementById('score');
+  var scoreh1 = document.createElement('h1');
+  scoreh1.setAttribute('id', 'score');
+  var text_score = document.createTextNode('Squish those bugs!');
   scoreh1.appendChild(text_score);
-  scoreh1.style.color = "Red";
+  scoreh1.style.color = 'Red';
   scoreElement.replaceChild(scoreh1, oldScoreElement);
 }
 
@@ -360,13 +360,13 @@ Game.prototype.showWhileSquishing = function() {
  * @description Update the score
  */
 Game.prototype.updateScoring = function() {
-  var scoreElement = document.getElementById("scoring");
-  var oldScoreElement = document.getElementById("score");
-  var scoreh3 = document.createElement("h3");
-  scoreh3.setAttribute("id", "score");
-  var text_score = document.createTextNode("Lifes: " + this.player.lifes +
-                                           "      Level: " + this.level +
-                                           "    Score: " + this.score);
+  var scoreElement = document.getElementById('scoring');
+  var oldScoreElement = document.getElementById('score');
+  var scoreh3 = document.createElement('h3');
+  scoreh3.setAttribute('id', 'score');
+  var text_score = document.createTextNode('Lifes: ' + this.player.lifes +
+                                           '      Level: ' + this.level +
+                                           '    Score: ' + this.score);
   scoreh3.appendChild(text_score);
   scoreElement.replaceChild(scoreh3, oldScoreElement);
 }
@@ -378,13 +378,13 @@ Game.prototype.updateScoring = function() {
 Game.prototype.showGameOver = function() {
   this.pause = true;
   this.gameover = true;
-  ctx.fillStyle = "rgba(0,0,0,0.3)";
+  ctx.fillStyle = 'rgba(0,0,0,0.3)';
   ctx.fillRect(0, CANVAS_HEIGHT/2-100, CANVAS_WIDTH, 200);
-  ctx.fillStyle = "white";
-  ctx.font = "40px serif";
-  ctx.textAlign = "center";
-  ctx.fillText("Game Over!", CANVAS_WIDTH/2, CANVAS_HEIGHT/2 - 30);
-  ctx.fillText("Press [space] to restart", CANVAS_WIDTH/2, CANVAS_HEIGHT/2 + 30);
+  ctx.fillStyle = 'white';
+  ctx.font = '40px serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('Game Over!', CANVAS_WIDTH/2, CANVAS_HEIGHT/2 - 30);
+  ctx.fillText('Press [space] to restart', CANVAS_WIDTH/2, CANVAS_HEIGHT/2 + 30);
 }
 
 /**
@@ -393,13 +393,13 @@ Game.prototype.showGameOver = function() {
 Game.prototype.showLevelUp = function() {
   this.pause = true;
   this.levelup = true;
-  ctx.fillStyle = "rgba(0,0,0,0.3)";
+  ctx.fillStyle = 'rgba(0,0,0,0.3)';
   ctx.fillRect(0, CANVAS_HEIGHT/2-100, CANVAS_WIDTH, 200);
-  ctx.fillStyle = "white";
-  ctx.font = "40px serif";
-  ctx.textAlign = "center";
-  ctx.fillText("Level up! :D", CANVAS_WIDTH/2, CANVAS_HEIGHT/2 - 30);
-  ctx.fillText("More Bugs!", CANVAS_WIDTH/2, CANVAS_HEIGHT/2 + 30);
+  ctx.fillStyle = 'white';
+  ctx.font = '40px serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('Level up! :D', CANVAS_WIDTH/2, CANVAS_HEIGHT/2 - 30);
+  ctx.fillText('More Bugs!', CANVAS_WIDTH/2, CANVAS_HEIGHT/2 + 30);
 }
 
 // Reset the game in the case of a game over and restart
