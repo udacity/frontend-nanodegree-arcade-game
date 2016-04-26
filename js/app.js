@@ -108,7 +108,6 @@ Enemy.prototype.init = function(velocity) {
  * @description Update the enemies position, required method for game
  * @param {number} dt - time step between updates
  */
-s
 Enemy.prototype.update = function(dt) {
   this.x = this.x + this.velocity * dt;
   if (this.x > CANVAS_WIDTH) {
