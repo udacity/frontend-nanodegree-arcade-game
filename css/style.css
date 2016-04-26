@@ -1,3 +1,47 @@
+* {
+    background-color: #9fabe7;
+}
 body {
     text-align: center;
+}
+
+.game {
+    font-family: 'Slabo 27px', serif;
+    background-color: #9fabe7;
+    color: white;
+    text-align: center;
+}
+
+.title {
+    font-size: 3em;
+}
+
+.row {
+  display: flex;
+}
+
+#description {
+    max-width: 505px;
+    border: 2px solid;
+    border-color: white;
+    border-radius: 10px;
+    -webkit-box-shadow: 10px 10px 15px 0px rgba(255,255,255,1);
+    -moz-box-shadow: 10px 10px 15px 0px rgba(255,255,255,1);
+    box-shadow: 10px 10px 15px 0px rgba(255,255,255,1);
+    margin-left: calc((100% - 505px)/2);
+    
+}
+
+@media (min-width: 992px) {
+    #description {
+        margin: 50px 0;
+    }
+}
+
+#scoring {
+  white-space: pre;
+}
+
+#ignore-me {
+  min-height: 56px;
 }
