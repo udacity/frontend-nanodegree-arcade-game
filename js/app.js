@@ -1,12 +1,14 @@
 // Creating Objects
 var config = new Config,
     resources = new Resources,
-    scenario = new Scenario
-    routes = new Routes;
+    scenario = new Scenario,
+    routes = new Routes,
+    traffic = new Traffic;
 
 // Assigning settings
 resources.setConfig(config.select('resources'));
 scenario.setConfig(config.select('scenario'));
+traffic.setConfig(config.select('traffic'));
 
 // Creating Routes
 routes.create(
@@ -14,9 +16,9 @@ routes.create(
     resources.imageSize('height')
 );
 
-// Test
-var stoneRoutes = routes.get('stone');
-console.log(routes.getFirstOrLast(stoneRoutes, 'last'));
+// Assigning routes to my traffic manager
+traffic.setRoutes(this.routes);
+
 
 /*
 // Enemies our player must avoid
