@@ -1,9 +1,11 @@
 var config = new Config,
-    resources = new Resources;
+    resources = new Resources,
+    scenario = new Scenario;
 
 resources.setConfig(config.select('resources'));
-var s = resources.urlsAllImages(true);
-console.log(s);
+scenario.setConfig(config.select('scenario'));
+
+console.log(scenario.height(resources.imageSize('height'), resources.imageSize('full')));
 
 /*
 // Enemies our player must avoid
