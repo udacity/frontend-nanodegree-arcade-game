@@ -46,10 +46,9 @@ Scenario.prototype.getEnvironments = function() {
 }
 
 /**
- * @description The scenario is divided between environments. these environments
- * have their own type of terrain, such as water, stone, etc. With this feature
- * you will have access to the number of lines each environment. It is also
- * possible to return the amount of line in a particular environment.
+ * @description With this feature you will have access to the number of lines
+ * each environment. It is also possible to return the amount of line in a
+ * particular environment.
  * @param {string} environment - The environment you want to return the
  * amount of line.
  * @return {object or number}

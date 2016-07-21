@@ -1,11 +1,22 @@
+// Creating Objects
 var config = new Config,
     resources = new Resources,
-    scenario = new Scenario;
+    scenario = new Scenario
+    routes = new Routes;
 
+// Assigning settings
 resources.setConfig(config.select('resources'));
 scenario.setConfig(config.select('scenario'));
 
-console.log(scenario.height(resources.imageSize('height'), resources.imageSize('full')));
+// Creating Routes
+routes.create(
+    scenario.rowsForEnvironment(),
+    resources.imageSize('height')
+);
+
+// Test
+var stoneRoutes = routes.get('stone');
+console.log(routes.getFirstOrLast(stoneRoutes, 'last'));
 
 /*
 // Enemies our player must avoid
