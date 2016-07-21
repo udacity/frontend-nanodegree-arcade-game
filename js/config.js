@@ -64,7 +64,5 @@ var Config = function() {
  * @return {object} Object containing the group settings
  */
 Config.prototype.select = function(group) {
-    if(this.hasOwnProperty(group))
-        return this[group];
-    throw new TypeError('Invalid configuration group name: ' + group);
+    return this[group];
 };

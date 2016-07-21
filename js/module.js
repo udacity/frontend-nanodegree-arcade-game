@@ -3,11 +3,8 @@
  * @constructor
  * @param {object} config - configurations of module
  */
-var Module = function(config) {
+var Module = function() {
 	this.config;
-
-	if(config !== undefined)
-		this.setConfig(config);
 };
 
 /**
@@ -15,7 +12,5 @@ var Module = function(config) {
  * @param {object} config - configurations of module
  */
 Module.prototype.setConfig = function(config) {
-	if(!(config.constructor === Object))
-		throw new TypeError('Invalid configuration object');
 	this.config = config;
 };

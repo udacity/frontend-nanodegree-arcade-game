@@ -1,3 +1,11 @@
+var config = new Config,
+    resources = new Resources;
+
+resources.setConfig(config.select('resources'));
+var s = resources.urlsAllImages(true);
+console.log(s);
+
+/*
 // Enemies our player must avoid
 var Enemy = function() {
     // Variables applied to each of our instances go here,
@@ -44,3 +52,4 @@ document.addEventListener('keyup', function(e) {
 
     player.handleInput(allowedKeys[e.keyCode]);
 });
+*/

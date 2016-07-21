@@ -1,111 +1,84 @@
-/* Resources.js
- * This is simply an image loading utility. It eases the process of loading
- * image files so that they can be used within your game. It also includes
- * a simple "caching" layer so it will reuse cached images if you attempt
- * to load the same image multiple times.
+/**
+ * @description Manages resources.
+ * @constructor
+ * @param {config} config - configurations of resources
  */
-(function() {
-    var resourceCache = {};
-    var loading = [];
-    var readyCallbacks = [];
+var Resources = function(config) {
+	Module.call(this, config);
+};
 
-    /* This is the publicly accessible image loading function. It accepts
-     * an array of strings pointing to image files or a string for a single
-     * image. It will then call our private image loading function accordingly.
-     */
-    function load(urlOrArr) {
-        if(urlOrArr instanceof Array) {
-            /* If the developer passed in an array of images
-             * loop through each value and call our image
-             * loader on that image file
-             */
-            urlOrArr.forEach(function(url) {
-                _load(url);
-            });
-        } else {
-            /* The developer did not pass an array to this function,
-             * assume the value is a string and call our image loader
-             * directly.
-             */
-            _load(urlOrArr);
-        }
-    }
+Resources.prototype = Object.create(Module.prototype);
+Resources.prototype.constructor = Resources;
 
-    /* This is our private image loader function, it is
-     * called by the public image loader function.
-     */
-    function _load(url) {
-        if(resourceCache[url]) {
-            /* If this URL has been previously loaded it will exist within
-             * our resourceCache array. Just return that image rather
-             * re-loading the image.
-             */
-            return resourceCache[url];
-        } else {
-            /* This URL has not been previously loaded and is not present
-             * within our cache; we'll need to load this image.
-             */
-            var img = new Image();
-            img.onload = function() {
-                /* Once our image has properly loaded, add it to our cache
-                 * so that we can simply return this image if the developer
-                 * attempts to load this file in the future.
-                 */
-                resourceCache[url] = img;
+/**
+ * @description Selects the settings for a specific resource.
+ * @param  {string} resource - Resource name to be selected
+ * @return {object} Object containing all resource settings
+ */
+Resources.prototype.getResourceConfig = function(resource) {
+	return this.config[resource];
+};
 
-                /* Once the image is actually loaded and properly cached,
-                 * call all of the onReady() callbacks we have defined.
-                 */
-                if(isReady()) {
-                    readyCallbacks.forEach(function(func) { func(); });
-                }
-            };
+/**
+ * @description Image dimensions.
+ * @param  {string} dimension - Options: width, height and full
+ * @return {integer}
+ */
+Resources.prototype.imageSize = function(dimension) {
+	var imageConfig = this.getResourceConfig('images');
+	return imageConfig.size[dimension];
+};
 
-            /* Set the initial cache value to false, this will change when
-             * the image's onload event handler is called. Finally, point
-             * the image's src attribute to the passed in URL.
-             */
-            resourceCache[url] = false;
-            img.src = url;
-        }
-    }
+/**
+ * @description Redeem the URL of a specific resource.
+ * @param  {string} group   - The type of element that refers the resource.
+ * Exemple: scenario, enemies, etc
+ * @param  {string} element - Element name. Exemple: water
+ * @return {string}
+ */
+Resources.prototype.urlImage = function(group, element) {
+	var imageConfig = this.getResourceConfig('images');
+	return imageConfig.urls[group][element];
+};
 
-    /* This is used by developers to grab references to images they know
-     * have been previously loaded. If an image is cached, this functions
-     * the same as calling load() on that URL.
-     */
-    function get(url) {
-        return resourceCache[url];
-    }
+/**
+ * @description Returns a set of URLs according to the group of element.
+ * @param  {string} group    - The group of element that refers the resource.
+ * Exemple: scenario, enemies, etc
+ * @param  {boolean} toObject - When the value is true returns the urls set on
+ * an object
+ * @return {array}
+ */
+Resources.prototype.urlsByImagesGroup = function(group, toObject) {
+	var imagesArray = [],
+		imageConfig = this.getResourceConfig('images'),
+		imagesByGroup = imageConfig.urls[group];
 
-    /* This function determines if all of the images that have been requested
-     * for loading have in fact been properly loaded.
-     */
-    function isReady() {
-        var ready = true;
-        for(var k in resourceCache) {
-            if(resourceCache.hasOwnProperty(k) &&
-               !resourceCache[k]) {
-                ready = false;
-            }
-        }
-        return ready;
-    }
+	if(toObject === true)
+		return imagesByGroup;
 
-    /* This function will add a function to the callback stack that is called
-     * when all requested images are properly loaded.
-     */
-    function onReady(func) {
-        readyCallbacks.push(func);
-    }
+	Object.keys(imagesByGroup).forEach(function(url) {
+		imagesArray.push(imagesByGroup[url]);
+	});
+	return imagesArray;
+};
 
-    /* This object defines the publicly accessible functions available to
-     * developers by creating a global Resources object.
-     */
-    window.Resources = {
-        load: load,
-        get: get,
-        onReady: onReady,
-        isReady: isReady
-    };
-})();
+/**
+ * @description Returns a set with the urls of all resources.
+ * @param  {boolean} toObject - When the value is true returns the urls set on
+ * an object
+ * @return {array}
+ */
+Resources.prototype.urlsAllImages = function(toObject) {
+	var imagesArray = [],
+		imageConfig = this.getResourceConfig('images'),
+		allImages = imageConfig.urls;
+
+	if(toObject === true)
+		return allImages;
+
+	Object.keys(allImages).forEach(function(group){
+		imagesArray = imagesArray.concat(this.urlsByImagesGroup(group));
+	}.bind(this));
+	return imagesArray;
+};
