@@ -35,6 +35,11 @@ engine.setResources(resources);
 engine.setScenario(scenario);
 engine.setLoader(loader);
 
+// Test Enemy
+var enemy = new Bug;
+var route = traffic.getEmptyRoute(enemy.getEnvironments());
+enemy.init(route, 1, resources);
+console.log(enemy);
 
 // Run engine
 loader.onReady(engine.run.bind(engine));
