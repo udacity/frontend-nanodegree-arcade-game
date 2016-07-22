@@ -34,7 +34,7 @@ var Config = function() {
 					boy: 'images/char-boy.png'
 				},
 				bonus: {
-					gemBlue: 'images/gem-blue.png'
+					gemBlue: 'images/Gem Blue.png'
 				}
 			}
 		}

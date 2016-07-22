@@ -1,9 +1,10 @@
 // Creating objects
-var config = new Config,
+var config      = new Config,
     resources   = new Resources,
     scenario    = new Scenario,
     routes      = new Routes,
     traffic     = new Traffic,
+    loader      = new ResourcesLoader,
     engine      = new Engine(this);
 
 // Assigning settings
@@ -26,5 +27,8 @@ var imgWidth        = this.resources.imageSize('width');
 
 this.engine.createCanvas(scenarioWidth, scenarioHeight);
 
+// Loader Resources
+loader.load(resources.urlsAllImages());
+
 // Run engine
-this.engine.run();
+loader.onReady(engine.run.bind(engine));

@@ -6,9 +6,9 @@
  */
 var Engine = function(global) {
     this.ctx;
-	this.lastTime;
-	this.doc = global.document;
-	this.win = global.window;
+    this.lastTime;
+    this.doc = global.document;
+    this.win = global.window;
 };
 
 /**
