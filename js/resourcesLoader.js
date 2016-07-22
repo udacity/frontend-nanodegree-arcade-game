@@ -54,7 +54,7 @@ ResourcesLoader.prototype._load = function(url) {
  * @param  {string} url
  * @return {img}
  */
-ResourcesLoader.prototype.get = function(url) {
+ResourcesLoader.prototype.get = function(url) {	
 	return this.resourceCache[url];
 };
 

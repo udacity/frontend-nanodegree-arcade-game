@@ -85,21 +85,27 @@ Scenario.prototype.height = function(imageHeight, imageHeightFull) {
 };
 
 /**
- * @description Generates an array with the exact amount of urls for each
- * environment.
- * @param  {object} resources - An object containing in their property/value:
- * type of environment / corresponding url. Exemple:
- * { water: 'images/water-block.png' }
- * @return {array}
- */
-Scenario.prototype.rowsImages = function(resources) {};
-
-/**
  * @description Renders the scene
  * @param  {canvas 2d} ctx
- * @param  {object} resourcesLoader - Resources Loader instance
- * @param  {[type]} resources       - An object containing width/height of the
- * images of the scene and the urls of the respective types of environment.
- * Exemple: { imageWidth: .., imageHeight: .., Urls: { water: .. }}
+ * @param  {object} loader - Resources Loader instance
+ * @param  {[type]} resources - Resources instance
  */
-Scenario.prototype.render = function(ctx, resourcesLoader, resources) {};
+Scenario.prototype.render = function(ctx, loader, resources) {
+	var urlsRowsImages = []
+		numRows = this.rows(),
+		numCols = this.cols();
+
+	this.getEnvironments().forEach(function(environment) {
+		for(var i = 0; i < this.rowsForEnvironment(environment); i++) {
+			urlsRowsImages.push(resources.urlImage('scenario', environment));
+		}
+	}.bind(this));
+
+	for (var row = 0; row < numRows; row++) {
+		for (var col = 0; col < numCols; col++) {
+			ctx.drawImage(loader.get(urlsRowsImages[row]),
+				col * resources.imageSize('width'),
+				row * resources.imageSize('height'));
+		}
+	}
+};

@@ -9,6 +9,11 @@ var Engine = function(global) {
     this.lastTime;
     this.doc = global.document;
     this.win = global.window;
+
+    //parts
+    this.loader;
+    this.scenario;
+    this.resources;
 };
 
 /**
@@ -33,9 +38,40 @@ Engine.prototype.main = function() {
         dt = (now - this.lastTime) / 1000.0;
 
     this.update(dt);
+    this.render();
     this.lastTime = now;
 	this.win.requestAnimationFrame(this.main.bind(this));
 };
+
+/**
+ * Assigning Scenario instance
+ * @param  {Scenario} scenario
+ */
+Engine.prototype.setScenario = function(scenario) {
+    if(!(scenario instanceof Scenario))
+        throw new TypeError('Assign the correct instance of Scenario.');
+    this.scenario = scenario;
+}
+
+/**
+ * Assigning Resources instance
+ * @param  {Resources} resources
+ */
+Engine.prototype.setResources = function(resources) {
+    if(!(resources instanceof Resources))
+        throw new TypeError('Assign the correct instance of Resources.');
+    this.resources = resources;
+}
+
+/**
+ * Assigning Resources Loader instance
+ * @param  {ResourcesLoader} loader
+ */
+Engine.prototype.setLoader = function(loader) {
+    if(!(loader instanceof ResourcesLoader))
+        throw new TypeError('Assign the correct instance of ResourcesLoader.');
+    this.loader = loader;
+}
 
 /**
  * @description This function is called by main (our game loop) and itself
@@ -51,7 +87,15 @@ Engine.prototype.update = function(dt) {
  * @param  {number} dt - delta time
  */
 Engine.prototype.updateEntities = function(dt) {
-    console.log(dt);
+};
+
+/**
+ * This function is called every game tick (or loop of the game engine) because
+ * that's how games work - they are flipbooks creating the illusion of animation
+ * but in reality they are just drawing the entire screen over and over.
+ */
+Engine.prototype.render = function() {
+    this.scenario.render(this.ctx, this.loader, this.resources);
 };
 
 /**

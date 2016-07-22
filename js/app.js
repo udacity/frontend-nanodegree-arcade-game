@@ -25,10 +25,16 @@ var imgWidth        = this.resources.imageSize('width');
     scenarioWidth   = this.scenario.width(imgWidth);
     scenarioHeight  = this.scenario.height(imgHeight, imgFull);
 
-this.engine.createCanvas(scenarioWidth, scenarioHeight);
+engine.createCanvas(scenarioWidth, scenarioHeight);
 
 // Loader Resources
 loader.load(resources.urlsAllImages());
+
+// Assigning parts
+engine.setResources(resources);
+engine.setScenario(scenario);
+engine.setLoader(loader);
+
 
 // Run engine
 loader.onReady(engine.run.bind(engine));
