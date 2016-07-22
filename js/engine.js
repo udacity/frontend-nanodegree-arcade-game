@@ -14,6 +14,8 @@ var Engine = function(global) {
     this.loader;
     this.scenario;
     this.resources;
+    this.traffic;
+    this.enemies = [];
 };
 
 /**
@@ -27,6 +29,56 @@ Engine.prototype.createCanvas = function(width, height) {
 	this.ctx = canvas.getContext('2d');
 	div = this.doc.getElementById('canvas-container');
 	div.appendChild(canvas);
+};
+
+/**
+ * Assigning Scenario instance
+ * @param  {Scenario} scenario
+ */
+Engine.prototype.setScenario = function(scenario) {
+    if(!(scenario instanceof Scenario))
+        throw new TypeError('Assign the correct instance of Scenario.');
+    this.scenario = scenario;
+};
+
+/**
+ * Assigning Resources instance
+ * @param  {Resources} resources
+ */
+Engine.prototype.setResources = function(resources) {
+    if(!(resources instanceof Resources))
+        throw new TypeError('Assign the correct instance of Resources.');
+    this.resources = resources;
+};
+
+/**
+ * Assigning Resources Loader instance
+ * @param  {ResourcesLoader} loader
+ */
+Engine.prototype.setLoader = function(loader) {
+    if(!(loader instanceof ResourcesLoader))
+        throw new TypeError('Assign the correct instance of ResourcesLoader.');
+    this.loader = loader;
+};
+
+/**
+ * Assigning Traffic instance
+ * @param  {Traffic} traffic
+ */
+Engine.prototype.setTraffic = function(traffic) {
+    if(!(traffic instanceof Traffic))
+        throw new TypeError('Assign the correct instance of Traffic.');
+    this.traffic = traffic;
+};
+
+/**
+ * Add Enemies
+ * @param  {object} enemy - Enemy instance
+ */
+Engine.prototype.addEnemy = function(enemy) {
+    if(!(enemy instanceof Enemy))
+        throw new TypeError('Assign the correct instance of Enemy.');
+    this.enemies.push(enemy);
 };
 
 /**
@@ -44,36 +96,6 @@ Engine.prototype.main = function() {
 };
 
 /**
- * Assigning Scenario instance
- * @param  {Scenario} scenario
- */
-Engine.prototype.setScenario = function(scenario) {
-    if(!(scenario instanceof Scenario))
-        throw new TypeError('Assign the correct instance of Scenario.');
-    this.scenario = scenario;
-}
-
-/**
- * Assigning Resources instance
- * @param  {Resources} resources
- */
-Engine.prototype.setResources = function(resources) {
-    if(!(resources instanceof Resources))
-        throw new TypeError('Assign the correct instance of Resources.');
-    this.resources = resources;
-}
-
-/**
- * Assigning Resources Loader instance
- * @param  {ResourcesLoader} loader
- */
-Engine.prototype.setLoader = function(loader) {
-    if(!(loader instanceof ResourcesLoader))
-        throw new TypeError('Assign the correct instance of ResourcesLoader.');
-    this.loader = loader;
-}
-
-/**
  * @description This function is called by main (our game loop) and itself
  * calls all of the functions which may need to update entity's data.
  * @param  {number} dt - delta time
@@ -87,6 +109,22 @@ Engine.prototype.update = function(dt) {
  * @param  {number} dt - delta time
  */
 Engine.prototype.updateEntities = function(dt) {
+    // Enemies
+    if(this.enemies.length > 0) {
+		this.enemies.forEach(function(enemy) {
+			var imgSize = this.resources.imageSize('width');
+			enemy.update(dt, this.scenario.width(imgSize));
+			if(enemy.itRestarted()) {
+				if(enemy.lastTraveledRoute !== undefined)
+					this.traffic.removeOfRoute(enemy.lastTraveledRoute);
+				var route = this.traffic.getEmptyRoute(enemy.getEnvironments());
+				enemy.init(route, 1, this.resources); // <= include level
+				this.traffic.addOnTheRoute(route);
+			}
+		}.bind(this));
+	}
+
+    // Player
 };
 
 /**
@@ -96,6 +134,12 @@ Engine.prototype.updateEntities = function(dt) {
  */
 Engine.prototype.render = function() {
     this.scenario.render(this.ctx, this.loader, this.resources);
+
+    // Enemies
+    if (this.enemies.length > 0)
+        this.enemies.forEach(function(enemy) {
+            enemy.render(this.ctx, this.loader);
+        }.bind(this));
 };
 
 /**

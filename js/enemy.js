@@ -5,12 +5,11 @@
  * @return {object}
  */
 var Enemy = function() {
-    this.x = 0;
     this.speed;
     this.route;
     this.sprite;
-    this.lastTraveledRoute;
     this.environments;
+    this.lastTraveledRoute;
 };
 
 /**
@@ -22,14 +21,19 @@ var Enemy = function() {
  * @param  {object} resources - Resource instance
  */
 Enemy.prototype.init = function(route, gameLevel, resources) {
-    var minSpeed = 150 + gameLevel * 6,
-        maxSpeed = 90 + gameLevel * 3,
-        spriteGroup = this.sprite.group,
-        spriteElement = this.sprite.element;
+    var spriteGroup = this.sprite.group,
+        spriteElement = this.sprite.element,
+        minSpeed = 150 + gameLevel * 6,
+        maxSpeed = 90 + gameLevel * 3;
 
+    // Define Route and Speed
+    this.x = 0;
     this.route = route;
     this.speed = Math.random() * maxSpeed + minSpeed;
-    this.sprite = resources.urlImage(spriteGroup, spriteElement);
+
+    // Define Sprite
+    if(typeof this.sprite === 'object')
+        this.sprite = resources.urlImage(spriteGroup, spriteElement);
 };
 
 /**

@@ -34,12 +34,11 @@ loader.load(resources.urlsAllImages());
 engine.setResources(resources);
 engine.setScenario(scenario);
 engine.setLoader(loader);
+engine.setTraffic(traffic);
 
 // Test Enemy
 var enemy = new Bug;
-var route = traffic.getEmptyRoute(enemy.getEnvironments());
-enemy.init(route, 1, resources);
-console.log(enemy);
+engine.addEnemy(enemy);
 
 // Run engine
 loader.onReady(engine.run.bind(engine));
