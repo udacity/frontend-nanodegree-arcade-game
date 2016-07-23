@@ -12,6 +12,13 @@ resources.setConfig(config.select('resources'));
 scenario.setConfig(config.select('scenario'));
 traffic.setConfig(config.select('traffic'));
 
+// Assigning Image Size
+scenario.setImageSize({
+    width: resources.imageSize('width'),
+    height: resources.imageSize('height'),
+    full: resources.imageSize('full')
+});
+
 // Creating routes
 routes.create(scenario.rowsForEnvironment(), resources.imageSize('height'));
 
@@ -19,22 +26,16 @@ routes.create(scenario.rowsForEnvironment(), resources.imageSize('height'));
 traffic.setRoutes(this.routes);
 
 // Create canvas
-var imgWidth        = this.resources.imageSize('width');
-    imgHeight       = this.resources.imageSize('height'),
-    imgFull         = this.resources.imageSize('full');
-    scenarioWidth   = this.scenario.width(imgWidth);
-    scenarioHeight  = this.scenario.height(imgHeight, imgFull);
-
-engine.createCanvas(scenarioWidth, scenarioHeight);
+engine.createCanvas(this.scenario.width(), this.scenario.height());
 
 // Loader Resources
 loader.load(resources.urlsAllImages());
 
 // Assigning parts
-engine.setResources(resources);
-engine.setScenario(scenario);
-engine.setLoader(loader);
-engine.setTraffic(traffic);
+engine.setParts('resources', resources);
+engine.setParts('scenario', scenario);
+engine.setParts('loader', loader);
+engine.setParts('traffic', traffic);
 
 // Test Enemy
 var enemy = new Bug;

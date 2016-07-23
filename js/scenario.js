@@ -4,11 +4,18 @@
  * @param {config} config - configurations of scenario
  */
 var Scenario = function(config) {
+	this.imageSize = {};
 	Module.call(this, config);
 };
 
 Scenario.prototype = Object.create(Module.prototype);
 Scenario.prototype.constructor = Scenario;
+
+Scenario.prototype.setImageSize = function(imageSize) {
+	Object.keys(imageSize).forEach(function(dimension) {
+		this.imageSize[dimension] = imageSize[dimension];
+	}.bind(this));
+};
 
 /**
  * @description The scenario is defined by columns. You can increase the number
@@ -62,26 +69,19 @@ Scenario.prototype.rowsForEnvironment = function(environment) {
 };
 
 /**
- * @description Whidth of scenario
- * @param  {integer} imageWidth - This value can be changed in the resource
- * settings. IMPORTANT: Change the value only if you have knowledge of the
- * codes involved.
+ * @description Whidth of scenario.
  * @return {integer}
  */
-Scenario.prototype.width = function(imageWidth) {
-	return this.cols() * imageWidth;
+Scenario.prototype.width = function() {
+	return this.cols() * this.imageSize.width;
 };
 
 /**
  * @description Height of scenario
- * @param  {integer} imageHeight
- * @param  {integer} imageHeightFull
- * These values can be changed in feature settings. IMPORTANT: Change the values
- * only if you have knowledge of the codes involved.
  * @return {integer}
  */
-Scenario.prototype.height = function(imageHeight, imageHeightFull) {
-	return (this.rows() - 1) * imageHeight + imageHeightFull;
+Scenario.prototype.height = function() {
+	return (this.rows() - 1) * this.imageSize.height + this.imageSize.full;
 };
 
 /**
@@ -104,8 +104,8 @@ Scenario.prototype.render = function(ctx, loader, resources) {
 	for (var row = 0; row < numRows; row++) {
 		for (var col = 0; col < numCols; col++) {
 			ctx.drawImage(loader.get(urlsRowsImages[row]),
-				col * resources.imageSize('width'),
-				row * resources.imageSize('height'));
+				col * this.imageSize.width,
+				row * this.imageSize.height);
 		}
 	}
 };
