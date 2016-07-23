@@ -5,12 +5,19 @@
  */
 var Scenario = function(config) {
 	this.imageSize = {};
+	this.startPoint = {};
 	Module.call(this, config);
 };
 
 Scenario.prototype = Object.create(Module.prototype);
 Scenario.prototype.constructor = Scenario;
 
+/**
+ * This function set some settings needed to build and return the scenario
+ * functions.
+ * @param  {object} imageSize - Object containing width, height and full-size
+ * images of the game.
+ */
 Scenario.prototype.setImageSize = function(imageSize) {
 	Object.keys(imageSize).forEach(function(dimension) {
 		this.imageSize[dimension] = imageSize[dimension];
@@ -82,6 +89,28 @@ Scenario.prototype.width = function() {
  */
 Scenario.prototype.height = function() {
 	return (this.rows() - 1) * this.imageSize.height + this.imageSize.full;
+};
+
+/**
+ * Defines the coordinates for the starting point. This will be the reference
+ * for the player. When a player is hit by an enemy should be routed to that
+ * point.
+ * @param  {numeric} lastRoute
+ */
+Scenario.prototype.setStartPoint = function(lastRoute) {
+	var cols = Math.round((this.cols() / 2));
+
+	this.startPoint['x'] = cols * this.imageSize.width;
+	this.startPoint['route'] = lastRoute;
+};
+
+/**
+ * Returns the coordinates of the starting point of the scene. Use this point
+ * to restart the position of your player.
+ * @return {object}
+ */
+Scenario.prototype.getStartPoint = function() {
+	return this.startPoint;
 };
 
 /**

@@ -12,15 +12,17 @@ resources.setConfig(config.select('resources'));
 scenario.setConfig(config.select('scenario'));
 traffic.setConfig(config.select('traffic'));
 
-// Assigning Image Size
+// Creating routes
+routes.create(scenario.rowsForEnvironment(), resources.imageSize('height'));
+
+// Assigning settings in scenario
 scenario.setImageSize({
     width: resources.imageSize('width'),
     height: resources.imageSize('height'),
     full: resources.imageSize('full')
 });
 
-// Creating routes
-routes.create(scenario.rowsForEnvironment(), resources.imageSize('height'));
+scenario.setStartPoint(routes.getFirstOrLast(routes.get(), 'last'));
 
 // Assigning routes to traffic manager
 traffic.setRoutes(this.routes);
