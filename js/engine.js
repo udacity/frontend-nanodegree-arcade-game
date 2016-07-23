@@ -106,6 +106,9 @@ Engine.prototype.render = function() {
     this.enemies.forEach(function(enemy) {
         enemy.render(this.ctx, this.parts['loader']);
     }.bind(this));
+
+    // Player
+    this.parts['player'].render(this.ctx, this.parts['loader']);
 };
 
 /**

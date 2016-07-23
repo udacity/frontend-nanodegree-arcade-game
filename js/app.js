@@ -39,7 +39,14 @@ engine.setParts('scenario', scenario);
 engine.setParts('loader', loader);
 engine.setParts('traffic', traffic);
 
-// Test Enemy
+// Test Player and Enemy
+var player = new Player;
+player.init(
+    resources.urlImage('characters', 'boy'),
+    scenario.getStartPoint()
+);
+engine.setParts('player', player);
+
 var enemy = new Bug;
 engine.addEnemy(enemy);
 
