@@ -1,16 +1,14 @@
 /**
- * @description Enemy. Receives a characteristic sprite and one or more
- * environment(s).
+ * @description Enemy.
  * @constructor
- * @return {object}
  */
 var Bug = function() {
-    Enemy.call(this);
     this.sprite = {
-        group: 'enemies',
-        element: 'bug'
+        group:      'enemies',
+        element:    'bug'
     };
-    this.environments = 'stone';
+    this.terrainsSurface = 'stone';
+    Enemy.call(this);
 };
 
 Bug.prototype = Object.create(Enemy.prototype);

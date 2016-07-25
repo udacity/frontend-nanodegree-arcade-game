@@ -1,6 +1,7 @@
 /**
  * @description Allows you to create your modules.
  * @constructor
+ * @param {object} config - configurations of module
  */
 var Module = function() {
 	this.config;

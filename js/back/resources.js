@@ -3,8 +3,8 @@
  * @constructor
  * @param {config} config - configurations of resources
  */
-var Resources = function() {
-	Module.call(this);
+var Resources = function(config) {
+	Module.call(this, config);
 };
 
 Resources.prototype = Object.create(Module.prototype);

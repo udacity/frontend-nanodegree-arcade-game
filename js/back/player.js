@@ -5,7 +5,6 @@
  */
 var Player = function() {
     this.x;
-    this.route;
     this.sprite;
     this.startPoint;
 };
@@ -22,6 +21,10 @@ Player.prototype.init = function(sprite, startPoint) {
     this.route = this.startPoint.route;
 };
 
+Player.prototype.itRestarted = function() {
+    return this.hasOwnProperty('route') ? false : true;
+};
+
 /**
  * Every time the player was hit by enemies. Use this function to reset the
  * player.
@@ -34,7 +37,7 @@ Player.prototype.reset = function() {
  * Update the enemy's position, required method for game.
  * @param  {[type]} dt
  */
-Player.prototype.update = function(dt) {};
+Player.prototype.update = function() {};
 
 /**
  * Draw the player on the screen, required method for game

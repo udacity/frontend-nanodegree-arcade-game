@@ -5,9 +5,9 @@
  * @constructor
  */
 var Traffic = function() {
+    Module.call(this);
     this.routes;
     this.routesInUse = {};
-    Module.call(this);
 };
 
 Traffic.prototype = Object.create(Module.prototype);
@@ -15,9 +15,12 @@ Traffic.prototype.constructor = Traffic;
 
 /**
  * @description Assigning Routes Object
- * @param  {object} routes - Routes Instance
+ * @param  {object} routes
+ * @return {object}
  */
 Traffic.prototype.setRoutes = function(routes) {
+    if(!(routes instanceof Routes))
+        throw new TypeError('Traffic needs to allocate an instance of Routes.');
     this.routes = routes;
 };
 
@@ -25,10 +28,9 @@ Traffic.prototype.setRoutes = function(routes) {
  * @description Add an enemy on a route
  * @param  {numeric} route
  */
-Traffic.prototype.declareRouteEntry = function(route) {
+Traffic.prototype.addOnTheRoute = function(route) {
     if(!this.routesInUse.hasOwnProperty(route))
         this.routesInUse[route] = 0;
-
     this.routesInUse[route]++;
 };
 
@@ -36,7 +38,7 @@ Traffic.prototype.declareRouteEntry = function(route) {
  * @description Remove an enemy of a route
  * @param  {numeric} route
  */
-Traffic.prototype.declareRouteOutput = function(route) {
+Traffic.prototype.removeOfRoute = function(route) {
     if(this.routesInUse[route] > 0)
         this.routesInUse[route]--;
 };
@@ -59,9 +61,19 @@ Traffic.prototype.routeIsFull = function(route) {
  * @param  {string or array} environments
  * @return {number} (Route)
  */
-Traffic.prototype.getEmptyRoute = function(terrains) {
-    var routes = this.routes.get(terrains),
+Traffic.prototype.getEmptyRoute = function(environments) {
+    var routes = this.routes.get(environments),
         route = routes[Math.floor(Math.random() * routes.length)];
 
-    return this.routeIsFull(route) ? this.getEmptyRoute(terrains) : route;
+    return this.routeIsFull(route) ? this.getEmptyRoute(environments) : route;
 };
+
+/**
+ * @description This function works to keep the traffic of your updated routes.
+ */
+Traffic.prototype.reloadRoutesInUse = function() {};
+
+/**
+ * @description Forwards the latest changes of route traffic to Registry.
+ */
+Traffic.prototype.pushRoutesInUse = function() {}

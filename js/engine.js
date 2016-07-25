@@ -5,44 +5,25 @@
  * @param {object} global
  */
 var Engine = function(global) {
-    this.ctx;
     this.lastTime;
-    this.doc = global.document;
-    this.win = global.window;
-
-    this.parts = {};
+    this.scenario;
     this.enemies = [];
+    this.win = global.window;
 };
 
 /**
- * @description This create canvas.
+ * @description Assign instantiates the scenario.
+ * @param  {object} scenario - Scenario Instance
  */
-Engine.prototype.createCanvas = function(width, height) {
-	var canvas = this.doc.createElement('canvas');
-
-	canvas.width = width;
-	canvas.height = height;
-	this.ctx = canvas.getContext('2d');
-	div = this.doc.getElementById('canvas-container');
-	div.appendChild(canvas);
+Engine.prototype.setScenario = function(scenario) {
+    this.scenario = scenario;
 };
 
 /**
- * Assigning Parts
- * @param  {string} label
- * @param  {object} part -Object instance
+ * @description Add enemies.
+ * @param  {object} enemy
  */
-Engine.prototype.setParts = function(label, part) {
-    this.parts[label] = part;
-};
-
-/**
- * Add Enemies
- * @param  {object} enemy - Enemy instance
- */
-Engine.prototype.addEnemy = function(enemy) {
-    if(!(enemy instanceof Enemy))
-        throw new TypeError('Assign the correct instance of Enemy.');
+Engine.prototype.addEnemies = function(enemy) {
     this.enemies.push(enemy);
 };
 
@@ -66,27 +47,14 @@ Engine.prototype.main = function() {
  * @param  {number} dt - delta time
  */
 Engine.prototype.update = function(dt) {
-	this.updateEnemies(dt);
-};
-
-/**
- * @description Updates the enemies.
- * @param  {number} dt - delta time
- */
-Engine.prototype.updateEnemies = function(dt) {
-    // Enemies
-	this.enemies.forEach(function(enemy) {
-        enemy.update(dt, this.parts['scenario'].width());
-		if (enemy.itRestarted()) {
-			this.parts['traffic'].removeOfRoute(enemy.lastTraveledRoute);
-
-            var environments = enemy.getEnvironments(),
-                route = this.parts['traffic'].getEmptyRoute(environments);
-
-            this.parts['traffic'].addOnTheRoute(route);
-			enemy.init(route, 1, this.parts['resources']);
+    this.enemies.forEach(function(enemy) {
+        if(enemy.needStartup()) {
+            enemy.setLevelGame(1);
+            enemy.setRoute(41.5);
+            enemy.init();
         }
-	}.bind(this));
+        enemy.update(dt);
+    });
 };
 
 /**
@@ -95,20 +63,10 @@ Engine.prototype.updateEnemies = function(dt) {
  * but in reality they are just drawing the entire screen over and over.
  */
 Engine.prototype.render = function() {
-    // Scenario
-    this.parts['scenario'].render(
-        this.ctx,
-        this.parts['loader'],
-        this.parts['resources']
-    );
-
-    // Enemies
+    this.scenario.render();
     this.enemies.forEach(function(enemy) {
-        enemy.render(this.ctx, this.parts['loader']);
-    }.bind(this));
-
-    // Player
-    this.parts['player'].render(this.ctx, this.parts['loader']);
+        enemy.render();
+    });
 };
 
 /**

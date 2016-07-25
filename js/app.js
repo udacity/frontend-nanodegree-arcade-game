@@ -1,54 +1,50 @@
-// Creating objects
-var config      = new Config,
-    resources   = new Resources,
-    scenario    = new Scenario,
-    routes      = new Routes,
-    traffic     = new Traffic,
-    loader      = new ResourcesLoader,
-    engine      = new Engine(this);
+var config          = new Config,
+    resources       = new Resources,
+    scenario        = new Scenario,
+    routes          = new Routes,
+    traffic         = new Traffic,
+    canvas          = new Canvas(this),
+    resourcesLoader = new ResourcesLoader,
+    engine          = new Engine(this);
 
-// Assigning settings
+// Resources
 resources.setConfig(config.select('resources'));
+
+// Scenario
 scenario.setConfig(config.select('scenario'));
+scenario.setResources(resources);
+scenario.setCanvas(canvas);
+scenario.setResourcesLoader(resourcesLoader);
+
+// Canvas
+canvas.size(scenario.width(), scenario.height());
+canvas.appendIn('canvas-container');
+canvas.create();
+
+// Routes
+routes.setResources(resources);
+routes.create(scenario);
+
+// Traffic
+traffic.setRoutes(routes);
 traffic.setConfig(config.select('traffic'));
 
-// Creating routes
-routes.create(scenario.rowsForEnvironment(), resources.imageSize('height'));
+// Resources Loader
+resourcesLoader.load(resources.urlsAllImages());
 
-// Assigning settings in scenario
-scenario.setImageSize({
-    width: resources.imageSize('width'),
-    height: resources.imageSize('height'),
-    full: resources.imageSize('full')
-});
-
-scenario.setStartPoint(routes.getFirstOrLast(routes.get(), 'last'));
-
-// Assigning routes to traffic manager
-traffic.setRoutes(this.routes);
-
-// Create canvas
-engine.createCanvas(this.scenario.width(), this.scenario.height());
-
-// Loader Resources
-loader.load(resources.urlsAllImages());
-
-// Assigning parts
-engine.setParts('resources', resources);
-engine.setParts('scenario', scenario);
-engine.setParts('loader', loader);
-engine.setParts('traffic', traffic);
-
-// Test Player and Enemy
-var player = new Player;
-player.init(
-    resources.urlImage('characters', 'boy'),
-    scenario.getStartPoint()
-);
-engine.setParts('player', player);
-
+// Enemy
 var enemy = new Bug;
-engine.addEnemy(enemy);
+enemy.setResources(resources);
+enemy.setCanvas(canvas);
+enemy.setResourcesLoader(resourcesLoader);
+enemy.addPartExtra('scenario', scenario);
 
-// Run engine
-loader.onReady(engine.run.bind(engine));
+// Engine
+engine.setScenario(scenario);
+
+// Add Enemies in Engine
+engine.addEnemies(enemy);
+
+// Run Engine
+// After loading of the resources
+resourcesLoader.onReady(engine.run.bind(engine));
