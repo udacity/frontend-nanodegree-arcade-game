@@ -17,9 +17,9 @@ EnemyFactory.prototype.createEnemy = function(type) {
     var enemy;
 
     enemy = new (type);
-    enemy.setResources(resources);
-    enemy.setCanvas(canvas);
-    enemy.setResourcesLoader(resourcesLoader);
-    enemy.addPartExtra('scenario', scenario);
+    enemy.setResources(this.resources);
+    enemy.setCanvas(this.canvas);
+    enemy.setResourcesLoader(this.resourcesLoader);
+    enemy.addPartExtra('scenario', this.getPartExtra('scenario'));
     return enemy;
 };
