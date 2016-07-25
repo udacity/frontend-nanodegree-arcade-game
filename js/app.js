@@ -32,18 +32,19 @@ traffic.setConfig(config.select('traffic'));
 // Resources Loader
 resourcesLoader.load(resources.urlsAllImages());
 
-// Enemy
-var enemy = new Bug;
-enemy.setResources(resources);
-enemy.setCanvas(canvas);
-enemy.setResourcesLoader(resourcesLoader);
-enemy.addPartExtra('scenario', scenario);
+// Factory
+var factory = new EnemyFactory;
+factory.setResources(resources);
+factory.setCanvas(canvas);
+factory.setResourcesLoader(resourcesLoader);
+factory.addPartExtra('scenario', scenario);
 
 // Engine
 engine.setScenario(scenario);
-
-// Add Enemies in Engine
-engine.addEnemies(enemy);
+engine.setTraffic(traffic);
+engine.addEnemies(factory.createEnemy(Bug));
+engine.addEnemies(factory.createEnemy(Bug));
+engine.addEnemies(factory.createEnemy(Bug));
 
 // Run Engine
 // After loading of the resources

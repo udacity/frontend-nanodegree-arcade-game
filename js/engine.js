@@ -5,6 +5,7 @@
  * @param {object} global
  */
 var Engine = function(global) {
+    this.traffic;
     this.lastTime;
     this.scenario;
     this.enemies = [];
@@ -17,6 +18,14 @@ var Engine = function(global) {
  */
 Engine.prototype.setScenario = function(scenario) {
     this.scenario = scenario;
+};
+
+/**
+ * @description Assign traffic
+ * @param  {[type]} traffic
+ */
+Engine.prototype.setTraffic = function(traffic) {
+    this.traffic = traffic;
 };
 
 /**
@@ -47,10 +56,16 @@ Engine.prototype.main = function() {
  * @param  {number} dt - delta time
  */
 Engine.prototype.update = function(dt) {
+    // Enemies
     this.enemies.forEach(function(enemy) {
         if(enemy.needStartup()) {
+            if(enemy.getLastTraveledRoute() !== null)
+                this.traffic.declareRouteOutput(enemy.getLastTraveledRoute());
+
+            var route = this.traffic.getEmptyRoute(enemy.getTerrainsSurface());
+            this.traffic.declareRouteEntry(route);
             enemy.setLevelGame(1);
-            enemy.setRoute(41.5);
+            enemy.setRoute(route);
             enemy.init();
         }
         enemy.update(dt);
@@ -63,7 +78,10 @@ Engine.prototype.update = function(dt) {
  * but in reality they are just drawing the entire screen over and over.
  */
 Engine.prototype.render = function() {
+    // Scenario
     this.scenario.render();
+
+    // Enemies
     this.enemies.forEach(function(enemy) {
         enemy.render();
     });
