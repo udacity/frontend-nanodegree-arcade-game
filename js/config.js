@@ -45,15 +45,27 @@ var Config = function() {
 	this.scoreboard = {
 		score: {
 			startingIn: 0,
-			increment: 10
+			increment: 10,
+            webInterface: {
+                id: 'sb-score',
+                label: 'Score: '
+            }
 		},
 		level: {
 			startingIn: 1,
 			fisrtLevelUp: 60,
-			percentageNextLevel: 52
+			percentageNextLevel: 52,
+            webInterface: {
+                id: 'sb-level',
+                label: 'Level: '
+            }
 		},
 		life: {
-			startingIn: 3
+			startingIn: 3,
+            webInterface: {
+                id: 'sb-life',
+                label: 'Life: '
+            }
 		}
 	}
 };

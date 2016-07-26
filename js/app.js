@@ -4,6 +4,7 @@ var config          = new Config,
     routes          = new Routes,
     traffic         = new Traffic,
     scoreboard      = new Scoreboard,
+    sbWebInterface  = new ScoreboardWebInterface(this),
     canvas          = new Canvas(this),
     resourcesLoader = new ResourcesLoader,
     engine          = new Engine(this);
@@ -32,6 +33,8 @@ traffic.setConfig(config.select('traffic'));
 
 // Scoreboard
 scoreboard.setConfig(config.select('scoreboard'));
+sbWebInterface.setConfig(config.select('scoreboard'));
+scoreboard.setWebInterface(sbWebInterface);
 
 // Resources Loader
 resourcesLoader.load(resources.urlsAllImages());

@@ -6,12 +6,21 @@ var Scoreboard = function() {
     this.life;
     this.score;
     this.level;
+    this.webInterface;
     this.scoreNextLevelUp;
     Module.call(this);
 };
 
 Scoreboard.prototype = Object.create(Module.prototype);
 Scoreboard.prototype.constructor = Scoreboard;
+
+/**
+ * Assing Web Interface
+ * @param  {object} webInterface - Web Interface Instance
+ */
+Scoreboard.prototype.setWebInterface = function(webInterface) {
+    this.webInterface = webInterface;
+};
 
 /**
  * @description Starts the score. Assigns default settings.
@@ -21,6 +30,9 @@ Scoreboard.prototype.init = function() {
     this.score  = this.config.score.startingIn;
     this.level  = this.config.level.startingIn;
     this.scoreNextLevelUp = this.config.level.fisrtLevelUp;
+    this.webInterface.change('score', this.score);
+    this.webInterface.change('level', this.level);
+    this.webInterface.change('life', this.life);
 };
 
 /**
@@ -30,6 +42,7 @@ Scoreboard.prototype.init = function() {
  */
 Scoreboard.prototype.addScore = function(score) {
     this.score += score === undefined ? this.config.score.increment : score;
+    this.webInterface.change('score', this.score);
     if(this.score > this.scoreNextLevelUp)
         this.addLevel();
 };
@@ -52,6 +65,7 @@ Scoreboard.prototype.addLevel = function() {
         percentage  = this.config.level.percentageNextLevel;
 
     this.level++;
+    this.webInterface.change('level', this.level);
     this.scoreNextLevelUp = (nextLevelUp/100) * percentage + nextLevelUp;
 };
 
@@ -69,6 +83,7 @@ Scoreboard.prototype.getLevel = function() {
  */
 Scoreboard.prototype.addLife = function(life) {
     life === undefined ? this.life++ : this.life += life;
+    this.webInterface.change('life', this.life);
 };
 
 /**
@@ -78,6 +93,7 @@ Scoreboard.prototype.addLife = function(life) {
  */
 Scoreboard.prototype.removeLife = function(life) {
     life === undefined ? this.life-- : this.life -= life;
+    this.webInterface.change('life', this.life);
 };
 
 /**
