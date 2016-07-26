@@ -8,6 +8,7 @@ var Engine = function(global) {
     this.traffic;
     this.lastTime;
     this.scenario;
+    this.scoreboard;
     this.enemies = [];
     this.win = global.window;
 };
@@ -22,10 +23,18 @@ Engine.prototype.setScenario = function(scenario) {
 
 /**
  * @description Assign traffic
- * @param  {[type]} traffic
+ * @param  {[type]} traffic - Traffic Instance
  */
 Engine.prototype.setTraffic = function(traffic) {
     this.traffic = traffic;
+};
+
+/**
+ * @description Assign scoreboard
+ * @param  {[type]} scoreboard - Scoreboard Instance
+ */
+Engine.prototype.setScoreboard = function(scoreboard) {
+    this.scoreboard = scoreboard;
 };
 
 /**
@@ -59,12 +68,14 @@ Engine.prototype.update = function(dt) {
     // Enemies
     this.enemies.forEach(function(enemy) {
         if(enemy.needStartup()) {
-            if(enemy.getLastTraveledRoute() !== null)
+            if(enemy.getLastTraveledRoute() !== null) {
                 this.traffic.declareRouteOutput(enemy.getLastTraveledRoute());
+                this.scoreboard.addScore();
+            }
 
             var route = this.traffic.getEmptyRoute(enemy.getTerrainsSurface());
             this.traffic.declareRouteEntry(route);
-            enemy.setLevelGame(1);
+            enemy.setLevelGame(this.scoreboard.getLevel());
             enemy.setRoute(route);
             enemy.init();
         }
@@ -104,5 +115,6 @@ Engine.prototype.reset = function() {
 Engine.prototype.run = function() {
 	this.reset();
 	this.lastTime = Date.now();
+    this.scoreboard.init();
 	this.main();
 };

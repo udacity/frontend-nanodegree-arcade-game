@@ -3,6 +3,7 @@ var config          = new Config,
     scenario        = new Scenario,
     routes          = new Routes,
     traffic         = new Traffic,
+    scoreboard      = new Scoreboard,
     canvas          = new Canvas(this),
     resourcesLoader = new ResourcesLoader,
     engine          = new Engine(this);
@@ -29,11 +30,14 @@ routes.create(scenario);
 traffic.setRoutes(routes);
 traffic.setConfig(config.select('traffic'));
 
+// Scoreboard
+scoreboard.setConfig(config.select('scoreboard'));
+
 // Resources Loader
 resourcesLoader.load(resources.urlsAllImages());
 
 // Factory
-var factory = new EnemyFactory;
+var factory = new EntityFactory;
 factory.setResources(resources);
 factory.setCanvas(canvas);
 factory.setResourcesLoader(resourcesLoader);
@@ -42,9 +46,10 @@ factory.addPartExtra('scenario', scenario);
 // Engine
 engine.setScenario(scenario);
 engine.setTraffic(traffic);
-engine.addEnemies(factory.createEnemy(Bug));
-engine.addEnemies(factory.createEnemy(Bug));
-engine.addEnemies(factory.createEnemy(Bug));
+engine.setScoreboard(scoreboard);
+engine.addEnemies(factory.createEntity(Bug));
+engine.addEnemies(factory.createEntity(Bug));
+engine.addEnemies(factory.createEntity(Bug));
 
 // Run Engine
 // After loading of the resources
