@@ -6,8 +6,25 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <!-- canvas -->
-    <div id="canvas-container"></div>
+    <main>
+        <div id="scoreboard-container">
+            <header>
+                <h3>Frontend Nanodegree Arcade Game</h3>
+            </header>
+            <ul id="scoreboard">
+                <li id="sb-score"><span></span> Score: 0</li>
+                <li id="sb-level"><span></span> Level: 1</li>
+                <li id="sb-life"><span></span> Life: 3</li>
+            </ul>
+        </div>
+
+        <!-- canvas -->
+        <div id="canvas-container"></div>
+
+        <footer>
+	    	<p>&copy; Udacity - Frontend Nanodegree Arcade Game</p>
+	    </footer>
+    </main>
 
     <script src="js/config.js"></script>
     <script src="js/module.js"></script>

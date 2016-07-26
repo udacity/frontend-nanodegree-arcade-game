@@ -1,3 +1,111 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto+Condensed);
+
 body {
-    text-align: center;
+	margin: 0;
+	padding: 0;
+	color: #4f647b;
+	font-family: 'Roboto Condensed', sans-serif;
+
+	background: fixed;
+	background-image: url(../images/web-interface/bg-players.png),
+    				  url(../images/web-interface/bg-grass.png),
+    				  linear-gradient(to bottom, #abd5eb, #fff);
+	background-position: left bottom, bottom left;
+	background-repeat: no-repeat, repeat-x;
+}
+
+/* Canvas */
+canvas {
+	margin-top: -15px;
+	padding-left: 0;
+    padding-right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+/* Scoreboard */
+#scoreboard-container {
+	text-align: center;
+}
+
+#scoreboard {
+	left: 50%;
+	width: 400px;
+	position: relative;
+	margin: 0 0 0 -200px;
+	padding: 0;
+	font-size: 14px;
+	z-index: 1002;
+}
+
+#scoreboard li {
+	height: 30px;
+	padding: 5px 10px;
+	display: inline;
+	border-radius: 4px;
+	background-color: #fff;
+	border: 2px solid #adc2da;
+	transition: all 0.1s ease 0s;
+}
+
+#scoreboard li span {
+	width: 14px;
+	height: 14px;
+	margin-right: 3px;
+	display: inline-block;
+	background: transparent url(../images/web-interface/icons.png) 0 0 no-repeat;
+}
+
+#scoreboard li#sb-score span {
+	background-position: -14px 0;
+}
+
+#scoreboard li#sb-level span {
+	background-position: -28px 0;
+}
+
+#scoreboard li.active {
+	color: #fff;
+	background-color: #4e66d2;
+	background-position: 0 -14px;
+	border: 2px solid #3d50a4;
+}
+
+#scoreboard li.danger {
+	color: #fff;
+	background-color: #c83539;
+	background-position: 0 -14px;
+	border: 2px solid #a12a2d;
+}
+
+#scoreboard li.active span,
+#scoreboard li.danger span {
+	background-position: 0 -14px;
+}
+
+#scoreboard li#sb-score.active span,
+#scoreboard li#sb-score.danger span {
+	background-position: -14px -14px;
+}
+
+#scoreboard li#sb-level.active span,
+#scoreboard li#sb-danger.danger span {
+	background-position: -28px -14px;
+}
+
+/* Footer */
+footer {
+	color: #fff;
+	bottom: 5px;
+	right: 0;
+	width: 200px;
+	position: absolute;
+	text-align: left;
+	z-index: -1000;
+	text-shadow: 1px 1px 3px #000;
+}
+
+footer p {
+	font-size: 14px;
 }

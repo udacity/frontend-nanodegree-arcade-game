@@ -48,8 +48,7 @@ Scoreboard.prototype.getScore = function() {
  * points to be achieved to the next level is added to the score of the game.
  */
 Scoreboard.prototype.addLevel = function() {
-    var score,
-        nextLevelUp = this.scoreNextLevelUp,
+    var nextLevelUp = this.scoreNextLevelUp,
         percentage  = this.config.level.percentageNextLevel;
 
     this.level++;
