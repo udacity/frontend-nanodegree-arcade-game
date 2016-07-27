@@ -10,6 +10,7 @@ var Engine = function(global) {
     this.scenario;
     this.scoreboard;
     this.enemies = [];
+    this.pause = false;
     this.win = global.window;
 };
 
@@ -46,16 +47,31 @@ Engine.prototype.addEnemies = function(enemy) {
 };
 
 /**
+ * @description Pause the game. You can change the pause button in the game
+ * settings.
+ * @param  {string} key
+ */
+Engine.prototype.inPause = function(key) {
+    if(key === 'pause') {
+        if(this.pause)
+            this.lastTime = Date.now();
+        this.pause = this.pause ? false : true;
+    }
+}
+
+/**
  * @description This function serves as the kickoff point for the game
  * loop itself and handles properly calling the update and render methods.
  */
 Engine.prototype.main = function() {
-    var now = Date.now(),
-        dt = (now - this.lastTime) / 1000.0;
+    if(!this.pause) {
+        var now = Date.now(),
+            dt = (now - this.lastTime) / 1000.0;
 
-    this.update(dt);
-    this.render();
-    this.lastTime = now;
+        this.update(dt);
+        this.render();
+        this.lastTime = now;
+    }
 	this.win.requestAnimationFrame(this.main.bind(this));
 };
 

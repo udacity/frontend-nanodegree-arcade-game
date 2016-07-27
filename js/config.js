@@ -67,6 +67,16 @@ var Config = function() {
                 label: 'Life: '
             }
 		}
+	},
+	this.gameControl = {
+		standardDevice: 'keyboard',
+		keyboard: {
+			32: 'pause',
+			37: 'left',
+			38: 'up',
+			39: 'right',
+			40: 'down'
+		}
 	}
 };
 

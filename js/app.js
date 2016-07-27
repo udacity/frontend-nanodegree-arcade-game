@@ -7,7 +7,8 @@ var config          = new Config,
     sbWebInterface  = new ScoreboardWebInterface(this),
     canvas          = new Canvas(this),
     resourcesLoader = new ResourcesLoader,
-    engine          = new Engine(this);
+    engine          = new Engine(this),
+    gameControl     = new GameControl(this);
 
 // Resources
 resources.setConfig(config.select('resources'));
@@ -53,6 +54,11 @@ engine.setScoreboard(scoreboard);
 engine.addEnemies(factory.createEntity(Bug));
 engine.addEnemies(factory.createEntity(Bug));
 engine.addEnemies(factory.createEntity(Bug));
+
+// Game Control
+gameControl.setConfig(config.select('gameControl'));
+gameControl.addCallback(engine.inPause.bind(engine));
+gameControl.init();
 
 // Run Engine
 // After loading of the resources
