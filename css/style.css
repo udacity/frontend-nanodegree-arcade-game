@@ -64,53 +64,52 @@ canvas {
 	background-position: -28px 0;
 }
 
-#scoreboard li.active {
+#scoreboard li.add {
 	color: #fff;
-	background-color: #4e66d2;
-	background-position: 0 -14px;
-	border: 2px solid #3d50a4;
+	background-color: #005b96;
+	border: 2px solid #03396c;
 }
 
-#scoreboard li.danger {
+#scoreboard li.remove {
 	color: #fff;
 	background-color: #c83539;
 	background-position: 0 -14px;
 	border: 2px solid #a12a2d;
 }
 
-#scoreboard li.active span,
-#scoreboard li.danger span {
+#scoreboard li.add span,
+#scoreboard li.remove span {
 	background-position: 0 -14px;
 }
 
-#scoreboard li#sb-score.active span,
-#scoreboard li#sb-score.danger span {
+#scoreboard li#sb-score.add span,
+#scoreboard li#sb-score.remove span {
 	background-position: -14px -14px;
 }
 
-#scoreboard li#sb-level.active span,
-#scoreboard li#sb-danger.danger span {
+#scoreboard li#sb-level.add span,
+#scoreboard li#sb-danger.remove span {
 	background-position: -28px -14px;
 }
 
 /* Animations */
 .add {
-	animation: add 0.3s linear 0s 2;
+	animation: add 1s linear 0s 2;
 }
 
 .remove {
-	animation: remove 0.3s linear 0s 2;
+	animation: remove 1s linear 0s 2;
 }
 
 @keyframes add {
 	0% {
-		border: 2px solid #adc2da;
+		border: 2px solid #03396c;
 	}
 	50% {
-		border: 2px solid #4e66d2;
+		border: 2px solid white;
 	}
 	100% {
-		border: 2px solid #adc2da;
+		border: 2px solid #03396c;
 	}
 }
 
@@ -119,7 +118,7 @@ canvas {
 		border: 2px solid #adc2da;
 	}
 	50% {
-		border: 2px solid #c83539;
+		border: 2px solid white;
 	}
 	100% {
 		border: 2px solid #adc2da;

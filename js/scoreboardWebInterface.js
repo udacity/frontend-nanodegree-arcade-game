@@ -36,5 +36,5 @@ ScoreboardWebInterface.prototype.animation = function(element, animation) {
     elmHtml.setAttribute('class', animation);
     setTimeout(function() {
         elmHtml.removeAttribute('class');
-    }, 1000);
+    }, 2000);
 };
