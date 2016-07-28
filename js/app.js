@@ -51,13 +51,19 @@ factory.addPartExtra('scenario', scenario);
 engine.setScenario(scenario);
 engine.setTraffic(traffic);
 engine.setScoreboard(scoreboard);
+// Enemy
 engine.addEnemies(factory.createEntity(Bug));
 engine.addEnemies(factory.createEntity(Bug));
 engine.addEnemies(factory.createEntity(Bug));
+// Player
+var player = factory.createEntity(Player);
+player.addPartExtra('routes', routes);
+engine.setPlayer(player);
 
 // Game Control
 gameControl.setConfig(config.select('gameControl'));
 gameControl.addCallback(engine.inPause.bind(engine));
+gameControl.addCallback(player.move.bind(player));
 gameControl.init();
 
 // Run Engine

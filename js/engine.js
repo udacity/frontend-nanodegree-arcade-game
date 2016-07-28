@@ -5,6 +5,7 @@
  * @param {object} global
  */
 var Engine = function(global) {
+    this.player;
     this.traffic;
     this.lastTime;
     this.scenario;
@@ -24,7 +25,7 @@ Engine.prototype.setScenario = function(scenario) {
 
 /**
  * @description Assign traffic
- * @param  {[type]} traffic - Traffic Instance
+ * @param  {object} traffic - Traffic Instance
  */
 Engine.prototype.setTraffic = function(traffic) {
     this.traffic = traffic;
@@ -32,7 +33,7 @@ Engine.prototype.setTraffic = function(traffic) {
 
 /**
  * @description Assign scoreboard
- * @param  {[type]} scoreboard - Scoreboard Instance
+ * @param  {object} scoreboard - Scoreboard Instance
  */
 Engine.prototype.setScoreboard = function(scoreboard) {
     this.scoreboard = scoreboard;
@@ -44,6 +45,14 @@ Engine.prototype.setScoreboard = function(scoreboard) {
  */
 Engine.prototype.addEnemies = function(enemy) {
     this.enemies.push(enemy);
+};
+
+/**
+ * @description Assign player
+ * @param  {object} player - Player Instance
+ */
+Engine.prototype.setPlayer = function(player) {
+    this.player = player;
 };
 
 /**
@@ -97,6 +106,13 @@ Engine.prototype.update = function(dt) {
         }
         enemy.update(dt);
     });
+
+    // Player
+    if(this.player.getRoute() === null) {
+        if(this.player.gameStarted())
+            this.scoreboard.removeLife();
+        this.player.init();
+    }
 };
 
 /**
@@ -112,6 +128,9 @@ Engine.prototype.render = function() {
     this.enemies.forEach(function(enemy) {
         enemy.render();
     });
+
+    // Player
+    this.player.render();
 };
 
 /**

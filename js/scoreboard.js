@@ -94,6 +94,8 @@ Scoreboard.prototype.addLife = function(life) {
 Scoreboard.prototype.removeLife = function(life) {
     life === undefined ? this.life-- : this.life -= life;
     this.webInterface.change('life', this.life);
+    if(this.life < 0)
+        this.reset();
 };
 
 /**
