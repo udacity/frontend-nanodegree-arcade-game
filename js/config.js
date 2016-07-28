@@ -53,7 +53,7 @@ var Config = function() {
 		},
 		level: {
 			startingIn: 1,
-			fisrtLevelUp: 300,
+			fisrtLevelUp: 60,
 			percentageNextLevel: 52,
             webInterface: {
                 id: 'sb-level',

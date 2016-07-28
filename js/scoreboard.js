@@ -66,6 +66,7 @@ Scoreboard.prototype.addLevel = function() {
 
     this.level++;
     this.webInterface.change('level', this.level);
+    this.webInterface.animation('level', 'add');
     this.scoreNextLevelUp = (nextLevelUp/100) * percentage + nextLevelUp;
 };
 
@@ -94,6 +95,7 @@ Scoreboard.prototype.addLife = function(life) {
 Scoreboard.prototype.removeLife = function(life) {
     life === undefined ? this.life-- : this.life -= life;
     this.webInterface.change('life', this.life);
+    this.webInterface.animation('life', 'remove');
     if(this.life < 0)
         this.reset();
 };

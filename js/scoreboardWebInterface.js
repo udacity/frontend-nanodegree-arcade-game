@@ -23,3 +23,18 @@ ScoreboardWebInterface.prototype.change = function(element, value) {
 
     elmHtml.innerHTML = elmHtmlContent;
 };
+
+/**
+ * @description Starts an animation on an element.
+ * @param  {string} element
+ * @param  {string} animation - add or remove
+ */
+ScoreboardWebInterface.prototype.animation = function(element, animation) {
+    var config          = this.config[element].webInterface,
+        elmHtml         = this.doc.getElementById(config.id);
+
+    elmHtml.setAttribute('class', animation);
+    setTimeout(function() {
+        elmHtml.removeAttribute('class');
+    }, 1000);
+};

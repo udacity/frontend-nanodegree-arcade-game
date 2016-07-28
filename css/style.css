@@ -46,7 +46,6 @@ canvas {
 	border-radius: 4px;
 	background-color: #fff;
 	border: 2px solid #adc2da;
-	transition: all 0.1s ease 0s;
 }
 
 #scoreboard li span {
@@ -92,6 +91,39 @@ canvas {
 #scoreboard li#sb-level.active span,
 #scoreboard li#sb-danger.danger span {
 	background-position: -28px -14px;
+}
+
+/* Animations */
+.add {
+	animation: add 0.3s linear 0s 2;
+}
+
+.remove {
+	animation: remove 0.3s linear 0s 2;
+}
+
+@keyframes add {
+	0% {
+		border: 2px solid #adc2da;
+	}
+	50% {
+		border: 2px solid #4e66d2;
+	}
+	100% {
+		border: 2px solid #adc2da;
+	}
+}
+
+@keyframes remove {
+	0% {
+		border: 2px solid #adc2da;
+	}
+	50% {
+		border: 2px solid #c83539;
+	}
+	100% {
+		border: 2px solid #adc2da;
+	}
 }
 
 /* Footer */
