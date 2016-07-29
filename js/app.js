@@ -3,6 +3,7 @@ var config          = new Config,
     scenario        = new Scenario,
     routes          = new Routes,
     traffic         = new Traffic,
+    collision       = new Collision,
     scoreboard      = new Scoreboard,
     sbWebInterface  = new ScoreboardWebInterface(this),
     canvas          = new Canvas(this),
@@ -32,6 +33,9 @@ routes.create(scenario);
 traffic.setRoutes(routes);
 traffic.setConfig(config.select('traffic'));
 
+// Collision
+collision.setImageWidth(resources.imageSize('width'));
+
 // Scoreboard
 scoreboard.setConfig(config.select('scoreboard'));
 sbWebInterface.setConfig(config.select('scoreboard'));
@@ -50,6 +54,7 @@ factory.addPartExtra('scenario', scenario);
 // Engine
 engine.setScenario(scenario);
 engine.setTraffic(traffic);
+engine.setCollision(collision);
 engine.setScoreboard(scoreboard);
 // Enemy
 engine.addEnemies(factory.createEntity(Bug));

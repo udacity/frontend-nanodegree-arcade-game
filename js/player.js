@@ -11,6 +11,7 @@ var Player = function() {
     this.x = 0;
     this.sprite;
     this.startPoint;
+    this.padding = 30;
     this.route = null;
     this.pause = false;
     this.started = false;
@@ -42,12 +43,30 @@ Player.prototype.gameStarted = function() {
 };
 
 /**
+ * @description Returns the position (x axis) of the character.
+ * @return {[type]} [description]
+ */
+Player.prototype.getX = function() {
+    return this.x;
+}
+
+/**
  * @description Returns the player's route. If the player has not yet started
  * or fell into the water the function returns null.
  * @return {number or null}
  */
 Player.prototype.getRoute = function() {
     return this.route;
+};
+
+/**
+ * @description Returns the padding. This padding is used to check collisions.
+ * That is, the collision system ignores the padding area to calculate the
+ * correct position of the character on the screen.
+ * @return {number}
+ */
+Player.prototype.getPadding = function() {
+    return this.padding;
 };
 
 /**

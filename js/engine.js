@@ -9,6 +9,7 @@ var Engine = function(global) {
     this.traffic;
     this.lastTime;
     this.scenario;
+    this.collision;
     this.scoreboard;
     this.enemies = [];
     this.pause = false;
@@ -30,6 +31,14 @@ Engine.prototype.setScenario = function(scenario) {
 Engine.prototype.setTraffic = function(traffic) {
     this.traffic = traffic;
 };
+
+/**
+ * @description Assign Collision
+ * @param  {object} collision - Collision Instance
+ */
+Engine.prototype.setCollision = function(collision) {
+    this.collision = collision;
+}
 
 /**
  * @description Assign scoreboard
@@ -113,6 +122,35 @@ Engine.prototype.update = function(dt) {
             this.scoreboard.removeLife();
         this.player.init();
     }
+
+    this.checkCollisions();
+};
+
+/**
+ * @description Checks whether the character collided with an enemy.
+ */
+Engine.prototype.checkCollisions = function() {
+    this.enemies.forEach(function(enemy) {
+        // Player
+        this.collision.setPlayerData({
+            x: this.player.getX(),
+            route: this.player.getRoute(),
+            padding: this.player.getPadding()
+        });
+
+        // Enemy
+        this.collision.setEnemyData({
+            x: enemy.getX(),
+            route: enemy.getRoute(),
+            padding: enemy.getPadding()
+        });
+
+        if(this.collision.collided()) {
+            this.scoreboard.removeLife();
+            this.player.init();
+        }
+
+    }.bind(this));
 };
 
 /**

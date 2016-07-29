@@ -68,6 +68,33 @@ Enemy.prototype.setRoute = function(route) {
 };
 
 /**
+ * @description Returns the position (x axis) of the enemy.
+ * @return {[type]} [description]
+ */
+Enemy.prototype.getX = function() {
+    return this.x;
+}
+
+/**
+ * @description Returns the enemies route. If the enemy has not yet started
+ * or fell into the water the function returns null.
+ * @return {number or null}
+ */
+Enemy.prototype.getRoute = function() {
+    return this.route;
+};
+
+/**
+ * @description Returns the padding. This padding is used to check collisions.
+ * That is, the collision system ignores the padding area to calculate the
+ * correct position of the enemy on the screen.
+ * @return {number}
+ */
+Enemy.prototype.getPadding = function() {
+    return this.padding;
+};
+
+/**
  * @description Returns the surface terrains set for the enemy.
  * @return {string or array}
  */
