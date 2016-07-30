@@ -6,7 +6,6 @@ var Scoreboard = function() {
     this.life;
     this.score;
     this.level;
-    this.webInterface;
     this.scoreNextLevelUp;
     Module.call(this);
 };
@@ -15,24 +14,18 @@ Scoreboard.prototype = Object.create(Module.prototype);
 Scoreboard.prototype.constructor = Scoreboard;
 
 /**
- * Assing Web Interface
- * @param  {object} webInterface - Web Interface Instance
- */
-Scoreboard.prototype.setWebInterface = function(webInterface) {
-    this.webInterface = webInterface;
-};
-
-/**
  * @description Starts the score. Assigns default settings.
  */
 Scoreboard.prototype.init = function() {
+    var sbWebInterface = this.getModule('sbWebInterface');
+
     this.life   = this.config.life.startingIn;
     this.score  = this.config.score.startingIn;
     this.level  = this.config.level.startingIn;
     this.scoreNextLevelUp = this.config.level.fisrtLevelUp;
-    this.webInterface.change('score', this.score);
-    this.webInterface.change('level', this.level);
-    this.webInterface.change('life', this.life);
+    sbWebInterface.change('score', this.score);
+    sbWebInterface.change('level', this.level);
+    sbWebInterface.change('life', this.life);
 };
 
 /**
@@ -41,8 +34,10 @@ Scoreboard.prototype.init = function() {
  * @param  {number} score
  */
 Scoreboard.prototype.addScore = function(score) {
+    var sbWebInterface = this.getModule('sbWebInterface');
+
     this.score += score === undefined ? this.config.score.increment : score;
-    this.webInterface.change('score', this.score);
+    sbWebInterface.change('score', this.score);
     if(this.score > this.scoreNextLevelUp)
         this.addLevel();
 };
@@ -61,12 +56,13 @@ Scoreboard.prototype.getScore = function() {
  * points to be achieved to the next level is added to the score of the game.
  */
 Scoreboard.prototype.addLevel = function() {
-    var nextLevelUp = this.scoreNextLevelUp,
-        percentage  = this.config.level.percentageNextLevel;
+    var nextLevelUp     = this.scoreNextLevelUp,
+        percentage      = this.config.level.percentageNextLevel,
+        sbWebInterface  = this.getModule('sbWebInterface');
 
     this.level++;
-    this.webInterface.change('level', this.level);
-    this.webInterface.animation('level', 'add');
+    sbWebInterface.change('level', this.level);
+    sbWebInterface.animation('level', 'add');
     this.scoreNextLevelUp = (nextLevelUp/100) * percentage + nextLevelUp;
 };
 
@@ -83,8 +79,11 @@ Scoreboard.prototype.getLevel = function() {
  * @param  {number} life - A value other than the default value (1)
  */
 Scoreboard.prototype.addLife = function(life) {
+    var sbWebInterface = this.getModule('sbWebInterface');
+
     life === undefined ? this.life++ : this.life += life;
-    this.webInterface.change('life', this.life);
+    sbWebInterface.change('life', this.life);
+    sbWebInterface.animation('life', 'add');
 };
 
 /**
@@ -93,9 +92,11 @@ Scoreboard.prototype.addLife = function(life) {
  * @param  {number} life - A value other than the default value (1)
  */
 Scoreboard.prototype.removeLife = function(life) {
+    var sbWebInterface = this.getModule('sbWebInterface');
+
     life === undefined ? this.life-- : this.life -= life;
-    this.webInterface.change('life', this.life);
-    this.webInterface.animation('life', 'remove');
+    sbWebInterface.change('life', this.life);
+    sbWebInterface.animation('life', 'remove');
     if(this.life < 0)
         this.reset();
 };

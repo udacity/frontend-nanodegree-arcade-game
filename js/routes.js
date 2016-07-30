@@ -8,22 +8,23 @@
  */
 var Routes = function() {
     this.routes = {};
-    Entity.call(this);
+    Module.call(this);
 };
 
-Routes.prototype = Object.create(Entity.prototype);
+Routes.prototype = Object.create(Module.prototype);
 Routes.prototype.constructor = Routes;
 
 /**
  * @description Create routes scenario
- * @param  {object} scenario - Scenario Instance
  */
-Routes.prototype.create = function(scenario) {
-    var currentRoute = -124.5;
+Routes.prototype.create = function() {
+    var scenario        = this.getModule('scenario'),
+        resources       = this.getModule('resources'),
+        currentRoute    = -124.5;
 
     scenario.getTerrainsSurface().forEach(function(terrain) {
         for(var i = 0; i < scenario.numberRowsByTerrainsSurface(terrain); i++) {
-            currentRoute += this.resources.imageSize('height');
+            currentRoute += resources.imageSize('height');
             if(!this.routes.hasOwnProperty(terrain))
                 this.routes[terrain] = [];
 

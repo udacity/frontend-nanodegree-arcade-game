@@ -1,24 +1,28 @@
 var config          = new Config,
+    entityFactory   = new EntityFactory,
     resources       = new Resources,
+    collision       = new Collision,
+    canvas          = new Canvas(this),
+    resourcesLoader = new ResourcesLoader,
     scenario        = new Scenario,
     routes          = new Routes,
     traffic         = new Traffic,
-    collision       = new Collision,
-    scoreboard      = new Scoreboard,
     sbWebInterface  = new ScoreboardWebInterface(this),
-    canvas          = new Canvas(this),
-    resourcesLoader = new ResourcesLoader,
+    scoreboard      = new Scoreboard,
     engine          = new Engine(this),
     gameControl     = new GameControl(this);
 
 // Resources
-resources.setConfig(config.select('resources'));
+resources.config(config.select('resources'));
+
+// Collision
+collision.addModule('resources', resources);
 
 // Scenario
-scenario.setConfig(config.select('scenario'));
-scenario.setResources(resources);
-scenario.setCanvas(canvas);
-scenario.setResourcesLoader(resourcesLoader);
+scenario.config(config.select('scenario'));
+scenario.addModule('resources', resources);
+scenario.addModule('canvas', canvas);
+scenario.addModule('resourcesLoader', resourcesLoader);
 
 // Canvas
 canvas.size(scenario.width(), scenario.height());
@@ -26,47 +30,49 @@ canvas.appendIn('canvas-container');
 canvas.create();
 
 // Routes
-routes.setResources(resources);
-routes.create(scenario);
+routes.addModule('scenario', scenario);
+routes.addModule('resources', resources);
+routes.create();
 
 // Traffic
-traffic.setRoutes(routes);
-traffic.setConfig(config.select('traffic'));
-
-// Collision
-collision.setImageWidth(resources.imageSize('width'));
+traffic.config(config.select('traffic'));
+traffic.addModule('routes', routes);
 
 // Scoreboard
-scoreboard.setConfig(config.select('scoreboard'));
-sbWebInterface.setConfig(config.select('scoreboard'));
-scoreboard.setWebInterface(sbWebInterface);
+scoreboard.config(config.select('scoreboard'));
+sbWebInterface.config(config.select('scoreboard'));
+scoreboard.addModule('sbWebInterface', sbWebInterface);
+scoreboard.init();
 
 // Resources Loader
 resourcesLoader.load(resources.urlsAllImages());
 
 // Factory
-var factory = new EntityFactory;
-factory.setResources(resources);
-factory.setCanvas(canvas);
-factory.setResourcesLoader(resourcesLoader);
-factory.addPartExtra('scenario', scenario);
+entityFactory.addModule('canvas', canvas);
+entityFactory.addModule('scenario', scenario);
+entityFactory.addModule('resources', resources);
+entityFactory.addModule('resourcesLoader', resourcesLoader);
+
+// Player
+var player = entityFactory.createEntity(Player);
+player.addModule('routes', routes);
 
 // Engine
-engine.setScenario(scenario);
-engine.setTraffic(traffic);
-engine.setCollision(collision);
-engine.setScoreboard(scoreboard);
-// Enemy
-engine.addEnemies(factory.createEntity(Bug));
-engine.addEnemies(factory.createEntity(Bug));
-engine.addEnemies(factory.createEntity(Bug));
-// Player
-var player = factory.createEntity(Player);
-player.addPartExtra('routes', routes);
+engine.addModule('traffic', traffic);
+engine.addModule('scenario', scenario);
+engine.addModule('collision', collision);
+engine.addModule('scoreboard', scoreboard);
+
+// Add Enemies
+engine.addEnemies(entityFactory.createEntity(Bug));
+engine.addEnemies(entityFactory.createEntity(Bug));
+engine.addEnemies(entityFactory.createEntity(Bug));
+
+// Assign Player
 engine.setPlayer(player);
 
 // Game Control
-gameControl.setConfig(config.select('gameControl'));
+gameControl.config(config.select('gameControl'));
 gameControl.addCallback(engine.inPause.bind(engine));
 gameControl.addCallback(player.move.bind(player));
 gameControl.init();

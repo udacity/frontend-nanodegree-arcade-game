@@ -3,10 +3,6 @@
  * @constructor
  */
 var Entity = function() {
-    this.canvas;
-    this.resources;
-    this.partsExtras = [];
-    this.resourcesLoader;
     Module.call(this);
 };
 
@@ -14,43 +10,59 @@ Entity.prototype = Object.create(Module.prototype);
 Entity.prototype.constructor = Entity;
 
 /**
- * Assigns the resource manager in your entity.
- * @param  {object} resources - Resource Instance
+ * @description Returns the entity's position on the x axis.
+ * @return {number}
  */
-Entity.prototype.setResources = function(resources) {
-    this.resources = resources;
+Entity.prototype.axisX = function() {
+    return this.x;
 };
 
 /**
- * Assigns the canvas manager in your entity.
- * @param  {object} canvas - Canvas Instance
+ * @description Returns the padding of the entity. This value is used to
+ * calculate the area of collision between the entities.
+ * @return {number}
  */
-Entity.prototype.setCanvas = function(canvas) {
-    this.canvas = canvas;
+Entity.prototype.getPadding = function() {
+    return this.padding;
 };
 
 /**
- * Assigns the resources loader in your entity.
- * @param  {object} resourcesLoader - Resource Loader Instance
+ * @description Assigns the route that the entity should go.
+ * @param  {number} route
  */
-Entity.prototype.setResourcesLoader = function(resourcesLoader) {
-    this.resourcesLoader = resourcesLoader;
+Entity.prototype.setRoute = function(route) {
+    this.route = route;
 };
 
 /**
- * @description You can add extra parts to the entity.
- * @param  {string} label
- * @param  {object} part
+ * @description Returns the route that the entity this.
+ * @return {number}
  */
-Entity.prototype.addPartExtra = function(label, part) {
-    this.partsExtras[label] = part;
+Entity.prototype.getRoute = function() {
+    return this.route;
 };
 
 /**
- * @description Returns an extra part added previously.
- * @param  {string} label
- * @return {object}
+ * @description Every entity has a sprite. An image that is rendered on the
+ * user's screen. This function converts an object containing the group and
+ * entity's name in an address (url) valid.
  */
-Entity.prototype.getPartExtra = function(label) {
-    return this.partsExtras[label];
+Entity.prototype.convertSprite = function() {
+    var resources       = this.getModule('resources'),
+        spriteGroup     = this.sprite.group,
+        spriteName      = this.sprite.name;
+
+    this.sprite = resources.urlImage(spriteGroup, spriteName);
+};
+
+/**
+ * @description This function renders the entity on the screen. Positioned in
+ * the x-axis and y acorco with the value of x and route.
+ */
+Entity.prototype.render = function() {
+    var canvas          = this.getModule('canvas'),
+        resourcesLoader = this.getModule('resourcesLoader'),
+        ctx             = canvas.getContext();
+
+    ctx.drawImage(resourcesLoader.get(this.sprite), this.x, this.route);
 };

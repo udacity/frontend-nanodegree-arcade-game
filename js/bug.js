@@ -4,10 +4,10 @@
  */
 var Bug = function() {
     this.sprite = {
-        group:      'enemies',
-        element:    'bug'
+        group:  'enemies',
+        name:   'bug'
     };
-    this.padding = 0;
+    this.padding = 30;
     this.terrainsSurface = 'stone';
     Enemy.call(this);
 };

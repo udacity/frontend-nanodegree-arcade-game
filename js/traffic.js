@@ -5,21 +5,12 @@
  * @constructor
  */
 var Traffic = function() {
-    this.routes;
     this.routesInUse = {};
     Module.call(this);
 };
 
 Traffic.prototype = Object.create(Module.prototype);
 Traffic.prototype.constructor = Traffic;
-
-/**
- * @description Assigning Routes Object
- * @param  {object} routes - Routes Instance
- */
-Traffic.prototype.setRoutes = function(routes) {
-    this.routes = routes;
-};
 
 /**
  * @description Add an enemy on a route
@@ -60,8 +51,9 @@ Traffic.prototype.routeIsFull = function(route) {
  * @return {number} (Route)
  */
 Traffic.prototype.getEmptyRoute = function(terrains) {
-    var routes = this.routes.get(terrains),
-        route = routes[Math.floor(Math.random() * routes.length)];
+    var routesModule    = this.getModule('routes'),
+        routes          = routesModule.get(terrains),
+        route           = routes[Math.floor(Math.random() * routes.length)];
 
     return this.routeIsFull(route) ? this.getEmptyRoute(terrains) : route;
 };

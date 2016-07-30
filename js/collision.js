@@ -1,63 +1,79 @@
+/**
+ * @description This is the collision system. It compares the position of two
+ * objects and points when a collision occurs.
+ */
 var Collision = function() {
-    this.enemy;
-    this.player;
-    this.imageWidth;
+    this.entities = {};
+    Module.call(this);
 };
 
-Collision.prototype.setImageWidth = function(width, height) {
-    this.imageWidth = width;
+Collision.prototype = Object.create(Module.prototype);
+Collision.prototype.constructor = Collision;
+
+/**
+ * @description Assign an object containing two entities with their respective
+ * parameters (x, route and padding)
+ * @param  {object} data
+ */
+Collision.prototype.addEntityData = function(data) {
+    this.entities = data;
 };
 
-Collision.prototype.setPlayerData = function(playerData) {
-    this.player = playerData;
-};
-
-Collision.prototype.setEnemyData = function(enemyData) {
-    this.enemy = enemyData;
-};
-
+/**
+ * @description Calculates and returns the collision area of the entity.
+ * @param  {string} entity
+ */
 Collision.prototype.getImpingementArea = function(entity) {
-    var entityData = this[entity];
-    return this.imageWidth - (2 * entityData.padding);
+    var resources   = this.getModule('resources'),
+        entityData  = this.entities[entity];
+
+    return resources.imageSize('width') - (2 * entityData.padding);
 };
 
+/**
+ * @description Calculates and returns the lowest point of the entity collision.
+ * @param  {string} entity
+ */
 Collision.prototype.minCollisionPoint = function(entity) {
-    var entityData = this[entity];
+    var entityData = this.entities[entity];
     return entityData.x + entityData.padding;
 };
 
+/**
+ * @description Computes and returns the highest point of the entity collision.
+ * @param  {number} minCPoint
+ * @param  {number} impingementArea
+ */
 Collision.prototype.maxCollisionPoint = function(minCPoint, impingementArea) {
     return minCPoint + impingementArea;
 };
 
+/**
+ * @description Check if there was a collision between the two entities.
+ * @return {boolean}
+ */
 Collision.prototype.collided = function() {
-    if(this.player.route === this.enemy.route) {
-        var player = {
-            impingementArea: this.getImpingementArea('player'),
-            min: this.minCollisionPoint('player')
-        };
-        player['max'] = this.maxCollisionPoint(
-            player.min,
-            player.impingementArea
-        );
+    var labels  = Object.keys(this.entities),
+        one     = this.entities[labels[0]],
+        two     = this.entities[labels[1]];
 
-        var enemy = {
-            impingementArea: this.getImpingementArea('enemy'),
-            min: this.minCollisionPoint('enemy')
-        };
-        enemy['max'] = this.maxCollisionPoint(
-            enemy.min,
-            enemy.impingementArea
-        );
+    if(one.route === two.route) {
+        labels.forEach(function(label){
+            this.entities[label]['area']    = this.getImpingementArea(label);
+            this.entities[label]['min']     = this.minCollisionPoint(label);
+            this.entities[label]['max']     = this.maxCollisionPoint(
+                this.entities[label]['min'],
+                this.entities[label]['area']
+            );
+        }.bind(this));
 
-        if ((enemy.max >= player.min && enemy.max <= player.max)
-            || (enemy.min >= player.min && enemy.min <= player.max)
-            || (enemy.min >= player.min && enemy.max <= player.max)
-            || (player.min >= enemy.min && player.max <= enemy.max)
+        if ((one.max >= two.min && one.max <= two.max)
+            || (one.min >= two.min && one.min <= two.max)
+            || (one.min >= two.min && one.max <= two.max)
+            || (two.min >= one.min && two.max <= one.max)
         ) {
             return true;
         }
     }
-
     return false;
 };

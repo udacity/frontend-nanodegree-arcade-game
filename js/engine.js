@@ -6,47 +6,15 @@
  */
 var Engine = function(global) {
     this.player;
-    this.traffic;
     this.lastTime;
-    this.scenario;
-    this.collision;
-    this.scoreboard;
     this.enemies = [];
     this.pause = false;
     this.win = global.window;
+    Module.call(this);
 };
 
-/**
- * @description Assign instantiates the scenario.
- * @param  {object} scenario - Scenario Instance
- */
-Engine.prototype.setScenario = function(scenario) {
-    this.scenario = scenario;
-};
-
-/**
- * @description Assign traffic
- * @param  {object} traffic - Traffic Instance
- */
-Engine.prototype.setTraffic = function(traffic) {
-    this.traffic = traffic;
-};
-
-/**
- * @description Assign Collision
- * @param  {object} collision - Collision Instance
- */
-Engine.prototype.setCollision = function(collision) {
-    this.collision = collision;
-}
-
-/**
- * @description Assign scoreboard
- * @param  {object} scoreboard - Scoreboard Instance
- */
-Engine.prototype.setScoreboard = function(scoreboard) {
-    this.scoreboard = scoreboard;
-};
+Engine.prototype = Object.create(Module.prototype);
+Engine.prototype.constructor = Engine;
 
 /**
  * @description Add enemies.
@@ -99,19 +67,21 @@ Engine.prototype.main = function() {
  * @param  {number} dt - delta time
  */
 Engine.prototype.update = function(dt) {
+    var traffic     = this.getModule('traffic'),
+        scoreboard  = this.getModule('scoreboard');
+
     // Enemies
     this.enemies.forEach(function(enemy) {
         if(enemy.needStartup()) {
             if(enemy.getLastTraveledRoute() !== null) {
-                this.traffic.declareRouteOutput(enemy.getLastTraveledRoute());
-                this.scoreboard.addScore();
+                traffic.declareRouteOutput(enemy.getLastTraveledRoute());
+                scoreboard.addScore();
             }
 
-            var route = this.traffic.getEmptyRoute(enemy.getTerrainsSurface());
-            this.traffic.declareRouteEntry(route);
-            enemy.setLevelGame(this.scoreboard.getLevel());
+            var route = traffic.getEmptyRoute(enemy.getTerrainsSurface());
+            traffic.declareRouteEntry(route);
             enemy.setRoute(route);
-            enemy.init();
+            enemy.init(scoreboard.getLevel());
         }
         enemy.update(dt);
     });
@@ -119,10 +89,11 @@ Engine.prototype.update = function(dt) {
     // Player
     if(this.player.getRoute() === null) {
         if(this.player.gameStarted())
-            this.scoreboard.removeLife();
+            scoreboard.removeLife();
         this.player.init();
     }
 
+    // Collision
     this.checkCollisions();
 };
 
@@ -130,26 +101,27 @@ Engine.prototype.update = function(dt) {
  * @description Checks whether the character collided with an enemy.
  */
 Engine.prototype.checkCollisions = function() {
+    var collision   = this.getModule('collision')
+        scoreboard  = this.getModule('scoreboard');
+
     this.enemies.forEach(function(enemy) {
-        // Player
-        this.collision.setPlayerData({
-            x: this.player.getX(),
-            route: this.player.getRoute(),
-            padding: this.player.getPadding()
+        collision.addEntityData({
+            'player': {
+                x: this.player.axisX(),
+                route: this.player.getRoute(),
+                padding: this.player.getPadding()
+            },
+            'enemy': {
+                x: enemy.axisX(),
+                route: enemy.getRoute(),
+                padding: enemy.getPadding()
+            }
         });
 
-        // Enemy
-        this.collision.setEnemyData({
-            x: enemy.getX(),
-            route: enemy.getRoute(),
-            padding: enemy.getPadding()
-        });
-
-        if(this.collision.collided()) {
-            this.scoreboard.removeLife();
+        if(collision.collided()) {
+            scoreboard.removeLife();
             this.player.init();
         }
-
     }.bind(this));
 };
 
@@ -159,8 +131,10 @@ Engine.prototype.checkCollisions = function() {
  * but in reality they are just drawing the entire screen over and over.
  */
 Engine.prototype.render = function() {
+    var scenario = this.getModule('scenario');
+
     // Scenario
-    this.scenario.render();
+    scenario.render();
 
     // Enemies
     this.enemies.forEach(function(enemy) {
@@ -188,6 +162,5 @@ Engine.prototype.reset = function() {
 Engine.prototype.run = function() {
 	this.reset();
 	this.lastTime = Date.now();
-    this.scoreboard.init();
 	this.main();
 };

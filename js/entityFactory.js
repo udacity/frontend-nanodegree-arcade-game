@@ -17,9 +17,9 @@ EntityFactory.prototype.createEntity = function(type) {
     var entity;
 
     entity = new (type);
-    entity.setResources(this.resources);
-    entity.setCanvas(this.canvas);
-    entity.setResourcesLoader(this.resourcesLoader);
-    entity.addPartExtra('scenario', this.getPartExtra('scenario'));
+    entity.addModule('canvas', this.getModule('canvas'));
+    entity.addModule('scenario', this.getModule('scenario'));
+    entity.addModule('resources', this.getModule('resources'));
+    entity.addModule('resourcesLoader', this.getModule('resourcesLoader'));
     return entity;
 };

@@ -33,12 +33,12 @@ Resources.prototype.imageSize = function(dimension) {
  * @description Redeem the URL of a specific resource.
  * @param  {string} group   - The type of element that refers the resource.
  * Exemple: scenario, enemies, etc
- * @param  {string} element - Element name. Exemple: water
+ * @param  {string} name - Exemple: water
  * @return {string}
  */
-Resources.prototype.urlImage = function(group, element) {
+Resources.prototype.urlImage = function(group, name) {
 	var imageConfig = this.getResourceConfig('images');
-	return imageConfig.urls[group][element];
+	return imageConfig.urls[group][name];
 };
 
 /**

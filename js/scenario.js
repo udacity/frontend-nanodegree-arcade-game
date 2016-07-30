@@ -3,10 +3,10 @@
  * @constructor
  */
 var Scenario = function() {
-    Entity.call(this);
+    Module.call(this);
 };
 
-Scenario.prototype = Object.create(Entity.prototype);
+Scenario.prototype = Object.create(Module.prototype);
 Scenario.prototype.constructor = Scenario;
 
 /**
@@ -58,7 +58,8 @@ Scenario.prototype.numberRowsByTerrainsSurface = function(terrain) {
  * @return {integer}
  */
 Scenario.prototype.width = function() {
-    return this.numberColumns() * this.resources.imageSize('width');
+    var resources = this.getModule('resources');
+    return this.numberColumns() * resources.imageSize('width');
 };
 
 /**
@@ -66,8 +67,9 @@ Scenario.prototype.width = function() {
  * @return {integer}
  */
 Scenario.prototype.height = function() {
-    var height  = this.resources.imageSize('height'),
-        full    = this.resources.imageSize('full');
+    var resources   = this.getModule('resources'),
+        height      = resources.imageSize('height'),
+        full        = resources.imageSize('full');
 
     return (this.numberRows() - 1) * height + full;
 };
@@ -76,20 +78,24 @@ Scenario.prototype.height = function() {
  * @description Renders the scene
  */
 Scenario.prototype.render = function() {
-    var urlsRowsImages = [];
+    var urlsRowsImages  = [],
+        canvas          = this.getModule('canvas'),
+        resources       = this.getModule('resources'),
+        resourcesLoader = this.getModule('resourcesLoader');
+
 
 	this.getTerrainsSurface().forEach(function(terrain) {
 		for(var i = 0; i < this.numberRowsByTerrainsSurface(terrain); i++) {
-			urlsRowsImages.push(this.resources.urlImage('scenario', terrain));
+			urlsRowsImages.push(resources.urlImage('scenario', terrain));
 		}
 	}.bind(this));
 
 	for (var row = 0; row < this.numberRows(); row++) {
 		for (var col = 0; col < this.numberColumns(); col++) {
-            var image = this.resourcesLoader.get(urlsRowsImages[row]);
-			this.canvas.getContext().drawImage(image,
-				col * this.resources.imageSize('width'),
-				row * this.resources.imageSize('height'));
+            var image = resourcesLoader.get(urlsRowsImages[row]);
+			canvas.getContext().drawImage(image,
+				col * resources.imageSize('width'),
+				row * resources.imageSize('height'));
 		}
 	}
 };

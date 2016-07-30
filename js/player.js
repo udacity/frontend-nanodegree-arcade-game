@@ -5,11 +5,11 @@
  */
 var Player = function() {
     this.sprite = {
-        group:      'characters',
-        element:    'boy'
+        group:  'characters',
+        name:   'boy'
     };
+
     this.x = 0;
-    this.sprite;
     this.startPoint;
     this.padding = 30;
     this.route = null;
@@ -43,50 +43,13 @@ Player.prototype.gameStarted = function() {
 };
 
 /**
- * @description Returns the position (x axis) of the character.
- * @return {[type]} [description]
- */
-Player.prototype.getX = function() {
-    return this.x;
-}
-
-/**
- * @description Returns the player's route. If the player has not yet started
- * or fell into the water the function returns null.
- * @return {number or null}
- */
-Player.prototype.getRoute = function() {
-    return this.route;
-};
-
-/**
- * @description Returns the padding. This padding is used to check collisions.
- * That is, the collision system ignores the padding area to calculate the
- * correct position of the character on the screen.
- * @return {number}
- */
-Player.prototype.getPadding = function() {
-    return this.padding;
-};
-
-/**
- * @description Generate a valid url based on the group and player of the
- * element. After assigned to sprite player.
- */
-Player.prototype.convertSprite = function() {
-    var spriteGroup     = this.sprite.group,
-        spriteElement   = this.sprite.element;
-
-    this.sprite = this.resources.urlImage(spriteGroup, spriteElement);
-};
-
-/**
  * @description Forwards the player to the starting point of the game.
  */
 Player.prototype.moveStartPoint = function() {
-    var routes      = this.getPartExtra('routes');
-        scenario    = this.getPartExtra('scenario')
-        imageWidth  = this.resources.imageSize('width');
+    var routes      = this.getModule('routes'),
+        scenario    = this.getModule('scenario'),
+        resources   = this.getModule('resources'),
+        imageWidth  = resources.imageSize('width');
 
     this.x = Math.trunc(scenario.numberColumns() / 2) * imageWidth;
     this.route = routes.getFirstOrLast('last');
@@ -98,10 +61,11 @@ Player.prototype.moveStartPoint = function() {
  * @param  {string} direction
  */
 Player.prototype.move = function(direction) {
-    var routes      = this.getPartExtra('routes'),
-        scenario    = this.getPartExtra('scenario'),
-        imageWidth  = this.resources.imageSize('width'),
-        imageHeight = this.resources.imageSize('height');
+    var routes      = this.getModule('routes'),
+        scenario    = this.getModule('scenario'),
+        resources   = this.getModule('resources'),
+        imageWidth  = resources.imageSize('width'),
+        imageHeight = resources.imageSize('height');
 
     if(direction === 'pause')
         this.pause = this.pause ? false : true;
@@ -140,12 +104,4 @@ Player.prototype.move = function(direction) {
  */
 Player.prototype.reset = function() {
     this.route = null;
-};
-
-/**
- * @description Draw the player on the screen, required method for game
- */
-Player.prototype.render = function() {
-    var ctx = this.canvas.getContext();
-    ctx.drawImage(this.resourcesLoader.get(this.sprite), this.x, this.route);
 };
