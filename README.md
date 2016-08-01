@@ -23,3 +23,16 @@ git clone https://github.com/paulofreitasnobrega/frontend-nanodegree-arcade-game
 Now I will comment on some sections and specific codes.
 
 #### Configuration
+In config.js you will find the configuration of virtually all parts of the game. You can play and change them, but be warned, it will affect how the game behaves. For this reason, I suggest you learn about the codes involved before making permanent changes. Let's for a simple example:
+
+This is an excerpt of our configuration file. He is responsible for representation of the lines of the scenario. We'll talk more forward scenario. These settings define that we will have a line representing a ground superfice with water, three lines representing a ground superfice with stones and a line representing an area of land with grass.
+
+```javascript
+rows: {
+    water: 1,
+    stone: 3,
+    grass: 1
+}
+```
+
+See results:
