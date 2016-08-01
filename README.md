@@ -12,8 +12,14 @@ When your character is hit by an insect, one of their lives is taken. By the way
 The game has no end. Your goal is to exceed their own limits. Beat your record, or the record of his friends, and show that you are a true champion. Good Game!
 
 #### Installation
+You can download the .zip file directly on this link: (https://github.com/paulofreitasnobrega/frontend-nanodegree-arcade-game/archive/master.zip)
 
+If you prefer to use git:
 
-Students should use this [rubric](https://review.udacity.com/#!/projects/2696458597/rubric) for self-checking their submission. Make sure the functions you write are **object-oriented** - either class functions (like Player and Enemy) or class prototype functions such as Enemy.prototype.checkCollisions, and that the keyword 'this' is used appropriately within your class and class prototype functions to refer to the object the function is called upon. Also be sure that the **readme.md** file is updated with your instructions on both how to 1. Run and 2. Play your arcade game.
+```git
+git clone https://github.com/paulofreitasnobrega/frontend-nanodegree-arcade-game.git
+```
+# For Developers
+Now I will comment on some sections and specific codes.
 
-For detailed instructions on how to get started, check out this [guide](https://docs.google.com/document/d/1v01aScPjSWCCWQLIpFqvg3-vXLH2e8_SZQKC8jNO0Dc/pub?embedded=true).
+#### Configuration
