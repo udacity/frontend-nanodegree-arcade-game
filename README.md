@@ -7,7 +7,7 @@ Na minha versão do jogo o personagem principal tem sua cidade invadida por inse
 #### Como Jogar?
 Como mencionei acima, o objetivo do jogo é desviar dos insetos gingantes. A cada inseto que atravessa todo o cenário (10 pontos) são creditados no placar. Ao acumular pontos, o nível de jogo aumenta, aumentando também a dificuldade. Isso acontece porque os inimigos estão diretamente ligados ao nível de jogo. Quanto maior o nível, maior será a velocidade deles.
 
-O personagem inicia o jogo com três vidas. Quando um inseto o atinge ou o mesmo cai na água, uma de suas vidas é retirada do placar do jogo. E quando as vidas acabam, o jogo chega ao fim. Mas não se preocupe, esporadicamente bônus apareceram pelo cenário, e ao coletá-los pontos e vidas extras serão creditados no placar.
+O personagem inicia o jogo com três vidas. Quando um inseto o atinge ou o mesmo cai na água, uma de suas vidas é retirada do placar do jogo. E quando as vidas acabam, o jogo chega ao fim. Mas não se preocupe, esporadicamente bônus aparecerão pelo cenário, e ao coletá-los pontos e vidas extras serão creditados no placar.
 
 O jogo não tem fim! seu objetivo é ultrapassar seus próprios limites, batendo seu próprio recorde de pontos ou o recorde de seus amigos, mostrando que você é um verdadeiro campeão.
 
@@ -59,12 +59,7 @@ rows: {
 
 Legal. Agora o cenário possui 02 superfície de grama.
 
-###### Sobre o Objeto:
-**Config** possui o(s) seguinte(s) método(s):
-
-* config.**select()**
-
-#### Scenario and Routes
+#### Cenário e Rotas
 Agora vamos falar um pouco sobre o cenário e suas rotas. Pense que neste jogo, o cenário é simplemente uma tabela, formada por linhas e colunas. Junte o trecho do código acima com a quantidade de colunas e terá essa configuração:
 
 ```javascript
@@ -77,7 +72,7 @@ rows: {
 ```
 Você já deve ter imaginado o resultado. Um cenário de 05 colunas por 05 linhas possuindo 25 células. Não há nada de especial nisso, certo? Então vamos falar de algo um pouco mais interessante - **rotas**.
 
-Rotas são estradas que seus inimigos percorreram. Pontos comuns no eixo Y que mantem os inimigos trafegando por referências imaginárias próximas ao centro de cada linha do cenário. Resumindo, cada linha do cenário possuirá uma rota.
+Rotas são estradas que seus inimigos percorrerão. Pontos comuns no eixo Y que mantem os inimigos trafegando por referências imaginárias próximas ao centro de cada linha do cenário. Resumindo, cada linha do cenário possuirá uma rota.
 
 Um dos arquivos responsáveis por gerenciar as rotas é **routes.js**. Na verdade ele faz mais do que definir o ponto (eixo Y) dessas rotas. Routes associa as rotas as suas superfícies de terreno. Ou seja, na configuração citada acima, existirá:
 
@@ -94,4 +89,22 @@ var MyEnemy = function() {
     // code ...
 };
 ```
-Esse código criará um novo tipo de inimigo no jogo que poderá percorrer qualquer uma das rotas de pedra o grama que o cenário possuir. Legal não?!
+Esse código criará um novo tipo de inimigo no jogo que poderá percorrer qualquer uma das rotas de pedra ou grama que o cenário possuir. Legal não?!
+
+#### Gerenciando o Tráfico de Inimigos
+Um pouco mais acima comentei que **routes.js** é um dos arquivos responsáveis pelo gerenciamento de rotas. O arquivo que complementa esse gerenciamento é o **traffic.js**. Resumidamente posso dizer que traffic organiza e manipula as informações que routes define, ou algo próximo a isso. Para entender como traffic funciona vamos avançar um pouco e depois retroceder. Certo?
+
+Quando um inimigo atravessa o cenário e chega ao fim, internamente ele remove sua rota. Traffic observa cada movimento dos inimigos e quando percebe que algum inimigo não possui rota ele inicia seu trabalho de fato. Traffic solicita ao inimigo as superfícies de terreno que o mesmo possui permissão de trafegar e então encaminha essas superfícies a routes, esperando receber as rotas que cada uma dessas superfícies possui. Com as rotas em mãos traffic sorteia uma rota entre as rotas recebidas e certifica-se que a rota esteja livre. O que seria livre? Antes de explicar olhe para essa linha do arquivo de configuração:
+
+```javascript
+routeCapacity: 2
+```
+
+Ela diz ao traffic que cada rota poderá receber o tráfico de até 2 inimigos ao mesmo tempo. Se a rota já estiver cheia, traffic sorteia novamente outra rota e refaz a verificação até conseguir uma rota livre. Por fim, a rota é injetada no inimigo e o mesmo é iniciado. Veja um exemplo:
+
+```javascript
+var route = traffic.getEmptyRoute(enemy.getTerrainsSurface());
+traffic.declareRouteEntry(route);
+enemy.setRoute(route);
+enemy.init();
+```
