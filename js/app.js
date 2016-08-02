@@ -50,27 +50,40 @@ Player.prototype.update = function(dt) {
 // Place the player object in a variable called player\
 
 var player = new Player(200,400);
-var enemy = new Enemy(0,0);
 var allEnemies = new Array();
-allEnemies.push(enemy);
-// enemy.update(100);
+for(var i=0; i<3; i++){
+    var enemy = new Enemy(0,100*i);
+    enemy.update(100*i);
+    allEnemies.push(enemy);
+}
+
+enemy.update(100);
 //enemy.render();
 
 Player.prototype.handleInput = function(k) {
     switch(k) {
     case 'left':
-        this.x -= 10;
+        if(this.x > 0){
+            this.x -= 100;
+        }
         break;
     case 'up':
-        this.y -=10;
+        if(this.y > 0){
+            this.y -=100;
+        }
         break;
     case 'right':
-        this.x += 10;
+        if(this.x < 400){
+            this.x += 100;
+        }
         break;
     case 'down':
-        this.y += 10;
+        if(this.y < 400){
+            this.y += 100;
+        }
         break;
 }
+    player.render();
 };
 
 // This listens for key presses and sends the keys to your
