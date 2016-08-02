@@ -1,31 +1,37 @@
 # frontend-nanodegree-arcade-game
-Hello! My name is **Paulo Freitas** Nobrega and this is my version of Frontend Nanodegree Arcade Game of Udacity. You can access the rubric of the game at this link: (https://review.udacity.com/#!/projects/2696458597/rubric).
+Olá! Meu nome é **Paulo Freitas Nobrega** e esta é a minha versão do Frontend Nanodegree Arcade Game da Udacity. Você pode acessar a rúbrica do projeto neste link: (https://review.udacity.com/#!/projects/2696458597/rubric).
 
-#### Game History
-In my version of the game the main character has his town invaded by insects. Your goal avoid insects. But stay tuned! You do not know how to swim, so avoid the water. Perhaps you did not like that idea. Do not worry, I developed a faithful version the rubric of the project. You can get it on this link:
+#### História do Jogo
+Na minha versão do jogo o personagem principal tem sua cidade invadida por insetos gigantes. Mas fique atento, seu personagem não sabe nadar, portanto, evite a água. Talvez você não gostou da ideia, e prefere a versão original da rúbrica, onde o personagem deve alcançar a água para ganhar pontos. Neste caso, eu desenvolvi uma versão para isso. Você poderá obtê-la neste link:
 
-#### How to Play?
-As I mentioned, you should divert the insects avoiding falling into the water. When an insect finishes his route, crosses the entire display, a standard amount of points (10 potos) are added to your score. When you reach a new level the game difficulty increases. This is because the speed of insects is proportional to the level of the game. Since the level rises, the insects receive an additional of speed.
+#### Como Jogar?
+Como mencionei acima, o objetivo do jogo é desviar dos insetos gingantes. A cada inseto que atravessa todo o cenário (10 pontos) são creditados no placar. Ao acumular pontos, o nível de jogo aumenta, aumentando também a dificuldade. Isso acontece porque os inimigos estão diretamente ligados ao nível de jogo. Quanto maior o nível, maior será a velocidade deles.
 
-When your character is hit by an insect, one of their lives is taken. By the way , you start the game with a default amount of lives (3 lives). If you lose your lives, the game comes to an end. But do not worry, sporadically some bonus appear on the scene. If you rescue them you'll earn scores and extra lives.
+O personagem inicia o jogo com três vidas. Quando um inseto o atinge ou o mesmo cai na água, uma de suas vidas é retirada do placar do jogo. E quando as vidas acabam, o jogo chega ao fim. Mas não se preocupe, esporadicamente bônus apareceram pelo cenário, e ao coletá-los pontos e vidas extras serão creditados no placar.
 
-The game has no end. Your goal is to exceed their own limits. Beat your record, or the record of his friends, and show that you are a true champion. Good Game!
+O jogo não tem fim! seu objetivo é ultrapassar seus próprios limites, batendo seu próprio recorde de pontos ou o recorde de seus amigos, mostrando que você é um verdadeiro campeão.
 
-#### Installation
-You can download the **.zip** file directly on this link: (https://github.com/paulofreitasnobrega/frontend-nanodegree-arcade-game/archive/master.zip)
+Então bom jogo e divirta-se!
 
-If you prefer to use git:
+#### Instalação
+Você pode fazer o download do arquivo **.zip** diretamente neste link: (https://github.com/paulofreitasnobrega/frontend-nanodegree-arcade-game/archive/master.zip)
+
+Ou se preferir poderá utilizar o git:
 
 ```git
 git clone https://github.com/paulofreitasnobrega/frontend-nanodegree-arcade-game.git
 ```
-# For Developers
-Now I will comment on some sections and specific codes.
+# Para Desenvolvedores
+Agora vou comentar sobre algumas sessões e códigos específicos.
 
-#### Configuration
-In **config.js** you will find the configuration of virtually all parts of the game. You can play and change them, but be warned, it will affect how the game behaves. For this reason, I suggest you learn about the codes involved before making permanent changes. Let's for a simple example:
+#### Configuração
+Em **config.js** você encontrará as configurações de praticamente todas as partes do jogo. Você pode brincar e alterá-las, mas tome cuidado, essas configurações afetam como o jogo se comporta. Por essa razão, sugiro que estude o comportamento dos códigos antes de fazer qualquer alteração permanente.
 
-This is an excerpt of our configuration file. He is responsible for representation of the lines of the scenario. We'll talk more forward scenario. These settings define that we will have a line representing a ground superfice with water, three lines representing a ground superfice with stones and a line representing an area of land with grass.
+Abaixo você verá um pequeno trecho do arquivo de configuração. Este trecho é responsável pela representação das linhas do cenário (falaremos sobre o cenário um pouco à frente). Ou seja, define a quantidade de linhas que cada superfície de terreno possui. Neste caso, o cenário possuirá um total de 05 linhas, agrupadas da seguinte forma:
+
+- 01 Superfície de Água
+- 03 Superfícies de Pedra
+- 01 Superfície de Grama
 
 ```javascript
 rows: {
@@ -35,10 +41,11 @@ rows: {
 }
 ```
 
-See results:
-[image here]
+Veja o resultado:
 
-Let's try a small change and see the result.
+[image]
+
+Vamos tentar uma pequena mudança.
 
 ```javascript
 rows: {
@@ -50,13 +57,35 @@ rows: {
 
 [image here]
 
-Nice. Now we have two surfaces of grass.
+Legal. Agora o cenário possui 02 superfície de grama.
+
+###### Sobre o Objeto:
+**Config** possui o(s) seguinte(s) método(s):
+
+* config.**select()**
 
 #### Scenario and Routes
-Just above we see a part of the configuration file responsible for the lines of my scenario. But the scenario of the game also features columns. The addition of rows and columns form the backdrop as a whole.
-Let's leave the columns a bit aside now and focus on the lines. I want you to imagine these lines as roads connecting point A to point B. Each game insect must travel this road, going from point A to the point B. These imaginary roads are routes of scenario. That is, a point on the Y axis, near the center of each line that defines where each insect should be on the scenario.
+Agora vamos falar um pouco sobre o cenário e suas rotas. Pense que neste jogo, o cenário é simplemente uma tabela, formada por linhas e colunas. Junte o trecho do código acima com a quantidade de colunas e terá essa configuração:
 
-The **routes.js** file directly associates these routes, the surfaces of terrain (water, stone, etc). Do you remember the aforementioned setting up? So in that case we would have three routes on the surface of stone. This is very interesting, when we created a new enemy for the game, we have the freedom to define which surfaces this enemy can walk. Look at this example:
+```javascript
+cols: 5,
+rows: {
+    water: 1,
+    stone: 3,
+    grass: 1
+}
+```
+Você já deve ter imaginado o resultado. Um cenário de 05 colunas por 05 linhas possuindo 25 células. Não há nada de especial nisso, certo? Então vamos falar de algo um pouco mais interessante - **rotas**.
+
+Rotas são estradas que seus inimigos percorreram. Pontos comuns no eixo Y que mantem os inimigos trafegando por referências imaginárias próximas ao centro de cada linha do cenário. Resumindo, cada linha do cenário possuirá uma rota.
+
+Um dos arquivos responsáveis por gerenciar as rotas é **routes.js**. Na verdade ele faz mais do que definir o ponto (eixo Y) dessas rotas. Routes associa as rotas as suas superfícies de terreno. Ou seja, na configuração citada acima, existirá:
+
+- 01 Rota de Água
+- 03 Rotas de Pedra
+- 01 Rota de Grama
+
+Isso é muito interessante, porque através dessas associações não é necessário definir rotas específicas aos inimigos. Simplesmente você atribui superfícies de terrenos a eles. Observe:
 
 ```javascript
 var MyEnemy = function() {
@@ -64,9 +93,5 @@ var MyEnemy = function() {
     this.terrainsSurface = ['stone', 'grass'];
     // code ...
 };
-
-Bug.prototype = Object.create(Enemy.prototype);
-Bug.prototype.constructor = Bug;
 ```
-
-This example creates an enemy able to walk the stone surfaces and grass. Cool!
+Esse código criará um novo tipo de inimigo no jogo que poderá percorrer qualquer uma das rotas de pedra o grama que o cenário possuir. Legal não?!
