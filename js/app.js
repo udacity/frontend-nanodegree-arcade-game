@@ -1,4 +1,5 @@
 var config          = new Config,
+    timer           = new Timer,
     entityFactory   = new EntityFactory,
     resources       = new Resources,
     collision       = new Collision,
@@ -48,6 +49,7 @@ scoreboard.init();
 resourcesLoader.load(resources.urlsAllImages());
 
 // Factory
+entityFactory.addModule('timer', timer);
 entityFactory.addModule('canvas', canvas);
 entityFactory.addModule('scenario', scenario);
 entityFactory.addModule('resources', resources);
@@ -67,6 +69,7 @@ engine.addModule('scoreboard', scoreboard);
 engine.addEnemies(entityFactory.createEntity(Bug));
 engine.addEnemies(entityFactory.createEntity(Bug));
 engine.addEnemies(entityFactory.createEntity(Bug));
+engine.addEnemies(entityFactory.createEntity(Bee));
 
 // Assign Player
 engine.setPlayer(player);

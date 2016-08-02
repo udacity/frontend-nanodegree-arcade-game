@@ -7,7 +7,7 @@ var Bug = function() {
         group:  'enemies',
         name:   'bug'
     };
-    this.padding = 30;
+    this.padding = 0;
     this.terrainsSurface = 'stone';
     Enemy.call(this);
 };

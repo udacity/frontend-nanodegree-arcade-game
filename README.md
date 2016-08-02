@@ -125,5 +125,3 @@ Quando esses eventos acontecem scoreboard emite um alerta visual no próprio con
 [image]
 
 O legal do alerta visual é que por se tratar de cores bem destintas e definidas, o jogador não precisa olhar o placar para perceber, por exemplo, que alcançou um novo nível. Ele pode observar o evento através de sua visão periférica, enquanto foca no cenário do jogo.
-
-## Gerenciamento de Colisão

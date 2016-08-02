@@ -11,7 +11,7 @@ var Player = function() {
 
     this.x = 0;
     this.startPoint;
-    this.padding = 30;
+    this.padding = 45;
     this.route = null;
     this.pause = false;
     this.started = false;

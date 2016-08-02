@@ -60,9 +60,16 @@ Entity.prototype.convertSprite = function() {
  * the x-axis and y acorco with the value of x and route.
  */
 Entity.prototype.render = function() {
-    var canvas          = this.getModule('canvas'),
+    var timer           = this.getModule('timer'),
+        canvas          = this.getModule('canvas'),
         resourcesLoader = this.getModule('resourcesLoader'),
         ctx             = canvas.getContext();
+
+    if(this.hasOwnProperty('futureTime')) {
+        if(this.futureTime !== null
+            && timer.isFutureTime(this.futureTime) === false)
+            return false;
+    }
 
     ctx.drawImage(resourcesLoader.get(this.sprite), this.x, this.route);
 };

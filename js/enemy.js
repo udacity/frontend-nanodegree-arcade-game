@@ -64,6 +64,9 @@ Enemy.prototype.needStartup = function() {
  * @description Reset the enemy.
  */
 Enemy.prototype.reset = function() {
+    if(this.hasOwnProperty('futureTime'))
+        this.futureTime = null;
+
     this.lastTraveledRoute = this.route;
     this.route = null;
 };
@@ -73,7 +76,16 @@ Enemy.prototype.reset = function() {
  * @param  {number} dt
  */
 Enemy.prototype.update = function(dt) {
-    var scenario = this.getModule('scenario');
+    var timer       = this.getModule('timer'),
+        scenario    = this.getModule('scenario');
+
+    if(this.hasOwnProperty('futureTime')) {
+        if(this.futureTime === null)
+            this.futureTime = timer.createFutureTime(20);
+
+        if(timer.isFutureTime(this.futureTime) === false)
+            return false;
+    }
 
     this.x += this.speed * dt;
     if(this.x > scenario.width())

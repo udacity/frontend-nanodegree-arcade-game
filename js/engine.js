@@ -120,6 +120,7 @@ Engine.prototype.checkCollisions = function() {
 
         if(collision.collided()) {
             scoreboard.removeLife();
+            enemy.reset();
             this.player.init();
         }
     }.bind(this));
