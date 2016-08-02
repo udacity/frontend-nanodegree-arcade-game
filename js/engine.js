@@ -92,6 +92,8 @@ var Engine = (function(global) {
      */
     function updateEntities(dt) {
         allEnemies.forEach(function(enemy) {
+            //dt = Math.floor((Math.random() * 10) + 1);
+            //console.log(dt);
             enemy.update(dt);
         });
         player.update();
