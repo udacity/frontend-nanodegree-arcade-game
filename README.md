@@ -13,6 +13,13 @@ O jogo não tem fim! seu objetivo é ultrapassar seus próprios limites, batendo
 
 Então bom jogo e divirta-se!
 
+###### Controle do Jogo
+- <kbd><up></kbd>
+- <kbd><right></kbd>
+- <kbd><down></kbd>
+- <kbd><left></kbd>
+- <kbd>Space Bar</kbd> - Pause
+
 ### Instalação
 Você pode fazer o download do arquivo **.zip** diretamente neste link: (https://github.com/paulofreitasnobrega/frontend-nanodegree-arcade-game/archive/master.zip)
 
@@ -43,7 +50,7 @@ rows: {
 
 Veja o resultado:
 
-[image]
+![image](images/readme/0001.jpg)
 
 Vamos tentar uma pequena mudança.
 
@@ -55,7 +62,7 @@ rows: {
 }
 ```
 
-[image here]
+![image](images/readme/0002.jpg)
 
 Legal. Agora o cenário possui 02 superfície de grama.
 
