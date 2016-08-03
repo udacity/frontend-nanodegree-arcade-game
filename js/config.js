@@ -28,7 +28,8 @@ var Config = function() {
 					grass: 'images/grass-block.png'
 				},
 				enemies: {
-					bug: 'images/enemy-bug.png'
+					bug: 'images/enemy-bug.png',
+					bee: 'images/enemy-bee.png'
 				},
 				characters: {
 					boy: 'images/char-boy.png'

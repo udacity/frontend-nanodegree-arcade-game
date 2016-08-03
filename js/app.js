@@ -69,6 +69,10 @@ engine.addEnemies(entityFactory.createEntity(Bug));
 engine.addEnemies(entityFactory.createEntity(Bug));
 engine.addEnemies(entityFactory.createEntity(Bug));
 
+var bee = entityFactory.createEntity(Bee)
+bee.addModule('timer', timer);
+engine.addEnemies(bee);
+
 // Assign Player
 engine.setPlayer(player);
 

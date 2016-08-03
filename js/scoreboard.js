@@ -97,7 +97,7 @@ Scoreboard.prototype.removeLife = function(life) {
     life === undefined ? this.life-- : this.life -= life;
     sbWebInterface.change('life', this.life);
     sbWebInterface.animation('life', 'remove');
-    if(this.life < 0)
+    if(this.life < 1)
         this.reset();
 };
 

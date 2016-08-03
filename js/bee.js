@@ -5,12 +5,12 @@
 var Bee = function() {
     this.sprite = {
         group:  'enemies',
-        name:   'bug'
+        name:   'bee'
     };
     this.padding = 30;
     this.futureTime = null;
+    this.hibernationTime = 10;
     this.terrainsSurface = 'grass';
-
     Enemy.call(this);
     this.hibernate();
 };
@@ -26,7 +26,7 @@ Bee.prototype.update = function(dt) {
     var timer = this.getModule('timer');
 
     if(this.futureTime === null)
-        this.futureTime = timer.createFutureTime(5);
+        this.futureTime = timer.createFutureTime(this.hibernationTime);
 
     if(timer.isFutureTime(this.futureTime) && this.isHibernate())
         this.wake();
