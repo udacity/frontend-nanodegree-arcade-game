@@ -3,6 +3,7 @@
  * @constructor
  */
 var Entity = function() {
+    this.rendering = true;
     Module.call(this);
 };
 
@@ -56,20 +57,28 @@ Entity.prototype.convertSprite = function() {
 };
 
 /**
+ * @description Enable rendering entity.
+ */
+Entity.prototype.activateRender = function() {
+    this.rendering = true;
+};
+
+/**
+ * @description Disable rendering of the entity.
+ */
+Entity.prototype.deactivateRender = function() {
+    this.rendering = false;
+};
+
+/**
  * @description This function renders the entity on the screen. Positioned in
  * the x-axis and y acorco with the value of x and route.
  */
 Entity.prototype.render = function() {
-    var timer           = this.getModule('timer'),
-        canvas          = this.getModule('canvas'),
+    var canvas          = this.getModule('canvas'),
         resourcesLoader = this.getModule('resourcesLoader'),
         ctx             = canvas.getContext();
 
-    if(this.hasOwnProperty('futureTime')) {
-        if(this.futureTime !== null
-            && timer.isFutureTime(this.futureTime) === false)
-            return false;
-    }
-
-    ctx.drawImage(resourcesLoader.get(this.sprite), this.x, this.route);
+    if(this.rendering)
+        ctx.drawImage(resourcesLoader.get(this.sprite), this.x, this.route);
 };
