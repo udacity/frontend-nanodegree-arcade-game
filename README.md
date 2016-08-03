@@ -123,11 +123,11 @@ O placar do jogo é gerenciado por **scoreboard.js** e não há muito do que se 
 
 Scoreboard lança um alerta a cada vez que um determinado evento acontece no jogo:
 
-- Um novo nível é alcançado
-- Uma nova vida é recebida
-- Um vida é removida
+- Um novo nível é alcançado - `sbWebInterface.animation('level', 'add');`
+- Uma nova vida é recebida - `sbWebInterface.animation('life', 'add');`
+- Um vida é removida - `sbWebInterface.animation('life', 'remove');`
 
-Quando esses eventos acontecem scoreboard emite um alerta visual no próprio container do placar que refere-se o evento. Separei duas imagens para ilustrar isso. Na esquerda o jogador alcançou o nível 4 e na direita, ao cair na água, o jogador perdeu uma vida.
+Quando esses eventos acontecem scoreboard emite um alerta visual no próprio container do placar que refere-se o evento. Separei duas imagens para ilustrar isso. Na esquerda o jogador alcançou o nível 2 e na direita, ao cair na água, o jogador perdeu uma vida.
 
 ![image](images/readme/0003.jpg)
 
