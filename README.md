@@ -14,10 +14,10 @@ O jogo não tem fim! seu objetivo é ultrapassar seus próprios limites, batendo
 Então bom jogo e divirta-se!
 
 ###### Controle do Jogo
-- <kbd><up></kbd>
-- <kbd><right></kbd>
-- <kbd><down></kbd>
-- <kbd><left></kbd>
+- <kbd>Up</kbd>
+- <kbd>Right</kbd>
+- <kbd>Down</kbd>
+- <kbd>Left</kbd>
 - <kbd>Space Bar</kbd> - Pause
 
 ### Instalação
@@ -129,6 +129,6 @@ Scoreboard lança um alerta a cada vez que um determinado evento acontece no jog
 
 Quando esses eventos acontecem scoreboard emite um alerta visual no próprio container do placar que refere-se o evento. Separei duas imagens para ilustrar isso. Na esquerda o jogador alcançou o nível 4 e na direita, ao cair na água, o jogador perdeu uma vida.
 
-[image]
+![image](images/readme/0003.jpg)
 
 O legal do alerta visual é que por se tratar de cores bem destintas e definidas, o jogador não precisa olhar o placar para perceber, por exemplo, que alcançou um novo nível. Ele pode observar o evento através de sua visão periférica, enquanto foca no cenário do jogo.
