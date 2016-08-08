@@ -2,7 +2,7 @@
  * @description Controls the score of the game.
  * @constructor
  */
-var Scoreboard = function() {
+function Scoreboard() {
     this.life;
     this.score;
     this.level;
@@ -38,7 +38,7 @@ Scoreboard.prototype.addScore = function(score) {
 
     this.score += score === undefined ? this.config.score.increment : score;
     sbWebInterface.change('score', this.score);
-    if(this.score > this.scoreNextLevelUp)
+    if (this.score > this.scoreNextLevelUp)
         this.addLevel();
 };
 
@@ -97,7 +97,7 @@ Scoreboard.prototype.removeLife = function(life) {
     life === undefined ? this.life-- : this.life -= life;
     sbWebInterface.change('life', this.life);
     sbWebInterface.animation('life', 'remove');
-    if(this.life < 1)
+    if (this.life < 1)
         this.reset();
 };
 

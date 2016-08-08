@@ -3,7 +3,7 @@
  * @constructor
  * @param {config} config - configurations of resources
  */
-var Resources = function() {
+function Resources() {
 	Module.call(this);
 };
 
@@ -54,7 +54,7 @@ Resources.prototype.urlsByImagesGroup = function(group, toObject) {
 		imageConfig = this.getResourceConfig('images'),
 		imagesByGroup = imageConfig.urls[group];
 
-	if(toObject === true)
+	if (toObject === true)
 		return imagesByGroup;
 
 	Object.keys(imagesByGroup).forEach(function(url) {
@@ -74,7 +74,7 @@ Resources.prototype.urlsAllImages = function(toObject) {
 		imageConfig = this.getResourceConfig('images'),
 		allImages = imageConfig.urls;
 
-	if(toObject === true)
+	if (toObject === true)
 		return allImages;
 
 	Object.keys(allImages).forEach(function(group){

@@ -2,7 +2,7 @@
  * @description It lets you control some aspects of time.
  * @constructor
  */
-var Timer = function() {};
+function Timer() {};
 
 /**
  * @description Convert seconds to milliseconds.

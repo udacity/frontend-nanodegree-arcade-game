@@ -1,8 +1,9 @@
 /**
  * @description Changes the score values on the user's screen.
+ * @constructor
  * @param  {object} global
  */
-var ScoreboardWebInterface = function(global) {
+function ScoreboardWebInterface(global) {
     this.doc = global.document;
     Module.call(this);
 };

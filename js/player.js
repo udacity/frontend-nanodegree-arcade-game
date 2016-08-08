@@ -3,7 +3,7 @@
  * player in this file.
  * @constructor
  */
-var Player = function() {
+function Player() {
     this.sprite = {
         group:  'characters',
         name:   'boy'
@@ -27,10 +27,10 @@ Player.prototype.constructor = Player;
 Player.prototype.init = function() {
     this.moveStartPoint();
 
-    if(this.started === false)
+    if (this.started === false)
         this.started = true;
 
-    if(typeof this.sprite !== 'string')
+    if (typeof this.sprite !== 'string')
         this.convertSprite();
 };
 
@@ -67,10 +67,10 @@ Player.prototype.move = function(direction) {
         imageWidth  = resources.imageSize('width'),
         imageHeight = resources.imageSize('height');
 
-    if(direction === 'pause')
+    if (direction === 'pause')
         this.pause = this.pause ? false : true;
 
-    if(!this.pause) {
+    if (!this.pause) {
         switch (direction) {
             case 'up':
                 this.route -= imageHeight;

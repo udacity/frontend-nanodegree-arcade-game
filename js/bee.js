@@ -2,7 +2,7 @@
  * @description Enemy.
  * @constructor
  */
-var Bee = function() {
+function Bee() {
     this.sprite = {
         group:  'enemies',
         name:   'bee'

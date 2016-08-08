@@ -4,7 +4,7 @@
  * step before.
  * @constructor
  */
-var Traffic = function() {
+function Traffic() {
     this.routesInUse = {};
     Module.call(this);
 };
@@ -17,7 +17,7 @@ Traffic.prototype.constructor = Traffic;
  * @param  {numeric} route
  */
 Traffic.prototype.declareRouteEntry = function(route) {
-    if(!this.routesInUse.hasOwnProperty(route))
+    if (!this.routesInUse.hasOwnProperty(route))
         this.routesInUse[route] = 0;
 
     this.routesInUse[route]++;
@@ -28,7 +28,7 @@ Traffic.prototype.declareRouteEntry = function(route) {
  * @param  {numeric} route
  */
 Traffic.prototype.declareRouteOutput = function(route) {
-    if(this.routesInUse[route] > 0)
+    if (this.routesInUse[route] > 0)
         this.routesInUse[route]--;
 };
 
@@ -45,15 +45,25 @@ Traffic.prototype.routeIsFull = function(route) {
 };
 
 /**
+ * @description Returns a route belonging to informed terrains.
+ * @param  {terrains} terrains
+ * @return {number}
+ */
+Traffic.prototype.getRoute = function(terrains) {
+    var routesModule    = this.getModule('routes'),
+        routes          = routesModule.get(terrains);
+
+    return routes[Math.floor(Math.random() * routes.length)];
+};
+
+/**
  * @description This feature works in conjunction with "routeIsFull" to
  * determine a free route.
  * @param  {string or array} environments
  * @return {number} (Route)
  */
 Traffic.prototype.getEmptyRoute = function(terrains) {
-    var routesModule    = this.getModule('routes'),
-        routes          = routesModule.get(terrains),
-        route           = routes[Math.floor(Math.random() * routes.length)];
+    var route = this.getRoute(terrains);
 
     return this.routeIsFull(route) ? this.getEmptyRoute(terrains) : route;
 };

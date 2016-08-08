@@ -4,7 +4,7 @@
  * @constructor
  * @return {object}
  */
-var Enemy = function() {
+function Enemy() {
     this.speed;
     this.route = null;
     this.lastTraveledRoute = null;
@@ -21,7 +21,7 @@ Enemy.prototype.constructor = Enemy;
 Enemy.prototype.init = function(levelGame) {
     this.x = 0;
     this.speed = this.getRandomSpeed(levelGame);
-    if(typeof this.sprite !== 'string')
+    if (typeof this.sprite !== 'string')
         this.convertSprite();
 };
 
@@ -75,9 +75,9 @@ Enemy.prototype.reset = function() {
 Enemy.prototype.update = function(dt) {
     var scenario = this.getModule('scenario');
 
-    if(this.checkHibernation() === false) {
+    if (this.checkHibernation() === false) {
         this.x += this.speed * dt;
-        if(this.x > scenario.width())
+        if (this.x > scenario.width())
             this.reset();
     }
 };

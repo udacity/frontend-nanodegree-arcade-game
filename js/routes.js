@@ -6,7 +6,7 @@
  * cordenada near the center of each line.
  * @constructor
  */
-var Routes = function() {
+function Routes() {
     this.routes = {};
     Module.call(this);
 };
@@ -23,9 +23,9 @@ Routes.prototype.create = function() {
         currentRoute    = -124.5;
 
     scenario.getTerrainsSurface().forEach(function(terrain) {
-        for(var i = 0; i < scenario.numberRowsByTerrainsSurface(terrain); i++) {
+        for (var i = 0; i < scenario.numberRowsByTerrainsSurface(terrain); i++) {
             currentRoute += resources.imageSize('height');
-            if(!this.routes.hasOwnProperty(terrain))
+            if (!this.routes.hasOwnProperty(terrain))
                 this.routes[terrain] = [];
 
             this.routes[terrain].push(currentRoute);

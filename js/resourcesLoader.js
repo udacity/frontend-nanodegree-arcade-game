@@ -6,7 +6,7 @@
  * @constructor
  * @return {object}
  */
-var ResourcesLoader = function() {
+function ResourcesLoader() {
 	this.resourceCache = {};
 	this.readyCallbacks = [];
 };
@@ -17,7 +17,7 @@ var ResourcesLoader = function() {
  * @param  {string or array} urlOrArr
  */
 ResourcesLoader.prototype.load = function(urlOrArr) {
-	if(urlOrArr instanceof Array) {
+	if (urlOrArr instanceof Array) {
 		urlOrArr.forEach(function(url) {
 			this._load(url);
 		}.bind(this));
@@ -28,7 +28,7 @@ ResourcesLoader.prototype.load = function(urlOrArr) {
 
 //improve more... more... this
 ResourcesLoader.prototype._load = function(url) {
-	if(this.resourceCache[url]) {
+	if (this.resourceCache[url]) {
 		return this.resourceCache[url];
 	} else {
 		var img = new Image();
@@ -66,8 +66,8 @@ ResourcesLoader.prototype.get = function(url) {
 ResourcesLoader.prototype.isReady = function() {
 	var ready = true;
 	var self = this;
-    for(var k in this.resourceCache) {
-        if(self.resourceCache.hasOwnProperty(k) &&
+    for (var k in this.resourceCache) {
+        if (self.resourceCache.hasOwnProperty(k) &&
            !self.resourceCache[k]) {
             ready = false;
         }

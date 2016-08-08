@@ -3,7 +3,7 @@
  * @constructor
  * @param  {object} global - Global Instance
  */
-var Canvas = function(global) {
+function Canvas(global) {
     this.width;
     this.height;
     this.canvas;
@@ -47,7 +47,7 @@ Canvas.prototype.create = function() {
  * @return {object}
  */
 Canvas.prototype.getContext = function() {
-    if(this.ctx === undefined)
+    if (this.ctx === undefined)
         this.ctx = this.canvas.getContext('2d');
 
     return this.ctx;

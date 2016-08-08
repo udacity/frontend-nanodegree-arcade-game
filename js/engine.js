@@ -2,9 +2,11 @@
  * @description This file provides the game loop functionality (update
  * entities and render). You can find a complete description of this
  * class in address: github.com/udacity/frontend-nanodegree-arcade-game
+ * @constructor
  * @param {object} global
  */
-var Engine = function(global) {
+function Engine(global) {
+    this.bonus;
     this.player;
     this.lastTime;
     this.enemies = [];
@@ -33,13 +35,21 @@ Engine.prototype.setPlayer = function(player) {
 };
 
 /**
+ * @description Assign bonus
+ * @param  {object} bonus - Bonus Instance
+ */
+Engine.prototype.setBonus = function(bonus) {
+    this.bonus = bonus;
+};
+
+/**
  * @description Pause the game. You can change the pause button in the game
  * settings.
  * @param  {string} key
  */
 Engine.prototype.inPause = function(key) {
-    if(key === 'pause') {
-        if(this.pause)
+    if (key === 'pause') {
+        if (this.pause)
             this.lastTime = Date.now();
         this.pause = this.pause ? false : true;
     }
@@ -50,7 +60,7 @@ Engine.prototype.inPause = function(key) {
  * loop itself and handles properly calling the update and render methods.
  */
 Engine.prototype.main = function() {
-    if(!this.pause) {
+    if (!this.pause) {
         var now = Date.now(),
             dt = (now - this.lastTime) / 1000.0;
 
@@ -70,10 +80,16 @@ Engine.prototype.update = function(dt) {
     var traffic     = this.getModule('traffic'),
         scoreboard  = this.getModule('scoreboard');
 
+    // Bonus
+    if (this.bonus.getRoute() === null) {
+        this.bonus.setRoute(traffic.getRoute(this.bonus.getTerrainsSurface()));
+        this.bonus.init();
+    }
+
     // Enemies
     this.enemies.forEach(function(enemy) {
-        if(enemy.needStartup()) {
-            if(enemy.getLastTraveledRoute() !== null) {
+        if (enemy.needStartup()) {
+            if (enemy.getLastTraveledRoute() !== null) {
                 traffic.declareRouteOutput(enemy.getLastTraveledRoute());
                 scoreboard.addScore(enemy.score);
             }
@@ -87,8 +103,8 @@ Engine.prototype.update = function(dt) {
     });
 
     // Player
-    if(this.player.getRoute() === null) {
-        if(this.player.gameStarted())
+    if (this.player.getRoute() === null) {
+        if (this.player.gameStarted())
             scoreboard.removeLife();
         this.player.init();
     }
@@ -118,7 +134,7 @@ Engine.prototype.checkCollisions = function() {
             }
         });
 
-        if(collision.collided()) {
+        if (collision.collided()) {
             scoreboard.removeLife();
             enemy.reset();
             this.player.init();
@@ -136,6 +152,9 @@ Engine.prototype.render = function() {
 
     // Scenario
     scenario.render();
+
+    // Bonus
+    this.bonus.render();
 
     // Enemies
     this.enemies.forEach(function(enemy) {

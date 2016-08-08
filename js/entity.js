@@ -2,7 +2,7 @@
  * @description Allows you to create your entities.
  * @constructor
  */
-var Entity = function() {
+function Entity() {
     this.hibernation = false;
     Module.call(this);
 };

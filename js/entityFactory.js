@@ -1,7 +1,8 @@
 /**
  * @description Entity factory
+ * @constructor
  */
-var EntityFactory = function() {
+function EntityFactory() {
     Entity.call(this);
 };
 

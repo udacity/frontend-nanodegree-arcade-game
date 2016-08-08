@@ -2,7 +2,7 @@
  * @description It offers useful information about the scenario
  * @constructor
  */
-var Scenario = function() {
+function Scenario() {
     Module.call(this);
 };
 

@@ -4,7 +4,7 @@
  * @constructor
  * @param  {object} global
  */
-var GameControl = function(global) {
+function GameControl(global) {
     this.doc = global;
     this.callbacks = [];
     Module.call(this);

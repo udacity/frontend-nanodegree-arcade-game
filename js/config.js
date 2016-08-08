@@ -2,8 +2,9 @@
  * @description This is the central configuration. In this file you can change
  * most of the behavior of your game. IMPORTANT: I recommend that you study all
  * the codes before making permantes changes.
+ * @constructor
  */
-var Config = function() {
+function Config() {
     this.scenario = {
 		size: {
 			cols: 5,
@@ -35,7 +36,8 @@ var Config = function() {
 					boy: 'images/char-boy.png'
 				},
 				bonus: {
-					gemBlue: 'images/Gem Blue.png'
+					gemBlue: 'images/Gem Blue.png',
+					heart: 'images/Heart.png'
 				}
 			}
 		}
@@ -77,6 +79,18 @@ var Config = function() {
 			38: 'up',
 			39: 'right',
 			40: 'down'
+		}
+	},
+	this.bonus = {
+		gemBlue: {
+			score: 50,
+			padding: 30,
+			terrainsSurface: 'stone'
+		},
+		heart: {
+			life: 1,
+			padding: 20,
+			terrainsSurface: ['stone', 'grass']
 		}
 	}
 };

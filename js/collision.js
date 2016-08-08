@@ -1,8 +1,9 @@
 /**
  * @description This is the collision system. It compares the position of two
  * objects and points when a collision occurs.
+ * @constructor
  */
-var Collision = function() {
+function Collision() {
     this.entities = {};
     Module.call(this);
 };
@@ -57,7 +58,7 @@ Collision.prototype.collided = function() {
         one     = this.entities[labels[0]],
         two     = this.entities[labels[1]];
 
-    if(one.route === two.route) {
+    if (one.route === two.route) {
         labels.forEach(function(label){
             this.entities[label]['area']    = this.getImpingementArea(label);
             this.entities[label]['min']     = this.minCollisionPoint(label);

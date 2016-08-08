@@ -71,6 +71,12 @@ engine.addEnemies(entityFactory.createEntity(Bug));
 engine.addEnemies(entityFactory.createEntity(Bug));
 engine.addEnemies(entityFactory.createEntity(Bee));
 
+// Add Bonus
+var bonus = entityFactory.createEntity(Bonus);
+bonus.config(config.select('bonus'));
+bonus.addModule('routes', routes);
+engine.setBonus(bonus);
+
 // Assign Player
 engine.setPlayer(player);
 
