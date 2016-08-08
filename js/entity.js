@@ -3,12 +3,45 @@
  * @constructor
  */
 var Entity = function() {
-    this.rendering = true;
+    this.hibernation = false;
     Module.call(this);
 };
 
 Entity.prototype = Object.create(Module.prototype);
 Entity.prototype.constructor = Entity;
+
+/**
+ * @description Putting an entity in hibernation. Hibernation will last until
+ * the set time (in seconds) over.
+ * @param  {number} duration
+ */
+Entity.prototype.hibernate = function(duration) {
+    var timer = this.getModule('timer');
+
+    this['endHibernation'] = timer.createFutureTime(duration);
+    this.hibernation = true;
+};
+
+/**
+ * @description Verifies that hibernation is over. If so changes the active
+ * state to the entity.
+ */
+Entity.prototype.followHibernation = function() {
+    var timer = this.getModule('timer');
+
+    if (timer.isFutureTime(this.endHibernation)) {
+        this.hibernation = false;
+        delete this.endHibernation;
+    }
+};
+
+/**
+ * @description Returns status the hibernation of the entity.
+ * @return {boolean}
+ */
+Entity.prototype.checkHibernation = function() {
+    return this.hibernation;
+};
 
 /**
  * @description Returns the entity's position on the x axis.
@@ -57,20 +90,6 @@ Entity.prototype.convertSprite = function() {
 };
 
 /**
- * @description Enable rendering entity.
- */
-Entity.prototype.activateRender = function() {
-    this.rendering = true;
-};
-
-/**
- * @description Disable rendering of the entity.
- */
-Entity.prototype.deactivateRender = function() {
-    this.rendering = false;
-};
-
-/**
  * @description This function renders the entity on the screen. Positioned in
  * the x-axis and y acorco with the value of x and route.
  */
@@ -79,6 +98,9 @@ Entity.prototype.render = function() {
         resourcesLoader = this.getModule('resourcesLoader'),
         ctx             = canvas.getContext();
 
-    if(this.rendering)
+    if (this.hasOwnProperty('endHibernation'))
+        this.followHibernation();
+
+    if (this.hibernation === false)
         ctx.drawImage(resourcesLoader.get(this.sprite), this.x, this.route);
 };

@@ -75,7 +75,7 @@ Engine.prototype.update = function(dt) {
         if(enemy.needStartup()) {
             if(enemy.getLastTraveledRoute() !== null) {
                 traffic.declareRouteOutput(enemy.getLastTraveledRoute());
-                scoreboard.addScore();
+                scoreboard.addScore(enemy.score);
             }
 
             var route = traffic.getEmptyRoute(enemy.getTerrainsSurface());

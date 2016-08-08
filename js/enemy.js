@@ -7,7 +7,6 @@
 var Enemy = function() {
     this.speed;
     this.route = null;
-    this.updating = true;
     this.lastTraveledRoute = null;
     Entity.call(this);
 };
@@ -62,46 +61,6 @@ Enemy.prototype.needStartup = function() {
 };
 
 /**
- * @description Activates the update of the enemy.
- */
-Enemy.prototype.activateUpdate = function() {
-    this.updating = true;
-};
-
-/**
- * @description Disable the update of the enemy.
- */
-Enemy.prototype.deactivateUpdate = function() {
-    this.updating = false;
-};
-
-/**
- * @description Puts the enemy into hibernation. In this state the enemy
- * ceases to be updated and rendered.
- */
-Enemy.prototype.hibernate = function() {
-    this.deactivateUpdate();
-    this.deactivateRender();
-};
-
-/**
- * @description Checks whether the enemy is in hibernation.
- * @return {boolean}
- */
-Enemy.prototype.isHibernate = function() {
-    return this.updating || this.rendering ? false : true;
-};
-
-/**
- * @description Acorda an enemy from hibernation, returning your updates and
- * regular renderings.
- */
-Enemy.prototype.wake = function() {
-    this.activateUpdate();
-    this.activateRender();
-};
-
-/**
  * @description Reset the enemy.
  */
 Enemy.prototype.reset = function() {
@@ -116,7 +75,7 @@ Enemy.prototype.reset = function() {
 Enemy.prototype.update = function(dt) {
     var scenario = this.getModule('scenario');
 
-    if(this.updating) {
+    if(this.checkHibernation() === false) {
         this.x += this.speed * dt;
         if(this.x > scenario.width())
             this.reset();
