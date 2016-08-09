@@ -1,26 +1,42 @@
+/**
+ * @description The bonuses are extra points and lives assigned to the player
+ * throughout the game.
+ * @constructor
+ */
 function Bonus() {
-    this.sprite = {
-        group: 'bonus'
-    };
-    this.x = 0;
     this.route = null;
+    this.intervalHibernation = 8;
+    this.durationHibernation = 90;
     Entity.call(this);
 };
 
 Bonus.prototype = Object.create(Entity.prototype);
 Bonus.prototype.constructor = Bonus;
 
+/**
+ * @description Initialize the bonus.
+ */
 Bonus.prototype.init = function() {
-    var allbonus        = Object.keys(this.config),
-        bonusLabel      = allbonus[Math.floor(Math.random() * allbonus.length)],
-        bonus           = this.config[bonusLabel];
+    this.defineBonus();
+    this.convertSprite();
+    this.hibernate(this.durationHibernation);
+};
+
+/**
+ * @description Creates the bonus settings.
+ */
+Bonus.prototype.defineBonus = function() {
+    var bonus       = this.getRandomBonus(),
+        scenario    = this.getModule('scenario'),
+        columns     = scenario.getColumnsPositions();
 
     // Sprite
-    this.sprite['name'] = bonusLabel;
-    this.convertSprite();
+    this.sprite = {};
+    this.sprite['group'] = 'bonus';
+    this.sprite['name'] = bonus.label;
 
-    // Configs
-    this['padding']         = bonus.padding;
+    this['padding'] = bonus.padding;
+    this.x = columns[Math.floor(Math.random() * columns.length)];
     this['terrainsSurface'] = bonus.terrainsSurface;
 
     if (bonus.hasOwnProperty('score'))
@@ -28,8 +44,19 @@ Bonus.prototype.init = function() {
 
     if (bonus.hasOwnProperty('life'))
         this['life'] = bonus.life;
+};
 
-    this.hibernate(15);
+/**
+ * @description Select which bonus will be set.
+ * @return {object} - Bonus settings
+ */
+Bonus.prototype.getRandomBonus = function() {
+    var allbonus    = Object.keys(this.config),
+        label       = allbonus[Math.floor(Math.random() * allbonus.length)]
+        bonus       = this.config[label];
+
+    bonus['label'] = label;
+    return bonus;
 };
 
 /**
@@ -38,4 +65,31 @@ Bonus.prototype.init = function() {
  */
 Bonus.prototype.getTerrainsSurface = function() {
     return this.terrainsSurface;
+};
+
+/**
+ * @description Manages hibernation bonus.
+ */
+Bonus.prototype.update = function() {
+    var timer = this.getModule('timer');
+
+    if (this.checkHibernation() === false) {
+        if (!this.hasOwnProperty('endIntervalHibernation')) {
+            var end = timer.createFutureTime(this.intervalHibernation);
+            this['endIntervalHibernation'] = end;
+        }
+
+        if (timer.isFutureTime(this.endIntervalHibernation)) {
+            delete this.endIntervalHibernation;
+            this.reset();
+        }
+    }
+};
+
+/**
+ * @description Reset the bonus.
+ */
+Bonus.prototype.reset = function() {
+    this.route = null;
+    this.init();
 };

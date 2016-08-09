@@ -19,6 +19,22 @@ Scenario.prototype.numberColumns = function() {
 };
 
 /**
+ * @description Returns all the positions of the columns available in the
+ * scenario.
+ * @return {array}
+ */
+Scenario.prototype.getColumnsPositions = function() {
+    var resources           = this.getModule('resources'),
+        columnsPositions    = [];
+
+    for (var i=1; i <= this.numberColumns(); i++) {
+        columnsPositions.push((i * resources.imageSize('width')));
+    }
+
+    return columnsPositions;
+};
+
+/**
  * @description Total number of lines in your scene. Each line represents a
  * route which in turn has its own terrain. You can set the desired amount of
  * rows in the settings.

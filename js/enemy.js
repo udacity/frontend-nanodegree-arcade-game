@@ -31,7 +31,7 @@ Enemy.prototype.init = function(levelGame) {
  */
 Enemy.prototype.getRandomSpeed = function(levelGame) {
     var minSpeed = 150 + levelGame * 6,
-        maxSpeed = 90 + levelGame * 3;
+        maxSpeed = 90 + levelGame * 2;
 
     return Math.random() * maxSpeed + minSpeed;
 };

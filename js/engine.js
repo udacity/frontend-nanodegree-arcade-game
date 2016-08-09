@@ -82,9 +82,10 @@ Engine.prototype.update = function(dt) {
 
     // Bonus
     if (this.bonus.getRoute() === null) {
-        this.bonus.setRoute(traffic.getRoute(this.bonus.getTerrainsSurface()));
         this.bonus.init();
+        this.bonus.setRoute(traffic.getRoute(this.bonus.getTerrainsSurface()));
     }
+    this.bonus.update();
 
     // Enemies
     this.enemies.forEach(function(enemy) {
