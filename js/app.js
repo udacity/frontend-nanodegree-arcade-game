@@ -35,6 +35,8 @@ class Player {
         if ((this.x >= posX - 50 && this.x <= posX + 50) && (this.y >= posY - 50 && this.y <= posY + 50)) {
             this.x = 200;
             this.y = 400;
+            console.log(score);
+            score = 0;
         }
     }
     handleInput(key) {
@@ -48,6 +50,7 @@ class Player {
             case 'up': {
                 if (this.y > 0) {
                     this.y -= 100;
+                    player.update_score();
                 }
                 break;
             }
@@ -60,11 +63,17 @@ class Player {
             case 'down': {
                 if (this.y < 400) {
                     this.y += 100;
+                    player.update_score();
                 }
                 break;
             }
         }
         player.render();
+    }
+    update_score(){
+        if ((this.y >= 0 && this.y <= 200)) {
+            score += 1;
+        }
     }
 }
 
@@ -76,6 +85,8 @@ for (let i = 0; i < numEnemies; i++) {
     const enemy = new Enemy(-100, 100 * i, vel);
     allEnemies.push(enemy);
 }
+
+let score = 0;
 
 document.addEventListener('keyup', function(e) {
     const allowedKeys = {
