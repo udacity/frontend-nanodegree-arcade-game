@@ -11,9 +11,11 @@ class Enemy {
             this.x = -100;
             this.dt = Math.floor((Math.random() * 10) + 1);
         }
-        this.x += this.dt;
-        player.restart(this.x, this.y);
-        player.render();
+        if (gameStatus === 'start') {
+            this.x += this.dt;
+            player.restart(this.x, this.y);
+            player.render();
+        }
     }
     render() {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
@@ -33,39 +35,47 @@ class Player {
     }
     restart(posX, posY) {
         if ((this.x >= posX - 50 && this.x <= posX + 50) && (this.y >= posY - 50 && this.y <= posY + 50)) {
-            this.x = 200;
-            this.y = 400;
-            console.log(score);
+            document.getElementById('score').textContent = score;
+            document.getElementById('game-over').classList.remove('invisible');
+            document.getElementById('game-over').classList.add('visible');
+            gameStatus = 'pause';
             score = 0;
         }
     }
     handleInput(key) {
         switch (key) {
             case 'left': {
-                if (this.x > 0) {
+                if (this.x > 0 && gameStatus === 'start') {
                     this.x -= 100;
                 }
                 break;
             }
             case 'up': {
-                if (this.y > 0) {
+                if (this.y > 0 && gameStatus === 'start') {
                     this.y -= 100;
                     player.update_score();
                 }
                 break;
             }
             case 'right': {
-                if (this.x < 400) {
+                if (this.x < 400 && gameStatus === 'start') {
                     this.x += 100;
                 }
                 break;
             }
             case 'down': {
-                if (this.y < 400) {
+                if (this.y < 400 && gameStatus === 'start') {
                     this.y += 100;
                     player.update_score();
                 }
                 break;
+            }
+            case 'space-bar': {
+                gameStatus = 'start';
+                this.x = 200;
+                this.y = 400;
+                document.getElementById('game-over').classList.remove('visible');
+                document.getElementById('game-over').classList.add('invisible');
             }
         }
         player.render();
@@ -87,13 +97,15 @@ for (let i = 0; i < numEnemies; i++) {
 }
 
 let score = 0;
+let gameStatus = 'start';
 
 document.addEventListener('keyup', function(e) {
     const allowedKeys = {
         37: 'left',
         38: 'up',
         39: 'right',
-        40: 'down'
+        40: 'down',
+        32: 'space-bar'
     };
     player.handleInput(allowedKeys[e.keyCode]);
 });
