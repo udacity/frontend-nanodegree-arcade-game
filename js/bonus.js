@@ -5,8 +5,9 @@
  */
 function Bonus() {
     this.route = null;
+    this.starting = false;
     this.intervalHibernation = 8;
-    this.durationHibernation = 90;
+    this.durationHibernation = 15;
     Entity.call(this);
 };
 
@@ -80,7 +81,6 @@ Bonus.prototype.update = function() {
         }
 
         if (timer.isFutureTime(this.endIntervalHibernation)) {
-            delete this.endIntervalHibernation;
             this.reset();
         }
     }
@@ -90,6 +90,12 @@ Bonus.prototype.update = function() {
  * @description Reset the bonus.
  */
 Bonus.prototype.reset = function() {
+    if (this.hasOwnProperty('score'))
+        delete this.score;
+    if (this.hasOwnProperty('life'))
+        delete this.life;
+
     this.route = null;
+    delete this.endIntervalHibernation;
     this.init();
 };

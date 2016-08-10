@@ -82,7 +82,10 @@ Engine.prototype.update = function(dt) {
 
     // Bonus
     if (this.bonus.getRoute() === null) {
-        this.bonus.init();
+        if (this.bonus.starting === false) {
+            this.bonus.init();
+            this.bonus.starting = true;
+        }
         this.bonus.setRoute(traffic.getRoute(this.bonus.getTerrainsSurface()));
     }
     this.bonus.update();
@@ -118,16 +121,39 @@ Engine.prototype.update = function(dt) {
  * @description Checks whether the character collided with an enemy.
  */
 Engine.prototype.checkCollisions = function() {
-    var collision   = this.getModule('collision')
+    var collision   = this.getModule('collision'),
         scoreboard  = this.getModule('scoreboard');
+
+    var player = {
+        x: this.player.axisX(),
+        route: this.player.getRoute(),
+        padding: this.player.getPadding()
+    };
+
+    if (this.bonus.checkHibernation() === false) {
+        var bonus = {
+            x: this.bonus.axisX(),
+            route: this.bonus.getRoute(),
+            padding: this.bonus.getPadding()
+        };
+
+        collision.addEntityData({
+            'player': player,
+            'bonus': bonus
+        });
+
+        if (collision.collided()) {
+            if (this.bonus.hasOwnProperty('score'))
+                scoreboard.addScore(this.bonus.score);
+            if (this.bonus.hasOwnProperty('life'))
+                scoreboard.addLife(this.bonus.life);
+            this.bonus.reset();
+        }
+    }
 
     this.enemies.forEach(function(enemy) {
         collision.addEntityData({
-            'player': {
-                x: this.player.axisX(),
-                route: this.player.getRoute(),
-                padding: this.player.getPadding()
-            },
+            'player': player,
             'enemy': {
                 x: enemy.axisX(),
                 route: enemy.getRoute(),
