@@ -8,14 +8,16 @@ body {
     z-index: -1;
 }
 .game-over{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    color: black;
+    border: 3px solid #000000;
+    color: #000000;
     font-size: 40px;
     font-family: courier, serif;
-    text-align: center;
-    transform: translate(-50%, 50%);
+    left: 50%;
     padding: 10px;
-    border: 3px solid black;
+    position: absolute;
+    text-align: center;
+    top: 50%;
+    transform: translate(-50%, 50%);
+
+
 }

@@ -1,3 +1,17 @@
+const START_STATUS = 'start';
+const PAUSE_STATUS = 'pause';
+const POSINIT_ENEMY_X = -100;
+const POSINIT_PLAYER_X = 200;
+const POSINIT_PLAYER_Y = 400;
+const LIMIT_ENEMY = 500;
+const LIMIT_PLAYER_RIGHT = 0;
+const LIMIT_PLAYER_LEFT = 400;
+const LIMIT_PLAYER_TOP = 0;
+const LIMIT_PLAYER_BOTTON = 400;
+const STEP_PLAYER = 100;
+const LIMIT_TOP_SPACE_DAMAGE = 0;
+const LIMIT_BOTTON_SPACE_DAMAGE = 200;
+const RANGE_COLLISION = 50;
 
 class Enemy {
     constructor (x, y, dt) {
@@ -7,11 +21,11 @@ class Enemy {
         this.y = y;
     }
     update() {
-        if (this.x >= 500) {
-            this.x = -100;
+        if (this.x >= LIMIT_ENEMY) {
+            this.x = POSINIT_ENEMY_X;
             this.dt = Math.floor((Math.random() * 10) + 1);
         }
-        if (gameStatus === 'start') {
+        if (gameStatus === START_STATUS) {
             this.x += this.dt;
             player.restart(this.x, this.y);
             player.render();
@@ -34,70 +48,80 @@ class Player {
     update() {
     }
     restart(posX, posY) {
-        if ((this.x >= posX - 50 && this.x <= posX + 50) && (this.y >= posY - 50 && this.y <= posY + 50)) {
-            document.getElementById('score').textContent = score;
-            document.getElementById('game-over').classList.remove('invisible');
-            document.getElementById('game-over').classList.add('visible');
-            gameStatus = 'pause';
-            score = 0;
+        if (posX === parseInt(posX) && posY === parseInt(posY)) {
+            if ((this.x >= posX - RANGE_COLLISION && this.x <= posX + RANGE_COLLISION) && (this.y >= posY - RANGE_COLLISION && this.y <= posY + RANGE_COLLISION)) {
+                document.getElementById('score').textContent = score;
+                if (document.getElementById('game-over').className.match('invisible')) {
+                    document.getElementById('game-over').classList.remove('invisible');
+                }
+                document.getElementById('game-over').classList.add('visible');
+                gameStatus = PAUSE_STATUS;
+                score = 0;
+            }
+        }
+        else {
+            this.x = POSINIT_PLAYER_X;
+            this.y = POSINIT_PLAYER_Y;
         }
     }
     handleInput(key) {
         switch (key) {
             case 'left': {
-                if (this.x > 0 && gameStatus === 'start') {
-                    this.x -= 100;
+                if (this.x > LIMIT_PLAYER_RIGHT && gameStatus === START_STATUS) {
+                    this.x -= STEP_PLAYER;
                 }
                 break;
             }
             case 'up': {
-                if (this.y > 0 && gameStatus === 'start') {
-                    this.y -= 100;
+                if (this.y > LIMIT_PLAYER_TOP && gameStatus === START_STATUS) {
+                    this.y -= STEP_PLAYER;
                     player.update_score();
                 }
                 break;
             }
             case 'right': {
-                if (this.x < 400 && gameStatus === 'start') {
-                    this.x += 100;
+                if (this.x < LIMIT_PLAYER_LEFT && gameStatus === START_STATUS) {
+                    this.x += STEP_PLAYER;
                 }
                 break;
             }
             case 'down': {
-                if (this.y < 400 && gameStatus === 'start') {
-                    this.y += 100;
+                if (this.y < LIMIT_PLAYER_BOTTON && gameStatus === START_STATUS) {
+                    this.y += STEP_PLAYER;
                     player.update_score();
                 }
                 break;
             }
             case 'space-bar': {
-                gameStatus = 'start';
-                this.x = 200;
-                this.y = 400;
-                document.getElementById('game-over').classList.remove('visible');
+                gameStatus = START_STATUS;
+                this.x = POSINIT_PLAYER_X;
+                this.y = POSINIT_PLAYER_Y;
+                if (document.getElementById('game-over').className.match('visible')) {
+                    document.getElementById('game-over').classList.remove('visible');
+                }
                 document.getElementById('game-over').classList.add('invisible');
             }
         }
         player.render();
     }
     update_score(){
-        if ((this.y >= 0 && this.y <= 200)) {
+        if ((this.y >= LIMIT_TOP_SPACE_DAMAGE && this.y <= LIMIT_BOTTON_SPACE_DAMAGE)) {
             score += 1;
         }
     }
 }
 
-const player = new Player(200, 400);
+const player = new Player(POSINIT_PLAYER_X, POSINIT_PLAYER_Y);
 let allEnemies = [];
 const numEnemies = 3;
 for (let i = 0; i < numEnemies; i++) {
     const vel = Math.floor((Math.random() * 10) + 1);
-    const enemy = new Enemy(-100, 100 * i, vel);
+    const enemy = new Enemy(POSINIT_ENEMY_X, 100 * i, vel);
     allEnemies.push(enemy);
 }
 
 let score = 0;
-let gameStatus = 'start';
+let gameStatus = START_STATUS;
 
 document.addEventListener('keyup', function(e) {
     const allowedKeys = {

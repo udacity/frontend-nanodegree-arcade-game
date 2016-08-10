@@ -14,6 +14,10 @@
  * a little simpler to work with.
  */
 
+const OFFSET_X = 101;
+const OFFSET_Y = 83;
+const CONST_TIME_PROCESSOR = 10.0;
+
 var Engine = (function(global) {
     /* Predefine the variables we'll be using within this scope,
      * create the canvas element, grab the 2D context for that canvas
@@ -40,7 +44,7 @@ var Engine = (function(global) {
          * computer is) - hurray time!
          */
         var now = Date.now(),
-            dt = (now - lastTime) / 10.0;
+            dt = (now - lastTime) / CONST_TIME_PROCESSOR;
 
         /* Call our update/render functions, pass along the time delta to
          * our update function since it may be used for smooth animation.
@@ -131,7 +135,7 @@ var Engine = (function(global) {
                  * so that we get the benefits of caching these images, since
                  * we're using them over and over.
                  */
-                ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 85);
+                ctx.drawImage(Resources.get(rowImages[row]), col * OFFSET_X, row * OFFSET_Y);
             }
         }
         renderEntities();
