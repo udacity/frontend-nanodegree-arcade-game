@@ -1,3 +1,23 @@
 body {
     text-align: center;
 }
+.visible{
+    z-index: 3;
+}
+.invisible{
+    z-index: -1;
+}
+.game-over{
+    border: 3px solid #000000;
+    color: #000000;
+    font-size: 40px;
+    font-family: courier, serif;
+    left: 50%;
+    padding: 10px;
+    position: absolute;
+    text-align: center;
+    top: 50%;
+    transform: translate(-50%, 50%);
+
+
+}
