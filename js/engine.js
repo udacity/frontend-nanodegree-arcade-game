@@ -14,10 +14,6 @@
  * a little simpler to work with.
  */
 
-const OFFSET_X = 101;
-const OFFSET_Y = 83;
-const CONST_TIME_PROCESSOR = 10.0;
-
 var Engine = (function(global) {
     /* Predefine the variables we'll be using within this scope,
      * create the canvas element, grab the 2D context for that canvas
