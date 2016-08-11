@@ -40,7 +40,7 @@ var Engine = (function(global) {
          * computer is) - hurray time!
          */
         var now = Date.now(),
-            dt = (now - lastTime) / 1000.0;
+            dt = (now - lastTime) / CONST_TIME_PROCESSOR;
 
         /* Call our update/render functions, pass along the time delta to
          * our update function since it may be used for smooth animation.
@@ -80,7 +80,6 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        // checkCollisions();
     }
 
     /* This is called by the update function and loops through all of the
@@ -92,7 +91,7 @@ var Engine = (function(global) {
      */
     function updateEntities(dt) {
         allEnemies.forEach(function(enemy) {
-            enemy.update(dt);
+            enemy.update();
         });
         player.update();
     }
@@ -132,10 +131,9 @@ var Engine = (function(global) {
                  * so that we get the benefits of caching these images, since
                  * we're using them over and over.
                  */
-                ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
+                ctx.drawImage(Resources.get(rowImages[row]), col * OFFSET_X, row * OFFSET_Y);
             }
         }
-
         renderEntities();
     }
 
@@ -150,7 +148,6 @@ var Engine = (function(global) {
         allEnemies.forEach(function(enemy) {
             enemy.render();
         });
-
         player.render();
     }
 
@@ -159,7 +156,6 @@ var Engine = (function(global) {
      * those sorts of things. It's only called once by the init() method.
      */
     function reset() {
-        // noop
     }
 
     /* Go ahead and load all of the images we know we're going to need to
@@ -171,7 +167,7 @@ var Engine = (function(global) {
         'images/water-block.png',
         'images/grass-block.png',
         'images/enemy-bug.png',
-        'images/char-boy.png'
+        'images/char-boy.png',
     ]);
     Resources.onReady(init);
 

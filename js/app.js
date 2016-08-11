@@ -1,46 +1,121 @@
-// Enemies our player must avoid
-var Enemy = function() {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
 
-    // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
-    this.sprite = 'images/enemy-bug.png';
-};
+class Enemy {
+    constructor (x, y, dt) {
+        this.sprite = "images/enemy-bug.png";
+        this.dt = dt;
+        this.x = x;
+        this.y = y;
+    }
+    update() {
+        if (this.x >= LIMIT_ENEMY) {
+            this.x = POSINIT_ENEMY_X;
+            this.dt = Math.floor((Math.random() * 10) + 1);
+        }
+        if (gameStatus === START_STATUS) {
+            this.x += this.dt;
+            player.restart(this.x, this.y);
+            player.render();
+        }
+    }
+    render() {
+        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    }
+}
 
-// Update the enemy's position, required method for game
-// Parameter: dt, a time delta between ticks
-Enemy.prototype.update = function(dt) {
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
-};
+class Player {
+    constructor (x, y){
+    this.sprite = "images/char-boy.png";
+    this.x = x;
+    this.y = y;
+    }
+    render() {
+        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    }
+    update() {
+    }
+    restart(posX, posY) {
+        if (posX === parseInt(posX) && posY === parseInt(posY)) {
+            if ((this.x >= posX - RANGE_COLLISION && this.x <= posX + RANGE_COLLISION) && (this.y >= posY - RANGE_COLLISION && this.y <= posY + RANGE_COLLISION)) {
+                document.getElementById('score').textContent = score;
+                if (document.getElementById('game-over').className.match('invisible')) {
+                    document.getElementById('game-over').classList.remove('invisible');
+                }
+                document.getElementById('game-over').classList.add('visible');
+                gameStatus = PAUSE_STATUS;
+                score = 0;
+            }
+        }
+        else {
+            this.x = POSINIT_PLAYER_X;
+            this.y = POSINIT_PLAYER_Y;
+        }
+    }
+    handleInput(key) {
+        switch (key) {
+            case 'left': {
+                if (this.x > LIMIT_PLAYER_RIGHT && gameStatus === START_STATUS) {
+                    this.x -= STEP_PLAYER;
+                }
+                break;
+            }
+            case 'up': {
+                if (this.y > LIMIT_PLAYER_TOP && gameStatus === START_STATUS) {
+                    this.y -= STEP_PLAYER;
+                    player.update_score();
+                }
+                break;
+            }
+            case 'right': {
+                if (this.x < LIMIT_PLAYER_LEFT && gameStatus === START_STATUS) {
+                    this.x += STEP_PLAYER;
+                }
+                break;
+            }
+            case 'down': {
+                if (this.y < LIMIT_PLAYER_BOTTON && gameStatus === START_STATUS) {
+                    this.y += STEP_PLAYER;
+                    player.update_score();
+                }
+                break;
+            }
+            case 'space-bar': {
+                gameStatus = START_STATUS;
+                this.x = POSINIT_PLAYER_X;
+                this.y = POSINIT_PLAYER_Y;
+                if (document.getElementById('game-over').className.match('visible')) {
+                    document.getElementById('game-over').classList.remove('visible');
+                }
+                document.getElementById('game-over').classList.add('invisible');
+            }
+        }
+        player.render();
+    }
+    update_score(){
+        if ((this.y >= LIMIT_TOP_SPACE_DAMAGE && this.y <= LIMIT_BOTTON_SPACE_DAMAGE)) {
+            score += 1;
+        }
+    }
+}
 
-// Draw the enemy on the screen, required method for game
-Enemy.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
+const player = new Player(POSINIT_PLAYER_X, POSINIT_PLAYER_Y);
+let allEnemies = [];
+const numEnemies = 3;
+for (let i = 0; i < numEnemies; i++) {
+    const vel = Math.floor((Math.random() * 10) + 1);
+    const enemy = new Enemy(POSINIT_ENEMY_X, 100 * i, vel);
+    allEnemies.push(enemy);
+}
 
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
+let score = 0;
+let gameStatus = START_STATUS;
 
-
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
-
-
-
-// This listens for key presses and sends the keys to your
-// Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function(e) {
-    var allowedKeys = {
+    const allowedKeys = {
         37: 'left',
         38: 'up',
         39: 'right',
-        40: 'down'
+        40: 'down',
+        32: 'space-bar'
     };
-
     player.handleInput(allowedKeys[e.keyCode]);
 });
