@@ -41,7 +41,9 @@ Traffic.prototype.declareRouteOutput = function(route) {
  * @return {boolean}
  */
 Traffic.prototype.routeIsFull = function(route) {
-    return this.routesInUse[route] == this.config.routeCapacity ? true : false;
+    var enemiesInRoute = this.routesInUse[route];
+
+    return enemiesInRoute == this.getConfig().routeCapacity ? true : false;
 };
 
 /**

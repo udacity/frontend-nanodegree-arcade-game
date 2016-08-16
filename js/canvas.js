@@ -4,12 +4,18 @@
  * @param  {object} global - Global Instance
  */
 function Canvas(global) {
-    this.width;
-    this.height;
-    this.canvas;
-    this.container;
+    if (global === undefined)
+        throw new TypeError('Global instance must be assigned');
+
+    this.width = 0;
+    this.height = 0;
+    this.canvas = null;
     this.doc = global.document;
+    Module.call(this);
 };
+
+Canvas.prototype = Object.create(Module.prototype);
+Canvas.prototype.constructor = Canvas;
 
 /**
  * @description Size of the canvas element. You can generate these measures
@@ -18,27 +24,28 @@ function Canvas(global) {
  * @param  {number} height
  */
 Canvas.prototype.size = function(width, height) {
+    if (!Number.isInteger(width) || !Number.isInteger(height))
+        throw new TypeError('Type of invalid input. Expected value: Integer');
+
     this.width = width;
     this.height = height;
 };
 
 /**
- * @description Canvas will be added within the html element containing the
- * assigned ID that method.
- * @param  {string} container
- */
-Canvas.prototype.appendIn = function(container) {
-    this.container = container;
-}
-
-/**
  * @description Creates the canvas object.
  */
 Canvas.prototype.create = function() {
-    this.canvas = this.doc.createElement('canvas');
+    var container   = this.doc.getElementById(this.getConfig().containerId);
+    this.canvas     = this.doc.createElement('canvas');
+
+    if (!(this.canvas instanceof HTMLCanvasElement))
+        throw new TypeError('Error on canvas creation');
+
+    if (this.width === 0 || this.height === 0)
+        throw new TypeError('Waiting size to complete creation');
+
     this.canvas.width = this.width;
     this.canvas.height = this.height;
-    var container = this.doc.getElementById(this.container);
     container.appendChild(this.canvas);
 };
 
@@ -47,6 +54,9 @@ Canvas.prototype.create = function() {
  * @return {object}
  */
 Canvas.prototype.getContext = function() {
+    if (!(this.canvas instanceof HTMLCanvasElement))
+        throw new TypeError('Canvas was not created');
+
     if (this.ctx === undefined)
         this.ctx = this.canvas.getContext('2d');
 

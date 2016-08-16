@@ -41,6 +41,10 @@ function Config() {
 				}
 			}
 		}
+
+	}
+	this.canvas = {
+		containerId: 'canvas-container'
 	},
 	this.traffic = {
 		routeCapacity: 2
@@ -98,8 +102,23 @@ function Config() {
 /**
  * @description Select a function group
  * @param  {string} group - Name of group
- * @return {object} Object containing the group settings
+ * @param  {string} element - Name of element
+ * @return {object} Object or proprieties containing the group settings
  */
-Config.prototype.select = function(group) {
-    return this[group];
+Config.prototype.select = function(group, element) {
+	if (typeof group === 'string') {
+		if (!this.hasOwnProperty(group))
+			throw new TypeError(group + ' config not found');
+
+		if (typeof element === 'string') {
+			if (!this[group].hasOwnProperty(element))
+				throw new TypeError(element + ' config not found');
+
+			return this[group][element];
+		}
+
+		return this[group];
+	}
+
+	throw new TypeError('Required group and (or) element to perform selection');
 };

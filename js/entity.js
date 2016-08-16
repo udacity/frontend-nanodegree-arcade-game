@@ -3,7 +3,22 @@
  * @constructor
  */
 function Entity() {
-    this.hibernation = false;
+    this.x = 0;
+    this.padding = 0;
+    this.name = undefined;
+    this.group = undefined;
+    this.route = undefined;
+    this.sprite = undefined;
+    this.initialized = false;
+    this.terrainsSurface = [];
+    this.hibernation = {
+        status: false,
+        duration: undefined,
+        interval: undefined,
+        startDate: null,
+        endDate: null
+    };
+    this.lastTraveledRoute = undefined;
     Module.call(this);
 };
 
@@ -11,44 +26,191 @@ Entity.prototype = Object.create(Module.prototype);
 Entity.prototype.constructor = Entity;
 
 /**
- * @description Putting an entity in hibernation. Hibernation will last until
- * the set time (in seconds) over.
- * @param  {number} duration
+ * @description Initializes the entity. After starting an entity will always be
+ * marked as initialized.
  */
-Entity.prototype.hibernate = function(duration) {
-    var timer = this.getModule('timer');
-
-    this['endHibernation'] = timer.createFutureTime(duration);
-    this.hibernation = true;
+Entity.prototype.initialize = function() {
+    this.initialized = true;
 };
 
 /**
- * @description Verifies that hibernation is over. If so changes the active
- * state to the entity.
+ * @description Returns the state of the entity. (Initialized or uninitialized).
+ * @return {boolean}
  */
-Entity.prototype.followHibernation = function() {
+Entity.prototype.isInitialized = function() {
+    return this.initialized;
+};
+
+/**
+ * @description Hibernates the entity. You must set the time before calling
+ * hibernation. If a range is defined entity enter into a constant sleep cycle.
+ * That is, waking up and hibernating within the defined values.
+ */
+Entity.prototype.hibernate = function() {
+    var timer       = this.getModule('timer'),
+        duration    = this.hibernation.duration;
+
+    this.hibernation.endDate = timer.createFutureTime(duration);
+    this.hibernation.status = true;
+};
+
+/**
+ * @description Sets a duration for hibernation of the entity.
+ * @param  {number} duration
+ */
+Entity.prototype.hibernationDuration = function(duration) {
+    this.hibernation.duration = duration;
+};
+
+/**
+ * @description Sets a range for hibernation of the entity.
+ * @param  {number} interval
+ */
+Entity.prototype.hibernationInterval = function(interval) {
+    this.hibernation.interval = interval;
+};
+
+/**
+ * @description Checks whether an entity is or is not hibernating.
+ * @return {boolean}
+ */
+Entity.prototype.isHibernationActive = function() {
+    return this.hibernation.status;
+};
+
+/**
+ * @description Verifies that came the moment for the entity goes into
+ * hibernation.
+ * @return {boolean}
+ */
+Entity.prototype.isStartHibernation = function() {
     var timer = this.getModule('timer');
 
-    if (timer.isFutureTime(this.endHibernation)) {
-        this.hibernation = false;
-        delete this.endHibernation;
+    return timer.isFutureTime(this.hibernation.startDate) ? true : false;
+};
+
+/**
+ * @description Verifies that the time has come the entity agrees.
+ * @return {boolean}
+ */
+Entity.prototype.isEndHibernation = function() {
+    var timer = this.getModule('timer');
+
+    return timer.isFutureTime(this.hibernation.endDate) ? true : false;
+};
+
+/**
+ * @description Keep the entity agreed for a certain time. This function is
+ * called when a sleep interval is set.
+ */
+Entity.prototype.waitHibernation = function() {
+    var timer       = this.getModule('timer'),
+        interval    = this.hibernation.interval;
+
+    this.hibernation.startDate = timer.createFutureTime(interval);
+};
+
+/**
+ * @description Accompanies the hibernation of the entity. When hibernation
+ * comes to an end, wake up the entity.
+ */
+Entity.prototype.accompanyHibernation = function() {
+    if (this.isEndHibernation()) {
+        this.hibernation.status = false;
+        this.hibernation.endDate = null;
+        this.reset();
     }
 };
 
 /**
- * @description Returns status the hibernation of the entity.
+ * @description Accompanies the interval between hibernation entity. When it
+ * comes time for a new hibernation puts the body to sleep.
+ */
+Entity.prototype.accompanyHibernationArrival = function() {
+    if (this.isStartHibernation()) {
+        this.hibernate();
+        this.hibernation.startDate = null;
+        this.reset();
+    }
+};
+
+/**
+ * @description Add terrain surfaces. Each route scenario has a specific type of
+ * ground surface (eg water, grass, etc.). Add surfaces means giving access to
+ * this entity to certain types of land.
+ * @param {string or array} terrainsSurface
+ */
+Entity.prototype.addTerrainsSurface = function(terrainsSurface) {
+    if (terrainsSurface instanceof Array)
+        this.terrainsSurface = this.terrainsSurface.concat(terrainsSurface);
+    else if (typeof terrainsSurface === 'string')
+        this.terrainsSurface.push(terrainsSurface);
+    else
+        throw new TypeError('Invalid terrain surface type');
+};
+
+/**
+ * @description Returns the surface terrains set for the entity.
+ * @return {array}
+ */
+Entity.prototype.getTerrainsSurface = function() {
+    return this.terrainsSurface;
+};
+
+/**
+ * @description Checks whether the entity has terrains surface. If the terrain
+ * parameter is set, it will be checked if the entity has this type of terrain
+ * in particular.
+ * @param  {string}  terrain - [optional]
  * @return {boolean}
  */
-Entity.prototype.checkHibernation = function() {
-    return this.hibernation;
+Entity.prototype.hasTerrainsSurface = function(terrain) {
+    if (typeof terrain !== 'string')
+        return this.terrainsSurface.length > 0 ? true : false;
+
+    return this.terrainsSurface.indexOf(terrain) >= 0 ? true : false;
+};
+
+/**
+ * @description Defines the group that the entity belongs. (Eg enemies, bonus,
+ * etc).
+ * @type {string}
+ */
+Entity.prototype.setEntityGroup = function(group) {
+    this.group = group;
+};
+
+/**
+ * @description Defines the entity name. (example: bug, bee, etc).
+ * @param {string} name
+ */
+Entity.prototype.setEntityName = function(name) {
+    this.name = name;
+};
+
+/**
+ * @description Defines a position on the X axis.
+ * @param {number} axisX
+ */
+Entity.prototype.setAxisX = function(axisX) {
+    this.x = axisX;
 };
 
 /**
  * @description Returns the entity's position on the x axis.
  * @return {number}
  */
-Entity.prototype.axisX = function() {
+Entity.prototype.getAxisX = function() {
     return this.x;
+};
+
+/**
+ * @description Defines a padding entity. This value will help to calculate
+ * accurately colissões.
+ * @param {number} padding
+ */
+Entity.prototype.setPadding = function(padding) {
+    this.padding = padding;
 };
 
 /**
@@ -77,16 +239,76 @@ Entity.prototype.getRoute = function() {
 };
 
 /**
+ * @description Checks if a route has been set to entity.
+ * @return {boolean}
+ */
+Entity.prototype.hasRoute = function() {
+    return this.route === undefined ? false : true;
+};
+
+/**
+ * @description Restarts the route of the entity.
+ */
+Entity.prototype.resetRoute = function() {
+    this.route = undefined;
+};
+
+/**
+ * @description Sets the last route traffic used by the enemy.
+ * @param {number} route
+ */
+Entity.prototype.setLastTraveledRoute = function(route) {
+    if (typeof route !== 'number')
+        throw new TypeError('Invalid route');
+
+    this.lastTraveledRoute = route;
+};
+
+/**
+ * @description Returns the last route taken by the enemy.
+ * @return {number or undefined}
+ */
+Entity.prototype.getLastTraveledRoute = function() {
+    return this.lastTraveledRoute;
+};
+
+/**
+ * @description Verifies that the enemy along a route before the current route.
+ * @return {boolean}
+ */
+Entity.prototype.hasLastTraveledRoute = function() {
+    return this.lastTraveledRoute !== undefined ? true : false;
+};
+
+/**
  * @description Every entity has a sprite. An image that is rendered on the
  * user's screen. This function converts an object containing the group and
  * entity's name in an address (url) valid.
  */
-Entity.prototype.convertSprite = function() {
-    var resources       = this.getModule('resources'),
-        spriteGroup     = this.sprite.group,
-        spriteName      = this.sprite.name;
+Entity.prototype.generateSprite = function() {
+    var resources = this.getModule('resources');
 
-    this.sprite = resources.urlImage(spriteGroup, spriteName);
+    if (typeof this.group !== 'string' || typeof this.name !== 'string')
+        throw new TypeError('Waiting for group definition and name');
+
+    this.sprite = resources.urlImage(this.group, this.name);
+};
+
+/**
+ * @description Return the sprite of entity.
+ * @return {undefined or string}
+ */
+Entity.prototype.getSprite = function() {
+    return this.sprite;
+};
+
+/**
+ * @description Reset enemy.
+ */
+Entity.prototype.reset = function() {
+    this.setLastTraveledRoute(this.getRoute());
+    this.resetRoute();
+    this.setAxisX(0);
 };
 
 /**
@@ -95,12 +317,17 @@ Entity.prototype.convertSprite = function() {
  */
 Entity.prototype.render = function() {
     var canvas          = this.getModule('canvas'),
-        resourcesLoader = this.getModule('resourcesLoader'),
+        resourcesLoader = this.getModule('resourcesloader'),
         ctx             = canvas.getContext();
 
-    if (this.hasOwnProperty('endHibernation'))
-        this.followHibernation();
-
-    if (this.hibernation === false)
-        ctx.drawImage(resourcesLoader.get(this.sprite), this.x, this.route);
+    if (this.isHibernationActive()) {
+        this.accompanyHibernation();
+    } else {
+        if (this.hibernation.interval !== undefined) {
+            if (this.hibernation.startDate === null)
+                this.waitHibernation();
+            this.accompanyHibernationArrival();
+        }
+        ctx.drawImage(resourcesLoader.get(this.getSprite()), this.getAxisX(), this.getRoute());
+    }
 };

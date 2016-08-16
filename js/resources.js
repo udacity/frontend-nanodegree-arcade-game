@@ -1,7 +1,6 @@
 /**
  * @description Manages resources.
  * @constructor
- * @param {config} config - configurations of resources
  */
 function Resources() {
 	Module.call(this);
@@ -16,7 +15,12 @@ Resources.prototype.constructor = Resources;
  * @return {object} Object containing all resource settings
  */
 Resources.prototype.getResourceConfig = function(resource) {
-	return this.config[resource];
+	var config = this.getConfig();
+
+	if (!config.hasOwnProperty(resource))
+		throw new TypeError('config not found: ' + resource);
+
+	return config[resource];
 };
 
 /**
@@ -25,20 +29,22 @@ Resources.prototype.getResourceConfig = function(resource) {
  * @return {integer}
  */
 Resources.prototype.imageSize = function(dimension) {
-	var imageConfig = this.getResourceConfig('images');
-	return imageConfig.size[dimension];
+	var images = this.getResourceConfig('images');
+
+	return images.size[dimension];
 };
 
 /**
  * @description Redeem the URL of a specific resource.
  * @param  {string} group   - The type of element that refers the resource.
  * Exemple: scenario, enemies, etc
- * @param  {string} name - Exemple: water
+ * @param  {string} element - Exemple: water
  * @return {string}
  */
-Resources.prototype.urlImage = function(group, name) {
-	var imageConfig = this.getResourceConfig('images');
-	return imageConfig.urls[group][name];
+Resources.prototype.urlImage = function(group, element) {
+	var images = this.getResourceConfig('images');
+
+	return images.urls[group][element];
 };
 
 /**
@@ -47,12 +53,12 @@ Resources.prototype.urlImage = function(group, name) {
  * Exemple: scenario, enemies, etc
  * @param  {boolean} toObject - When the value is true returns the urls set on
  * an object
- * @return {array}
+ * @return {array or object}
  */
 Resources.prototype.urlsByImagesGroup = function(group, toObject) {
-	var imagesArray = [],
-		imageConfig = this.getResourceConfig('images'),
-		imagesByGroup = imageConfig.urls[group];
+	var images			= this.getResourceConfig('images'),
+		imagesArray		= [],
+		imagesByGroup	= images.urls[group];
 
 	if (toObject === true)
 		return imagesByGroup;
@@ -60,6 +66,7 @@ Resources.prototype.urlsByImagesGroup = function(group, toObject) {
 	Object.keys(imagesByGroup).forEach(function(url) {
 		imagesArray.push(imagesByGroup[url]);
 	});
+
 	return imagesArray;
 };
 
@@ -67,12 +74,12 @@ Resources.prototype.urlsByImagesGroup = function(group, toObject) {
  * @description Returns a set with the urls of all resources.
  * @param  {boolean} toObject - When the value is true returns the urls set on
  * an object
- * @return {array}
+ * @return {array or object}
  */
 Resources.prototype.urlsAllImages = function(toObject) {
-	var imagesArray = [],
-		imageConfig = this.getResourceConfig('images'),
-		allImages = imageConfig.urls;
+	var images		= this.getResourceConfig('images'),
+		imagesArray	= [],
+		allImages	= images.urls;
 
 	if (toObject === true)
 		return allImages;
@@ -80,5 +87,6 @@ Resources.prototype.urlsAllImages = function(toObject) {
 	Object.keys(allImages).forEach(function(group){
 		imagesArray = imagesArray.concat(this.urlsByImagesGroup(group));
 	}.bind(this));
+
 	return imagesArray;
 };

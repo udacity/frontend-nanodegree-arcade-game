@@ -1,16 +1,18 @@
 /**
  * @description This file provides the game loop functionality (update
- * entities and render). You can find a complete description of this
- * class in address: github.com/udacity/frontend-nanodegree-arcade-game
+ * entities and render). You can find a complete description of this class in
+ * address: github.com/udacity/frontend-nanodegree-arcade-game
  * @constructor
- * @param {object} global
+ * @param {object} global - Global Instance
  */
 function Engine(global) {
-    this.bonus;
-    this.player;
-    this.lastTime;
+    if (global === undefined)
+        throw new TypeError('Global instance must be assigned');
+
     this.enemies = [];
+    this.player = null;
     this.pause = false;
+    this.lastTime = undefined;
     this.win = global.window;
     Module.call(this);
 };
@@ -19,56 +21,102 @@ Engine.prototype = Object.create(Module.prototype);
 Engine.prototype.constructor = Engine;
 
 /**
- * @description Add enemies.
- * @param  {object} enemy
+ * @description Inserting or removing the engine paused. You can set the pause
+ * button directly in the settings file.
+ * @param  {string} key
  */
-Engine.prototype.addEnemies = function(enemy) {
-    this.enemies.push(enemy);
+Engine.prototype.pauseGame = function(key) {
+    var now = Date.now();
+
+    if (key === 'pause') {
+        if (this.pause)
+            this.lastTime = now;
+
+        this.pause = this.isPauseGame() ? false : true;
+    }
 };
 
 /**
- * @description Assign player
- * @param  {object} player - Player Instance
+ * @description Checks whether the motor is paused.
+ * @return {boolean}
+ */
+Engine.prototype.isPauseGame = function() {
+    return this.pause;
+};
+
+/**
+ * @description Defines a player to the engine.
+ * @param {Player} player
  */
 Engine.prototype.setPlayer = function(player) {
+    if (!(player instanceof Player))
+        throw new TypeError('Invalid player');
+
     this.player = player;
 };
 
 /**
- * @description Assign bonus
- * @param  {object} bonus - Bonus Instance
+ * @description Returns the player defined in the engine.
+ * @return {Player}
  */
-Engine.prototype.setBonus = function(bonus) {
-    this.bonus = bonus;
+Engine.prototype.getPlayer = function() {
+    return this.player;
 };
 
 /**
- * @description Pause the game. You can change the pause button in the game
- * settings.
- * @param  {string} key
+ * @description Verifies that a player has been set for the engine.
+ * @return {boolean}
  */
-Engine.prototype.inPause = function(key) {
-    if (key === 'pause') {
-        if (this.pause)
-            this.lastTime = Date.now();
-        this.pause = this.pause ? false : true;
-    }
-}
+Engine.prototype.hasPlayer = function() {
+    return (this.player instanceof Player) ? true : false;
+};
+
+/**
+ * @description Adds enemies. The enemies parameter expects an enemy or an array
+ * of enemies.
+ * @param {Enemy or array} enemies
+ */
+Engine.prototype.addEnemies = function(enemies) {
+    if (enemies instanceof Array)
+        enemies.forEach(function(enemy) {
+            this.addEnemies(enemy);
+        }.bind(this));
+    else if (enemies instanceof Enemy)
+        this.enemies.push(enemies);
+    else
+        throw new TypeError('Invalid enemy');
+};
+
+/**
+ * @description Back in an array, the added enemies.
+ * @return {array}
+ */
+Engine.prototype.getEnemies = function() {
+    return this.enemies;
+};
+
+/**
+ * @description Checks if an enemy was added into engine.
+ * @return {boolean}
+ */
+Engine.prototype.hasEnemies = function() {
+    return this.enemies.length > 0 ? true : false;
+};
 
 /**
  * @description This function serves as the kickoff point for the game
  * loop itself and handles properly calling the update and render methods.
  */
 Engine.prototype.main = function() {
-    if (!this.pause) {
-        var now = Date.now(),
-            dt = (now - this.lastTime) / 1000.0;
+    var now = Date.now(),
+        dt  = (now - this.lastTime) / 1000.0;
 
+    if (!this.isPauseGame()) {
         this.update(dt);
         this.render();
         this.lastTime = now;
     }
-	this.win.requestAnimationFrame(this.main.bind(this));
+    this.win.requestAnimationFrame(this.main.bind(this));
 };
 
 /**
@@ -77,129 +125,56 @@ Engine.prototype.main = function() {
  * @param  {number} dt - delta time
  */
 Engine.prototype.update = function(dt) {
-    var traffic     = this.getModule('traffic'),
-        scoreboard  = this.getModule('scoreboard');
-
-    // Bonus
-    if (this.bonus.getRoute() === null) {
-        if (this.bonus.starting === false) {
-            this.bonus.init();
-            this.bonus.starting = true;
-        }
-        this.bonus.setRoute(traffic.getRoute(this.bonus.getTerrainsSurface()));
-    }
-    this.bonus.update();
+    var traffic = this.getModule('traffic');
 
     // Enemies
-    this.enemies.forEach(function(enemy) {
-        if (enemy.needStartup()) {
-            if (enemy.getLastTraveledRoute() !== null) {
-                traffic.declareRouteOutput(enemy.getLastTraveledRoute());
-                scoreboard.addScore(enemy.score);
+    if (this.hasEnemies()) {
+        this.getEnemies().forEach(function(enemy){
+            enemy.init(10);
+
+            if (!enemy.hasRoute()) {
+                if (enemy.hasLastTraveledRoute())
+                    traffic.declareRouteOutput(enemy.getLastTraveledRoute());
+
+                enemy.setRoute(
+                    traffic.getEmptyRoute(enemy.getTerrainsSurface())
+                );
+                traffic.declareRouteEntry(enemy.getRoute());
             }
 
-            var route = traffic.getEmptyRoute(enemy.getTerrainsSurface());
-            traffic.declareRouteEntry(route);
-            enemy.setRoute(route);
-            enemy.init(scoreboard.getLevel());
-        }
-        enemy.update(dt);
-    });
-
+            enemy.update(dt);
+        });
+    }
     // Player
-    if (this.player.getRoute() === null) {
-        if (this.player.gameStarted())
-            scoreboard.removeLife();
+    if (this.hasPlayer()) {
         this.player.init();
     }
-
-    // Collision
-    this.checkCollisions();
 };
 
-/**
- * @description Checks whether the character collided with an enemy.
- */
-Engine.prototype.checkCollisions = function() {
-    var collision   = this.getModule('collision'),
-        scoreboard  = this.getModule('scoreboard');
-
-    var player = {
-        x: this.player.axisX(),
-        route: this.player.getRoute(),
-        padding: this.player.getPadding()
-    };
-
-    if (this.bonus.checkHibernation() === false) {
-        var bonus = {
-            x: this.bonus.axisX(),
-            route: this.bonus.getRoute(),
-            padding: this.bonus.getPadding()
-        };
-
-        collision.addEntityData({
-            'player': player,
-            'bonus': bonus
-        });
-
-        if (collision.collided()) {
-            if (this.bonus.hasOwnProperty('score'))
-                scoreboard.addScore(this.bonus.score);
-            if (this.bonus.hasOwnProperty('life'))
-                scoreboard.addLife(this.bonus.life);
-            this.bonus.reset();
-        }
-    }
-
-    this.enemies.forEach(function(enemy) {
-        collision.addEntityData({
-            'player': player,
-            'enemy': {
-                x: enemy.axisX(),
-                route: enemy.getRoute(),
-                padding: enemy.getPadding()
-            }
-        });
-
-        if (collision.collided()) {
-            scoreboard.removeLife();
-            enemy.reset();
-            this.player.init();
-        }
-    }.bind(this));
-};
+Engine.prototype.checkCollisions = function() {};
 
 /**
- * This function is called every game tick (or loop of the game engine) because
- * that's how games work - they are flipbooks creating the illusion of animation
- * but in reality they are just drawing the entire screen over and over.
+ * @description This function is called every game tick (or loop of the game
+ * engine) because that's how games work - they are flipbooks creating the
+ * illusion of animation but in reality they are just drawing the entire screen
+ * over and over.
  */
 Engine.prototype.render = function() {
     var scenario = this.getModule('scenario');
-
     // Scenario
     scenario.render();
-
-    // Bonus
-    this.bonus.render();
-
     // Enemies
-    this.enemies.forEach(function(enemy) {
-        enemy.render();
-    });
-
+    if (this.hasEnemies()) {
+        this.getEnemies().forEach(function(enemy){
+            enemy.render();
+        });
+    }
     // Player
-    this.player.render();
+    if (this.hasPlayer())
+        this.player.render();
 };
 
-/**
- * This function does nothing but it could have been a good place to handle game
- * reset states - maybe a new game menu or a game over screen those sorts of
- * things. It's only called once by the init() method.
- */
-Engine.prototype.reset = function() {
-	// reset
-};
+Engine.prototype.reset = function() {};
 
 /**
  * @description This function does some initial setup that should only occur
@@ -207,7 +182,6 @@ Engine.prototype.reset = function() {
  * game loop.
  */
 Engine.prototype.run = function() {
-	this.reset();
-	this.lastTime = Date.now();
-	this.main();
+    this.lastTime = Date.now();
+    this.main();
 };

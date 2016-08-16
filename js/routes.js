@@ -1,9 +1,9 @@
 /**
- * @description Routes are imaginary points (cordenadas on the Y axis). Roads
+ * @description Routes are imaginary points (coordinates on the Y axis). Roads
  * that your enemies will go through the game. The number of routes imaginary is
  * equal to the number of lines of the scenario. This route manager sets these
  * imaginary points using the standard height of the images to create a
- * cordenada near the center of each line.
+ * coordinate near the center of each line.
  * @constructor
  */
 function Routes() {
@@ -23,7 +23,7 @@ Routes.prototype.create = function() {
         currentRoute    = -124.5;
 
     scenario.getTerrainsSurface().forEach(function(terrain) {
-        for (var i = 0; i < scenario.numberRowsByTerrainsSurface(terrain); i++) {
+        for (let i = 0; i < scenario.numberRowsByTerrainsSurface(terrain); i++) {
             currentRoute += resources.imageSize('height');
             if (!this.routes.hasOwnProperty(terrain))
                 this.routes[terrain] = [];
@@ -35,12 +35,15 @@ Routes.prototype.create = function() {
 
 /**
  * @description Returns an array containing all routes. By setting its own
- * environment, only the routes of this environment will be returned.
- * @param {string or array} environments
+ * terrain, only the routes of this terrain will be returned.
+ * @param {string or array} terrains
  * @return {array}
  */
 Routes.prototype.get = function(terrains) {
     var routesArray = [];
+
+    if (Object.keys(this.routes).length === 0)
+        throw new TypeError('Waiting creation of routes');
 
     if (typeof terrains === 'string') {
         return this.routes[terrains];
@@ -56,7 +59,7 @@ Routes.prototype.get = function(terrains) {
 
 /**
  * @description Returns the first or last route. The count is performed from the
- * top down scenario. That is, the first route is on top. The last in cenário
+ * top down scenario. That is, the first route is on top. The last in scenario
  * bottom.
  * @param  {string} firstOrLast - last. first is default.
  * @param  {string, array or empty} terrains

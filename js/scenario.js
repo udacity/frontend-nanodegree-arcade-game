@@ -15,7 +15,7 @@ Scenario.prototype.constructor = Scenario;
  * @return {integer}
  */
 Scenario.prototype.numberColumns = function() {
-    return this.config.size.cols;
+    return this.getConfig().size.cols;
 };
 
 /**
@@ -27,9 +27,8 @@ Scenario.prototype.getColumnsPositions = function() {
     var resources           = this.getModule('resources'),
         columnsPositions    = [];
 
-    for (var i=1; i <= this.numberColumns(); i++) {
+    for (let i=0; i < this.numberColumns(); i++)
         columnsPositions.push((i * resources.imageSize('width')));
-    }
 
     return columnsPositions;
 };
@@ -44,8 +43,9 @@ Scenario.prototype.numberRows = function() {
     var rows = 0;
 
     this.getTerrainsSurface().forEach(function(terrain) {
-        rows += this.config.size.rows[terrain];
+        rows += this.getConfig().size.rows[terrain];
     }.bind(this));
+
     return rows;
 };
 
@@ -56,7 +56,7 @@ Scenario.prototype.numberRows = function() {
  * @return {array}
  */
 Scenario.prototype.getTerrainsSurface = function() {
-    return Object.keys(this.config.size.rows);
+    return Object.keys(this.getConfig().size.rows);
 };
 
 /**
@@ -66,7 +66,10 @@ Scenario.prototype.getTerrainsSurface = function() {
  * @return {number}
  */
 Scenario.prototype.numberRowsByTerrainsSurface = function(terrain) {
-    return this.config.size.rows[terrain];
+    if (typeof terrain !== 'string')
+        throw new TypeError('Type of invalid input. Expected value: String');
+
+    return this.getConfig().size.rows[terrain];
 };
 
 /**
@@ -75,6 +78,7 @@ Scenario.prototype.numberRowsByTerrainsSurface = function(terrain) {
  */
 Scenario.prototype.width = function() {
     var resources = this.getModule('resources');
+
     return this.numberColumns() * resources.imageSize('width');
 };
 
@@ -97,18 +101,16 @@ Scenario.prototype.render = function() {
     var urlsRowsImages  = [],
         canvas          = this.getModule('canvas'),
         resources       = this.getModule('resources'),
-        resourcesLoader = this.getModule('resourcesLoader');
-
+        resourcesLoader = this.getModule('resourcesloader');
 
 	this.getTerrainsSurface().forEach(function(terrain) {
-		for(var i = 0; i < this.numberRowsByTerrainsSurface(terrain); i++) {
-			urlsRowsImages.push(resources.urlImage('scenario', terrain));
-		}
+		for(let i = 0; i < this.numberRowsByTerrainsSurface(terrain); i++)
+            urlsRowsImages.push(resources.urlImage('scenario', terrain));
 	}.bind(this));
 
 	for (var row = 0; row < this.numberRows(); row++) {
-		for (var col = 0; col < this.numberColumns(); col++) {
-            var image = resourcesLoader.get(urlsRowsImages[row]);
+		for (let col = 0; col < this.numberColumns(); col++) {
+            let image = resourcesLoader.get(urlsRowsImages[row]);
 			canvas.getContext().drawImage(image,
 				col * resources.imageSize('width'),
 				row * resources.imageSize('height'));

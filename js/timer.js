@@ -2,7 +2,12 @@
  * @description It lets you control some aspects of time.
  * @constructor
  */
-function Timer() {};
+function Timer() {
+    Module.call(this);
+};
+
+Timer.prototype = Object.create(Module.prototype);
+Timer.prototype.constructor = Timer;
 
 /**
  * @description Convert seconds to milliseconds.
@@ -10,6 +15,9 @@ function Timer() {};
  * @return {number}
  */
 Timer.prototype.secondsToMilliseconds = function(seconds) {
+    if (typeof seconds !== 'number')
+        throw new TypeError('Waiting value in seconds');
+
     return seconds * 1000;
 };
 
@@ -28,6 +36,9 @@ Timer.prototype.createFutureTime = function(seconds) {
  * @return {boolean}
  */
 Timer.prototype.isFutureTime = function(futureTime) {
+    if (!(futureTime instanceof Date))
+        throw new TypeError('Waiting a instance Date');
+
     var now = Date.now();
     return now >= futureTime.getTime() ? true : false;
 };

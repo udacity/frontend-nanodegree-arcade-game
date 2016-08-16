@@ -4,17 +4,6 @@
  * @constructor
  */
 function Player() {
-    this.sprite = {
-        group:  'characters',
-        name:   'boy'
-    };
-
-    this.x = 0;
-    this.startPoint;
-    this.padding = 45;
-    this.route = null;
-    this.pause = false;
-    this.started = false;
     Entity.call(this);
 };
 
@@ -22,86 +11,117 @@ Player.prototype = Object.create(Entity.prototype);
 Player.prototype.constructor = Player;
 
 /**
- * @description Start the player, sending him to the starting point of the game.
+ * @description Initializes the character giving the required settings. You can
+ * change any default setting through specific methods.
  */
 Player.prototype.init = function() {
-    this.moveStartPoint();
-
-    if (this.started === false)
-        this.started = true;
-
-    if (typeof this.sprite !== 'string')
-        this.convertSprite();
-};
-
-/**
- * @description Verifies that the game is in progress.
- * @return {boolean}
- */
-Player.prototype.gameStarted = function() {
-    return this.started;
-};
-
-/**
- * @description Forwards the player to the starting point of the game.
- */
-Player.prototype.moveStartPoint = function() {
-    var routes      = this.getModule('routes'),
-        scenario    = this.getModule('scenario'),
-        resources   = this.getModule('resources'),
-        imageWidth  = resources.imageSize('width');
-
-    this.x = Math.trunc(scenario.numberColumns() / 2) * imageWidth;
-    this.route = routes.getFirstOrLast('last');
-};
-
-/**
- * @description Move the player in the scene. The control device can be set in
- * the configuration file.
- * @param  {string} direction
- */
-Player.prototype.move = function(direction) {
-    var routes      = this.getModule('routes'),
-        scenario    = this.getModule('scenario'),
-        resources   = this.getModule('resources'),
-        imageWidth  = resources.imageSize('width'),
-        imageHeight = resources.imageSize('height');
-
-    if (direction === 'pause')
-        this.pause = this.pause ? false : true;
-
-    if (!this.pause) {
-        switch (direction) {
-            case 'up':
-                this.route -= imageHeight;
-                if(this.route < routes.getFirstOrLast('first', 'stone'))
-                    this.reset();
-                break;
-
-            case 'right':
-                this.x += imageWidth;
-                if(this.x >= scenario.width())
-                    this.x -= imageWidth;
-                break;
-
-            case 'down':
-                this.route += imageHeight;
-                if(this.route > routes.getFirstOrLast('last'))
-                    this.route = routes.getFirstOrLast('last');
-                break;
-
-            case 'left':
-                this.x -= imageWidth;
-                if(this.x < 0)
-                    this.x += imageWidth;
-                break;
-        }
+    if (!this.isInitialized()) {
+        this.setPadding(45);
+        this.setEntityName('boy');
+        this.setEntityGroup('characters');
+        this.addTerrainsSurface(['stone', 'grass']);
+        this.generateSprite();
+        this.initialize();
+        this.moveForStartPoint();
     }
 };
 
 /**
- * @description Restart the player.
+ * @description Move the character up. When the character hits the water it is
+ * redirected to the starting point and points are scored on your score.
+ * @param  {number} distance
  */
-Player.prototype.reset = function() {
-    this.route = null;
+Player.prototype.moveUp = function(distance) {
+    var routes      = this.getModule('routes')
+        startWater  = routes.getFirstOrLast('last', 'water');
+
+    this.setRoute((this.getRoute() - distance));
+    if (this.getRoute() <= startWater) {
+        this.moveForStartPoint();
+    }
+};
+
+/**
+ * @description Move the character to the right. Before performing the motion
+ * check if this move will not take the character out of the scenario. If
+ * everything is correct, move the character.
+ * @param  {number} distance
+ */
+Player.prototype.moveRight = function(distance) {
+    var scenario = this.getModule('scenario'),
+        position = (this.getAxisX() + distance);
+
+    if (position < scenario.width())
+        this.setAxisX(position);
+};
+
+/**
+ * @description Move the character down. Before performing the motion check if
+ * this move will not take the character out of the ground allowed. If
+ * everything is correct, move the character.
+ * @param  {number} distance
+ */
+Player.prototype.moveDown = function(distance) {
+    var routes      = this.getModule('routes'),
+        position    = (this.getRoute() + distance);
+
+    if (position <= routes.getFirstOrLast('last', this.getTerrainsSurface()))
+        this.setRoute(position);
+};
+
+/**
+ * @description Move the character to the left. Before performing the motion
+ * check if this move will not take the character out of the scenario. If
+ * everything is correct, move the character.
+ * @param  {number} distance
+ */
+Player.prototype.moveLeft = function(distance) {
+    var scenario = this.getModule('scenario'),
+        position = (this.getAxisX() - distance);
+
+    if (position >= 0)
+        this.setAxisX(position);
+};
+
+/**
+ * @description Move the character to the starting point of the scene. The
+ * starting point will always be a median column, or close to it, that is the
+ * last route permitada for the character.
+ */
+Player.prototype.moveForStartPoint = function() {
+    var routes          = this.getModule('routes'),
+        scenario        = this.getModule('scenario'),
+        scenarioColumns = scenario.getColumnsPositions();
+
+    this.setAxisX(scenarioColumns[Math.floor((scenario.numberColumns() / 2))]);
+    this.setRoute(routes.getFirstOrLast('last', this.getTerrainsSurface()));
+};
+
+/**
+ * @description Awaits motion events. So when receiving, moving the character
+ * according to the direction.
+ * @param  {string} direction
+ */
+Player.prototype.move = function(direction) {
+    var resources   = this.getModule('resources'),
+        imageWidth  = resources.imageSize('width'),
+        imageHeight = resources.imageSize('height');
+
+    switch (direction) {
+        case 'up':
+            this.moveUp(imageHeight);
+            break;
+
+        case 'right':
+            this.moveRight(imageWidth);
+            break;
+
+        case 'down':
+            this.moveDown(imageHeight);
+            break;
+
+        case 'left':
+            this.moveLeft(imageWidth);
+            break;
+    }
 };

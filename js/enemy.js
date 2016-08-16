@@ -2,12 +2,9 @@
  * @description This is the class for you inherit your enemies. Manages the life
  * cycle,route, terrains surface, velocity, displacement, design, etc.
  * @constructor
- * @return {object}
  */
 function Enemy() {
-    this.speed;
-    this.route = null;
-    this.lastTraveledRoute = null;
+    this.speed = undefined;
     Entity.call(this);
 };
 
@@ -15,69 +12,58 @@ Enemy.prototype = Object.create(Entity.prototype);
 Enemy.prototype.constructor = Enemy;
 
 /**
- * @description Initialize the enemy.
- * @param  {number} levelGame
+ * @description Sets a velocity for the enemy. You can get a random speed
+ * through getRandomSpeed function.
+ * @param {number} speed
  */
-Enemy.prototype.init = function(levelGame) {
-    this.x = 0;
-    this.speed = this.getRandomSpeed(levelGame);
-    if (typeof this.sprite !== 'string')
-        this.convertSprite();
+Enemy.prototype.setSpeed = function(speed) {
+    if (typeof speed !== 'number')
+        throw new TypeError('Velocity invalid');
+
+    this.speed = speed;
 };
 
 /**
- * @description Generates a random speed.
+ * @description Returns the current speed of the enemy.
+ * @return {number}
+ */
+Enemy.prototype.getSpeed = function() {
+    return this.speed;
+};
+
+/**
+ * @description Generates a random speed. That speed uses the current level of
+ * the game as a parameter to calculate.
  * @return {number}
  */
 Enemy.prototype.getRandomSpeed = function(levelGame) {
-    var minSpeed = 150 + levelGame * 6,
-        maxSpeed = 90 + levelGame * 2;
-
-    return Math.random() * maxSpeed + minSpeed;
+    return Math.random() * (150 + levelGame * 6) + (90 + levelGame * 2);
 };
 
 /**
- * @description Returns the surface terrains set for the enemy.
- * @return {string or array}
- */
-Enemy.prototype.getTerrainsSurface = function() {
-    return this.terrainsSurface;
-};
-
-/**
- * @description Returns the last route taken by the enemy.
- * @return {number}
- */
-Enemy.prototype.getLastTraveledRoute = function() {
-    return this.lastTraveledRoute;
-};
-
-/**
- * @description Verifies that enemy must be restarted.
+ * @description Checks whether the enemy has a set speed.
  * @return {boolean}
  */
-Enemy.prototype.needStartup = function() {
-    return this.route === null ? true : false;
+Enemy.prototype.hasSpeed = function() {
+    return this.getSpeed() !== undefined ? true : false;
 };
 
 /**
- * @description Reset the enemy.
- */
-Enemy.prototype.reset = function() {
-    this.lastTraveledRoute = this.route;
-    this.route = null;
-};
-
-/**
- * @description Update the enemy's position, required method for game.
+ * @description Update the enemy's position.
  * @param  {number} dt
  */
 Enemy.prototype.update = function(dt) {
     var scenario = this.getModule('scenario');
 
-    if (this.checkHibernation() === false) {
-        this.x += this.speed * dt;
-        if (this.x > scenario.width())
+    if(!this.isHibernationActive()) {
+        if (!this.hasSpeed())
+            throw new TypeError('Waiting for speed setting');
+
+        let increase = this.getAxisX() + (this.getSpeed() * dt);
+        if (increase > 0)
+            this.setAxisX(increase);
+
+        if (this.getAxisX() > scenario.width())
             this.reset();
     }
 };
