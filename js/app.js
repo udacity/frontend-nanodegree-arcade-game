@@ -1,4 +1,5 @@
 // Enemies our player must avoid
+
 var Enemy = function() {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
@@ -33,7 +34,7 @@ Enemy.prototype.render = function() {
 // a handleInput() method.
 var Player = function() {
   this.sprite = "images/char-boy.png";
-  this.x = 250;
+  this.x = 205;
   this.y = 400;
 };
 
@@ -79,6 +80,21 @@ Player.prototype.handleInput = function(key) {
   }
 };
 
+Player.prototype.checkCollisions = function(enemyArray) {
+  var zone = 70;
+  for (var i = 0; i<enemyArray.length; i++) {
+    if (
+      this.x > enemyArray[i].x - zone &&
+      this.x < enemyArray[i].x + zone &&
+      this.y > enemyArray[i].y - zone &&
+      this.y < enemyArray[i].y + zone) {
+      //console.log("Hit");
+      this.x = 205;
+      this.y = 400;
+    }
+  }
+};
+
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
@@ -87,7 +103,7 @@ var enemy1 = new Enemy();
 var enemy2 = new Enemy();
 var enemy3 = new Enemy();
 
-var allEnemies = [enemy1, enemy2, enemy3];
+allEnemies = [enemy1, enemy2, enemy3];
 
 var player = new Player();
 
