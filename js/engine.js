@@ -14,6 +14,32 @@
  * a little simpler to work with.
  */
 
+ // Get the modal
+ var modal = document.getElementById('myModal');
+
+ // Get the button that opens the modal
+ var btn = document.getElementById("myBtn");
+
+ // Get the <span> element that closes the modal
+ var span = document.getElementsByClassName("close")[0];
+
+ // When the user clicks the button, open the modal
+ btn.onclick = function() {
+     modal.style.display = "block";
+ }
+
+ // When the user clicks on <span> (x), close the modal
+ span.onclick = function() {
+     modal.style.display = "none";
+ }
+
+ // When the user clicks anywhere outside of the modal, close it
+ window.onclick = function(event) {
+     if (event.target == modal) {
+         modal.style.display = "none";
+     }
+ }
+
 var Engine = (function(global) {
     /* Predefine the variables we'll be using within this scope,
      * create the canvas element, grab the 2D context for that canvas
@@ -141,7 +167,7 @@ var Engine = (function(global) {
 
         //To display the score:
         ctx.fillStyle="#31383B";
-        ctx.font = '18pt sans-serif';
+        ctx.font = '16pt sans-serif';
         ctx.fillText("Score: " + player.score, 405, 100);
 
         //To display instructions for changing the character:
