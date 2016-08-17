@@ -4,6 +4,7 @@
  * @constructor
  */
 function Player() {
+    this.pause = false;
     Entity.call(this);
 };
 
@@ -24,6 +25,23 @@ Player.prototype.init = function() {
         this.initialize();
         this.moveForStartPoint();
     }
+};
+
+/**
+ * @description Inserting or removing the player paused. You can set the pause
+ * button directly in the settings file.
+ * @param  {string} key
+ */
+Player.prototype.pauseGame = function() {
+    this.pause = this.isPauseGame() ? false : true;
+};
+
+/**
+ * @description Checks whether the player is paused.
+ * @return {boolean}
+ */
+Player.prototype.isPauseGame = function() {
+    return this.pause;
 };
 
 /**
@@ -107,21 +125,26 @@ Player.prototype.move = function(direction) {
         imageWidth  = resources.imageSize('width'),
         imageHeight = resources.imageSize('height');
 
-    switch (direction) {
-        case 'up':
-            this.moveUp(imageHeight);
-            break;
+    if (direction === 'pause')
+        this.pauseGame();
 
-        case 'right':
-            this.moveRight(imageWidth);
-            break;
+    if (!this.isPauseGame()) {
+        switch (direction) {
+            case 'up':
+                this.moveUp(imageHeight);
+                break;
 
-        case 'down':
-            this.moveDown(imageHeight);
-            break;
+            case 'right':
+                this.moveRight(imageWidth);
+                break;
 
-        case 'left':
-            this.moveLeft(imageWidth);
-            break;
+            case 'down':
+                this.moveDown(imageHeight);
+                break;
+
+            case 'left':
+                this.moveLeft(imageWidth);
+                break;
+        }
     }
 };

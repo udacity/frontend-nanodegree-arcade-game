@@ -3,17 +3,12 @@
  * entities and render). You can find a complete description of this class in
  * address: github.com/udacity/frontend-nanodegree-arcade-game
  * @constructor
- * @param {object} global - Global Instance
  */
-function Engine(global) {
-    if (global === undefined)
-        throw new TypeError('Global instance must be assigned');
-
+function Engine() {
     this.enemies = [];
     this.player = null;
     this.pause = false;
     this.lastTime = undefined;
-    this.win = global.window;
     Module.call(this);
 };
 
@@ -37,7 +32,7 @@ Engine.prototype.pauseGame = function(key) {
 };
 
 /**
- * @description Checks whether the motor is paused.
+ * @description Checks whether the engine is paused.
  * @return {boolean}
  */
 Engine.prototype.isPauseGame = function() {
@@ -116,7 +111,7 @@ Engine.prototype.main = function() {
         this.render();
         this.lastTime = now;
     }
-    this.win.requestAnimationFrame(this.main.bind(this));
+    window.requestAnimationFrame(this.main.bind(this));
 };
 
 /**

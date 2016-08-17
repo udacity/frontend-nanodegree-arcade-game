@@ -1,16 +1,11 @@
 /**
  * @description Manipulate the canvas element
  * @constructor
- * @param  {object} global - Global Instance
  */
-function Canvas(global) {
-    if (global === undefined)
-        throw new TypeError('Global instance must be assigned');
-
+function Canvas() {
     this.width = 0;
     this.height = 0;
     this.canvas = null;
-    this.doc = global.document;
     Module.call(this);
 };
 
@@ -35,8 +30,8 @@ Canvas.prototype.size = function(width, height) {
  * @description Creates the canvas object.
  */
 Canvas.prototype.create = function() {
-    var container   = this.doc.getElementById(this.getConfig().containerId);
-    this.canvas     = this.doc.createElement('canvas');
+    var container   = document.getElementById(this.getConfig().containerId);
+    this.canvas     = document.createElement('canvas');
 
     if (!(this.canvas instanceof HTMLCanvasElement))
         throw new TypeError('Error on canvas creation');

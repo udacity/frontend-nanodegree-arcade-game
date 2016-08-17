@@ -3,10 +3,11 @@ var config          = new Config,
     resources       = new Resources,
     resourcesLoader = new ResourcesLoader,
     scenario        = new Scenario,
-    canvas          = new Canvas(this),
+    canvas          = new Canvas,
     routes          = new Routes,
     traffic         = new Traffic,
-    engine          = new Engine(this);
+    engine          = new Engine,
+    gameControl     = new GameControl;
 
 // Resources
 resources.setConfig(config.select('resources'));
@@ -45,5 +46,13 @@ console.log(player);
 engine.addModules([scenario, traffic]);
 engine.addEnemies([bug]);
 engine.setPlayer(player);
+
+// Game Control
+gameControl.setConfig(config.select('gameControl'));
+gameControl.addCallbacks([
+    engine.pauseGame.bind(engine),
+    player.move.bind(player)
+]);
+gameControl.init();
 
 resourcesLoader.onReady(engine.main.bind(engine));
