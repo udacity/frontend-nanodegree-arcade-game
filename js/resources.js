@@ -3,7 +3,7 @@
  * @constructor
  */
 function Resources() {
-	Module.call(this);
+    Module.call(this);
 };
 
 Resources.prototype = Object.create(Module.prototype);
@@ -15,12 +15,12 @@ Resources.prototype.constructor = Resources;
  * @return {object} Object containing all resource settings
  */
 Resources.prototype.getResourceConfig = function(resource) {
-	var config = this.getConfig();
+    var config = this.getConfig();
 
-	if (!config.hasOwnProperty(resource))
-		throw new TypeError('config not found: ' + resource);
+    if (!config.hasOwnProperty(resource))
+        throw new TypeError('config not found: ' + resource);
 
-	return config[resource];
+    return config[resource];
 };
 
 /**
@@ -29,9 +29,9 @@ Resources.prototype.getResourceConfig = function(resource) {
  * @return {integer}
  */
 Resources.prototype.imageSize = function(dimension) {
-	var images = this.getResourceConfig('images');
+    var images = this.getResourceConfig('images');
 
-	return images.size[dimension];
+    return images.size[dimension];
 };
 
 /**
@@ -42,9 +42,9 @@ Resources.prototype.imageSize = function(dimension) {
  * @return {string}
  */
 Resources.prototype.urlImage = function(group, element) {
-	var images = this.getResourceConfig('images');
+    var images = this.getResourceConfig('images');
 
-	return images.urls[group][element];
+    return images.urls[group][element];
 };
 
 /**
@@ -56,18 +56,18 @@ Resources.prototype.urlImage = function(group, element) {
  * @return {array or object}
  */
 Resources.prototype.urlsByImagesGroup = function(group, toObject) {
-	var images			= this.getResourceConfig('images'),
-		imagesArray		= [],
-		imagesByGroup	= images.urls[group];
+    var images			= this.getResourceConfig('images'),
+    	imagesArray		= [],
+    	imagesByGroup	= images.urls[group];
 
-	if (toObject === true)
-		return imagesByGroup;
+    if (toObject === true)
+    	return imagesByGroup;
 
-	Object.keys(imagesByGroup).forEach(function(url) {
-		imagesArray.push(imagesByGroup[url]);
-	});
+    Object.keys(imagesByGroup).forEach(function(url) {
+    	imagesArray.push(imagesByGroup[url]);
+    });
 
-	return imagesArray;
+    return imagesArray;
 };
 
 /**
@@ -77,16 +77,16 @@ Resources.prototype.urlsByImagesGroup = function(group, toObject) {
  * @return {array or object}
  */
 Resources.prototype.urlsAllImages = function(toObject) {
-	var images		= this.getResourceConfig('images'),
-		imagesArray	= [],
-		allImages	= images.urls;
+    var images		= this.getResourceConfig('images'),
+    	imagesArray	= [],
+    	allImages	= images.urls;
 
-	if (toObject === true)
-		return allImages;
+    if (toObject === true)
+    	return allImages;
 
-	Object.keys(allImages).forEach(function(group){
-		imagesArray = imagesArray.concat(this.urlsByImagesGroup(group));
-	}.bind(this));
+    Object.keys(allImages).forEach(function(group){
+    	imagesArray = imagesArray.concat(this.urlsByImagesGroup(group));
+    }.bind(this));
 
-	return imagesArray;
+    return imagesArray;
 };

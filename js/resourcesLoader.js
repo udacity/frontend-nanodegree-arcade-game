@@ -6,9 +6,9 @@
  * @constructor
  */
 function ResourcesLoader() {
-	this.resourceCache = {};
-	this.readyCallbacks = [];
-	Module.call(this);
+    this.resourceCache = {};
+    this.readyCallbacks = [];
+    Module.call(this);
 };
 
 ResourcesLoader.prototype = Object.create(Module.prototype);
@@ -19,18 +19,18 @@ ResourcesLoader.prototype.constructor = ResourcesLoader;
  * @param  {string} url
  */
 ResourcesLoader.prototype.singleLoad = function(url) {
-	if (!this.resourceCache.hasOwnProperty(url)) {
-		var img = new Image;
+    if (!this.resourceCache.hasOwnProperty(url)) {
+    	var img = new Image;
 
-		img.onload = function() {
-			this.resourceCache[url] = img;
-			if (this.isReady())
-				this.callbacks();
-		}.bind(this);
+    	img.onload = function() {
+    		this.resourceCache[url] = img;
+    		if (this.isReady())
+    			this.callbacks();
+    	}.bind(this);
 
-		img.src = url;
-		this.resourceCache[url] = false;
-	}
+    	img.src = url;
+    	this.resourceCache[url] = false;
+    }
 };
 
 /**
@@ -39,12 +39,12 @@ ResourcesLoader.prototype.singleLoad = function(url) {
  * @param  {array}
  */
 ResourcesLoader.prototype.multipleLoad = function(urls) {
-	if (!(urls instanceof Array))
-		throw new TypeError('Waiting a valid array');
+    if (!(urls instanceof Array))
+    	throw new TypeError('Waiting a valid array');
 
-	urls.forEach(function(url) {
-		this.singleLoad(url);
-	}.bind(this));
+    urls.forEach(function(url) {
+    	this.singleLoad(url);
+    }.bind(this));
 };
 
 /**
@@ -53,24 +53,24 @@ ResourcesLoader.prototype.multipleLoad = function(urls) {
  * @return {boolean}
  */
 ResourcesLoader.prototype.isReady = function() {
-	var ready = true;
+    var ready = true;
 
     Object.keys(this.resourceCache).forEach(function(url) {
-		if (!(this.resourceCache[url] instanceof Image))
-			ready = false;
-	}.bind(this));
+    	if (!(this.resourceCache[url] instanceof Image))
+    		ready = false;
+    }.bind(this));
 
-	return ready;
+    return ready;
 };
 
 /**
  * @description Calls the callback functions if any.
  */
 ResourcesLoader.prototype.callbacks = function() {
-	if (this.readyCallbacks.length > 0)
-		this.readyCallbacks.forEach(function(func) {
-			func();
-		});
+    if (this.readyCallbacks.length > 0)
+    	this.readyCallbacks.forEach(function(func) {
+    		func();
+    	});
 };
 
 /**
@@ -80,10 +80,10 @@ ResourcesLoader.prototype.callbacks = function() {
  * @return {object} - Instance Image
  */
 ResourcesLoader.prototype.get = function(url) {
-	if (this.resourceCache.hasOwnProperty(url))
-		return this.resourceCache[url];
+    if (this.resourceCache.hasOwnProperty(url))
+    	return this.resourceCache[url];
 
-	throw new TypeError('Resource not found');
+    throw new TypeError('Resource not found');
 };
 
 /**
@@ -92,5 +92,5 @@ ResourcesLoader.prototype.get = function(url) {
  * @param  {func}
  */
 ResourcesLoader.prototype.onReady = function(func) {
-	this.readyCallbacks.push(func);
+    this.readyCallbacks.push(func);
 };

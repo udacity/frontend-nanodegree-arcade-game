@@ -1,5 +1,5 @@
 /**
- * @description Enemy.
+ * @description Only an enemy of the game.
  * @constructor
  */
 function Bug() {
@@ -9,6 +9,10 @@ function Bug() {
 Bug.prototype = Object.create(Enemy.prototype);
 Bug.prototype.constructor = Bug;
 
+/**
+ * @description Starts the insect through its default settings.
+ * @param  {number} levelGame
+ */
 Bug.prototype.init = function(levelGame) {
     if (!this.isInitialized()) {
         //this.hibernationDuration(5);

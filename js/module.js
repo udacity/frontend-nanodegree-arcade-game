@@ -3,7 +3,7 @@
  * @constructor
  */
 function Module() {
-	this.config = null;
+    this.config = null;
     this.modules = {};
 };
 

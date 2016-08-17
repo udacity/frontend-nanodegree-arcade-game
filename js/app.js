@@ -63,4 +63,4 @@ gameControl.addCallbacks([
 gameControl.init();
 
 // Run
-resourcesLoader.onReady(engine.main.bind(engine));
+resourcesLoader.onReady(engine.run.bind(engine));
