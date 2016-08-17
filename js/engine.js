@@ -81,6 +81,7 @@ var Engine = (function(global) {
     function update(dt) {
         updateEntities(dt);
         player.checkCollisions(allEnemies);
+        player.checkStarCollisions(allStars);
     }
 
     /* This is called by the update function and loops through all of the
@@ -142,6 +143,10 @@ var Engine = (function(global) {
         ctx.fillStyle="#31383B";
         ctx.font = '18pt sans-serif';
         ctx.fillText("Score: " + player.score, 405, 100);
+
+        //To display instructions for changing the character:
+        ctx.font = '10pt sans-serif';
+        ctx.fillText("Press c for cat, p for princess and b for boy", 10, 550);
     }
 
     /* This function is called by the render function and is called on each game
@@ -157,6 +162,10 @@ var Engine = (function(global) {
         });
 
         player.render();
+
+        allStars.forEach(function(star) {
+            star.render();
+        });
     }
 
     /* This function does nothing but it could have been a good place to
@@ -178,7 +187,8 @@ var Engine = (function(global) {
         'images/enemy-bug.png',
         'images/char-boy.png',
         'images/char-cat-girl.png',
-        'images/char-princess-girl.png'
+        'images/char-princess-girl.png',
+        'images/Star.png'
     ]);
     Resources.onReady(init);
 

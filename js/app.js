@@ -51,7 +51,7 @@ Player.prototype.update = function(dt) {
   }
   if (this.y < -10) {
     this.y = 400;
-    this.score += 1;
+    this.score += 5;
   }
 };
 
@@ -102,11 +102,34 @@ Player.prototype.checkCollisions = function(enemyArray) {
       this.x < enemyArray[i].x + zone &&
       this.y > enemyArray[i].y - zone &&
       this.y < enemyArray[i].y + zone) {
-      //console.log("Hit");
       this.x = 205;
       this.y = 400;
     }
   }
+};
+
+Player.prototype.checkStarCollisions = function(starArray) {
+  var zone = 50;
+  for (var i = 0; i<starArray.length; i++) {
+    if (
+      this.x > starArray[i].x - zone &&
+      this.x < starArray[i].x + zone &&
+      this.y > starArray[i].y - zone &&
+      this.y < starArray[i].y + zone) {
+      this.score += 1;
+      starArray.splice(i,1);
+    }
+  }
+};
+
+var Star = function() {
+  this.sprite = "images/Star.png";
+  this.x = Math.floor((Math.random() * 400) + 25);
+  this.y = Math.floor((Math.random() * 300) + 30);
+}
+
+Star.prototype.render = function() {
+  ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
 // Now instantiate your objects.
@@ -120,6 +143,12 @@ var enemy3 = new Enemy();
 allEnemies = [enemy1, enemy2, enemy3];
 
 var player = new Player();
+
+var star1 = new Star();
+var star2 = new Star();
+var star3 = new Star();
+
+allStars = [star1, star2, star3];
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
