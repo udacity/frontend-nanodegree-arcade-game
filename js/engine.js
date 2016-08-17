@@ -137,6 +137,9 @@ var Engine = (function(global) {
         }
 
         renderEntities();
+        ctx.fillStyle="#31383B";
+        ctx.font = '18pt sans-serif';
+        ctx.fillText("Score: " + player.score, 405, 100);
     }
 
     /* This function is called by the render function and is called on each game

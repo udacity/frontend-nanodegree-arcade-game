@@ -36,6 +36,7 @@ var Player = function() {
   this.sprite = "images/char-boy.png";
   this.x = 205;
   this.y = 400;
+  this.score = 0;
 };
 
 Player.prototype.update = function(dt) {
@@ -49,7 +50,9 @@ Player.prototype.update = function(dt) {
     this.y = 400;
   }
   if (this.y < -10) {
-    this.y = -10;
+    this.y = 400;
+    this.score += 1;
+    console.log(this.score);
   }
 };
 
