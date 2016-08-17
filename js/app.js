@@ -52,7 +52,6 @@ Player.prototype.update = function(dt) {
   if (this.y < -10) {
     this.y = 400;
     this.score += 1;
-    console.log(this.score);
   }
 };
 
@@ -76,6 +75,18 @@ Player.prototype.handleInput = function(key) {
 
     case 'down':
       this.y += 10;
+      break;
+
+    case 'boy':
+      this.sprite = "images/char-boy.png";
+      break;
+
+    case 'cat':
+      this.sprite = "images/char-cat-girl.png";
+      break;
+
+    case 'princess':
+      this.sprite = "images/char-princess-girl.png";
       break;
 
     default:
@@ -117,7 +128,10 @@ document.addEventListener('keyup', function(e) {
         37: 'left',
         38: 'up',
         39: 'right',
-        40: 'down'
+        40: 'down',
+        66: 'boy',
+        67: 'cat',
+        80: 'princess'
     };
 
     player.handleInput(allowedKeys[e.keyCode]);

@@ -137,6 +137,8 @@ var Engine = (function(global) {
         }
 
         renderEntities();
+
+        //To display the score:
         ctx.fillStyle="#31383B";
         ctx.font = '18pt sans-serif';
         ctx.fillText("Score: " + player.score, 405, 100);
@@ -174,7 +176,9 @@ var Engine = (function(global) {
         'images/water-block.png',
         'images/grass-block.png',
         'images/enemy-bug.png',
-        'images/char-boy.png'
+        'images/char-boy.png',
+        'images/char-cat-girl.png',
+        'images/char-princess-girl.png'
     ]);
     Resources.onReady(init);
 
