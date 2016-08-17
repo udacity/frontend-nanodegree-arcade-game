@@ -38,31 +38,31 @@ Module.prototype.hasConfig = function() {
 };
 
 /**
- * @description Add a new module to module.
- * @param  {Module} module - Module heritage
- * @param  {string} label - Optional. If the label is not assigned, the module
- * name, in lower case will be considered as a label.
+ * @description Add a new dependency to module.
+ * @param  {Module} dependencyModule - Module heritage
+ * @param  {string} label - Optional. If the label is not assigned, the
+ * dependency name, in lower case will be considered as a label.
  */
-Module.prototype.addModule = function(module, label) {
-    if (!(module instanceof Module))
+Module.prototype.addDependency = function(dependency, label) {
+    if (!(dependency instanceof Module))
         throw new TypeError('Need a valid module');
 
     if (label === undefined)
-        label = (module.constructor.name).toLowerCase();
+        label = (dependency.constructor.name).toLowerCase();
 
-    this.modules[label] = module;
+    this.modules[label] = dependency;
 };
 
 /**
- * @description Add multiple modules to module.
- * @param {array} modules
+ * @description Add multiple dependencies to module.
+ * @param {array} dependencies
  */
-Module.prototype.addModules = function(modules) {
-    if (!(modules instanceof Array))
-        throw new TypeError('Waiting array modules');
+Module.prototype.addDependencies = function(dependencies) {
+    if (!(dependencies instanceof Array))
+        throw new TypeError('Waiting array dependencies');
 
-    modules.forEach(function(module) {
-        this.addModule(module);
+    dependencies.forEach(function(dependency) {
+        this.addDependency(dependency);
     }.bind(this));
 };
 

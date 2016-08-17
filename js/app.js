@@ -6,6 +6,7 @@ var config          = new Config,
     canvas          = new Canvas,
     routes          = new Routes,
     traffic         = new Traffic,
+    entityFactory   = new EntityFactory,
     engine          = new Engine,
     gameControl     = new GameControl;
 
@@ -17,7 +18,7 @@ resourcesLoader.multipleLoad(resources.urlsAllImages());
 
 // Scenario
 scenario.setConfig(config.select('scenario'));
-scenario.addModules([canvas, resources, resourcesLoader]);
+scenario.addDependencies([canvas, resources, resourcesLoader]);
 
 // Canvas
 canvas.setConfig(config.select('canvas'));
@@ -25,26 +26,32 @@ canvas.size(scenario.width(), scenario.height());
 canvas.create();
 
 // Routes
-routes.addModules([scenario, resources]);
+routes.addDependencies([scenario, resources]);
 routes.create();
 
 // Traffic
-traffic.addModule(routes);
+traffic.addDependency(routes);
 traffic.setConfig(config.select('traffic'));
 
-// Bug (test)
-var bug = new Bug;
-bug.addModules([scenario, resources, canvas, resourcesLoader, timer]);
+// Entity Factory
+entityFactory.addDefaultDependencies([
+    scenario,
+    resources,
+    canvas,
+    resourcesLoader,
+    timer
+]);
 
-// Player (test)
-var player = new Player;
-player.addModules([scenario, resources, canvas, resourcesLoader, timer, routes]);
-player.init();
-console.log(player);
+// Player
+var player = entityFactory.create(Player, [routes]);
 
 // Engine
-engine.addModules([scenario, traffic]);
-engine.addEnemies([bug]);
+engine.addDependencies([scenario, traffic]);
+engine.addEnemies([
+    entityFactory.create(Bug),
+    entityFactory.create(Bug),
+    entityFactory.create(Bug)
+]);
 engine.setPlayer(player);
 
 // Game Control
@@ -55,4 +62,5 @@ gameControl.addCallbacks([
 ]);
 gameControl.init();
 
+// Run
 resourcesLoader.onReady(engine.main.bind(engine));
