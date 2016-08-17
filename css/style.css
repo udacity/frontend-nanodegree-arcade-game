@@ -4,16 +4,16 @@ body {
 }
 
 h1, h2, h3 {
-  color: green;
+    color: #00CC00;
 }
 
 p {
-  font-style: italic;
-  color: blue;
+    font-style: italic;
+    color: #5539FF;
 }
 
 li {
-  padding: 0.75em;
+    padding: 0.75em;
 }
 
 /* The modal is based on this example:
@@ -28,7 +28,7 @@ http://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_modal
     padding-top: 100px; /* Location of the box */
     left: 0;
     top: 0;
-    width: 100%; 
+    width: 100%;
     height: 100%;
     overflow: auto; /* Enable scroll if needed */
     background-color: rgb(0,0,0); /* Fallback color */
@@ -37,7 +37,7 @@ http://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_modal
 
 /* Modal Content */
 .modal-content {
-    background-color: #fefefe;
+    background-color: #FEFEFE;
     margin: auto;
     padding: 20px;
     border: 1px solid #888;
@@ -48,11 +48,11 @@ http://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_modal
 /*The Modal Button */
 
 #myBtn {
-  display: block;
-  margin: auto;
-  background-color: yellow;
-  font-size: 1.1em;
-  border-radius: 6px;
+    display: block;
+    margin: auto;
+    background-color: #FFFF99;
+    font-size: 1.1em;
+    border-radius: 6px;
 
 }
 
