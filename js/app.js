@@ -50,8 +50,18 @@ Player.prototype.update = function(dt) {
     this.y = 400;
   }
   if (this.y < -10) {
+    //Player makes it across and scores!
     this.y = 400;
     this.score += 5;
+    if (allStars.length === 0) {
+      var star1 = new Star();
+      var star2 = new Star();
+      var star3 = new Star();
+      allStars = [star1, star2, star3];
+    }
+    for (var i = 0; i < allEnemies.length; i++) {
+      allEnemies[i].vel += 10;
+    }
   }
 };
 
@@ -104,6 +114,7 @@ Player.prototype.checkCollisions = function(enemyArray) {
       this.y < enemyArray[i].y + zone) {
       this.x = 205;
       this.y = 400;
+      this.score -= 1;
     }
   }
 };
@@ -116,7 +127,7 @@ Player.prototype.checkStarCollisions = function(starArray) {
       this.x < starArray[i].x + zone &&
       this.y > starArray[i].y - zone &&
       this.y < starArray[i].y + zone) {
-      this.score += 1;
+      this.score += 2;
       starArray.splice(i,1);
     }
   }
