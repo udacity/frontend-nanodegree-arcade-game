@@ -55,7 +55,8 @@ engine.addDependencies([scenario, traffic]);
 engine.addEnemies([
     entityFactory.create(Bug),
     entityFactory.create(Bug),
-    entityFactory.create(Bug)
+    entityFactory.create(Bug),
+    entityFactory.create(Bee)
 ]);
 engine.setPlayer(player);
 

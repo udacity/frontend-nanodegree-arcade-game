@@ -125,9 +125,9 @@ Engine.prototype.update = function(dt) {
     // Enemies
     if (this.hasEnemies()) {
         this.getEnemies().forEach(function(enemy){
-            enemy.init(10);
-
             if (!enemy.hasRoute()) {
+                enemy.init(10);
+                
                 if (enemy.hasLastTraveledRoute())
                     traffic.declareRouteOutput(enemy.getLastTraveledRoute());
 
