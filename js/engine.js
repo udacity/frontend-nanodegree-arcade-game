@@ -3,12 +3,6 @@
  * draws the initial game board on the screen, and then calls the update and
  * render methods on your player and enemy objects (defined in your app.js).
  *
- * A game engine works by drawing the entire game screen over and over, kind of
- * like a flipbook you may have created as a kid. When your player moves across
- * the screen, it may look like just that image/character is moving or being
- * drawn but that is not the case. What's really happening is the entire "scene"
- * is being drawn over and over, presenting the illusion of animation.
- *
  * This engine is available globally via the Engine variable and it also makes
  * the canvas' context (ctx) object globally available to make writing app.js
  * a little simpler to work with.
@@ -16,26 +10,26 @@
 
 /* For the instruction modal: */
 
- // Get the modal
+ // Get the modal.
  var modal = document.getElementById("myModal");
 
- // Get the button that opens the modal
+ // Get the button that opens the modal.
  var btn = document.getElementById("myBtn");
 
- // Get the <span> element that closes the modal
+ // Get the <span> element that closes the modal.
  var span = document.getElementsByClassName("close")[0];
 
- // When the user clicks the button, open the modal
+ // When the user clicks the button, open the modal.
  btn.onclick = function() {
      modal.style.display = "block";
  }
 
- // When the user clicks on <span> (x), close the modal
+ // When the user clicks on <span> (x), close the modal.
  span.onclick = function() {
      modal.style.display = "none";
  }
 
- // When the user clicks anywhere outside of the modal, close the modal:
+ // When the user clicks anywhere outside of the modal, close the modal.
  window.onclick = function(event) {
      if (event.target == modal) {
          modal.style.display = "none";
@@ -58,7 +52,7 @@ var Engine = (function(global) {
 
     canvas.width = 505;
     canvas.height = 606;
-    game.appendChild(canvas); //doc.body.appendChild(canvas);
+    game.appendChild(canvas);
 
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
@@ -101,13 +95,8 @@ var Engine = (function(global) {
     }
 
     /* This function is called by main (our game loop) and itself calls all
-     * of the functions which may need to update entity's data. Based on how
-     * you implement your collision detection (when two entities occupy the
-     * same space, for instance when your character should die), you may find
-     * the need to add an additional function call here. For now, we've left
-     * it commented out - you may or may not want to implement this
-     * functionality this way (you could just implement collision detection
-     * on the entities themselves within your app.js file).
+     * of the functions which may need to update entity's data. Also, call
+     * collision detection methods.
      */
     function update(dt) {
         updateEntities(dt);
@@ -119,8 +108,7 @@ var Engine = (function(global) {
      * objects within your allEnemies array as defined in app.js and calls
      * their update() methods. It will then call the update function for your
      * player object. These update methods should focus purely on updating
-     * the data/properties related to the object. Do your drawing in your
-     * render methods.
+     * the data/properties related to the object.
      */
     function updateEntities(dt) {
         allEnemies.forEach(function(enemy) {
@@ -131,9 +119,7 @@ var Engine = (function(global) {
 
     /* This function initially draws the "game level", it will then call
      * the renderEntities function. Remember, this function is called every
-     * game tick (or loop of the game engine) because that's how games work -
-     * they are flipbooks creating the illusion of animation but in reality
-     * they are just drawing the entire screen over and over.
+     * game tick (or loop of the game engine).
      */
     function render() {
         /* This array holds the relative URL to the image used
@@ -153,7 +139,7 @@ var Engine = (function(global) {
 
         /* Loop through the number of rows and columns we've defined above
          * and, using the rowImages array, draw the correct image for that
-         * portion of the "grid"
+         * portion of the "grid."
          */
         for (row = 0; row < numRows; row++) {
             for (col = 0; col < numCols; col++) {
@@ -170,23 +156,23 @@ var Engine = (function(global) {
 
         renderEntities();
 
-        //Display the score:
+        //Display the score.
         ctx.fillStyle="#31383B";
         ctx.font = '16pt sans-serif';
         ctx.fillText("Score: " + player.score, 405, 100);
 
-        //Display instructions for changing the character:
+        //Display instructions for changing the character.
         ctx.font = '10pt sans-serif';
         ctx.fillText("Press c for cat, p for princess and b for boy", 10, 550);
     }
 
     /* This function is called by the render function and is called on each game
-     * tick. Its purpose is to then call the render functions you have defined
-     * on your enemy and player entities within app.js
+     * tick. Its purpose is to then call the render functions defined
+     * on enemy and player entities within app.js.
      */
     function renderEntities() {
         /* Loop through all of the objects within the allEnemies array and call
-         * the render function you have defined.
+         * the render function.
          */
         allEnemies.forEach(function(enemy) {
             enemy.render();
@@ -199,9 +185,10 @@ var Engine = (function(global) {
         });
     }
 
-    /* This function does nothing but it could have been a good place to
-     * handle game reset states - maybe a new game menu or a game over screen
-     * those sorts of things. It's only called once by the init() method.
+    /*
+     * Handle game reset states. Resets the elements of the game:
+     * enemies, player, and stars.
+     * It's only called once by the init() method.
      */
     function reset() {
       var enemy1 = new Enemy();
