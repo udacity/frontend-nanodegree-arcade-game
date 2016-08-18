@@ -14,8 +14,10 @@
  * a little simpler to work with.
  */
 
+/* For the instruction modal: */
+
  // Get the modal
- var modal = document.getElementById('myModal');
+ var modal = document.getElementById("myModal");
 
  // Get the button that opens the modal
  var btn = document.getElementById("myBtn");
@@ -33,7 +35,7 @@
      modal.style.display = "none";
  }
 
- // When the user clicks anywhere outside of the modal, close it
+ // When the user clicks anywhere outside of the modal, close the modal:
  window.onclick = function(event) {
      if (event.target == modal) {
          modal.style.display = "none";

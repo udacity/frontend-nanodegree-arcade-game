@@ -1,9 +1,6 @@
 // Enemies our player must avoid
 
 var Enemy = function() {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
-
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
@@ -60,7 +57,7 @@ Player.prototype.update = function(dt) {
       allStars = [star1, star2, star3];
     }
     for (var i = 0; i < allEnemies.length; i++) {
-      allEnemies[i].vel += 10;
+      allEnemies[i].vel += 5;
     }
   }
 };
