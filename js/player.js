@@ -50,11 +50,13 @@ Player.prototype.isPauseGame = function() {
  * @param  {number} distance
  */
 Player.prototype.moveUp = function(distance) {
-    var routes      = this.getModule('routes')
+    var routes      = this.getModule('routes'),
+        scoreboard  = this.getModule('scoreboard'),
         startWater  = routes.getFirstOrLast('last', 'water');
 
     this.setRoute((this.getRoute() - distance));
     if (this.getRoute() <= startWater) {
+        scoreboard.addScore();
         this.moveForStartPoint();
     }
 };

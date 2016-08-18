@@ -59,8 +59,8 @@ function Config() {
     	},
     	level: {
     		startingIn: 1,
-    		fisrtLevelUp: 300,
-    		percentageNextLevel: 52,
+    		fisrtLevelUp: 500,
+    		percentageNextLevel: 12,
     		webInterface: {
     			id: 'sb-level',
     			label: 'Level: '

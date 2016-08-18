@@ -6,6 +6,7 @@ var config          = new Config,
     canvas          = new Canvas,
     routes          = new Routes,
     traffic         = new Traffic,
+    scoreboard      = new Scoreboard,
     entityFactory   = new EntityFactory,
     engine          = new Engine,
     gameControl     = new GameControl;
@@ -33,6 +34,10 @@ routes.create();
 traffic.addDependency(routes);
 traffic.setConfig(config.select('traffic'));
 
+// Scoreboard
+scoreboard.setConfig(config.select('scoreboard'));
+scoreboard.init();
+
 // Entity Factory
 entityFactory.addDefaultDependencies([
     scenario,
@@ -43,7 +48,7 @@ entityFactory.addDefaultDependencies([
 ]);
 
 // Player
-var player = entityFactory.create(Player, [routes]);
+var player = entityFactory.create(Player, [routes, scoreboard]);
 
 // Engine
 engine.addDependencies([scenario, traffic]);
