@@ -53,9 +53,12 @@ var Engine = (function(global) {
         ctx = canvas.getContext('2d'),
         lastTime;
 
+    var game = doc.getElementById('game');
+    console.log(game);
+
     canvas.width = 505;
     canvas.height = 606;
-    doc.body.appendChild(canvas);
+    game.appendChild(canvas); //doc.body.appendChild(canvas);
 
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
@@ -167,12 +170,12 @@ var Engine = (function(global) {
 
         renderEntities();
 
-        //To display the score:
+        //Display the score:
         ctx.fillStyle="#31383B";
         ctx.font = '16pt sans-serif';
         ctx.fillText("Score: " + player.score, 405, 100);
 
-        //To display instructions for changing the character:
+        //Display instructions for changing the character:
         ctx.font = '10pt sans-serif';
         ctx.fillText("Press c for cat, p for princess and b for boy", 10, 550);
     }
@@ -201,7 +204,25 @@ var Engine = (function(global) {
      * those sorts of things. It's only called once by the init() method.
      */
     function reset() {
-        // noop
+      var enemy1 = new Enemy();
+      var enemy2 = new Enemy();
+      var enemy3 = new Enemy();
+
+      allEnemies = [enemy1, enemy2, enemy3];
+
+      player = new Player();
+
+      var star1 = new Star();
+      var star2 = new Star();
+      var star3 = new Star();
+
+      allStars = [star1, star2, star3];
+    }
+
+    var resetButton = document.getElementById("reset");
+
+    resetButton.onclick = function() {
+        reset();
     }
 
     /* Go ahead and load all of the images we know we're going to need to

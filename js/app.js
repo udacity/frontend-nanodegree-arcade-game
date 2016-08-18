@@ -144,19 +144,19 @@ Star.prototype.render = function() {
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 
-var enemy1 = new Enemy();
-var enemy2 = new Enemy();
-var enemy3 = new Enemy();
+//var enemy1 = new Enemy();
+//var enemy2 = new Enemy();
+//var enemy3 = new Enemy();
 
-allEnemies = [enemy1, enemy2, enemy3];
+//allEnemies = [enemy1, enemy2, enemy3];
 
-var player = new Player();
+//var player = new Player();
 
-var star1 = new Star();
-var star2 = new Star();
-var star3 = new Star();
+//var star1 = new Star();
+//var star2 = new Star();
+//var star3 = new Star();
 
-allStars = [star1, star2, star3];
+//allStars = [star1, star2, star3];
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.

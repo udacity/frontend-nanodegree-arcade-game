@@ -47,7 +47,7 @@ http://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_modal
 
 /*The Modal Button */
 
-#myBtn {
+#myBtn, #reset {
     display: block;
     margin: auto;
     background-color: #FFFF99;
