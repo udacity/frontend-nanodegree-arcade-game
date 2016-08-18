@@ -5,6 +5,7 @@
  */
 function Enemy() {
     this.speed = undefined;
+    this.endRouteCb = [];
     Entity.call(this);
 };
 
@@ -49,6 +50,33 @@ Enemy.prototype.hasSpeed = function() {
 };
 
 /**
+ * @description Add functions that will be called at the end of the enemy's route.
+ * @param {array or function} callbacks [description]
+ */
+Enemy.prototype.endRouteCallbacks = function(callbacks) {
+    if (callbacks instanceof Array) {
+        callbacks.forEach(function(callback) {
+            this.endCycleCallbacks(callback);
+        }.bind(this));
+    } else if (typeof callbacks === 'function') {
+        this.endRouteCb.push(callbacks);
+    } else {
+        throw new TypeError('Waiting for a valid function');
+    }
+};
+
+/**
+ * @description Function is called when each enemy reaches the end of the route.
+ * Checks for callback functions to be invoked.
+ */
+Enemy.prototype.endRoute = function() {
+    if (this.endRouteCb.length > 0)
+        this.endRouteCb.forEach(function(callback) {
+            callback();
+        });
+};
+
+/**
  * @description Update the enemy's position.
  * @param  {number} dt
  */
@@ -63,7 +91,10 @@ Enemy.prototype.update = function(dt) {
         if (increase > 0)
             this.setAxisX(increase);
 
-        if (this.getAxisX() > scenario.width())
+        if (this.getAxisX() > scenario.width()) {
             this.reset();
+            this.endRoute();
+        }
+
     }
 };

@@ -15,8 +15,8 @@ Bee.prototype.constructor = Bee;
  */
 Bee.prototype.init = function(levelGame) {
     if (!this.isInitialized()) {
+        this.endRouteCallbacks(this.hibernate.bind(this));
         this.hibernationDuration(5);
-        //this.hibernationInterval(10);
         this.setPadding(10);
         this.setEntityName('bee');
         this.setEntityGroup('enemies');
@@ -26,26 +26,4 @@ Bee.prototype.init = function(levelGame) {
         this.hibernate();
     }
     this.setSpeed(this.getRandomSpeed(levelGame));
-};
-
-/**
- * @description Update the enemy's position.
- * @param  {number} dt
- */
-Bee.prototype.update = function(dt) {
-    var scenario = this.getModule('scenario');
-
-    if(!this.isHibernationActive()) {
-        if (!this.hasSpeed())
-            throw new TypeError('Waiting for speed setting');
-
-        let increase = this.getAxisX() + (this.getSpeed() * dt);
-        if (increase > 0)
-            this.setAxisX(increase);
-
-        if (this.getAxisX() > scenario.width()) {
-            this.reset();
-            this.hibernate();
-        }
-    }
 };
