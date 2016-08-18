@@ -120,13 +120,14 @@ Engine.prototype.main = function() {
  * @param  {number} dt - delta time
  */
 Engine.prototype.update = function(dt) {
-    var traffic = this.getModule('traffic');
+    var traffic     = this.getModule('traffic'),
+        scoreboard  = this.getModule('scoreboard');
 
     // Enemies
     if (this.hasEnemies()) {
         this.getEnemies().forEach(function(enemy){
             if (!enemy.hasRoute()) {
-                enemy.init(5);
+                enemy.init(scoreboard.getLevel());
 
                 if (enemy.hasLastTraveledRoute())
                     traffic.declareRouteOutput(enemy.getLastTraveledRoute());

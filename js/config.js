@@ -33,10 +33,16 @@ function Config() {
     				bee: 'images/enemy-bee.png'
     			},
     			characters: {
-    				boy: 'images/char-boy.png'
+                    boy: 'images/char-boy.png',
+                    girlcat: 'images/char-cat-girl.png',
+                    girlhorn: 'images/char-horn-girl.png',
+                    girlpink: 'images/char-pink-girl.png',
+                    girlprincess: 'images/char-princess-girl.png'
     			},
     			bonus: {
     				gemBlue: 'images/Gem Blue.png',
+                    gemGreen: 'images/Gem Green.png',
+                    gemOrange: 'images/Gem Orange.png',
     				heart: 'images/Heart.png'
     			}
     		}

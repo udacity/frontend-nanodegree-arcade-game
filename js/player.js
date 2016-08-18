@@ -18,7 +18,7 @@ Player.prototype.constructor = Player;
 Player.prototype.init = function() {
     if (!this.isInitialized()) {
         this.setPadding(45);
-        this.setEntityName('boy');
+        this.setEntityName('girlprincess');
         this.setEntityGroup('characters');
         this.addTerrainsSurface(['stone', 'grass']);
         this.generateSprite();
