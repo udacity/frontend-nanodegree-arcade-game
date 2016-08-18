@@ -6,6 +6,7 @@ var config          = new Config,
     canvas          = new Canvas,
     routes          = new Routes,
     traffic         = new Traffic,
+    scoreboardWI    = new ScoreboardWebInterface,
     scoreboard      = new Scoreboard,
     entityFactory   = new EntityFactory,
     engine          = new Engine,
@@ -35,8 +36,10 @@ traffic.addDependency(routes);
 traffic.setConfig(config.select('traffic'));
 
 // Scoreboard
+scoreboardWI.setConfig(config.select('scoreboard'));
+// And Scoreboard Web Interface
 scoreboard.setConfig(config.select('scoreboard'));
-scoreboard.init();
+scoreboard.addDependency(scoreboardWI);
 
 // Entity Factory
 entityFactory.addDefaultDependencies([
@@ -51,7 +54,7 @@ entityFactory.addDefaultDependencies([
 var player = entityFactory.create(Player, [routes, scoreboard]);
 
 // Engine
-engine.addDependencies([scenario, traffic]);
+engine.addDependencies([scenario, traffic, scoreboard]);
 engine.addEnemies([
     entityFactory.create(Bug),
     entityFactory.create(Bug),

@@ -59,7 +59,7 @@ function Config() {
     	},
     	level: {
     		startingIn: 1,
-    		fisrtLevelUp: 500,
+    		fisrtLevelUp: 200,
     		percentageNextLevel: 12,
     		webInterface: {
     			id: 'sb-level',

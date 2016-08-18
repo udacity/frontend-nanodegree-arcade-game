@@ -4,12 +4,10 @@
  * @constructor
  */
 function Scoreboard() {
-    this.data = {
-        score: 0,
-        level: 0,
-        life: 0,
-        nextLevel: 0
-    };
+    this.score = 0,
+    this.level = 0,
+    this.life = 0,
+    this.nextLevel = 0
     Module.call(this);
 };
 
@@ -23,7 +21,7 @@ Scoreboard.prototype.init = function() {
     this.addData('score', this.getConfig().score.startingIn);
     this.addData('level', this.getConfig().level.startingIn);
     this.addData('life', this.getConfig().life.startingIn);
-    this.addData('nextLevel', this.getConfig().level.fisrtLevelUp);
+    this.changeNextLevel(this.getConfig().level.fisrtLevelUp);
 };
 
 /**
@@ -35,9 +33,12 @@ Scoreboard.prototype.init = function() {
  */
 Scoreboard.prototype.addData = function(name, value, valueDefault) {
     var valueActual     = this.getData(name),
-        valueConsidered = value === undefined ? valueDefault : value;
+        valueConsidered = value === undefined ? valueDefault : value,
+        scoreboardWI    = this.getModule('scoreboardwebinterface');
 
-    this.data[name] = (valueActual + valueConsidered);
+    this[name] = (valueActual + valueConsidered);
+    scoreboardWI.change(name, this.getData(name));
+    scoreboardWI.animation(name);
 };
 
 /**
@@ -49,9 +50,12 @@ Scoreboard.prototype.addData = function(name, value, valueDefault) {
  */
 Scoreboard.prototype.removeData = function(name, value, valueDefault) {
     var valueActual     = this.getData(name),
-        valueConsidered = value === undefined ? valueDefault : value;
+        valueConsidered = value === undefined ? valueDefault : value,
+        scoreboardWI    = this.getModule('scoreboardwebinterface');
 
-    this.data[name] = (valueActual - valueConsidered);
+    this[name] = (valueActual - valueConsidered);
+    scoreboardWI.change(name, this.getData(name));
+    scoreboardWI.animation(name, 'remove');
 };
 
 /**
@@ -60,8 +64,27 @@ Scoreboard.prototype.removeData = function(name, value, valueDefault) {
  * @return {number}
  */
 Scoreboard.prototype.getData = function(name) {
-    return this.data[name];
+    return this[name];
 };
+
+/**
+ * @description Changes the amount necessary to reach the new level.
+ * @param  {number} value
+ */
+Scoreboard.prototype.changeNextLevel = function(value) {
+    if (typeof value !== 'number')
+        throw new TypeError('Waiting for a valid number');
+
+    this.nextLevel = value;
+};
+
+/**
+ * @description Returns the amount needed to achieve a new level.
+ * @return {number} [description]
+ */
+Scoreboard.prototype.getNextLevel = function() {
+    return this.nextLevel;
+}
 
 /**
  * @description Add score in the scoreboard. You can spend a specific amount
@@ -95,8 +118,9 @@ Scoreboard.prototype.addLevel = function(level) {
         scorePercentage     = (this.getData('nextLevel') * percentage) / 100,
         nextLevel           = (this.getData('nextLevel') * 2) + scorePercentage;
 
+    this.changeNextLevel(Math.floor(nextLevel));
     this.addData('level', level, 1);
-    this.addData('nextLevel', Math.floor(nextLevel));
+
 };
 
 /**

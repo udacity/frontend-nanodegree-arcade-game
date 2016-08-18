@@ -177,6 +177,9 @@ Engine.prototype.reset = function() {};
  * game loop.
  */
 Engine.prototype.run = function() {
+    var scoreboard = this.getModule('scoreboard');
+
     this.lastTime = Date.now();
     this.main();
+    scoreboard.init();
 };
