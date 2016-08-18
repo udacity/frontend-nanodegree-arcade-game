@@ -6,7 +6,7 @@ frontend-nanodegree-arcade-game
 
 This is a little game, based on Frogger, in which a petite character attempts
 to make it across the stone path without getting hit by the bug enemies. Points
-are also gained by collecting stars. This program uses the following files.
+are also gained by collecting stars.
 
 ### Why I Made This Game ###
 
