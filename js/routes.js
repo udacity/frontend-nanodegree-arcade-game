@@ -22,8 +22,8 @@ Routes.prototype.create = function() {
         resources       = this.getModule('resources'),
         currentRoute    = -124.5;
 
-    scenario.getTerrainsSurface().forEach(function(terrain) {
-        for (let i = 0; i < scenario.numberRowsByTerrainsSurface(terrain); i++) {
+    scenario.getTerrains().forEach(function(terrain) {
+        for (let i = 0; i < scenario.numberRowsByTerrain(terrain); i++) {
             currentRoute += resources.imageSize('height');
             if (!this.routes.hasOwnProperty(terrain))
                 this.routes[terrain] = [];

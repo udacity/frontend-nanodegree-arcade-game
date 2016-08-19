@@ -113,7 +113,7 @@ Player.prototype.moveForStartPoint = function() {
         scenario        = this.getModule('scenario'),
         scenarioColumns = scenario.getColumnsPositions();
 
-    this.setAxisX(scenarioColumns[Math.floor((scenario.numberColumns() / 2))]);
+    this.setAxisX(scenarioColumns[Math.floor((scenario.getNumberColumns() / 2))]);
     this.setRoute(routes.getFirstOrLast('last', this.getTerrainsSurface()));
 };
 

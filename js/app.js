@@ -21,6 +21,7 @@ resourcesLoader.multipleLoad(resources.urlsAllImages());
 // Scenario
 scenario.setConfig(config.select('scenario'));
 scenario.addDependencies([canvas, resources, resourcesLoader]);
+scenario.setDefaultConfig();
 
 // Canvas
 canvas.setConfig(config.select('canvas'));

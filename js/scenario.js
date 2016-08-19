@@ -1,8 +1,14 @@
 /**
- * @description It offers useful information about the scenario
+ * @description Game scenario. You can completely manage the game scenario, such
+ * as number of columns, rows, and the terrain that each line will have. To base
+ * the setting on the default settings, use the setDefaultConfig function.
  * @constructor
  */
 function Scenario() {
+    this.size = {
+        cols: 0,
+        rows: {}
+    };
     Module.call(this);
 };
 
@@ -10,12 +16,33 @@ Scenario.prototype = Object.create(Module.prototype);
 Scenario.prototype.constructor = Scenario;
 
 /**
- * @description The scenario is defined by columns. You can increase the number
- * of columns in scenario configuration.
+ * @description This function set a scenario based on the game default settings.
+ * You can change these settings directly in config.js file
+ */
+Scenario.prototype.setDefaultConfig = function() {
+    this.setNumberColumns(this.getConfig().size.cols);
+    Object.keys(this.getConfig().size.rows).forEach(function(terrain) {
+        this.addNumberRows(terrain, this.getConfig().size.rows[terrain]);
+    }.bind(this));
+};
+
+/**
+ * @description Sets the number of columns that the scenario will have.
+ * @param {number} numberColumns
+ */
+Scenario.prototype.setNumberColumns = function(numberColumns) {
+    if (!Number.isInteger(numberColumns))
+        throw new TypeError('Waiting for an integer');
+
+    this.size.cols = numberColumns;
+};
+
+/**
+ * @description Returns the set number of lines to the scenario.
  * @return {integer}
  */
-Scenario.prototype.numberColumns = function() {
-    return this.getConfig().size.cols;
+Scenario.prototype.getNumberColumns = function() {
+    return this.size.cols;
 };
 
 /**
@@ -27,49 +54,78 @@ Scenario.prototype.getColumnsPositions = function() {
     var resources           = this.getModule('resources'),
         columnsPositions    = [];
 
-    for (let i=0; i < this.numberColumns(); i++)
+    for (let i=0; i < this.getNumberColumns(); i++)
         columnsPositions.push((i * resources.imageSize('width')));
 
     return columnsPositions;
 };
 
 /**
+ * @description Adds lines to the scenario. The lines are directly linked to the
+ * type scenario. Warning: When you define a terrain, make sure that the same
+ * image is set in the configuration file resource session.
+ * @param {string} terrain - Exemple: water, stone and grass
+ * @param {number} numberRows
+ */
+Scenario.prototype.addNumberRows = function(terrain, numberRows) {
+    if (typeof terrain !== 'string')
+        throw new TypeError('Waiting for an string');
+
+    if (!Number.isInteger(numberRows))
+        throw new TypeError('Waiting for an integer');
+
+    terrain = terrain.toLowerCase();
+    this.size.rows[terrain] = numberRows;
+};
+
+/**
  * @description Total number of lines in your scene. Each line represents a
- * route which in turn has its own terrain. You can set the desired amount of
- * rows in the settings.
+ * route which in turn has its own terrain.
  * @return {integer}
  */
-Scenario.prototype.numberRows = function() {
+Scenario.prototype.getNumberRows = function() {
     var rows = 0;
 
-    this.getTerrainsSurface().forEach(function(terrain) {
-        rows += this.getConfig().size.rows[terrain];
+    this.getTerrains().forEach(function(terrain) {
+        if (this.hasTerrainRows(terrain))
+            rows += this.size.rows[terrain];
     }.bind(this));
 
     return rows;
 };
 
 /**
- * @description The scenario is divided between the terrains surface: such as
- * water, stone, etc. This function returns an array containing all the labels
- * of defined terrains.
+ * @description The scenario is divided between the terrains: such as water,
+ * stone, etc. This function returns an array containing all the labels of
+ * defined terrains.
  * @return {array}
  */
-Scenario.prototype.getTerrainsSurface = function() {
-    return Object.keys(this.getConfig().size.rows);
+Scenario.prototype.getTerrains = function() {
+    return Object.keys(this.size.rows);
 };
 
 /**
  * @description With this feature you will have access to the number of lines
- * each terrains surface.
+ * each terrain.
  * @param  {string} terrain
  * @return {number}
  */
-Scenario.prototype.numberRowsByTerrainsSurface = function(terrain) {
-    if (typeof terrain !== 'string')
-        throw new TypeError('Type of invalid input. Expected value: String');
+Scenario.prototype.numberRowsByTerrain = function(terrain) {
+    return this.hasTerrainRows(terrain) ? this.size.rows[terrain] : 0;
+};
 
-    return this.getConfig().size.rows[terrain];
+/**
+ * @description Verifies that a terrain exists and if it has lines.
+ * @param  {string}  terrain
+ * @return {boolean}
+ */
+Scenario.prototype.hasTerrainRows = function(terrain) {
+    if (!this.size.rows.hasOwnProperty(terrain))
+        throw new TypeError('Terrain not found: ' + terrain);
+    else if (this.size.rows[terrain] === 0)
+        return false;
+    else
+        return true;
 };
 
 /**
@@ -79,7 +135,7 @@ Scenario.prototype.numberRowsByTerrainsSurface = function(terrain) {
 Scenario.prototype.width = function() {
     var resources = this.getModule('resources');
 
-    return this.numberColumns() * resources.imageSize('width');
+    return this.getNumberColumns() * resources.imageSize('width');
 };
 
 /**
@@ -91,7 +147,7 @@ Scenario.prototype.height = function() {
         height      = resources.imageSize('height'),
         full        = resources.imageSize('full');
 
-    return (this.numberRows() - 1) * height + full;
+    return (this.getNumberRows() - 1) * height + full;
 };
 
 /**
@@ -103,13 +159,13 @@ Scenario.prototype.render = function() {
         resources       = this.getModule('resources'),
         resourcesLoader = this.getModule('resourcesloader');
 
-	this.getTerrainsSurface().forEach(function(terrain) {
-		for(let i = 0; i < this.numberRowsByTerrainsSurface(terrain); i++)
+	this.getTerrains().forEach(function(terrain) {
+		for(let i = 0; i < this.numberRowsByTerrain(terrain); i++)
             urlsRowsImages.push(resources.urlImage('scenario', terrain));
 	}.bind(this));
 
-	for (var row = 0; row < this.numberRows(); row++) {
-		for (let col = 0; col < this.numberColumns(); col++) {
+	for (var row = 0; row < this.getNumberRows(); row++) {
+		for (let col = 0; col < this.getNumberColumns(); col++) {
             let image = resourcesLoader.get(urlsRowsImages[row]);
 			canvas.getContext().drawImage(image,
 				col * resources.imageSize('width'),
