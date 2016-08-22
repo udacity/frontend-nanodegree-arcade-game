@@ -109,6 +109,7 @@ Engine.prototype.main = function() {
     if (!this.isPauseGame()) {
         this.update(dt);
         this.render();
+        this.checkCollisions();
         this.lastTime = now;
     }
     window.requestAnimationFrame(this.main.bind(this));
@@ -147,7 +148,28 @@ Engine.prototype.update = function(dt) {
     }
 };
 
-Engine.prototype.checkCollisions = function() {};
+/**
+ * @description Constantly checks if the character collided with other entities.
+ */
+Engine.prototype.checkCollisions = function() {
+    var collision   = this.getModule('collision'),
+        scoreboard  = this.getModule('scoreboard');
+
+    // Enemies
+    if (this.hasEnemies()) {
+        this.getEnemies().forEach(function(enemy) {
+            var enemyMin = enemy.minCollisionPoint(),
+                enemyMax = enemy.maxCollisionPoint();
+
+            if (collision.collided(enemyMin, enemyMax, enemy.getRoute())) {
+                enemy.reset();
+                enemy.endRoute();
+                scoreboard.removeLife();
+                this.player.moveForStartPoint();
+            }
+        });
+    }
+};
 
 /**
  * @description This function is called every game tick (or loop of the game
@@ -157,6 +179,7 @@ Engine.prototype.checkCollisions = function() {};
  */
 Engine.prototype.render = function() {
     var scenario = this.getModule('scenario');
+
     // Scenario
     scenario.render();
     // Enemies

@@ -281,6 +281,32 @@ Entity.prototype.hasLastTraveledRoute = function() {
 };
 
 /**
+ * @description Calculates and returns the collision area of the entity.
+ * @return {number}
+ */
+Entity.prototype.getImpingementArea = function() {
+    var resources = this.getModule('resources');
+
+    return resources.imageSize('width') - (2 * this.getPadding());
+};
+
+/**
+ * @description Calculates and returns the lowest point of the entity collision.
+ * @return {number}
+ */
+Entity.prototype.minCollisionPoint = function() {
+    return this.getAxisX() + this.getPadding();
+};
+
+/**
+ * @description Computes and returns the highest point of the entity collision.
+ * @return {number} [description]
+ */
+Entity.prototype.maxCollisionPoint = function() {
+    return this.minCollisionPoint() + this.getImpingementArea();
+};
+
+/**
  * @description Every entity has a sprite. An image that is rendered on the
  * user's screen. This function converts an object containing the group and
  * entity's name in an address (url) valid.

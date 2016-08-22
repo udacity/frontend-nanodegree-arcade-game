@@ -10,7 +10,8 @@ var config          = new Config,
     scoreboard      = new Scoreboard,
     entityFactory   = new EntityFactory,
     engine          = new Engine,
-    gameControl     = new GameControl;
+    gameControl     = new GameControl,
+    collision       = new Collision;
 
 // Resources
 resources.setConfig(config.select('resources'));
@@ -54,8 +55,11 @@ entityFactory.addDefaultDependencies([
 // Player
 var player = entityFactory.create(Player, [routes, scoreboard]);
 
+// Collision
+collision.setPlayer(player);
+
 // Engine
-engine.addDependencies([scenario, traffic, scoreboard]);
+engine.addDependencies([scenario, traffic, scoreboard, collision]);
 engine.addEnemies([
     entityFactory.create(Bug),
     entityFactory.create(Bug),
