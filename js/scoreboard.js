@@ -148,6 +148,9 @@ Scoreboard.prototype.addLife = function(life) {
  */
 Scoreboard.prototype.removeLife = function(life) {
     this.removeData('life', life, 1);
+
+    if (this.isGameOver())
+        this.init();
 };
 
 /**
