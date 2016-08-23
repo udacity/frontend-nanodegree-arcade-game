@@ -161,6 +161,9 @@ Scoreboard.prototype.getLife = function() {
     return this.getData('life');
 };
 
+/**
+ * @description Reset and init scoreboard.
+ */
 Scoreboard.prototype.reset = function() {
     this.score = 0;
     this.level = 0;
