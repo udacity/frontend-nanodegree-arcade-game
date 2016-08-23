@@ -150,7 +150,7 @@ Scoreboard.prototype.removeLife = function(life) {
     this.removeData('life', life, 1);
 
     if (this.isGameOver())
-        this.init();
+        this.reset();
 };
 
 /**
@@ -159,6 +159,13 @@ Scoreboard.prototype.removeLife = function(life) {
  */
 Scoreboard.prototype.getLife = function() {
     return this.getData('life');
+};
+
+Scoreboard.prototype.reset = function() {
+    this.score = 0;
+    this.level = 0;
+    this.life = 0;
+    this.init();
 };
 
 /**
