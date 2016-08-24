@@ -87,7 +87,7 @@ Module.prototype.addCallbacks = function(label, callbacks) {
  */
 Module.prototype.getCallbacks = function(label) {
     if (!this.hasCallbacks(label))
-        throw new TypeError('Callback function not found');
+        throw new TypeError('Callback not found');
 
     var callbacks = this.callbacks[label];
     if (typeof callbacks === 'function')
@@ -113,12 +113,10 @@ Module.prototype.hasCallbacks = function(label) {
 Module.prototype.executeCallbacks = function(label) {
     var callbacks = this.getCallbacks(label);
 
-    if (callbacks instanceof Array) {
-        callbacks.forEach(function(callback) {
-            if (typeof callback === 'function')
-                callback();
-        });
-    } else {
-        callbacks();
-    }
+    callbacks.forEach(function(callback) {
+        if (typeof callback !== 'function')
+            throw new TypeError('Invalid function');
+
+        callback();
+    });
 };
