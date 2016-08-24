@@ -193,7 +193,27 @@ Engine.prototype.render = function() {
         this.player.render();
 };
 
-Engine.prototype.reset = function() {};
+/**
+ * @description Restart the game.
+ */
+Engine.prototype.reset = function() {
+    var scoreboard = this.getModule('scoreboard');
+
+    // Enemies
+    if (this.hasEnemies()) {
+        this.getEnemies().forEach(function(enemy){
+            enemy.setAxisX(0);
+            enemy.endRoute();
+        });
+    }
+    // Player
+    if (this.hasPlayer())
+        this.player.moveForStartPoint();
+    // Scoreboard
+    scoreboard.reset();
+    // Run
+    this.run();
+};
 
 /**
  * @description This function does some initial setup that should only occur
@@ -204,6 +224,7 @@ Engine.prototype.run = function() {
     var scoreboard = this.getModule('scoreboard');
 
     this.lastTime = Date.now();
-    this.main();
+    scoreboard.addGameOverCallbacks(this.reset.bind(this));
     scoreboard.init();
+    this.main();
 };

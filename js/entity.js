@@ -333,8 +333,8 @@ Entity.prototype.getSprite = function() {
  */
 Entity.prototype.reset = function() {
     this.setLastTraveledRoute(this.getRoute());
-    this.resetRoute();
     this.setAxisX(0);
+    this.resetRoute();
 };
 
 /**
