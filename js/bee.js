@@ -15,7 +15,7 @@ Bee.prototype.constructor = Bee;
  */
 Bee.prototype.init = function(levelGame) {
     if (!this.isInitialized()) {
-        this.endRouteCallbacks(this.hibernate.bind(this));
+        this.addCallbacks('endRoute', this.hibernate.bind(this));
         this.hibernationDuration(20);
         this.setPadding(10);
         this.setEntityName('bee');

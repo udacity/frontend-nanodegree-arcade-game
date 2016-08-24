@@ -5,6 +5,7 @@
 function Module() {
     this.config = null;
     this.modules = {};
+    this.callbacks = {};
 };
 
 /**
@@ -38,32 +39,21 @@ Module.prototype.hasConfig = function() {
 };
 
 /**
- * @description Add a new dependency to module.
- * @param  {Module} dependencyModule - Module heritage
- * @param  {string} label - Optional. If the label is not assigned, the
- * dependency name, in lower case will be considered as a label.
- */
-Module.prototype.addDependency = function(dependency, label) {
-    if (!(dependency instanceof Module))
-        throw new TypeError('Need a valid module');
-
-    if (label === undefined)
-        label = (dependency.constructor.name).toLowerCase();
-
-    this.modules[label] = dependency;
-};
-
-/**
- * @description Add multiple dependencies to module.
+ * @description Add dependencies to module.
  * @param {array} dependencies
  */
 Module.prototype.addDependencies = function(dependencies) {
-    if (!(dependencies instanceof Array))
-        throw new TypeError('Waiting array dependencies');
+    if (dependencies instanceof Array) {
+        dependencies.forEach(function(dependency) {
+            this.addDependencies(dependency);
+        }.bind(this));
+    } else if (dependencies instanceof Module) {
+        var label = (dependencies.constructor.name).toLowerCase();
 
-    dependencies.forEach(function(dependency) {
-        this.addDependency(dependency);
-    }.bind(this));
+        this.modules[label] = dependencies;
+    } else {
+        throw new TypeError('Need a valid module or array');
+    }
 };
 
 /**
@@ -76,4 +66,59 @@ Module.prototype.getModule = function(label) {
         throw new TypeError('Module not found: ' + label);
 
     return this.modules[label];
+};
+
+/**
+ * @description Add callbacks functions to the module.
+ * @param {string} label
+ * @param {function} func
+ */
+Module.prototype.addCallbacks = function(label, callbacks) {
+    if (typeof callbacks !== 'function' && !(callbacks instanceof Array))
+        throw new TypeError('Waiting for a valid function or array');
+
+    this.callbacks[label] = callbacks;
+};
+
+/**
+ * @description Returns a specific callback function.
+ * @param  {string} label
+ * @return {function}
+ */
+Module.prototype.getCallbacks = function(label) {
+    if (!this.hasCallbacks(label))
+        throw new TypeError('Callback function not found');
+
+    var callbacks = this.callbacks[label];
+    if (typeof callbacks === 'function')
+        callbacks = [callbacks];
+
+    return callbacks;
+};
+
+/**
+ * @description Check if a specific callback function has been added to the
+ * module.
+ * @param  {string}  label
+ * @return {boolean}
+ */
+Module.prototype.hasCallbacks = function(label) {
+    return this.callbacks.hasOwnProperty(label) ? true : false;
+};
+
+/**
+ * @description Performs a function or an array of callbacks functions.
+ * @param  {string} label
+ */
+Module.prototype.executeCallbacks = function(label) {
+    var callbacks = this.getCallbacks(label);
+
+    if (callbacks instanceof Array) {
+        callbacks.forEach(function(callback) {
+            if (typeof callback === 'function')
+                callback();
+        });
+    } else {
+        callbacks();
+    }
 };

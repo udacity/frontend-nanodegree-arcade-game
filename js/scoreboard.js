@@ -8,7 +8,6 @@ function Scoreboard() {
     this.level = 0;
     this.life = 0;
     this.nextLevel = 0;
-    this.gameOverCbs = [];
     Module.call(this);
 };
 
@@ -150,13 +149,8 @@ Scoreboard.prototype.addLife = function(life) {
 Scoreboard.prototype.removeLife = function(life) {
     this.removeData('life', life, 1);
 
-    if (this.isGameOver()) {
-        if (this.hasGameOverCallbacks()) {
-            this.gameOverCbs.forEach(function(callback) {
-                callback();
-            });
-        }
-    }
+    if (this.isGameOver())
+        this.executeCallbacks('gameOver');
 };
 
 /**
@@ -174,31 +168,6 @@ Scoreboard.prototype.reset = function() {
     this.score = 0;
     this.level = 0;
     this.life = 0;
-};
-
-/**
- * @description Add functions to be called when the game is over.
- * @param  {array or function} callbacks
- */
-Scoreboard.prototype.addGameOverCallbacks = function(callbacks) {
-    if (callbacks instanceof Array) {
-        callbacks.forEach(function(cb){
-            this.addGameOverCallbacks(cb);
-        }.bind(this));
-    } else if (typeof callbacks === 'function') {
-        this.gameOverCbs.push(callbacks);
-    } else {
-        throw new TypeError('Waiting for a valid function');
-    }
-};
-
-/**
- * @description Checks whether functions have been added to be called when the
- * game is over.
- * @return {boolean}
- */
-Scoreboard.prototype.hasGameOverCallbacks = function() {
-    return this.gameOverCbs.length > 0 ? true : false;
 };
 
 /**

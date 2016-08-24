@@ -224,7 +224,7 @@ Engine.prototype.run = function() {
     var scoreboard = this.getModule('scoreboard');
 
     this.lastTime = Date.now();
-    scoreboard.addGameOverCallbacks(this.reset.bind(this));
+    scoreboard.addCallbacks('gameOver', this.reset.bind(this));
     scoreboard.init();
     this.main();
 };

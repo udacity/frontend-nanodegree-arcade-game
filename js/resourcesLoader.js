@@ -7,7 +7,6 @@
  */
 function ResourcesLoader() {
     this.resourceCache = {};
-    this.readyCallbacks = [];
     Module.call(this);
 };
 
@@ -25,7 +24,7 @@ ResourcesLoader.prototype.singleLoad = function(url) {
     	img.onload = function() {
     		this.resourceCache[url] = img;
     		if (this.isReady())
-    			this.callbacks();
+                this.executeCallbacks('onReady');
     	}.bind(this);
 
     	img.src = url;
@@ -64,16 +63,6 @@ ResourcesLoader.prototype.isReady = function() {
 };
 
 /**
- * @description Calls the callback functions if any.
- */
-ResourcesLoader.prototype.callbacks = function() {
-    if (this.readyCallbacks.length > 0)
-    	this.readyCallbacks.forEach(function(func) {
-    		func();
-    	});
-};
-
-/**
  * @description This is used by developers to grab references to images they
  * know have been previously loaded.
  * @param  {string} url
@@ -84,13 +73,4 @@ ResourcesLoader.prototype.get = function(url) {
     	return this.resourceCache[url];
 
     throw new TypeError('Resource not found');
-};
-
-/**
- * This function will add a function to the callback stack that is called when
- * all requested images are properly loaded.
- * @param  {func}
- */
-ResourcesLoader.prototype.onReady = function(func) {
-    this.readyCallbacks.push(func);
 };

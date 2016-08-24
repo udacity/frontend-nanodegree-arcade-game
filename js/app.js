@@ -34,14 +34,14 @@ routes.addDependencies([scenario, resources]);
 routes.create();
 
 // Traffic
-traffic.addDependency(routes);
+traffic.addDependencies(routes);
 traffic.setConfig(config.select('traffic'));
 
 // Scoreboard
 scoreboardWI.setConfig(config.select('scoreboard'));
 // And Scoreboard Web Interface
 scoreboard.setConfig(config.select('scoreboard'));
-scoreboard.addDependency(scoreboardWI);
+scoreboard.addDependencies(scoreboardWI);
 
 // Entity Factory
 entityFactory.addDefaultDependencies([
@@ -70,11 +70,11 @@ engine.setPlayer(player);
 
 // Game Control
 gameControl.setConfig(config.select('gameControl'));
-gameControl.addCallbacks([
+gameControl.addCallbacks('keyup', [
     engine.pauseGame.bind(engine),
     player.move.bind(player)
 ]);
 gameControl.init();
 
 // Run
-resourcesLoader.onReady(engine.run.bind(engine));
+resourcesLoader.addCallbacks('onReady', engine.run.bind(engine));
