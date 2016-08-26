@@ -11,9 +11,10 @@ Bug.prototype.constructor = Bug;
 
 /**
  * @description Starts the insect through its default settings.
- * @param  {number} levelGame
  */
 Bug.prototype.init = function() {
+    var traffic = this.getModule('traffic');
+
     if (!this.isInitialized()) {
         this.setPadding(10);
         this.setEntityName('bug');
@@ -23,5 +24,7 @@ Bug.prototype.init = function() {
         this.initialize();
     }
 
+    this.setRoute(traffic.getEmptyRoute(this.getTerrainsSurface()));
+    traffic.declareRouteEntry(this.getRoute());
     this.setSpeed(this.getRandomSpeed());
 };

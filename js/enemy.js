@@ -52,23 +52,17 @@ Enemy.prototype.hasSpeed = function() {
 };
 
 /**
- * @description Function is called when each enemy reaches the end of the route.
- * Checks for callback functions to be invoked.
- */
-Enemy.prototype.endRoute = function() {
-    if (this.hasCallbacks('endRoute'))
-        this.executeCallbacks('endRoute');
-};
-
-/**
  * @description Function is performed when the enemy collides with the player.
  * When creating a new enemy, you can set specific reactions to this collision
  * enemy. Sobescreva the collided() method.
  */
 Enemy.prototype.collided = function() {
-    var scoreboard = this.getModule('scoreboard');
+    var traffic     = this.getModule('traffic'),
+        scoreboard  = this.getModule('scoreboard');
 
     scoreboard.removeLife();
+    traffic.declareRouteOutput(this.getRoute());
+    this.reset();
 };
 
 /**
@@ -76,7 +70,8 @@ Enemy.prototype.collided = function() {
  * @param  {number} dt
  */
 Enemy.prototype.update = function(dt) {
-    var scenario = this.getModule('scenario');
+    var traffic     = this.getModule('traffic'),
+        scenario    = this.getModule('scenario');
 
     if(!this.isHibernationActive()) {
         if (!this.hasSpeed())
@@ -87,8 +82,8 @@ Enemy.prototype.update = function(dt) {
             this.setAxisX(increase);
 
         if (this.getAxisX() > scenario.width()) {
+            traffic.declareRouteOutput(this.getRoute());
             this.reset();
-            this.endRoute();
         }
 
     }

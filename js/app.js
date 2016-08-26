@@ -50,8 +50,21 @@ entityFactory.addDefaultDependencies([
     canvas,
     resourcesLoader,
     timer,
-    scoreboard
+    scoreboard,
+    traffic
 ]);
+
+// Gems
+var gemBlue, gemGreen, gemOrange;
+gemBlue = entityFactory.create(Gem);
+gemBlue.setConfig(config.select('bonus','gemBlue'));
+gemBlue.setDefaultConfig();
+gemGreen = entityFactory.create(Gem);
+gemGreen.setConfig(config.select('bonus','gemGreen'));
+gemGreen.setDefaultConfig();
+gemOrange = entityFactory.create(Gem);
+gemOrange.setConfig(config.select('bonus','gemOrange'));
+gemOrange.setDefaultConfig();
 
 // Player
 var player = entityFactory.create(Player, [routes, scoreboard]);
@@ -61,11 +74,11 @@ collision.setPlayer(player);
 
 // Engine
 engine.addDependencies([scenario, traffic, scoreboard, collision]);
-engine.addEnemies([
+engine.addEntities([
     entityFactory.create(Bug),
     entityFactory.create(Bug),
     entityFactory.create(Bug),
-    entityFactory.create(Bee)
+    gemBlue, gemGreen, gemOrange
 ]);
 engine.setPlayer(player);
 

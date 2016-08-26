@@ -18,7 +18,6 @@ function Entity() {
         startDate: null,
         endDate: null
     };
-    this.lastTraveledRoute = undefined;
     Module.call(this);
 };
 
@@ -254,33 +253,6 @@ Entity.prototype.resetRoute = function() {
 };
 
 /**
- * @description Sets the last route traffic used by the enemy.
- * @param {number} route
- */
-Entity.prototype.setLastTraveledRoute = function(route) {
-    if (typeof route !== 'number')
-        throw new TypeError('Invalid route');
-
-    this.lastTraveledRoute = route;
-};
-
-/**
- * @description Returns the last route taken by the enemy.
- * @return {number or undefined}
- */
-Entity.prototype.getLastTraveledRoute = function() {
-    return this.lastTraveledRoute;
-};
-
-/**
- * @description Verifies that the enemy along a route before the current route.
- * @return {boolean}
- */
-Entity.prototype.hasLastTraveledRoute = function() {
-    return this.lastTraveledRoute !== undefined ? true : false;
-};
-
-/**
  * @description Calculates and returns the collision area of the entity.
  * @return {number}
  */
@@ -332,7 +304,6 @@ Entity.prototype.getSprite = function() {
  * @description Reset enemy.
  */
 Entity.prototype.reset = function() {
-    this.setLastTraveledRoute(this.getRoute());
     this.setAxisX(0);
     this.resetRoute();
 };

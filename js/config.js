@@ -29,8 +29,7 @@ function Config() {
     				grass: 'images/grass-block.png'
     			},
     			enemies: {
-    				bug: 'images/enemy-bug.png',
-    				bee: 'images/enemy-bee.png'
+    				bug: 'images/enemy-bug.png'
     			},
     			characters: {
                     boy: 'images/char-boy.png',
@@ -91,16 +90,24 @@ function Config() {
     	}
     },
     this.bonus = {
-    	gemBlue: {
-    		score: 50,
-    		padding: 30,
-    		terrainsSurface: 'stone'
-    	},
-    	heart: {
-    		life: 1,
-    		padding: 20,
-    		terrainsSurface: ['stone', 'grass']
-    	}
+        gemBlue: {
+            entityName: 'gemBlue',
+            scoreIncrement: 50,
+            hibernationDuration: 60,
+            hibernationInterval: 8
+        },
+        gemGreen: {
+            entityName: 'gemGreen',
+            scoreIncrement: 80,
+            hibernationDuration: 120,
+            hibernationInterval: 6
+        },
+        gemOrange: {
+            entityName: 'gemOrange',
+            scoreIncrement: 160,
+            hibernationDuration: 200,
+            hibernationInterval: 4
+        }
     }
 };
 

@@ -5,7 +5,7 @@
  * @constructor
  */
 function Engine() {
-    this.enemies = [];
+    this.entities = [];
     this.player = null;
     this.pause = false;
     this.lastTime = undefined;
@@ -67,35 +67,34 @@ Engine.prototype.hasPlayer = function() {
 };
 
 /**
- * @description Adds enemies. The enemies parameter expects an enemy or an array
- * of enemies.
- * @param {Enemy or array} enemies
+ * @description Adds entities.
+ * @param {Entity or array} entities
  */
-Engine.prototype.addEnemies = function(enemies) {
-    if (enemies instanceof Array)
-        enemies.forEach(function(enemy) {
-            this.addEnemies(enemy);
+Engine.prototype.addEntities = function(entities) {
+    if (entities instanceof Array)
+        entities.forEach(function(entity) {
+            this.addEntities(entity);
         }.bind(this));
-    else if (enemies instanceof Enemy)
-        this.enemies.push(enemies);
+    else if (entities instanceof Entity)
+        this.entities.push(entities);
     else
-        throw new TypeError('Invalid enemy');
+        throw new TypeError('Invalid entity');
 };
 
 /**
- * @description Back in an array, the added enemies.
+ * @description Back in an array, the added entities.
  * @return {array}
  */
-Engine.prototype.getEnemies = function() {
-    return this.enemies;
+Engine.prototype.getEntities = function() {
+    return this.entities;
 };
 
 /**
- * @description Checks if an enemy was added into engine.
+ * @description Checks if an entity was added into engine.
  * @return {boolean}
  */
-Engine.prototype.hasEnemies = function() {
-    return this.enemies.length > 0 ? true : false;
+Engine.prototype.hasEntities = function() {
+    return this.entities.length > 0 ? true : false;
 };
 
 /**
@@ -123,28 +122,20 @@ Engine.prototype.main = function() {
 Engine.prototype.update = function(dt) {
     var traffic = this.getModule('traffic');
 
-    // Enemies
-    if (this.hasEnemies()) {
-        this.getEnemies().forEach(function(enemy){
-            if (!enemy.hasRoute()) {
-                enemy.init();
+    // Entities
+    if (this.hasEntities()) {
+        this.getEntities().forEach(function(entity){
+            if (!entity.hasRoute())
+                entity.init();
 
-                if (enemy.hasLastTraveledRoute())
-                    traffic.declareRouteOutput(enemy.getLastTraveledRoute());
-
-                enemy.setRoute(
-                    traffic.getEmptyRoute(enemy.getTerrainsSurface())
-                );
-                traffic.declareRouteEntry(enemy.getRoute());
-            }
-
-            enemy.update(dt);
+            if (entity instanceof Enemy)
+                entity.update(dt);
         });
     }
+
     // Player
-    if (this.hasPlayer()) {
+    if (this.hasPlayer())
         this.player.init();
-    }
 };
 
 /**
@@ -153,16 +144,15 @@ Engine.prototype.update = function(dt) {
 Engine.prototype.checkCollisions = function() {
     var collision = this.getModule('collision');
 
-    // Enemies
-    if (this.hasEnemies()) {
-        this.getEnemies().forEach(function(enemy) {
-            var enemyMin = enemy.minCollisionPoint(),
-                enemyMax = enemy.maxCollisionPoint();
+    if (this.hasEntities()) {
+        this.getEntities().forEach(function(entity) {
+            var entityMin = entity.minCollisionPoint(),
+                entityMax = entity.maxCollisionPoint();
 
-            if (collision.collided(enemyMin, enemyMax, enemy.getRoute())) {
-                enemy.reset();
-                enemy.endRoute();
-                enemy.collided();
+            if (collision.collided(entityMin, entityMax, entity.getRoute())
+                && !entity.isHibernationActive()) {
+                entity.collided();
+
                 this.player.moveForStartPoint();
             }
         });
@@ -180,37 +170,17 @@ Engine.prototype.render = function() {
 
     // Scenario
     scenario.render();
-    // Enemies
-    if (this.hasEnemies()) {
-        this.getEnemies().forEach(function(enemy){
-            enemy.render();
+
+    // Entities
+    if (this.hasEntities()) {
+        this.getEntities().forEach(function(entity){
+            entity.render();
         });
     }
+
     // Player
     if (this.hasPlayer())
         this.player.render();
-};
-
-/**
- * @description Restart the game.
- */
-Engine.prototype.reset = function() {
-    var scoreboard = this.getModule('scoreboard');
-
-    // Enemies
-    if (this.hasEnemies()) {
-        this.getEnemies().forEach(function(enemy){
-            enemy.setAxisX(0);
-            enemy.endRoute();
-        });
-    }
-    // Player
-    if (this.hasPlayer())
-        this.player.moveForStartPoint();
-    // Scoreboard
-    scoreboard.reset();
-    // Run
-    this.run();
 };
 
 /**
@@ -222,7 +192,6 @@ Engine.prototype.run = function() {
     var scoreboard = this.getModule('scoreboard');
 
     this.lastTime = Date.now();
-    scoreboard.addCallbacks('gameOver', this.reset.bind(this));
     scoreboard.init();
     this.main();
 };
