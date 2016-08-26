@@ -49,7 +49,8 @@ entityFactory.addDefaultDependencies([
     resources,
     canvas,
     resourcesLoader,
-    timer
+    timer,
+    scoreboard
 ]);
 
 // Player

@@ -36,7 +36,10 @@ Enemy.prototype.getSpeed = function() {
  * the game as a parameter to calculate.
  * @return {number}
  */
-Enemy.prototype.getRandomSpeed = function(levelGame) {
+Enemy.prototype.getRandomSpeed = function() {
+    var scoreboard  = this.getModule('scoreboard'),
+        levelGame   = scoreboard.getLevel();
+
     return Math.random() * (150 + levelGame * 6) + (90 + levelGame * 2);
 };
 
@@ -55,6 +58,17 @@ Enemy.prototype.hasSpeed = function() {
 Enemy.prototype.endRoute = function() {
     if (this.hasCallbacks('endRoute'))
         this.executeCallbacks('endRoute');
+};
+
+/**
+ * @description Function is performed when the enemy collides with the player.
+ * When creating a new enemy, you can set specific reactions to this collision
+ * enemy. Sobescreva the collided() method.
+ */
+Enemy.prototype.collided = function() {
+    var scoreboard = this.getModule('scoreboard');
+
+    scoreboard.removeLife();
 };
 
 /**

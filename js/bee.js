@@ -13,7 +13,7 @@ Bee.prototype.constructor = Bee;
  * @description Starts the insect through its default settings.
  * @param  {number} levelGame
  */
-Bee.prototype.init = function(levelGame) {
+Bee.prototype.init = function() {
     if (!this.isInitialized()) {
         this.addCallbacks('endRoute', this.hibernate.bind(this));
         this.hibernationDuration(20);
@@ -25,5 +25,5 @@ Bee.prototype.init = function(levelGame) {
         this.initialize();
         this.hibernate();
     }
-    this.setSpeed(this.getRandomSpeed(levelGame));
+    this.setSpeed(this.getRandomSpeed());
 };

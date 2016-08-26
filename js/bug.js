@@ -13,7 +13,7 @@ Bug.prototype.constructor = Bug;
  * @description Starts the insect through its default settings.
  * @param  {number} levelGame
  */
-Bug.prototype.init = function(levelGame) {
+Bug.prototype.init = function() {
     if (!this.isInitialized()) {
         this.setPadding(10);
         this.setEntityName('bug');
@@ -23,5 +23,5 @@ Bug.prototype.init = function(levelGame) {
         this.initialize();
     }
 
-    this.setSpeed(this.getRandomSpeed(levelGame));
+    this.setSpeed(this.getRandomSpeed());
 };

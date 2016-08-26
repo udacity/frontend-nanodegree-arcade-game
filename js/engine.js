@@ -121,14 +121,13 @@ Engine.prototype.main = function() {
  * @param  {number} dt - delta time
  */
 Engine.prototype.update = function(dt) {
-    var traffic     = this.getModule('traffic'),
-        scoreboard  = this.getModule('scoreboard');
+    var traffic = this.getModule('traffic');
 
     // Enemies
     if (this.hasEnemies()) {
         this.getEnemies().forEach(function(enemy){
             if (!enemy.hasRoute()) {
-                enemy.init(scoreboard.getLevel());
+                enemy.init();
 
                 if (enemy.hasLastTraveledRoute())
                     traffic.declareRouteOutput(enemy.getLastTraveledRoute());
@@ -152,8 +151,7 @@ Engine.prototype.update = function(dt) {
  * @description Constantly checks if the character collided with other entities.
  */
 Engine.prototype.checkCollisions = function() {
-    var collision   = this.getModule('collision'),
-        scoreboard  = this.getModule('scoreboard');
+    var collision = this.getModule('collision');
 
     // Enemies
     if (this.hasEnemies()) {
@@ -164,7 +162,7 @@ Engine.prototype.checkCollisions = function() {
             if (collision.collided(enemyMin, enemyMax, enemy.getRoute())) {
                 enemy.reset();
                 enemy.endRoute();
-                scoreboard.removeLife();
+                enemy.collided();
                 this.player.moveForStartPoint();
             }
         });
