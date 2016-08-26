@@ -18,7 +18,6 @@ Gem.prototype.init = function() {
     var traffic = this.getModule('traffic');
 
     if (!this.isInitialized()) {
-        this.hibernationInterval(6);
         this.setPadding(20);
         this.setEntityGroup('bonus');
         this.addTerrainsSurface(['grass','stone']);

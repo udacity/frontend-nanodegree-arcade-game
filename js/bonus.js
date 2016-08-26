@@ -29,7 +29,7 @@ Bonus.prototype.setDefaultConfig = function() {
  */
 Bonus.prototype.setScoreIncrement = function(score) {
     if (!Number.isInteger(score))
-        throw new TypeError('');
+        throw new TypeError('Waiting for a score in numeric format.');
 
     this.scoreIncrement = score;
 };
