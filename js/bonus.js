@@ -13,6 +13,26 @@ Bonus.prototype = Object.create(Entity.prototype);
 Bonus.prototype.constructor = Bonus;
 
 /**
+ * Initialize a bonus
+ */
+Bonus.prototype.init = function() {
+    var traffic = this.getModule('traffic');
+
+    if (!this.isInitialized()) {
+        this.setDefaultConfig();
+        this.setPadding(20);
+        this.setEntityGroup('bonus');
+        this.addTerrainsSurface(['grass','stone']);
+        this.generateSprite();
+        this.initialize();
+        this.hibernate();
+    }
+
+    this.setAxisX(this.getRandomAxisX());
+    this.setRoute(traffic.getRoute(this.getTerrainsSurface()));
+};
+
+/**
  * @description This function set a bonus based on the game default settings.
  * You can change these settings directly in config.js file
  */

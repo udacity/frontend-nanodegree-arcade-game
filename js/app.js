@@ -58,16 +58,12 @@ entityFactory.addDefaultDependencies([
 var gemBlue, gemGreen, gemOrange, heart;
 gemBlue = entityFactory.create(Gem);
 gemBlue.setConfig(config.select('bonus','gemBlue'));
-gemBlue.setDefaultConfig();
 gemGreen = entityFactory.create(Gem);
 gemGreen.setConfig(config.select('bonus','gemGreen'));
-gemGreen.setDefaultConfig();
 gemOrange = entityFactory.create(Gem);
 gemOrange.setConfig(config.select('bonus','gemOrange'));
-gemOrange.setDefaultConfig();
 heart = entityFactory.create(Heart);
 heart.setConfig(config.select('bonus', 'heart'));
-heart.setDefaultConfig();
 
 // Player
 var player = entityFactory.create(Player, [routes, scoreboard]);

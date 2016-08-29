@@ -9,22 +9,3 @@ function Gem() {
 
 Gem.prototype = Object.create(Bonus.prototype);
 Gem.prototype.constructor = Gem;
-
-/**
- * Initialize a gem
- */
-Gem.prototype.init = function() {
-    var traffic = this.getModule('traffic');
-
-    if (!this.isInitialized()) {
-        this.setPadding(20);
-        this.setEntityGroup('bonus');
-        this.addTerrainsSurface(['grass','stone']);
-        this.generateSprite();
-        this.initialize();
-        this.hibernate();
-    }
-
-    this.setAxisX(this.getRandomAxisX());
-    this.setRoute(traffic.getRoute(this.getTerrainsSurface()));
-};
