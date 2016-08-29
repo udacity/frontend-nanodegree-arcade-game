@@ -12,7 +12,6 @@ Gem.prototype.constructor = Gem;
 
 /**
  * Initialize a gem
- * @return {[type]} [description]
  */
 Gem.prototype.init = function() {
     var traffic = this.getModule('traffic');

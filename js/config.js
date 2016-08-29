@@ -107,6 +107,12 @@ function Config() {
             scoreIncrement: 160,
             hibernationDuration: 200,
             hibernationInterval: 4
+        },
+        heart: {
+            entityName: 'heart',
+            scoreIncrement: 1,
+            hibernationDuration: 100,
+            hibernationInterval: 5
         }
     }
 };

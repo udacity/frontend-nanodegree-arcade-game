@@ -55,7 +55,7 @@ entityFactory.addDefaultDependencies([
 ]);
 
 // Gems
-var gemBlue, gemGreen, gemOrange;
+var gemBlue, gemGreen, gemOrange, heart;
 gemBlue = entityFactory.create(Gem);
 gemBlue.setConfig(config.select('bonus','gemBlue'));
 gemBlue.setDefaultConfig();
@@ -65,6 +65,9 @@ gemGreen.setDefaultConfig();
 gemOrange = entityFactory.create(Gem);
 gemOrange.setConfig(config.select('bonus','gemOrange'));
 gemOrange.setDefaultConfig();
+heart = entityFactory.create(Heart);
+heart.setConfig(config.select('bonus', 'heart'));
+heart.setDefaultConfig();
 
 // Player
 var player = entityFactory.create(Player, [routes, scoreboard]);
@@ -78,7 +81,7 @@ engine.addEntities([
     entityFactory.create(Bug),
     entityFactory.create(Bug),
     entityFactory.create(Bug),
-    gemBlue, gemGreen, gemOrange
+    gemBlue, gemGreen, gemOrange, heart
 ]);
 engine.setPlayer(player);
 
