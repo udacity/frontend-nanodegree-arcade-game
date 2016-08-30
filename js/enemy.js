@@ -77,7 +77,7 @@ Enemy.prototype.update = function(dt) {
         if (!this.hasSpeed())
             throw new TypeError('Waiting for speed setting');
 
-        let increase = this.getAxisX() + (this.getSpeed() * dt);
+        var increase = this.getAxisX() + (this.getSpeed() * dt);
         if (increase > 0)
             this.setAxisX(increase);
 

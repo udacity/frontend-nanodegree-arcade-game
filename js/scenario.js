@@ -54,7 +54,7 @@ Scenario.prototype.getColumnsPositions = function() {
     var resources           = this.getModule('resources'),
         columnsPositions    = [];
 
-    for (let i=0; i < this.getNumberColumns(); i++)
+    for (var i=0; i < this.getNumberColumns(); i++)
         columnsPositions.push((i * resources.imageSize('width')));
 
     return columnsPositions;
@@ -160,13 +160,13 @@ Scenario.prototype.render = function() {
         resourcesLoader = this.getModule('resourcesloader');
 
 	this.getTerrains().forEach(function(terrain) {
-		for(let i = 0; i < this.numberRowsByTerrain(terrain); i++)
+		for(var i = 0; i < this.numberRowsByTerrain(terrain); i++)
             urlsRowsImages.push(resources.urlImage('scenario', terrain));
 	}.bind(this));
 
 	for (var row = 0; row < this.getNumberRows(); row++) {
-		for (let col = 0; col < this.getNumberColumns(); col++) {
-            let image = resourcesLoader.get(urlsRowsImages[row]);
+		for (var col = 0; col < this.getNumberColumns(); col++) {
+            var image = resourcesLoader.get(urlsRowsImages[row]);
 			canvas.getContext().drawImage(image,
 				col * resources.imageSize('width'),
 				row * resources.imageSize('height'));

@@ -42,7 +42,7 @@ EntityFactory.prototype.create = function(entityName, specificDependencies) {
     if (specificDependencies instanceof Array) {
         specificDependencies.forEach(function(dependency) {
             if (!(dependency instanceof Module)) {
-                let label = dependency.constructor.name;
+                var label = dependency.constructor.name;
                 throw new TypeError('Invalid module: ' + label);
             }
 

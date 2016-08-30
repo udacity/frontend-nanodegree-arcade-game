@@ -23,7 +23,7 @@ Routes.prototype.create = function() {
         currentRoute    = -124.5;
 
     scenario.getTerrains().forEach(function(terrain) {
-        for (let i = 0; i < scenario.numberRowsByTerrain(terrain); i++) {
+        for (var i = 0; i < scenario.numberRowsByTerrain(terrain); i++) {
             currentRoute += resources.imageSize('height');
             if (!this.routes.hasOwnProperty(terrain))
                 this.routes[terrain] = [];
