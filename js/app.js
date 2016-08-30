@@ -9,6 +9,7 @@ var config          = new Config,
     scoreboardWI    = new ScoreboardWebInterface,
     scoreboard      = new Scoreboard,
     entityFactory   = new EntityFactory,
+    bonusFactory    = new BonusFactory,
     engine          = new Engine,
     gameControl     = new GameControl,
     collision       = new Collision;
@@ -45,25 +46,11 @@ scoreboard.addDependencies(scoreboardWI);
 
 // Entity Factory
 entityFactory.addDefaultDependencies([
-    scenario,
-    resources,
-    canvas,
-    resourcesLoader,
-    timer,
-    scoreboard,
-    traffic
+    scenario, resources, canvas, resourcesLoader, timer, scoreboard, traffic
 ]);
 
-// Gems
-var gemBlue, gemGreen, gemOrange, heart;
-gemBlue = entityFactory.create(Gem);
-gemBlue.setConfig(config.select('bonus','gemBlue'));
-gemGreen = entityFactory.create(Gem);
-gemGreen.setConfig(config.select('bonus','gemGreen'));
-gemOrange = entityFactory.create(Gem);
-gemOrange.setConfig(config.select('bonus','gemOrange'));
-heart = entityFactory.create(Heart);
-heart.setConfig(config.select('bonus', 'heart'));
+// Gems Factory
+bonusFactory.addDependencies(entityFactory);
 
 // Player
 var player = entityFactory.create(Player, [routes, scoreboard]);
@@ -77,7 +64,10 @@ engine.addEntities([
     entityFactory.create(Bug),
     entityFactory.create(Bug),
     entityFactory.create(Bug),
-    gemBlue, gemGreen, gemOrange, heart
+    bonusFactory.create(Gem, config.select('bonus','gemBlue')),
+    bonusFactory.create(Gem, config.select('bonus','gemGreen')),
+    bonusFactory.create(Gem, config.select('bonus','gemOrange')),
+    bonusFactory.create(Heart, config.select('bonus','heart'))
 ]);
 engine.setPlayer(player);
 
