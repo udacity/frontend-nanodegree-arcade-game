@@ -24,53 +24,92 @@ A mecânica é simples! Controlar o personagem, ajudando-o a atravesar a rua at�
 - <kbd>Shift</kbd> - Select (Alterna os personagens)
 
 # Para Desenvolvedores
-Alguns comentários sobre sessões e códigos específicos.
+Alguns módulos desenvolvidos para o jogo:
 
-### Configurações
-Em **config.js** você encontrará as configurações de praticamente todas as partes do jogo. Você pode brincar e alterá-las, mas tome cuidado, essas configurações afetam como o jogo se comporta. Abaixo você verá um pequeno trecho do arquivo de configuração. Ele é responsável pela configuração do cenário do jogo:
+- **Config**:           Configurações
+- **Timer**:            Gerenciamento de tempo
+- **Resouces**:         Gerenciamento dos recursos
+- **Resources Loader**: Carregador de recursos
+- **Scenario**:         Gerenciamento de cenários
+- **Routes**:           Gerenciamento de rotas de cenário
+- **Traffic**:          Gerenciamento de tráfico de inimigos
+- **Scoreboard**:       Gerenciamento de placar do jogo
+- **Entity Factory**:   Criador de entidades
+- **Bonus Factory**:    Criador de bônus
+- **Game Control**:     Controle de Jogo
+- **Collision**:        Gerenciamento de colisão entre entidades
 
+### Alguns exemplos de utilização:
+
+**Timer**
 ```javascript
-cols: 5,
-rows: {
-    water: 1,
-    stone: 3,
-    grass: 1
-}
+// create future timer (in seconds)
+var soon = timer.createFutureTime(10);
+
+// checking the date
+if (timer.isFutureTime(soon))
+    console.log('Yes!');
 ```
 
-O código acima define um cenário com: 5 colunas e 5 linhas (Água - 1; Pedra - 3; Grama - 1):
-
-![image](images/readme/0001.jpg)
-
-Se optarmos talvez por (Água - 1; Pedra - 2; Grama - 2) teremos o seguinte código:
-
+**Resources**
 ```javascript
-cols: 5,
-rows: {
-    water: 1,
-    stone: 2,
-    grass: 2
-}
+// set config
+resources.setConfig(config.select('resources'));
+
+// Standard size of the images
+resources.imageSize('width');   // 101
+resources.imageSize('height');  // 83
+
+// One url image
+resources.urlImage('characters', 'boy'); // images/char-boy.png
+
+// Urls of a group
+resources.urlsByImagesGroup('characters'); // array
 ```
 
-![image](images/readme/0002.jpg)
-
-### Rotas
-Rotas são estradas que os inimigos percorrerão. Pontos comuns no eixo Y que mantem os inimigos trafegando por referências próximas ao centro de cada linha do cenário. Em **routes.js** as rotas do cenário são associadas aos seus terrenos. Isso permite definir de forma mais clara o trajeto dos inimigos.
-
+**Resources Loader**
 ```javascript
-var MyEnemy = function() {
-    // more code ...
-    this.addTerrainsSurface(['stone', 'grass']);
-    // more code ...
-};
+// loading an image
+var url = resources.urlImage('characters', 'boy');
+resourcesLoader.singleLoad(url);
+
+// Loading multiple images
+var urls = resources.urlsByImagesGroup('characters');
+resourcesLoader.multipleLoad(urls);
+
+// Get
+resourcesLoader.get(url); // image
 ```
 
-Esse código define um inimigo capaz de percorrer qualquer uma das rotas de pedra ou grama que o cenário possuir.
+**Scenario**
+```javascript
+// Default settings
+scenario.setDefaultConfig();
 
-### Gerenciando o Tráfico de Inimigos
-**traffic.js** gerencia a entrada e saída de inimigos em cada rota do cenário. Isso mantem uma melhor distribuição destes inimigos e permite um movimento fluído do jogador.
+// Specific settings
+scenario.setNumberColumns(5);
+scenario.addNumberRows('water', 1);
+scenario.addNumberRows('stone', 3);
+scenario.addNumberRows('grass', 2);
 
+// Get
+scenario.getNumberColumns();    // 5
+scenario.getNumberRows();       // 6
+```
+
+**Routes**
+```javascript
+// Returning grass routes
+routes.get('grass');
+
+// Returning grass and water routes
+routes.get(['grass', 'water']);
+
+// Returning last route grass
+routes.getFirstOrLast('last', 'grass');
+```
+
+**Traffic**
 ```javascript
 // free route
 var route = traffic.getEmptyRoute(enemy.getTerrainsSurface());
@@ -82,12 +121,22 @@ traffic.declareRouteEntry(route);
 traffic.declareRouteOutput(route);
 ```
 
-### Placar do Jogo
-Sempre que um evento acontece no jogo, envolvendo o placar, **scoreboard.js** alerta o jogador:
+**Scoreboard**
+```javascript
+// Score
+scoreboard.addScore();      // add 10
+scoreboard.addScore(50);    // add 50
 
-- Novos pontos conquistados;
-- Novo nível alcançado;
-- Vida recebida;
-- Vida removida;
+// Life
+scoreboard.addLife();       // add 1
+scoreboard.removeLife(2);   // remove 2
+```
 
-![image](images/readme/0003.jpg)
+**Factories**
+```javascript
+// Entity
+var bug = entityFactory.create(Bug);
+
+// Gem
+var gem = bonusFactory.create(Gem, config.select('bonus','gemBlue'));
+```
