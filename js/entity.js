@@ -188,6 +188,22 @@ Entity.prototype.setEntityName = function(name) {
 };
 
 /**
+ * @description Returns the group to which the entity belongs.
+ * @return {string}
+ */
+Entity.prototype.getEntityGroup = function() {
+    return this.group;
+};
+
+/**
+ * @description Returns the entity name.
+ * @return {string}
+ */
+Entity.prototype.getEntityName = function() {
+    return this.name;
+};
+
+/**
  * @description Defines a position on the X axis.
  * @param {number} axisX
  */

@@ -45,7 +45,7 @@ Player.prototype.isPauseGame = function() {
 };
 
 /**
- * @description Alterar a imagem do personagem quando select é pressionado.
+ * @description Added: Change the image of the character.
  * @param  {string} key
  */
 Player.prototype.selectSprite = function(key) {
@@ -53,13 +53,13 @@ Player.prototype.selectSprite = function(key) {
         resources   = this.getModule('resources');
 
     if (key === 'select') {
-        var charsObj    = resources.urlsByImagesGroup('characters', true);
+        var charsObj = resources.urlsByImagesGroup('characters', true);
 
         Object.keys(charsObj).forEach(function(name) {
             chars.push(name);
         });
 
-        var current = chars.indexOf(this.name);
+        var current = chars.indexOf(this.getEntityName());
         var name = current < (chars.length -1) ? chars[(current + 1)] : chars[0];
         this.setEntityName(name);
         this.generateSprite();
