@@ -45,7 +45,7 @@ Player.prototype.isPauseGame = function() {
 };
 
 /**
- * @description Added: Change the image of the character.
+ * @description Change the image of the character when select is pressed.
  * @param  {string} key
  */
 Player.prototype.selectSprite = function(key) {
