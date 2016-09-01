@@ -45,6 +45,28 @@ Player.prototype.isPauseGame = function() {
 };
 
 /**
+ * @description Alterar a imagem do personagem quando select é pressionado.
+ * @param  {string} key
+ */
+Player.prototype.selectSprite = function(key) {
+    var chars       = [],
+        resources   = this.getModule('resources');
+
+    if (key === 'select') {
+        var charsObj    = resources.urlsByImagesGroup('characters', true);
+
+        Object.keys(charsObj).forEach(function(name) {
+            chars.push(name);
+        });
+
+        var current = chars.indexOf(this.name);
+        var name = current < (chars.length -1) ? chars[(current + 1)] : chars[0];
+        this.setEntityName(name);
+        this.generateSprite();
+    }
+};
+
+/**
  * @description Move the character up. When the character hits the water it is
  * redirected to the starting point and points are scored on your score.
  * @param  {number} distance

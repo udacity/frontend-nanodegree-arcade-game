@@ -167,6 +167,7 @@ Scenario.prototype.render = function() {
 	for (var row = 0; row < this.getNumberRows(); row++) {
 		for (var col = 0; col < this.getNumberColumns(); col++) {
             var image = resourcesLoader.get(urlsRowsImages[row]);
+
 			canvas.getContext().drawImage(image,
 				col * resources.imageSize('width'),
 				row * resources.imageSize('height'));

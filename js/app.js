@@ -49,7 +49,7 @@ entityFactory.addDefaultDependencies([
     scenario, resources, canvas, resourcesLoader, timer, scoreboard, traffic
 ]);
 
-// Gems Factory
+// Bonus Factory
 bonusFactory.addDependencies(entityFactory);
 
 // Player
@@ -75,7 +75,8 @@ engine.setPlayer(player);
 gameControl.setConfig(config.select('gameControl'));
 gameControl.addCallbacks('keyup', [
     engine.pauseGame.bind(engine),
-    player.move.bind(player)
+    player.move.bind(player),
+    player.selectSprite.bind(player)
 ]);
 gameControl.init();
 

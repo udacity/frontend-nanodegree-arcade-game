@@ -82,6 +82,7 @@ function Config() {
     this.gameControl = {
     	standardDevice: 'keyboard',
     	keyboard: {
+            16: 'select',
     		32: 'pause',
     		37: 'left',
     		38: 'up',
