@@ -83,11 +83,11 @@ function Config() {
     	standardDevice: 'keyboard',
     	keyboard: {
             16: 'select',
-    		32: 'pause',
-    		37: 'left',
-    		38: 'up',
-    		39: 'right',
-    		40: 'down'
+            32: 'pause',
+            37: 'left',
+            38: 'up',
+            39: 'right',
+            40: 'down'
     	}
     },
     this.bonus = {
