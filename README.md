@@ -13,7 +13,7 @@ git clone https://github.com/paulofreitasnobrega/frontend-nanodegree-arcade-game
 Após obter os arquivos, inicie o jogo executando o arquivo **index.html**.
 
 ### Como Jogar?
-A mecânica é simples! Controlar o personagem, ajudando-o a atravesar a rua até chegar ao rio. Pontos são adicionados no placar do jogo toda vez que o personagem chega ao objetivo, e vidas são retiradas quando o mesmo é atingido no trajeto. Há pontos e vidas extras que são oferecidos, em intervalos, durante todo o jogo. O jogo chega ao fim somente quando o jogador perder todas as vidas disponíveis.
+A mecânica é simples! Controlar o personagem, ajudando-o a atravesar a rua até chegar ao rio. Pontos são adicionados no placar do jogo toda vez que o personagem chega ao objetivo, e vidas são retiradas quando o mesmo é atingido no trajeto. Há pontos e vidas extras que são oferecidos, em intervalos, durante todo o jogo. O jogo chega ao fim somente quando o jogador perde todas as vidas disponíveis.
 
 ###### Controle do Jogo
 - <kbd>Up</kbd>
@@ -40,6 +40,12 @@ Alguns módulos desenvolvidos para o jogo:
 - **Collision**:        Gerenciamento de colisão entre entidades
 
 ### Alguns exemplos de utilização:
+
+**Config**
+```javascript
+// select config resources
+var resourcesConfig = config.select('resources');
+```
 
 **Timer**
 ```javascript
@@ -139,4 +145,56 @@ var bug = entityFactory.create(Bug);
 
 // Gem
 var gem = bonusFactory.create(Gem, config.select('bonus','gemBlue'));
+```
+
+**New Enemy**
+```javascript
+function Bee() {
+    Enemy.call(this);
+};
+
+Bee.prototype = Object.create(Enemy.prototype);
+Bee.prototype.constructor = Bee;
+
+Bee.prototype.init = function() {
+    var traffic = this.getModule('traffic');
+
+    if (!this.isInitialized()) {
+        this.setPadding(20);
+        this.setEntityName('bee');
+        this.setEntityGroup('enemies');
+        this.addTerrainsSurface(['grass']);
+        this.generateSprite();
+        this.initialize();
+    }
+
+    this.setRoute(traffic.getEmptyRoute(this.getTerrainsSurface()));
+    traffic.declareRouteEntry(this.getRoute());
+    this.setSpeed(this.getRandomSpeed());
+};
+```
+
+**New Enemy (Hibernation Cycle)**
+```javascript
+function Bee() {
+    Enemy.call(this);
+};
+
+// code ...
+
+Bee.prototype.init = function() {
+    var traffic = this.getModule('traffic');
+
+    if (!this.isInitialized()) {
+        // code ...
+        this.hibernationDuration(10);
+        this.hibernationInterval(5);
+        this.hibernate();
+        // code ...
+
+        this.initialize();
+    }
+
+    // code ...
+};
 ```
