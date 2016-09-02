@@ -1,4 +1,6 @@
-# frontend-nanodegree-arcade-game
+﻿# frontend-nanodegree-arcade-game
+![image](images/readme/0001.jpg)
+
 Olá! Meu nome é **Paulo Freitas Nobrega** e esta é a minha versão do Frontend Nanodegree Arcade Game, projeto do curso de gradução Nanodegree Desenvolvedor Web Front-End oferecido pela Udacity (Conheça mais sobre a Udacity neste link (https://br.udacity.com/us/)). Frontend Nanodegree Arcade Game tem como objetivo o desenvolvimento de um jogo baseado no clássico dos fliperamas [Frogger](https://pt.wikipedia.org/wiki/Frogger). Mais detalhes na rúbrica do projeto: (https://review.udacity.com/#!/projects/2696458597/rubric).
 
 ### Instalação
