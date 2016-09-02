@@ -1,5 +1,5 @@
 # frontend-nanodegree-arcade-game
-Olá! Meu nome é **Paulo Freitas Nobrega** e esta é a minha versão do Frontend Nanodegree Arcade Game, projeto do curso de gradução Nanodegree Desenvolvedor Web Front-End oferecido pela Udacity (Conheça mais sobre a Udacity neste link (https://br.udacity.com/us/)). Frontend Nanodegree Arcade Game tem como objetivo o desenvolvimento de um jogo baseado no clássico dos fliperamas [Frogger](https://pt.wikipedia.org/wiki/Frogger). Encontre mais detalhes na rúbrica do projeto: (https://review.udacity.com/#!/projects/2696458597/rubric).
+Olá! Meu nome é **Paulo Freitas Nobrega** e esta é a minha versão do Frontend Nanodegree Arcade Game, projeto do curso de gradução Nanodegree Desenvolvedor Web Front-End oferecido pela Udacity (Conheça mais sobre a Udacity neste link (https://br.udacity.com/us/)). Frontend Nanodegree Arcade Game tem como objetivo o desenvolvimento de um jogo baseado no clássico dos fliperamas [Frogger](https://pt.wikipedia.org/wiki/Frogger). Mais detalhes na rúbrica do projeto: (https://review.udacity.com/#!/projects/2696458597/rubric).
 
 ### Instalação
 Você pode fazer o download do arquivo **.zip** diretamente neste link: (https://github.com/paulofreitasnobrega/frontend-nanodegree-arcade-game/archive/master.zip)
@@ -13,18 +13,20 @@ git clone https://github.com/paulofreitasnobrega/frontend-nanodegree-arcade-game
 Após obter os arquivos, inicie o jogo executando o arquivo **index.html**.
 
 ### Como Jogar?
-A mecânica é simples! Controlar o personagem, ajudando-o a atravesar a rua até chegar ao rio. Pontos são adicionados no placar do jogo toda vez que o personagem chega ao objetivo, e vidas são retiradas quando o mesmo é atingido no trajeto. Há pontos e vidas extras que são oferecidos, em intervalos, durante todo o jogo. O jogo chega ao fim somente quando o jogador perde todas as vidas disponíveis.
+A mecânica é simples! Controle o personagem, ajudando-o a atravesar a rua até chegar ao rio. Pontos serão adicionados no placar do jogo toda vez que o personagem chegar ao objetivo, e vidas serão retiradas quando o mesmo for atingido no trajeto. Há pontos e vidas extras que são oferecidos, em pequenos intervalos, durante todo o jogo. Somente quando o jogador perde todas as vidas disponíveis o jogo chega ao fim.
 
-###### Controle do Jogo
+**Controle do Jogo**
+Você controlará o personagem através das seguintes teclas no teclado:
+
 - <kbd>Up</kbd>
 - <kbd>Right</kbd>
 - <kbd>Down</kbd>
 - <kbd>Left</kbd>
-- <kbd>Space Bar</kbd> - Pause
-- <kbd>Shift</kbd> - Select (Alterna os personagens)
+- <kbd>Space Bar</kbd> - Pausa o jogo.
+- <kbd>Shift</kbd> - Select - Alterna entre os personagens disponíveis.
 
 # Para Desenvolvedores
-Alguns módulos desenvolvidos para o jogo:
+Módulos desenvolvidos para o jogo:
 
 - **Config**:           Configurações
 - **Timer**:            Gerenciamento de tempo
@@ -39,18 +41,58 @@ Alguns módulos desenvolvidos para o jogo:
 - **Game Control**:     Controle de Jogo
 - **Collision**:        Gerenciamento de colisão entre entidades
 
-### Alguns exemplos de utilização:
+### Exemplos de utilização:
+Utilize as descrições dos métodos contidas em cada módulo para obter mais informações das aplicabilidades.
 
-**Config**
+**Change Config**
 ```javascript
-// select config resources
+// Scenario (5x5)
+cols: 5,
+rows: {
+    water: 1,
+    stone: 3,
+    grass: 1
+}
+
+// TO
+
+// Scenario (9x5)
+cols: 9,
+rows: {
+    water: 1,
+    stone: 2,
+    grass: 2
+}
+```
+
+**Using Config**
+```javascript
+// Settings selection
 var resourcesConfig = config.select('resources');
+
+// Injecting settings in a module
+var resources = new Resources;
+resources.setConfig(resourcesConfig);
+
+// Using settings within the module
+Resources.prototype.test = function() {
+    var images = this.getConfig('images');
+
+    // code ...
+};
 ```
 
 **Timer**
 ```javascript
+// Adding timer as dependency
+var timer = new Timer;
+resources.addDependencies(timer);
+
 // create future timer (in seconds)
-var soon = timer.createFutureTime(10);
+Resources.prototype.test = function() {
+    var timer   = this.getModule('timer'),
+        soon    = timer.createFutureTime(10);
+};
 
 // checking the date
 if (timer.isFutureTime(soon))
@@ -59,83 +101,121 @@ if (timer.isFutureTime(soon))
 
 **Resources**
 ```javascript
-// set config
-resources.setConfig(config.select('resources'));
+Scenario.prototype.test = function() {
+    var resources = this.getModule('resources');
 
-// Standard size of the images
-resources.imageSize('width');   // 101
-resources.imageSize('height');  // 83
+    // Standard size of the images
+    resources.imageSize('width');   // 101
+    resources.imageSize('height');  // 83
 
-// One url image
-resources.urlImage('characters', 'boy'); // images/char-boy.png
+    // One url image
+    resources.urlImage('characters', 'boy'); // images/char-boy.png
 
-// Urls of a group
-resources.urlsByImagesGroup('characters'); // array
+    // Urls of a group
+    resources.urlsByImagesGroup('characters'); // array
+};
 ```
 
 **Resources Loader**
 ```javascript
-// loading an image
+var resources       = new Resources,
+    ResourcesLoader = new ResourcesLoader;
+
+// an image
 var url = resources.urlImage('characters', 'boy');
 resourcesLoader.singleLoad(url);
 
-// Loading multiple images
-var urls = resources.urlsByImagesGroup('characters');
-resourcesLoader.multipleLoad(urls);
+// multiple images
+resourcesLoader.multipleLoad(resources.urlsByImagesGroup('characters'));
 
-// Get
-resourcesLoader.get(url); // image
+// Using the cache of loader
+Player.prototype.render = function() {
+    var resourcesLoader = this.getModule('resourcesloader');
+
+    // Get
+    var image = resourcesLoader.get(this.getSprite());
+};
 ```
 
 **Scenario**
 ```javascript
 // Default settings
-scenario.setDefaultConfig();
+var scenario = new Scenario;
+scenario.setDefaultConfig(); // (config.js)
 
 // Specific settings
-scenario.setNumberColumns(5);
-scenario.addNumberRows('water', 1);
-scenario.addNumberRows('stone', 3);
-scenario.addNumberRows('grass', 2);
+var scenario2 = new Scenario;
+scenario2.setNumberColumns(5);
+scenario2.addNumberRows('water', 1);
+scenario2.addNumberRows('stone', 3);
+scenario2.addNumberRows('grass', 2);
 
-// Get
-scenario.getNumberColumns();    // 5
-scenario.getNumberRows();       // 6
+// Using scenario data
+Test.prototype.show = function() {
+    var scenario = this.getModule('scenario');
+
+    return scenario.getNumberRows(); // 6
+};
 ```
 
 **Routes**
 ```javascript
-// Returning grass routes
-routes.get('grass');
+// Creating routes
+var routes = new Routes;
+routes.addDependencies([scenario, resources]);
+routes.create();
 
-// Returning grass and water routes
-routes.get(['grass', 'water']);
+Scenario.prototype.test = function() {
+    var routes = this.getModule('routes');
 
-// Returning last route grass
-routes.getFirstOrLast('last', 'grass');
+    // Returning grass routes
+    var grass = routes.get('grass');
+
+    // Returning grass and water routes
+    var grassAndWater = routes.get(['grass', 'water']);
+
+    // Returning last route grass
+    var grassLast = routes.getFirstOrLast('last', 'grass');
+};
 ```
 
 **Traffic**
 ```javascript
-// free route
-var route = traffic.getEmptyRoute(enemy.getTerrainsSurface());
+Bug.prototype.entry = function() {
+    var traffic = this.getModule('traffic');
 
-// entering the route
-traffic.declareRouteEntry(route);
+    // free route
+    var freeRoute = traffic.getEmptyRoute(this.getTerrainsSurface());
 
-// leaving the route
-traffic.declareRouteOutput(route);
+    // entering the route
+    traffic.declareRouteEntry(route);
+};
+
+Bug.prototype.output = function() {
+    var traffic = this.getModule('traffic');
+
+    // leaving the route
+    traffic.declareRouteOutput(this.getRoute());
+};
 ```
 
 **Scoreboard**
 ```javascript
-// Score
-scoreboard.addScore();      // add 10
-scoreboard.addScore(50);    // add 50
+Gem.prototype.collided = function() {
+    var scoreboard = this.getModule('scoreboard');    
 
-// Life
-scoreboard.addLife();       // add 1
-scoreboard.removeLife(2);   // remove 2
+    scoreboard.addScore();      // add 10
+    // OR
+    scoreboard.addScore(50);    // add 50
+};
+
+Bug.prototype.collided = function() {
+    var scoreboard = this.getModule('scoreboard');
+
+    scoreboard.removeLife();    // remove 1
+    // OR
+    scoreboard.removeLife(2);   // remove 2
+};
 ```
 
 **Factories**
