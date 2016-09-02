@@ -193,7 +193,7 @@ Bug.prototype.entry = function() {
     var freeRoute = traffic.getEmptyRoute(this.getTerrainsSurface());
 
     // entering the route
-    traffic.declareRouteEntry(route);
+    traffic.declareRouteEntry(freeRoute);
 };
 
 Bug.prototype.output = function() {
