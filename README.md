@@ -13,7 +13,7 @@ git clone https://github.com/paulofreitasnobrega/frontend-nanodegree-arcade-game
 Após obter os arquivos, inicie o jogo executando o arquivo **index.html**.
 
 ### Como Jogar?
-A mecânica é simples! Controle o personagem, ajudando-o a atravesar a rua até chegar ao rio. Pontos serão adicionados no placar do jogo toda vez que o personagem chegar ao objetivo, e vidas serão retiradas quando o mesmo for atingido no trajeto. Há pontos e vidas extras que são oferecidos, em pequenos intervalos, durante todo o jogo. Somente quando o jogador perde todas as vidas disponíveis o jogo chega ao fim.
+A mecânica é simples! Controle o personagem, ajudando-o a atravesar a rua até chegar ao rio. Pontos serão adicionados no placar do jogo toda vez que o personagem chegar ao objetivo, e vidas serão retiradas quando o mesmo for atingido no trajeto. Pontos e vidas extras serão oferecidos, em pequenos intervalos, durante todo o jogo. Somente quando o jogador perde todas as vidas disponíveis o jogo chega ao fim.
 
 **Controle do Jogo**
 Você controlará o personagem através das seguintes teclas no teclado:
@@ -101,18 +101,19 @@ if (timer.isFutureTime(soon))
 
 **Resources**
 ```javascript
+// Using resources in a module
 Scenario.prototype.test = function() {
     var resources = this.getModule('resources');
 
     // Standard size of the images
-    resources.imageSize('width');   // 101
-    resources.imageSize('height');  // 83
+    var width = resources.imageSize('width');   // 101
+    var height = resources.imageSize('height');  // 83
 
     // One url image
-    resources.urlImage('characters', 'boy'); // images/char-boy.png
+    var url = resources.urlImage('characters', 'boy'); // images/char-boy.png
 
     // Urls of a group
-    resources.urlsByImagesGroup('characters'); // array
+    var urls = resources.urlsByImagesGroup('characters'); // array
 };
 ```
 
@@ -165,6 +166,7 @@ var routes = new Routes;
 routes.addDependencies([scenario, resources]);
 routes.create();
 
+// Using the routes in a module
 Scenario.prototype.test = function() {
     var routes = this.getModule('routes');
 
@@ -181,6 +183,7 @@ Scenario.prototype.test = function() {
 
 **Traffic**
 ```javascript
+// Using the traffic in a module
 Bug.prototype.entry = function() {
     var traffic = this.getModule('traffic');
 
@@ -223,11 +226,11 @@ Bug.prototype.collided = function() {
 // Entity
 var bug = entityFactory.create(Bug);
 
-// Gem
+// Bonus
 var gem = bonusFactory.create(Gem, config.select('bonus','gemBlue'));
 ```
 
-**New Enemy**
+**Exemple New Enemy**
 ```javascript
 function Bee() {
     Enemy.call(this);
@@ -254,7 +257,7 @@ Bee.prototype.init = function() {
 };
 ```
 
-**New Enemy (Hibernation Cycle)**
+**Exemple New Enemy (Hibernation Cycle)**
 ```javascript
 function Bee() {
     Enemy.call(this);
