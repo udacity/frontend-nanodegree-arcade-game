@@ -165,6 +165,9 @@ Scoreboard.prototype.getLife = function() {
  * @description Reset and init scoreboard.
  */
 Scoreboard.prototype.reset = function() {
+    if (this.isRecord())
+        localStorage.setItem('nanodegreeGameRecord', this.getScore());
+
     this.score = 0;
     this.level = 0;
     this.life = 0;
@@ -177,4 +180,51 @@ Scoreboard.prototype.reset = function() {
  */
 Scoreboard.prototype.isGameOver = function() {
     return this.getData('life') < 0 ? true : false;
+};
+
+/**
+ * @description Checks whether the browser supports localStorage.
+ * @return {boolean}
+ */
+Scoreboard.prototype.isSupportStorage = function() {
+    return window.localStorage ? true : false;
+};
+
+/**
+ * @description Checks that the record was added.
+ * @return {boolean}
+ */
+Scoreboard.prototype.hasRecord = function() {
+    if (this.isSupportStorage()) {
+        if (localStorage.getItem('nanodegreeGameRecord') !== null)
+            return true;
+    }
+
+    return false;
+};
+
+/**
+ * @description Verifies that a new record has been reached.
+ * @return {boolean}
+ */
+Scoreboard.prototype.isRecord = function() {
+    if (!this.isSupportStorage())
+        return false;
+
+    if (this.hasRecord()) {
+        var record = this.getRecord();
+
+        if (this.getScore() <= record)
+            return false;
+    }
+
+    return true;
+};
+
+/**
+ * @description Returns the current record.
+ * @return {number}
+ */
+Scoreboard.prototype.getRecord = function() {
+    return parseInt(localStorage.getItem('nanodegreeGameRecord'));
 };
