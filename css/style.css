@@ -64,6 +64,10 @@ canvas {
 	background-position: -28px 0;
 }
 
+#scoreboard li#sb-record span {
+	background-position: -42px 0;
+}
+
 #scoreboard li.add {
 	color: #fff;
 	background-color: #005b96;
@@ -88,8 +92,13 @@ canvas {
 }
 
 #scoreboard li#sb-level.add span,
-#scoreboard li#sb-danger.remove span {
+#scoreboard li#sb-level.remove span {
 	background-position: -28px -14px;
+}
+
+#scoreboard li#sb-record.add span,
+#scoreboard li#sb-record.remove span {
+	background-position: -42px -14px;
 }
 
 /* Animations */

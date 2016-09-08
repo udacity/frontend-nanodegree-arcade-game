@@ -77,7 +77,13 @@ function Config() {
     			id: 'sb-life',
     			label: 'Life: '
     		}
-    	}
+    	},
+        record: {
+            webInterface: {
+    			id: 'sb-record',
+    			label: 'Record: '
+    		}
+        }
     },
     this.gameControl = {
     	standardDevice: 'keyboard',

@@ -18,10 +18,20 @@ Scoreboard.prototype.constructor = Scoreboard;
  * @description Starts the score of the game. Updates the default settings.
  */
 Scoreboard.prototype.init = function() {
+    var scoreboardWI = this.getModule('scoreboardwebinterface');
+
     this.addData('score', this.getConfig().score.startingIn);
     this.addData('level', this.getConfig().level.startingIn);
     this.addData('life', this.getConfig().life.startingIn);
     this.changeNextLevel(this.getConfig().level.fisrtLevelUp);
+
+    if (this.hasRecord()) {
+        scoreboardWI.display('record', 'inline');
+        scoreboardWI.change('record', this.getRecord());
+        scoreboardWI.animation('record');
+    } else  {
+        scoreboardWI.display('record', 'none');
+    }
 };
 
 /**
@@ -120,7 +130,6 @@ Scoreboard.prototype.addLevel = function(level) {
 
     this.changeNextLevel(Math.floor(nextLevel));
     this.addData('level', level, 1);
-
 };
 
 /**

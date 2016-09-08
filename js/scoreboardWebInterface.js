@@ -38,3 +38,15 @@ ScoreboardWebInterface.prototype.animation = function(element, animation) {
         elmHtml.removeAttribute('class');
     }, 2000);
 };
+
+/**
+ * @description Show or hide an object.
+ * @param  {string} element
+ * @param  {string} status
+ */
+ScoreboardWebInterface.prototype.display = function(element, status) {
+    var config  = this.getConfig()[element].webInterface,
+        elmHtml = document.getElementById(config.id);
+
+    elmHtml.style.display = status;
+};
