@@ -31,7 +31,24 @@ var Player = function() {
 };
 
 Player.prototype.update = function(dt) {
+  // this.y = 300;
+};
 
+Player.prototype.handleInput = function(input) {
+  switch (input) {
+    case 'up':
+      this.y -= 90;
+      break;
+    case 'down':
+      this.y += 90;
+      break;
+    case 'right':
+      this.x += 100;
+      break;
+    case 'left':
+      this.x -= 100;
+      break;
+  }
 };
 
 Player.prototype.render = function() {
