@@ -104,3 +104,64 @@ document.addEventListener('keyup', function(e) {
       };
     player.handleInput(allowedKeys[e.keyCode]);
   });
+
+var reset = function() {
+  console.log('works');
+  player.x = 300;
+  player.y = 480;
+};
+
+var iconSelect;
+
+window.onload = function(){
+
+    iconSelect = new IconSelect("my-icon-select",
+        {'selectedIconWidth':28,
+        'selectedIconHeight':48,
+        'selectedBoxPadding':5,
+        'iconsWidth':28,
+        'iconsHeight':48,
+        'boxIconSpace':4,
+        'vectoralIconNumber':8,
+        'horizontalIconNumber':1});
+
+    var icons = [];
+    icons.push({'iconFilePath':'images/char-boy.png', 'iconValue':'1'});
+    icons.push({'iconFilePath':'images/char-cat-girl.png', 'iconValue':'2'});
+    icons.push({'iconFilePath':'images/char-horn-girl.png', 'iconValue':'3'});
+    icons.push({'iconFilePath':'images/char-pink-girl.png', 'iconValue':'4'});
+    icons.push({'iconFilePath':'images/char-princess-girl.png', 'iconValue':'5'});
+    icons.push({'iconFilePath':'images/enemy-bug.png', 'iconValue':'6'});
+
+    iconSelect.refresh(icons);
+
+};
+
+var changeChar = function(value) {
+  switch (value) {
+  case '1':
+    player.sprite = 'images/char-boy.png';
+  break;
+  case '2':
+    player.sprite = 'images/char-cat-girl.png';
+  break;
+  case '3':
+    player.sprite = 'images/char-horn-girl.png';
+    break;
+  case '4':
+    player.sprite = 'images/char-pink-girl.png';
+    break;
+  case '5':
+    player.sprite = 'images/char-princess-girl.png';
+    break;
+  case '6':
+    player.sprite = 'images/enemy-bug.png';
+    break;
+  }
+};
+document.querySelector('button').addEventListener('click', reset, false);
+document.getElementById('my-icon-select').addEventListener('changed', function(e) {
+              var value = iconSelect.getSelectedValue();
+              console.log(value);
+              changeChar(value);
+            });
