@@ -1,0 +1,28 @@
+{
+  "name": "frontend-nanodegree-arcade-game",
+  "version": "1.0.0",
+  "description": "frontend-nanodegree-arcade-game ===============================",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/christian-acuna/frontend-nanodegree-arcade-game.git"
+  },
+  "author": "Christian Acuña <cacuna0828@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/christian-acuna/frontend-nanodegree-arcade-game/issues"
+  },
+  "homepage": "https://github.com/christian-acuna/frontend-nanodegree-arcade-game#readme",
+  "devDependencies": {
+    "browser-sync": "^2.16.0",
+    "csslint-stylish": "0.0.5",
+    "del": "^2.2.2",
+    "gulp": "^3.9.1",
+    "gulp-clean-css": "^2.0.12",
+    "gulp-csslint": "^1.0.0",
+    "gulp-plumber": "^1.1.0"
+  }
+}
