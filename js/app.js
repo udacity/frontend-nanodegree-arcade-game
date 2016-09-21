@@ -9,6 +9,8 @@ var Enemy = function(x, y) {
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
+    this.height = 100;
+    this.width = 101;
     this.x = x;
     this.y = y;
     this.speed = BASE_SPEED;
@@ -24,7 +26,7 @@ Enemy.prototype.update = function(dt) {
     if (this.x > 708) {
       this.x = -(Math.floor(Math.random() * MAX_SPEED));
       this.speed = Math.floor(Math.random() * MAX_SPEED + 200);
-      console.log(this.speed);
+      // console.log(this.speed);
     } else {
       this.x += this.speed * dt;
     }
@@ -42,25 +44,30 @@ var Player = function() {
   this.sprite = 'images/char-boy.png';
   this.x = 300;
   this.y = 480;
+  this.height = 171;
+  this.width = 101;
 };
 
-Player.prototype.update = function(dt) {
+var inBounds = function(object) {
+  return object.x > 0 && object.x <= 508 &&
+         object.y >= 0 && object.y <= 507;
+};
+
+Player.prototype.update = function() {
+  console.log('x: ' + this.x);
+  console.log('y: ' + this.y);
 };
 
 Player.prototype.handleInput = function(input) {
-  switch (input) {
-    case 'up':
-      this.y -= 90;
-      break;
-    case 'down':
-      this.y += 90;
-      break;
-    case 'right':
-      this.x += 100;
-      break;
-    case 'left':
-      this.x -= 100;
-      break;
+
+  if (input === 'left' && this.x > 0) {
+    this.x -= 100;
+  } else if (input === 'right' && this.x < 600) {
+    this.x += 100;
+  } else if (input === 'up' && this.y > -60) {
+    this.y -= 90;
+  } else if (input === 'down'&& this.y < 480) {
+    this.y += 90;
   }
 };
 
@@ -94,7 +101,6 @@ document.addEventListener('keyup', function(e) {
         38: 'up',
         39: 'right',
         40: 'down'
-    };
-
+      };
     player.handleInput(allowedKeys[e.keyCode]);
-});
+  });
