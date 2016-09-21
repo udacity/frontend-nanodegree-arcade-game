@@ -19,7 +19,6 @@ Enemy.prototype.update = function(dt) {
     // all computers.
     if (this.x > 708) {
       this.x = -(Math.floor(Math.random() * 300));
-      console.log(this.x);
     } else {
       this.x += MOVEMENT_SPEED * dt;
     }
