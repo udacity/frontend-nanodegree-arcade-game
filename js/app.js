@@ -1,14 +1,24 @@
 // Enemies our player must avoid
 var Enemy = function() {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
-    // The image/sprite for our enemies, this uses
+    // Set the image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
-    // Set initial x position, off of canvas to left
-    this.x = -150;
 
-    // Variables to control y position
+    // Set x and y position
+    this.setX();
+	this.setY();
+
+	// Set speed
+	this.setSpeed();
+};
+
+Enemy.prototype.setX = function() {
+	// Set initial x position, off of canvas to left
+    this.x = -150;
+}
+
+Enemy.prototype.setY = function() {
+    // Set y position parameters
     var laneWidth = 83;
     var topLaneY = 60;
     var numberOfLanes = 3;
@@ -18,14 +28,16 @@ var Enemy = function() {
 
     // Place Enemy in a lane
     this.y = topLaneY + laneNumber * laneWidth;
+}
 
+Enemy.prototype.setSpeed = function() {
     // Variables to control initial speed
     var minSpeed = 100;
     var speedRange = 250
 
     // Set speed
     this.speed = Math.random() * speedRange + minSpeed;
-};
+}
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
