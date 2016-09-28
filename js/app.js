@@ -2,10 +2,29 @@
 var Enemy = function() {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
-
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
+    // Set initial x position, off of canvas to left
+    this.x = -150;
+
+    // Variables to control y position
+    var laneWidth = 83;
+    var topLaneY = 60;
+    var numberOfLanes = 3;
+
+    // Generate a random lane number between 0 and numberOfLanes - 1, inclusive
+    var laneNumber = Math.floor(Math.random() * numberOfLanes);
+
+    // Place Enemy in a lane
+    this.y = topLaneY + laneNumber * laneWidth;
+
+    // Variables to control initial speed
+    var minSpeed = 100;
+    var speedRange = 250
+
+    // Set speed
+    this.speed = Math.random() * speedRange + minSpeed;
 };
 
 // Update the enemy's position, required method for game
@@ -14,6 +33,7 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
+    this.x = this.x + this.speed * dt;
 };
 
 // Draw the enemy on the screen, required method for game
@@ -29,8 +49,13 @@ Enemy.prototype.render = function() {
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
+enemy1 = new Enemy();
+enemy2 = new Enemy();
+enemy3 = new Enemy();
 
+var allEnemies = [enemy1, enemy2, enemy3];
 
+player = new Enemy();
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
