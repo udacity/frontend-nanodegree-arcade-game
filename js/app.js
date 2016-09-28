@@ -33,7 +33,7 @@ Enemy.prototype.setY = function() {
 Enemy.prototype.setSpeed = function() {
     // Variables to control initial speed
     var minSpeed = 100;
-    var speedRange = 250
+    var speedRange = 250;
 
     // Set speed
     this.speed = Math.random() * speedRange + minSpeed;
@@ -46,6 +46,13 @@ Enemy.prototype.update = function(dt) {
     // which will ensure the game runs at the same speed for
     // all computers.
     this.x = this.x + this.speed * dt;
+
+    // reset enemy to left of screen if leaves screen to right
+    this.leftEdgeX = 490;
+    if (this.x > this.leftEdgeX) {
+    	this.setX();
+    	this.setY();
+    }
 };
 
 // Draw the enemy on the screen, required method for game
@@ -64,7 +71,7 @@ var Player = function() {
 }
 
 Player.prototype.update = function() {
-	console.log(this.x);
+	console.log(this.x, this.y);
 }
 
 Player.prototype.render = function() {
@@ -75,13 +82,13 @@ Player.prototype.handleInput = function(input) {
 	if(input === 'up') {
 		this.y = this.y - 83;
 	}
-	if(input === 'down') {
+	else if(input === 'down') {
 		this.y = this.y + 83;
 	}
-	if(input === 'left') {
+	else if(input === 'left') {
 		this.x = this.x - 100;
 	}
-	if(input === 'right') {
+	else if(input === 'right') {
 		this.x = this.x + 100;
 	}
 }
