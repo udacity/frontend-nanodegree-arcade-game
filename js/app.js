@@ -1,3 +1,11 @@
+// Game play variables
+var Game = function() {
+	this.laneWidth = 83;
+	this.topLaneY = 60;
+	this.numberOfLanes = 3;
+	this.laneHeight = 100;
+}
+
 // Enemies our player must avoid
 var Enemy = function() {
     // Set the image/sprite for our enemies, this uses
@@ -18,16 +26,12 @@ Enemy.prototype.setX = function() {
 }
 
 Enemy.prototype.setY = function() {
-    // Set y position parameters
-    var laneWidth = 83;
-    var topLaneY = 60;
-    var numberOfLanes = 3;
 
     // Generate a random lane number between 0 and numberOfLanes - 1, inclusive
-    var laneNumber = Math.floor(Math.random() * numberOfLanes);
+    var laneNumber = Math.floor(Math.random() * game.numberOfLanes);
 
     // Place Enemy in a lane
-    this.y = topLaneY + laneNumber * laneWidth;
+    this.y = game.topLaneY + laneNumber * game.laneWidth;
 }
 
 Enemy.prototype.setSpeed = function() {
@@ -80,22 +84,24 @@ Player.prototype.render = function() {
 
 Player.prototype.handleInput = function(input) {
 	if(input === 'up') {
-		this.y = this.y - 83;
+		this.y = this.y - game.laneWidth;
 	}
 	else if(input === 'down') {
-		this.y = this.y + 83;
+		this.y = this.y + game.laneWidth;
 	}
 	else if(input === 'left') {
-		this.x = this.x - 100;
+		this.x = this.x - game.laneHeight;
 	}
 	else if(input === 'right') {
-		this.x = this.x + 100;
+		this.x = this.x + game.laneHeight;
 	}
 }
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
+var game = new Game;
+
 enemy1 = new Enemy();
 enemy2 = new Enemy();
 enemy3 = new Enemy();
