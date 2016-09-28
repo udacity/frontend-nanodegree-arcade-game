@@ -4,6 +4,10 @@ var Game = function() {
 	this.topLaneY = 60;
 	this.numberOfLanes = 3;
 	this.laneHeight = 100;
+	this.leftLimit = 0;
+	this.rightLimit = 400;
+	this.upLimit = 48;
+	this.downLimit = 380;
 }
 
 // Enemies our player must avoid
@@ -70,12 +74,24 @@ Enemy.prototype.render = function() {
 
 var Player = function() {
 	this.sprite = 'images/char-boy.png';
+	this.setPosition()
+}
+
+Player.prototype.setPosition = function() {
+	this.x = 200;
+	this.y = 380;
+}
+
+Player.prototype.holdPosition = function() {
 	this.x = 200;
 	this.y = 380;
 }
 
 Player.prototype.update = function() {
 	console.log(this.x, this.y);
+	//if (this.y < 48) {
+	//	this.setPosition();
+	//}
 }
 
 Player.prototype.render = function() {
@@ -83,17 +99,37 @@ Player.prototype.render = function() {
 };
 
 Player.prototype.handleInput = function(input) {
-	if(input === 'up') {
+	// Move up if space remaining above
+	if(input === 'up' && this.y > game.upLimit) {
 		this.y = this.y - game.laneWidth;
 	}
-	else if(input === 'down') {
+	// Reset to beginning if this move would reach water
+	else if(input === 'up' && this.y === game.upLimit) {
+		this.setPosition();
+	}
+	// Move down if space remaining
+	else if(input === 'down' && this.y < game.downLimit) {
 		this.y = this.y + game.laneWidth;
 	}
-	else if(input === 'left') {
+	// Remain in place if no space remaining above
+	else if(input === 'down' && this.y === game.downLimit) {
+		this.y = this.y;
+	}
+	// Move left if space remaining to left
+	else if(input === 'left' && this.x > game.leftLimit) {
 		this.x = this.x - game.laneHeight;
 	}
-	else if(input === 'right') {
+	// Remain in place if no space remaining to left
+	else if(input === 'left' && this.x === game.leftLimit) {
+		this.x = this.x;
+	}
+	// Move right if space remaining to the right
+	else if(input === 'right' && this.x < game.rightLimit) {
 		this.x = this.x + game.laneHeight;
+	}
+	// Remain in place if no space remaining to the right
+	else if(input === 'right' && this.x === game.rightLimit) {
+		this.x = this.x;
 	}
 }
 
