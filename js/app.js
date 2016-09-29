@@ -1,12 +1,12 @@
 // Game play variables
 var Game = function() {
-	this.laneWidth = 83;
+	this.laneHeight = 83;
 	this.topLaneY = 60;
 	this.numberOfLanes = 3;
-	this.laneHeight = 100;
+	this.tileWidth = 100;
 	this.leftLimit = 0;
 	this.rightLimit = 400;
-	this.upLimit = 48;
+	this.upLimit = 58;
 	this.downLimit = 380;
 }
 
@@ -35,7 +35,7 @@ Enemy.prototype.setY = function() {
     var laneNumber = Math.floor(Math.random() * game.numberOfLanes);
 
     // Place Enemy in a lane
-    this.y = game.topLaneY + laneNumber * game.laneWidth;
+    this.y = game.topLaneY + laneNumber * game.laneHeight;
 }
 
 Enemy.prototype.setSpeed = function() {
@@ -60,6 +60,7 @@ Enemy.prototype.update = function(dt) {
     if (this.x > this.leftEdgeX) {
     	this.setX();
     	this.setY();
+    	this.setSpeed();
     }
 };
 
@@ -79,19 +80,24 @@ var Player = function() {
 
 Player.prototype.setPosition = function() {
 	this.x = 200;
-	this.y = 380;
-}
-
-Player.prototype.holdPosition = function() {
-	this.x = 200;
-	this.y = 380;
+	this.y = 390;
 }
 
 Player.prototype.update = function() {
-	console.log(this.x, this.y);
-	//if (this.y < 48) {
-	//	this.setPosition();
-	//}
+    // detect and deal with collision
+    var self = this; //carry player variable into forEach
+    allEnemies.forEach(function(enemy) {
+        var xDiff = self.x - enemy.x;
+        var xDiffSquare = Math.pow(xDiff, 2);
+        var yDiff = self.y - enemy.y;
+        var yDiffSquare = Math.pow(yDiff, 2);
+        var distance = Math.sqrt(xDiffSquare + yDiffSquare);
+        console.log(distance);
+        if (distance < 75) {
+        	self.setPosition();
+        }
+    });
+    console.log(this.x, this.y);
 }
 
 Player.prototype.render = function() {
@@ -101,7 +107,7 @@ Player.prototype.render = function() {
 Player.prototype.handleInput = function(input) {
 	// Move up if space remaining above
 	if(input === 'up' && this.y > game.upLimit) {
-		this.y = this.y - game.laneWidth;
+		this.y = this.y - game.laneHeight;
 	}
 	// Reset to beginning if this move would reach water
 	else if(input === 'up' && this.y === game.upLimit) {
@@ -109,7 +115,7 @@ Player.prototype.handleInput = function(input) {
 	}
 	// Move down if space remaining
 	else if(input === 'down' && this.y < game.downLimit) {
-		this.y = this.y + game.laneWidth;
+		this.y = this.y + game.laneHeight;
 	}
 	// Remain in place if no space remaining above
 	else if(input === 'down' && this.y === game.downLimit) {
@@ -117,7 +123,7 @@ Player.prototype.handleInput = function(input) {
 	}
 	// Move left if space remaining to left
 	else if(input === 'left' && this.x > game.leftLimit) {
-		this.x = this.x - game.laneHeight;
+		this.x = this.x - game.tileWidth;
 	}
 	// Remain in place if no space remaining to left
 	else if(input === 'left' && this.x === game.leftLimit) {
@@ -125,7 +131,7 @@ Player.prototype.handleInput = function(input) {
 	}
 	// Move right if space remaining to the right
 	else if(input === 'right' && this.x < game.rightLimit) {
-		this.x = this.x + game.laneHeight;
+		this.x = this.x + game.tileWidth;
 	}
 	// Remain in place if no space remaining to the right
 	else if(input === 'right' && this.x === game.rightLimit) {
