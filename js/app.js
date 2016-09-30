@@ -1,18 +1,18 @@
 // Game play variables
 var Game = function() {
 	// Row and column info
-	this.rows = 6;
-	this.columns = 5;
+	this.numRows = 6;
+	this.numColumns = 5;
 	this.rowHeight = 83;
-	this.rowWidth = 101;
-	this.numberOfLanes = 3;
+	this.columnWidth = 101;
+	this.numLanes = 3;
 
 	// board limits and positions for player
 	this.leftLimit = 0;
-	this.rightLimit = (this.columns - 1) * this.rowWidth;
+	this.rightLimit = (this.numColumns - 1) * this.columnWidth;
 	this.playerYOffset = 25;
 	this.upLimit = this.rowHeight - this.playerYOffset;
-	this.downLimit = this.rowHeight * (this.rows - 1) - this.playerYOffset;
+	this.downLimit = this.rowHeight * (this.numRows - 1) - this.playerYOffset;
 	this.initialColumn = 2;
 
 	// board limits for enemy
@@ -48,9 +48,9 @@ Enemy.prototype.setX = function() {
 
 Enemy.prototype.setY = function() {
 
-    // Generate a random lane number between 0 and game.numberOfLanes - 1, inclusive
+    // Generate a random lane number between 0 and game.numLanes - 1, inclusive
 
-    var laneNumber = Math.floor(Math.random() * game.numberOfLanes);
+    var laneNumber = Math.floor(Math.random() * game.numLanes);
 
     // Place Enemy in a lane
     this.y = game.topRowY + laneNumber * game.rowHeight;
@@ -70,7 +70,7 @@ Enemy.prototype.update = function(dt) {
     this.x = this.x + this.speed * dt;
 
     // reset enemy to left of screen if leaves screen to right
-    this.leftEdgeX = game.columns * game.rowWidth;
+    this.leftEdgeX = game.numColumns * game.columnWidth;
     if (this.x > this.leftEdgeX) {
     	this.setX();
     	this.setY();
@@ -93,8 +93,8 @@ var Player = function() {
 };
 
 Player.prototype.setPosition = function() {
-	this.x = game.initialColumn * game.rowWidth;
-	this.y = (game.rows - 1) * game.rowHeight - game.playerYOffset;
+	this.x = game.initialColumn * game.columnWidth;
+	this.y = (game.numRows - 1) * game.rowHeight - game.playerYOffset;
 };
 
 Player.prototype.update = function() {
@@ -106,7 +106,6 @@ Player.prototype.update = function() {
         var yDiff = self.y - enemy.y;
         var yDiffSquare = Math.pow(yDiff, 2);
         var distance = Math.sqrt(xDiffSquare + yDiffSquare);
-        console.log(distance);
         if (distance < game.collisionDistance) {
         	self.setPosition();
         }
@@ -136,7 +135,7 @@ Player.prototype.handleInput = function(input) {
 	}
 	// Move left if space remaining to left
 	else if(input === 'left' && this.x > game.leftLimit) {
-		this.x = this.x - game.rowWidth;
+		this.x = this.x - game.columnWidth;
 	}
 	// Remain in place if no space remaining to left
 	else if(input === 'left' && this.x === game.leftLimit) {
@@ -144,7 +143,7 @@ Player.prototype.handleInput = function(input) {
 	}
 	// Move right if space remaining to the right
 	else if(input === 'right' && this.x < game.rightLimit) {
-		this.x = this.x + game.rowWidth;
+		this.x = this.x + game.columnWidth;
 	}
 	// Remain in place if no space remaining to the right
 	else if(input === 'right' && this.x === game.rightLimit) {
