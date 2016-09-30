@@ -97,7 +97,19 @@ Player.prototype.setPosition = function() {
 	this.y = (game.numRows - 1) * game.rowHeight - game.playerYOffset;
 };
 
+Player.prototype.getRow = function() {
+	this.row = (this.y + game.playerYOffset) / game.rowHeight;
+};
+
+Player.prototype.getColumn = function() {
+	this.column = this.x / game.columnWidth;
+}
+
 Player.prototype.update = function() {
+	//get row and column
+	this.getRow();
+	this.getColumn();
+
     // detect and deal with collision
     var self = this; //carry player variable into forEach
     allEnemies.forEach(function(enemy) {
