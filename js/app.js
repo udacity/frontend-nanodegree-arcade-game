@@ -8,13 +8,8 @@ var Game = function() {
 	this.numLanes = 3;
 
 	// board limits and positions for player
-	this.leftLimit = 0;
-	this.rightLimit = (this.numColumns - 1) * this.columnWidth;
-	this.playerYOffset = 25;
-	this.upLimit = this.rowHeight - this.playerYOffset;
-	this.downLimit = this.rowHeight * (this.numRows - 1) - this.playerYOffset;
 	this.initialColumn = 2;
-
+	this.playerYOffset = 25;
 	this.minPlayerRow = 1;
 	this.maxPlayerRow = this.numRows - 1;
 	this.minPlayerColumn = 0;
