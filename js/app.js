@@ -61,8 +61,8 @@ Enemy.prototype.setSpeed = function() {
     this.speed = Math.random() * game.speedRange + game.minSpeed;
 };
 
-Enemy.prototype.getColumn = function() {
-	this.column = (this.y - game.topRowY)/game.rowHeight;
+Enemy.prototype.getRow = function() {
+	this.row = (this.y - game.topRowY)/game.rowHeight + 1;
 };
 
 // Update the enemy's position, required method for game
@@ -71,7 +71,7 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-    this.getColumn();
+    this.getRow();
 
     this.x = this.x + this.speed * dt;
 
@@ -127,23 +127,41 @@ Player.prototype.moveRight = function() {
 	this.x = this.x + game.columnWidth;
 };
 
+Player.prototype.getXDistance = function(enemy) {
+	var xDistance = Math.abs(this.x - enemy.x);
+	return xDistance;
+};
+
+Player.prototype.compareRows = function(enemy) {
+	console.log(enemy.row, this.row);
+	if (this.row === enemy.row) {
+		return true;
+	}
+};
+
+Player.prototype.checkCollision = function(enemy) {
+	var xDistance = this.getXDistance(enemy);
+	var sameRow = this.compareRows(enemy)
+	if (xDistance < game.collisionDistance && sameRow === true) {
+		return true;
+	}
+};
+
+Player.prototype.checkCollisions = function() {
+    var self = this; //carry player variable into forEach
+    allEnemies.forEach(function(enemy) {
+    	if (self.checkCollision(enemy)) {
+    		self.setPosition();
+    	}
+    });
+}
+
 Player.prototype.update = function() {
 	//get row and column
 	this.getRow();
 	this.getColumn();
-
-    // detect and deal with collision
-    var self = this; //carry player variable into forEach
-    allEnemies.forEach(function(enemy) {
-        var xDiff = self.x - enemy.x;
-        var xDiffSquare = Math.pow(xDiff, 2);
-        var yDiff = self.y - enemy.y;
-        var yDiffSquare = Math.pow(yDiff, 2);
-        var distance = Math.sqrt(xDiffSquare + yDiffSquare);
-        if (distance < game.collisionDistance) {
-        	self.setPosition();
-        }
-    });
+	// Check for collisions
+	this.checkCollisions();
 };
 
 Player.prototype.render = function() {
