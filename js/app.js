@@ -13,7 +13,7 @@ var Game = function() {
 	this.playerYOffset = 25;
 	this.upLimit = this.rowHeight - this.playerYOffset;
 	this.downLimit = this.rowHeight * (this.rows - 1) - this.playerYOffset;
-	this.initialColumn = 2
+	this.initialColumn = 2;
 
 	// board limits for enemy
 	this.leftStart = -150;
@@ -44,7 +44,7 @@ var Enemy = function() {
 Enemy.prototype.setX = function() {
 	// Set initial x position, off of canvas to left
     this.x = game.leftStart;
-}
+};
 
 Enemy.prototype.setY = function() {
 
@@ -54,12 +54,12 @@ Enemy.prototype.setY = function() {
 
     // Place Enemy in a lane
     this.y = game.topRowY + laneNumber * game.rowHeight;
-}
+};
 
 Enemy.prototype.setSpeed = function() {
     // Set speed
     this.speed = Math.random() * game.speedRange + game.minSpeed;
-}
+};
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
@@ -89,13 +89,13 @@ Enemy.prototype.render = function() {
 
 var Player = function() {
 	this.sprite = 'images/char-boy.png';
-	this.setPosition()
-}
+	this.setPosition();
+};
 
 Player.prototype.setPosition = function() {
 	this.x = game.initialColumn * game.rowWidth;
 	this.y = (game.rows - 1) * game.rowHeight - game.playerYOffset;
-}
+};
 
 Player.prototype.update = function() {
     // detect and deal with collision
@@ -111,8 +111,7 @@ Player.prototype.update = function() {
         	self.setPosition();
         }
     });
-    console.log(this.x, this.y);
-}
+};
 
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
@@ -151,20 +150,20 @@ Player.prototype.handleInput = function(input) {
 	else if(input === 'right' && this.x === game.rightLimit) {
 		this.x = this.x;
 	}
-}
+};
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-var game = new Game;
+var game = new Game();
 
-enemy1 = new Enemy();
-enemy2 = new Enemy();
-enemy3 = new Enemy();
+var enemy1 = new Enemy();
+var enemy2 = new Enemy();
+var enemy3 = new Enemy();
 
 var allEnemies = [enemy1, enemy2, enemy3];
 
-player = new Player();
+var player = new Player();
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
