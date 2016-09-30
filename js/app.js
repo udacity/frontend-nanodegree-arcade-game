@@ -1,14 +1,31 @@
 // Game play variables
 var Game = function() {
-	this.laneHeight = 83;
-	this.topLaneY = 60;
+	// Row and column info
+	this.rows = 6;
+	this.columns = 5;
+	this.rowHeight = 83;
+	this.rowWidth = 101;
 	this.numberOfLanes = 3;
-	this.tileWidth = 100;
+
+	// board limits and positions for player
 	this.leftLimit = 0;
-	this.rightLimit = 400;
-	this.upLimit = 58;
-	this.downLimit = 380;
-}
+	this.rightLimit = (this.columns - 1) * this.rowWidth;
+	this.playerYOffset = 25;
+	this.upLimit = this.rowHeight - this.playerYOffset;
+	this.downLimit = this.rowHeight * (this.rows - 1) - this.playerYOffset;
+	this.initialColumn = 2
+
+	// board limits for enemy
+	this.leftStart = -150;
+	this.topRowY = 60;
+
+	// enemy speed
+	this.minSpeed = 100;
+	this.speedRange = 250;
+
+	// colision distance
+	this.collisionDistance = 75;
+};
 
 // Enemies our player must avoid
 var Enemy = function() {
@@ -26,25 +43,22 @@ var Enemy = function() {
 
 Enemy.prototype.setX = function() {
 	// Set initial x position, off of canvas to left
-    this.x = -150;
+    this.x = game.leftStart;
 }
 
 Enemy.prototype.setY = function() {
 
-    // Generate a random lane number between 0 and numberOfLanes - 1, inclusive
+    // Generate a random lane number between 0 and game.numberOfLanes - 1, inclusive
+
     var laneNumber = Math.floor(Math.random() * game.numberOfLanes);
 
     // Place Enemy in a lane
-    this.y = game.topLaneY + laneNumber * game.laneHeight;
+    this.y = game.topRowY + laneNumber * game.rowHeight;
 }
 
 Enemy.prototype.setSpeed = function() {
-    // Variables to control initial speed
-    var minSpeed = 100;
-    var speedRange = 250;
-
     // Set speed
-    this.speed = Math.random() * speedRange + minSpeed;
+    this.speed = Math.random() * game.speedRange + game.minSpeed;
 }
 
 // Update the enemy's position, required method for game
@@ -56,7 +70,7 @@ Enemy.prototype.update = function(dt) {
     this.x = this.x + this.speed * dt;
 
     // reset enemy to left of screen if leaves screen to right
-    this.leftEdgeX = 490;
+    this.leftEdgeX = game.columns * game.rowWidth;
     if (this.x > this.leftEdgeX) {
     	this.setX();
     	this.setY();
@@ -79,8 +93,8 @@ var Player = function() {
 }
 
 Player.prototype.setPosition = function() {
-	this.x = 200;
-	this.y = 390;
+	this.x = game.initialColumn * game.rowWidth;
+	this.y = (game.rows - 1) * game.rowHeight - game.playerYOffset;
 }
 
 Player.prototype.update = function() {
@@ -93,7 +107,7 @@ Player.prototype.update = function() {
         var yDiffSquare = Math.pow(yDiff, 2);
         var distance = Math.sqrt(xDiffSquare + yDiffSquare);
         console.log(distance);
-        if (distance < 75) {
+        if (distance < game.collisionDistance) {
         	self.setPosition();
         }
     });
@@ -107,7 +121,7 @@ Player.prototype.render = function() {
 Player.prototype.handleInput = function(input) {
 	// Move up if space remaining above
 	if(input === 'up' && this.y > game.upLimit) {
-		this.y = this.y - game.laneHeight;
+		this.y = this.y - game.rowHeight;
 	}
 	// Reset to beginning if this move would reach water
 	else if(input === 'up' && this.y === game.upLimit) {
@@ -115,7 +129,7 @@ Player.prototype.handleInput = function(input) {
 	}
 	// Move down if space remaining
 	else if(input === 'down' && this.y < game.downLimit) {
-		this.y = this.y + game.laneHeight;
+		this.y = this.y + game.rowHeight;
 	}
 	// Remain in place if no space remaining above
 	else if(input === 'down' && this.y === game.downLimit) {
@@ -123,7 +137,7 @@ Player.prototype.handleInput = function(input) {
 	}
 	// Move left if space remaining to left
 	else if(input === 'left' && this.x > game.leftLimit) {
-		this.x = this.x - game.tileWidth;
+		this.x = this.x - game.rowWidth;
 	}
 	// Remain in place if no space remaining to left
 	else if(input === 'left' && this.x === game.leftLimit) {
@@ -131,7 +145,7 @@ Player.prototype.handleInput = function(input) {
 	}
 	// Move right if space remaining to the right
 	else if(input === 'right' && this.x < game.rightLimit) {
-		this.x = this.x + game.tileWidth;
+		this.x = this.x + game.rowWidth;
 	}
 	// Remain in place if no space remaining to the right
 	else if(input === 'right' && this.x === game.rightLimit) {
