@@ -15,6 +15,11 @@ var Game = function() {
 	this.downLimit = this.rowHeight * (this.numRows - 1) - this.playerYOffset;
 	this.initialColumn = 2;
 
+	this.minPlayerRow = 1;
+	this.maxPlayerRow = this.numRows - 1;
+	this.minPlayerColumn = 0;
+	this.maxPlayerColumn = this.numColumns - 1;
+
 	// board limits for enemy
 	this.leftStart = -150;
 	this.topRowY = 60;
@@ -103,12 +108,29 @@ Player.prototype.getRow = function() {
 
 Player.prototype.getColumn = function() {
 	this.column = this.x / game.columnWidth;
-}
+};
+
+Player.prototype.moveUp = function() {
+	this.y = this.y - game.rowHeight;
+};
+
+Player.prototype.moveDown = function() {
+	this.y = this.y + game.rowHeight;
+};
+
+Player.prototype.moveLeft = function() {
+	this.x = this.x - game.columnWidth;
+};
+
+Player.prototype.moveRight = function() {
+	this.x = this.x + game.columnWidth;
+};
 
 Player.prototype.update = function() {
 	//get row and column
 	this.getRow();
 	this.getColumn();
+	console.log(this.column, this.row);
 
     // detect and deal with collision
     var self = this; //carry player variable into forEach
@@ -130,36 +152,39 @@ Player.prototype.render = function() {
 
 Player.prototype.handleInput = function(input) {
 	// Move up if space remaining above
-	if(input === 'up' && this.y > game.upLimit) {
-		this.y = this.y - game.rowHeight;
+	if(input === 'up' && this.row > game.minPlayerRow) {
+		this.moveUp();
 	}
 	// Reset to beginning if this move would reach water
-	else if(input === 'up' && this.y === game.upLimit) {
+	else if(input === 'up' && this.row === game.minPlayerRow) {
 		this.setPosition();
 	}
 	// Move down if space remaining
-	else if(input === 'down' && this.y < game.downLimit) {
-		this.y = this.y + game.rowHeight;
+	else if(input === 'down' && this.row < game.maxPlayerRow) {
+		this.moveDown();
 	}
 	// Remain in place if no space remaining above
-	else if(input === 'down' && this.y === game.downLimit) {
-		this.y = this.y;
+	else if(input === 'down' && this.row === game.maxPlayerRow) {
+		// No action, leaving as placeholder to explicitly
+		// account for this case
 	}
 	// Move left if space remaining to left
-	else if(input === 'left' && this.x > game.leftLimit) {
-		this.x = this.x - game.columnWidth;
+	else if(input === 'left' && this.column > game.minPlayerColumn) {
+		this.moveLeft();
 	}
 	// Remain in place if no space remaining to left
-	else if(input === 'left' && this.x === game.leftLimit) {
-		this.x = this.x;
+	else if(input === 'left' && this.column === game.minPlayerColumn) {
+		// No action, leaving as placeholder to explicitly
+		// account for this case
 	}
 	// Move right if space remaining to the right
-	else if(input === 'right' && this.x < game.rightLimit) {
-		this.x = this.x + game.columnWidth;
+	else if(input === 'right' && this.column < game.maxPlayerColumn) {
+		this.moveRight();
 	}
 	// Remain in place if no space remaining to the right
-	else if(input === 'right' && this.x === game.rightLimit) {
-		this.x = this.x;
+	else if(input === 'right' && this.column === game.maxPlayerColumn) {
+		// No action, leaving as placeholder to explicitly
+		// account for this case
 	}
 };
 
