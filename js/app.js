@@ -1,19 +1,20 @@
-// Game play variables
+// Game play variables.  Gathering in a central object.
 var Game = function() {
-	// Row and column info, based on engine.js Engine.render().
+	// Row and column info, based on engine.js Engine.render.
 	this.numRows = 6;
 	this.numColumns = 5;
 	this.rowHeight = 83;
 	this.columnWidth = 101;
 	this.numLanes = 3; // 3x stone blocks.
+	this.width = this.numColumns * this.columnWidth;
 
-	// Many below amounts are somewhat arbitrary, but are set in attempt
+	// Many below amounts are somewhat arbitrary, but are set in attempt.
 	// to match the demo.
 
 	// Board limits and positioning for Player.
 	this.initialColumn = 2; // Middle row for 5 column game board.
 	this.playerYOffset = 25;  // Player feet slightly above bottom of tile.
-	this.minPlayerRow = 1; // Row zero is water.
+	this.minPlayerRow = 1; // Row zero is water, player doesn't travel to this row.
 	this.maxPlayerRow = this.numRows - 1; // Rows are zero-indexed.
 	this.minPlayerColumn = 0;
 	this.maxPlayerColumn = this.numColumns - 1; // Columns are zero-indexed.
@@ -28,7 +29,110 @@ var Game = function() {
 	this.enemySpeedRange = 250;
 
 	// Collision distance.
-	this.collisionDistance = 50; // Slight overlap of sprites before collision.
+	this.collisionDistance = 50; // Allows slight overlap of sprites before collision.
+
+	this.phase = "new"; // Current phase of game (new, playing, win, lose).
+	this.score = 0; // Current score.
+	this.lives = 3; // Initial number of lives.
+	this.speed = 1;	// Initial speed multiplier.
+	this.increase = 0.20; // Multiplier for speed increase per point.
+	this.difficulty = ""; // Game difficulty level.
+	this.winScore = 10;  // Score needed for a win.
+};
+
+Game.prototype.printText = function(text, fontSize, xCoordinate, yCoordinate) {
+	// Simplify redering text to canvas.
+	var fontWeight = "900";
+	var font = "Sans";
+	ctx.font = fontWeight + " " + fontSize + " " + font;
+	ctx.lineWidth = "2";
+	ctx.fillStyle = "white";
+	ctx.textAlign = "left";
+	ctx.fillText(text, xCoordinate, yCoordinate);
+	ctx.strokeText(text, xCoordinate, yCoordinate);
+};
+
+Game.prototype.printNew = function() {
+	// Write text for new game.
+	this.printText("Enter difficulty", "50px", 50, 200);
+	this.printText("Press 1 for easy", "30px", 60, 250);
+	this.printText("Press 2 for increasing", "30px", 60, 300);
+};
+
+Game.prototype.printFooter = function() {
+	// Write text for footer (score and lives).
+	this.printText("Score: " + this.score, "25px", 50, 575);
+	this.printText("Lives: " + this.lives, "25px", 350, 575);
+};
+
+Game.prototype.printWin = function() {
+	// Write text for win.
+	this.printText("You win!!!!!!", "50px", 50, 200);
+	this.printText("Press enter for new game", "30px", 50, 250);
+};
+
+Game.prototype.printLose = function() {
+	// Write text for lose.
+	this.printText("You lose!!!!!!", "50px", 50, 200);
+	this.printText("Press enter for new game", "30px", 50, 250);
+};
+
+Game.prototype.render = function() {
+	// Render Game text.
+	if (this.phase === "new") {
+		this.printNew();
+	}
+	else if (this.phase === "playing") {
+		this.printFooter();
+	}
+	else if (this.phase === "win") {
+		this.printWin();
+		this.printFooter();
+	}
+	else if (this.phase === "lose") {
+		this.printLose();
+		this.printFooter();
+	}
+};
+
+Game.prototype.handleInput = function(input) {
+	// Initial selection of game difficulty.
+	if ((input === '1' || input === '2') && this.phase === "new")  {
+		game.reset(); // Reset entities and game variables before play begins.
+		this.phase = "playing";
+		if (input === '2') {
+			this.difficulty = "increasing";
+		}
+	}
+	if ((this.phase === "lose" || this.phase === "win") && input === "enter") {
+		this.phase = "new";
+		game.reset(); // Reset entities and game variables before play begins.
+	}
+};
+
+Game.prototype.update = function() {
+	if (this.difficulty === "increasing") {
+		this.speed = 1 + this.increase * this.score;
+	}
+	if (this.score === this.winScore) {
+		this.phase = "win";
+	}
+	if (this.lives <= 0) {
+		this.phase = "lose";
+	}
+};
+
+Game.prototype.reset = function() {
+	this.phase = "new";
+	this.score = 0;
+	this.lives = 3; // Initial number of lives.
+	this.speed = 1;	// Initial speed multiplier.
+	this.increase = 0.20; // Multiplier for speed increase per point.
+	this.difficulty = "";
+	player.setPosition();
+	allEnemies.forEach(function(enemy) {
+		enemy.set();
+    });
 };
 
 // Enemies our player must avoid.
@@ -38,9 +142,7 @@ var Enemy = function() {
     this.sprite = 'images/enemy-bug.png';
 
     // Set position and speed.
-    this.setX();
-	this.setY();
-	this.setSpeed();
+    this.set();
 };
 
 Enemy.prototype.setX = function() {
@@ -50,7 +152,7 @@ Enemy.prototype.setX = function() {
 
 Enemy.prototype.setY = function() {
     // Generate a random lane number between 0 and
-    //game.numLanes - 1, inclusive.
+    // game.numLanes - 1, inclusive.
     var laneNumber = Math.floor(Math.random() * game.numLanes);
 
     // Place Enemy in a lane.
@@ -61,6 +163,12 @@ Enemy.prototype.setSpeed = function() {
     // Set speed; take a base-speed and add a random additional speed within
     // a range.
     this.speed = Math.random() * game.enemySpeedRange + game.enemyMinSpeed;
+};
+
+Enemy.prototype.set = function() {
+	this.setX();
+	this.setY();
+	this.setSpeed();
 };
 
 Enemy.prototype.getRow = function() {
@@ -80,7 +188,7 @@ Enemy.prototype.testScreenExit = function() {
 
 Enemy.prototype.move = function(dt) {
 	// Move enemy x-coordinate.
-	this.x = this.x + this.speed * dt;
+	this.x = this.x + this.speed * dt * game.speed;
 };
 
 Enemy.prototype.update = function(dt) {
@@ -102,7 +210,9 @@ Enemy.prototype.update = function(dt) {
 
 // Draw the enemy on the screen
 Enemy.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+	if (game.phase === "playing") {
+		ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+	}
 };
 
 // Player character the user moves around the screen
@@ -118,6 +228,17 @@ Player.prototype.setPosition = function() {
 	this.y = (game.numRows - 1) * game.rowHeight - game.playerYOffset;
 };
 
+Player.prototype.resetPosition = function(collision) {
+	this.setPosition();
+	if (collision === false) {
+		game.score = game.score + 1;
+	} else {
+		game.lives = game.lives - 1;
+	}
+};
+
+// Work with rows and columns in moving player/collisions
+// simplifies logic.
 Player.prototype.getRow = function() {
 	// Work back from y position to row index
 	this.row = (this.y + game.playerYOffset) / game.rowHeight;
@@ -175,11 +296,16 @@ Player.prototype.checkCollision = function(enemy) {
 Player.prototype.checkCollisions = function() {
 	// Loop through all enemies checking for a collision with player.
     var self = this; // Carry player variable into forEach.
+    var collision = false;
     allEnemies.forEach(function(enemy) {
     	if (self.checkCollision(enemy)) {
-    		self.setPosition();
+    		collision = true; // Only need to register that at least
+   			// one collision has ocurred.
     	}
     });
+    if (collision === true) {
+    	self.resetPosition(true);
+    }
 };
 
 Player.prototype.update = function() {
@@ -191,9 +317,13 @@ Player.prototype.update = function() {
 };
 
 Player.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
+	// Draw player sprite if in play phase.
+	if (game.phase === "playing") {
+		ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+		}
+	};
 
+// Handle input for player movement
 Player.prototype.handleInput = function(input) {
 	// Move up if space remaining above.
 	if(input === 'up' && this.row > game.minPlayerRow) {
@@ -201,7 +331,7 @@ Player.prototype.handleInput = function(input) {
 	}
 	// Reset to beginning if this move would reach water (row zero).
 	else if(input === 'up' && this.row === game.minPlayerRow) {
-		this.setPosition();
+		this.resetPosition(false);  // reset, collision === false
 	}
 	// Move down if space remaining.
 	else if(input === 'down' && this.row < game.maxPlayerRow) {
@@ -233,6 +363,7 @@ Player.prototype.handleInput = function(input) {
 };
 
 // Instantiate Game, Enemy, and Player objects; build enemy array.
+
 var game = new Game();
 
 var enemy1 = new Enemy();
@@ -247,11 +378,15 @@ var player = new Player();
 // Player.handleInput() method.
 document.addEventListener('keyup', function(e) {
     var allowedKeys = {
+    	13: 'enter',
+    	49: '1',
+    	50: '2',
         37: 'left',
         38: 'up',
         39: 'right',
         40: 'down'
     };
-
+    // Send input to player and game handlers
     player.handleInput(allowedKeys[e.keyCode]);
+    game.handleInput(allowedKeys[e.keyCode]);
 });
