@@ -18,17 +18,17 @@ var Game = function() {
 	this.minPlayerColumn = 0;
 	this.maxPlayerColumn = this.numColumns - 1; // Columns are zero-indexed.
 
-	// board limits for Enemy
+	// Board limits for Enemy.
 	this.enemyXStart = -150; // Start of screen, minor delay before return.
 	this.enemyTopY = 60;
 	this.maxEnemyX = this.numColumns * this.columnWidth;
 
-	// Enemy speed
+	// Enemy speed parameters.
 	this.enemyMinSpeed = 100;
 	this.enemySpeedRange = 250;
 
-	// Collision distance
-	this.collisionDistance = 75; // Slight overlap of sprites before collision.
+	// Collision distance.
+	this.collisionDistance = 50; // Slight overlap of sprites before collision.
 };
 
 // Enemies our player must avoid.
@@ -37,6 +37,7 @@ var Enemy = function() {
     // a helper we've provided to easily load images.
     this.sprite = 'images/enemy-bug.png';
 
+    // Set position and speed.
     this.setX();
 	this.setY();
 	this.setSpeed();
@@ -68,6 +69,8 @@ Enemy.prototype.getRow = function() {
 };
 
 Enemy.prototype.testScreenExit = function() {
+	// Test if Enemy exists screen to right;
+	// set to new position and speed if it does.
 	if (this.x > game.maxEnemyX) {
 		this.setSpeed();
 		this.setX();
@@ -78,7 +81,7 @@ Enemy.prototype.testScreenExit = function() {
 Enemy.prototype.move = function(dt) {
 	// Move enemy x-coordinate.
 	this.x = this.x + this.speed * dt;
-}
+};
 
 Enemy.prototype.update = function(dt) {
 	// Scaling by the dt parameter makes game run
