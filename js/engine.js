@@ -45,8 +45,9 @@ var Engine = (function(global) {
         /* Call our update/render functions, pass along the time delta to
          * our update function since it may be used for smooth animation.
          */
-        update(dt);
         render();
+        update(dt);
+
 
         /* Set our lastTime variable which is used to determine the time delta
          * for the next time this function is called.
@@ -95,6 +96,7 @@ var Engine = (function(global) {
             enemy.update(dt);
         });
         player.update();
+        game.update();
     }
 
     /* This function initially draws the "game level", it will then call
@@ -147,6 +149,9 @@ var Engine = (function(global) {
         /* Loop through all of the objects within the allEnemies array and call
          * the render function you have defined.
          */
+
+        game.render();
+
         allEnemies.forEach(function(enemy) {
             enemy.render();
         });
@@ -159,7 +164,8 @@ var Engine = (function(global) {
      * those sorts of things. It's only called once by the init() method.
      */
     function reset() {
-        // noop
+        //noop
+        //game.reset();
     }
 
     /* Go ahead and load all of the images we know we're going to need to

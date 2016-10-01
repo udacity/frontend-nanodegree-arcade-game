@@ -29,7 +29,109 @@ var Game = function() {
 
 	// Collision distance.
 	this.collisionDistance = 50; // Slight overlap of sprites before collision.
+
+	this.phase = "new";
+	this.score = 0;
+	this.lives = 3; // initial number of lives
+	this.speed = 1;	// initial speed multiplier
+	this.increase = 0.20; // multiplier for speed increase per point
+	this.difficulty = "";
+
+	this.winScore = 10;
 };
+
+Game.prototype.printText = function(text, center, height, size, x) {
+	ctx.font = "900" + " " + size + " " + "Sans";
+	ctx.lineWidth = "2";
+	ctx.fillStyle = "white";
+	if (center === "center") {
+		ctx.textAlign = "center";
+		x = this.numColumns * this.columnWidth / 2;
+	} else if (center === "left") {
+		ctx.textAlign = "left";
+	}
+	ctx.fillText(text, x, height);
+	ctx.strokeText(text, x, height);
+};
+
+Game.prototype.printNew = function() {
+	this.printText("Enter difficulty:", "center", 200, "50px");
+	this.printText("1 for easy", "left", 250, "50px", 50);
+	this.printText("2 for increasing", "left", 300, "50px", 50);
+};
+
+Game.prototype.printFooter = function() {
+	this.printText("Score: " + this.score, "left", this.numRows * this.rowHeight + 80,
+		"25px", 1 * this.columnWidth + 5);
+	this.printText("Lives: " + this.lives, "left", this.numRows * this.rowHeight + 80,
+		"25px", 3 * this.columnWidth + 5);
+};
+
+Game.prototype.printWin = function() {
+	this.printText("You win!!!!!!:", "center", 200, "50px");
+	this.printText("Enter for new game", "center", 250, "40px");
+};
+
+Game.prototype.printLose = function() {
+	this.printText("You lose!!!!!!:", "center", 200, "50px");
+	this.printText("Enter for new game", "center", 250, "40px");
+};
+
+Game.prototype.render = function() {
+	if (this.phase === "new") {
+		this.printNew();
+	}
+	else if (this.phase === "playing") {
+		this.printFooter();
+	}
+	else if (this.phase === "win") {
+		this.printWin();
+		this.printFooter();
+	}
+	else if (this.phase === "lose") {
+		this.printLose();
+		this.printFooter();
+	}
+};
+
+Game.prototype.handleInput = function(input) {
+	if ((input === '1' || input === '2') && this.phase === "new")  {
+		this.phase = "playing";
+		if (input === '2') {
+			this.difficulty = "increasing";
+		}
+	}
+	if ((this.phase === "lose" || this.phase === "win") && input === "enter") {
+		this.phase = "new";
+		game.reset();
+	}
+};
+
+Game.prototype.update = function() {
+	if (this.difficulty === "increasing") {
+		this.speed = 1 + this.increase * this.score;
+	}
+	if (this.score === this.winScore) {
+		this.phase = "win";
+	}
+	if (this.lives <= 0) {
+		this.phase = "lose";
+	}
+};
+
+Game.prototype.reset = function() {
+	this.phase = "new";
+	this.score = 0;
+	this.lives = 3; // initial number of lives
+	this.speed = 1;	// initial speed multiplier
+	this.increase = 0.20; // multiplier for speed increase per point
+	this.difficulty = "";
+	player.setPosition();
+	allEnemies.forEach(function(enemy) {
+		enemy.set();
+    });
+};
+
 
 // Enemies our player must avoid.
 var Enemy = function() {
@@ -38,9 +140,7 @@ var Enemy = function() {
     this.sprite = 'images/enemy-bug.png';
 
     // Set position and speed.
-    this.setX();
-	this.setY();
-	this.setSpeed();
+    this.set();
 };
 
 Enemy.prototype.setX = function() {
@@ -63,6 +163,12 @@ Enemy.prototype.setSpeed = function() {
     this.speed = Math.random() * game.enemySpeedRange + game.enemyMinSpeed;
 };
 
+Enemy.prototype.set = function() {
+	this.setX();
+	this.setY();
+	this.setSpeed();
+};
+
 Enemy.prototype.getRow = function() {
 	// Work back from y position to row index.
 	this.row = (this.y - game.enemyTopY)/game.rowHeight + 1;
@@ -80,7 +186,7 @@ Enemy.prototype.testScreenExit = function() {
 
 Enemy.prototype.move = function(dt) {
 	// Move enemy x-coordinate.
-	this.x = this.x + this.speed * dt;
+	this.x = this.x + this.speed * dt * game.speed;
 };
 
 Enemy.prototype.update = function(dt) {
@@ -102,7 +208,9 @@ Enemy.prototype.update = function(dt) {
 
 // Draw the enemy on the screen
 Enemy.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+	if (game.phase === "playing") {
+		ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+	}
 };
 
 // Player character the user moves around the screen
@@ -116,6 +224,15 @@ Player.prototype.setPosition = function() {
 	this.x = game.initialColumn * game.columnWidth;
 	// Rows are zero-indexed
 	this.y = (game.numRows - 1) * game.rowHeight - game.playerYOffset;
+};
+
+Player.prototype.resetPosition = function(collision) {
+	this.setPosition();
+	if (collision === false) {
+		game.score = game.score + 1;
+	} else {
+		game.lives = game.lives - 1;
+	}
 };
 
 Player.prototype.getRow = function() {
@@ -177,7 +294,7 @@ Player.prototype.checkCollisions = function() {
     var self = this; // Carry player variable into forEach.
     allEnemies.forEach(function(enemy) {
     	if (self.checkCollision(enemy)) {
-    		self.setPosition();
+    		self.resetPosition(true); // reset, collision === true
     	}
     });
 };
@@ -191,8 +308,11 @@ Player.prototype.update = function() {
 };
 
 Player.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
+	if (game.phase === "playing") {
+		ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+		}
+	};
+
 
 Player.prototype.handleInput = function(input) {
 	// Move up if space remaining above.
@@ -201,7 +321,7 @@ Player.prototype.handleInput = function(input) {
 	}
 	// Reset to beginning if this move would reach water (row zero).
 	else if(input === 'up' && this.row === game.minPlayerRow) {
-		this.setPosition();
+		this.resetPosition(false);  // reset, collision === false
 	}
 	// Move down if space remaining.
 	else if(input === 'down' && this.row < game.maxPlayerRow) {
@@ -233,6 +353,7 @@ Player.prototype.handleInput = function(input) {
 };
 
 // Instantiate Game, Enemy, and Player objects; build enemy array.
+
 var game = new Game();
 
 var enemy1 = new Enemy();
@@ -247,6 +368,9 @@ var player = new Player();
 // Player.handleInput() method.
 document.addEventListener('keyup', function(e) {
     var allowedKeys = {
+    	13: 'enter',
+    	49: '1',
+    	50: '2',
         37: 'left',
         38: 'up',
         39: 'right',
@@ -254,4 +378,5 @@ document.addEventListener('keyup', function(e) {
     };
 
     player.handleInput(allowedKeys[e.keyCode]);
+    game.handleInput(allowedKeys[e.keyCode]);
 });
