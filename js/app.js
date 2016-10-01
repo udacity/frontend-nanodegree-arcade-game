@@ -1,30 +1,33 @@
 // Game play variables
 var Game = function() {
-	// Row and column info
+	// Row and column info, based on engine.js Engine.render()
 	this.numRows = 6;
 	this.numColumns = 5;
 	this.rowHeight = 83;
 	this.columnWidth = 101;
-	this.numLanes = 3;
+	this.numLanes = 3; // 3x stone blocks
 
-	// board limits and positions for player
-	this.initialColumn = 2;
-	this.playerYOffset = 25;
-	this.minPlayerRow = 1;
-	this.maxPlayerRow = this.numRows - 1;
+	// Many below amounts are somewhat arbitrary, but are set in attempt
+	// to match the demo
+
+	// Board limits and positioning for Player
+	this.initialColumn = 2; // Middle row for 5 column game board
+	this.playerYOffset = 25;  // Player feet slightly above bottom of tile
+	this.minPlayerRow = 1; // Row zero is water
+	this.maxPlayerRow = this.numRows - 1; // Rows are zero-indexed
 	this.minPlayerColumn = 0;
-	this.maxPlayerColumn = this.numColumns - 1;
+	this.maxPlayerColumn = this.numColumns - 1; // Columns are zero-indexed
 
-	// board limits for enemy
-	this.leftStart = -150;
-	this.topRowY = 60;
+	// board limits for Enemy
+	this.enemyXStart = -150; // Start of screen, minor delay before return
+	this.enemyTopY = 60;
 
-	// enemy speed
-	this.minSpeed = 100;
-	this.speedRange = 250;
+	// Enemy speed
+	this.enemyMinSpeed = 100;
+	this.enemySpeedRange = 250;
 
-	// colision distance
-	this.collisionDistance = 75;
+	// Collision distance
+	this.collisionDistance = 75; // Slight overlap of sprites before collision
 };
 
 // Enemies our player must avoid
@@ -33,44 +36,40 @@ var Enemy = function() {
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
 
-    // Set x and y position
+    // Set x and y position, speed
     this.setX();
 	this.setY();
-
-	// Set speed
 	this.setSpeed();
 };
 
 Enemy.prototype.setX = function() {
 	// Set initial x position, off of canvas to left
-    this.x = game.leftStart;
+    this.x = game.enemyXStart;
 };
 
 Enemy.prototype.setY = function() {
-
-    // Generate a random lane number between 0 and game.numLanes - 1, inclusive
-
+    // Generate a random lane number between 0 and
+    //game.numLanes - 1, inclusive
     var laneNumber = Math.floor(Math.random() * game.numLanes);
 
     // Place Enemy in a lane
-    this.y = game.topRowY + laneNumber * game.rowHeight;
+    this.y = game.enemyTopY + laneNumber * game.rowHeight;
 };
 
 Enemy.prototype.setSpeed = function() {
-    // Set speed
-    this.speed = Math.random() * game.speedRange + game.minSpeed;
+    // Set speed; take a base-speed and add a random additional speed within
+    // a range
+    this.speed = Math.random() * game.enemySpeedRange + game.enemyMinSpeed;
 };
 
 Enemy.prototype.getRow = function() {
-	this.row = (this.y - game.topRowY)/game.rowHeight + 1;
+	// Work back from y position to row index
+	this.row = (this.y - game.enemyTopY)/game.rowHeight + 1;
 };
 
-// Update the enemy's position, required method for game
-// Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
+	// scaling by the dt parameter makes game run
+	// same speed on any system, see engine.js
     this.getRow();
 
     this.x = this.x + this.speed * dt;
@@ -84,15 +83,12 @@ Enemy.prototype.update = function(dt) {
     }
 };
 
-// Draw the enemy on the screen, required method for game
+// Draw the enemy on the screen
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
-
+// Player character the user moves around the screen
 var Player = function() {
 	this.sprite = 'images/char-boy.png';
 	this.setPosition();
@@ -100,61 +96,74 @@ var Player = function() {
 
 Player.prototype.setPosition = function() {
 	this.x = game.initialColumn * game.columnWidth;
+	// Rows are zero-indexed
 	this.y = (game.numRows - 1) * game.rowHeight - game.playerYOffset;
 };
 
 Player.prototype.getRow = function() {
+	// Work back from y position to row index
 	this.row = (this.y + game.playerYOffset) / game.rowHeight;
 };
 
 Player.prototype.getColumn = function() {
+	// Work back from x position to column index
 	this.column = this.x / game.columnWidth;
 };
 
 Player.prototype.moveUp = function() {
+	// Move player one row up
 	this.y = this.y - game.rowHeight;
 };
 
 Player.prototype.moveDown = function() {
+	// Move player one row down
 	this.y = this.y + game.rowHeight;
 };
 
 Player.prototype.moveLeft = function() {
+	// Move player one column left
 	this.x = this.x - game.columnWidth;
 };
 
 Player.prototype.moveRight = function() {
+	// Move player one column left
 	this.x = this.x + game.columnWidth;
 };
 
 Player.prototype.getXDistance = function(enemy) {
+	// Find absolute difference in x coordinate between
+	// player and enemy
 	var xDistance = Math.abs(this.x - enemy.x);
 	return xDistance;
 };
 
 Player.prototype.compareRows = function(enemy) {
 	console.log(enemy.row, this.row);
+	// Check if player and enemy are in same row
 	if (this.row === enemy.row) {
 		return true;
 	}
 };
 
 Player.prototype.checkCollision = function(enemy) {
+	// Check if player and enemy are in same row and
+	// their x-coordinates are within collision distance
 	var xDistance = this.getXDistance(enemy);
-	var sameRow = this.compareRows(enemy)
+	var sameRow = this.compareRows(enemy);
 	if (xDistance < game.collisionDistance && sameRow === true) {
 		return true;
 	}
 };
 
 Player.prototype.checkCollisions = function() {
+	// Loop through all enemies checking for a collision with player
     var self = this; //carry player variable into forEach
     allEnemies.forEach(function(enemy) {
     	if (self.checkCollision(enemy)) {
     		self.setPosition();
     	}
     });
-}
+};
 
 Player.prototype.update = function() {
 	//get row and column
@@ -173,7 +182,7 @@ Player.prototype.handleInput = function(input) {
 	if(input === 'up' && this.row > game.minPlayerRow) {
 		this.moveUp();
 	}
-	// Reset to beginning if this move would reach water
+	// Reset to beginning if this move would reach water (row zero)
 	else if(input === 'up' && this.row === game.minPlayerRow) {
 		this.setPosition();
 	}
@@ -206,9 +215,7 @@ Player.prototype.handleInput = function(input) {
 	}
 };
 
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
+// instantiate Game, Enemy, and Player objects; build enemy array
 var game = new Game();
 
 var enemy1 = new Enemy();
@@ -219,8 +226,8 @@ var allEnemies = [enemy1, enemy2, enemy3];
 
 var player = new Player();
 
-// This listens for key presses and sends the keys to your
-// Player.handleInput() method. You don't need to modify this.
+// Listens for key presses and sends the keys to
+// Player.handleInput() method.
 document.addEventListener('keyup', function(e) {
     var allowedKeys = {
         37: 'left',
