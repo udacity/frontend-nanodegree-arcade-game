@@ -292,11 +292,15 @@ Player.prototype.checkCollision = function(enemy) {
 Player.prototype.checkCollisions = function() {
 	// Loop through all enemies checking for a collision with player.
     var self = this; // Carry player variable into forEach.
+    var collision = false;
     allEnemies.forEach(function(enemy) {
     	if (self.checkCollision(enemy)) {
-    		self.resetPosition(true); // reset, collision === true
+    		collision = true;
     	}
     });
+    if (collision === true) {
+    	self.resetPosition(true);
+    }
 };
 
 Player.prototype.update = function() {
@@ -312,7 +316,6 @@ Player.prototype.render = function() {
 		ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 		}
 	};
-
 
 Player.prototype.handleInput = function(input) {
 	// Move up if space remaining above.
