@@ -1,25 +1,25 @@
 // Game play variables
 var Game = function() {
-	// Row and column info, based on engine.js Engine.render()
+	// Row and column info, based on engine.js Engine.render().
 	this.numRows = 6;
 	this.numColumns = 5;
 	this.rowHeight = 83;
 	this.columnWidth = 101;
-	this.numLanes = 3; // 3x stone blocks
+	this.numLanes = 3; // 3x stone blocks.
 
 	// Many below amounts are somewhat arbitrary, but are set in attempt
-	// to match the demo
+	// to match the demo.
 
-	// Board limits and positioning for Player
-	this.initialColumn = 2; // Middle row for 5 column game board
-	this.playerYOffset = 25;  // Player feet slightly above bottom of tile
-	this.minPlayerRow = 1; // Row zero is water
-	this.maxPlayerRow = this.numRows - 1; // Rows are zero-indexed
+	// Board limits and positioning for Player.
+	this.initialColumn = 2; // Middle row for 5 column game board.
+	this.playerYOffset = 25;  // Player feet slightly above bottom of tile.
+	this.minPlayerRow = 1; // Row zero is water.
+	this.maxPlayerRow = this.numRows - 1; // Rows are zero-indexed.
 	this.minPlayerColumn = 0;
-	this.maxPlayerColumn = this.numColumns - 1; // Columns are zero-indexed
+	this.maxPlayerColumn = this.numColumns - 1; // Columns are zero-indexed.
 
 	// board limits for Enemy
-	this.enemyXStart = -150; // Start of screen, minor delay before return
+	this.enemyXStart = -150; // Start of screen, minor delay before return.
 	this.enemyTopY = 60;
 	this.maxEnemyX = this.numColumns * this.columnWidth;
 
@@ -28,45 +28,42 @@ var Game = function() {
 	this.enemySpeedRange = 250;
 
 	// Collision distance
-	this.collisionDistance = 75; // Slight overlap of sprites before collision
+	this.collisionDistance = 75; // Slight overlap of sprites before collision.
 };
 
-// Enemies our player must avoid
+// Enemies our player must avoid.
 var Enemy = function() {
     // Set the image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
+    // a helper we've provided to easily load images.
     this.sprite = 'images/enemy-bug.png';
 
     this.setX();
 	this.setY();
 	this.setSpeed();
-
-    // Set x and y position, speed
-	//this.setSpeedAndPosition();
 };
 
 Enemy.prototype.setX = function() {
-	// Set initial x position, off of canvas to left
+	// Set initial x position, off of canvas to left.
     this.x = game.enemyXStart;
 };
 
 Enemy.prototype.setY = function() {
     // Generate a random lane number between 0 and
-    //game.numLanes - 1, inclusive
+    //game.numLanes - 1, inclusive.
     var laneNumber = Math.floor(Math.random() * game.numLanes);
 
-    // Place Enemy in a lane
+    // Place Enemy in a lane.
     this.y = game.enemyTopY + laneNumber * game.rowHeight;
 };
 
 Enemy.prototype.setSpeed = function() {
     // Set speed; take a base-speed and add a random additional speed within
-    // a range
+    // a range.
     this.speed = Math.random() * game.enemySpeedRange + game.enemyMinSpeed;
 };
 
 Enemy.prototype.getRow = function() {
-	// Work back from y position to row index
+	// Work back from y position to row index.
 	this.row = (this.y - game.enemyTopY)/game.rowHeight + 1;
 };
 
@@ -79,19 +76,25 @@ Enemy.prototype.testScreenExit = function() {
 };
 
 Enemy.prototype.move = function(dt) {
-	// move enemy x-coordinate
+	// Move enemy x-coordinate.
 	this.x = this.x + this.speed * dt;
 }
 
 Enemy.prototype.update = function(dt) {
-	// scaling by the dt parameter makes game run
-	// same speed on any system, see engine.js
+	// Scaling by the dt parameter makes game run
+	// Same speed on any system, see engine.js.
     this.getRow();
 
     this.move(dt);
 
-    // reset enemy to left of screen if leaves screen to right
+    // Reset enemy to left of screen if leaves screen to right.
     this.testScreenExit();
+
+    // A collision between a Player and an Enemy is the triggered
+    // by the same conditions as a collision between an Enemy and
+    // Nothing happens to the Enemy object in a collision.  Only
+    // The player is reset.  Seems like we can forgo collision
+    // detection in the Enemy.
 };
 
 // Draw the enemy on the screen
@@ -106,6 +109,7 @@ var Player = function() {
 };
 
 Player.prototype.setPosition = function() {
+	// Set player sprite to initial x and y positions
 	this.x = game.initialColumn * game.columnWidth;
 	// Rows are zero-indexed
 	this.y = (game.numRows - 1) * game.rowHeight - game.playerYOffset;
@@ -166,8 +170,8 @@ Player.prototype.checkCollision = function(enemy) {
 };
 
 Player.prototype.checkCollisions = function() {
-	// Loop through all enemies checking for a collision with player
-    var self = this; //carry player variable into forEach
+	// Loop through all enemies checking for a collision with player.
+    var self = this; // Carry player variable into forEach.
     allEnemies.forEach(function(enemy) {
     	if (self.checkCollision(enemy)) {
     		self.setPosition();
@@ -176,10 +180,10 @@ Player.prototype.checkCollisions = function() {
 };
 
 Player.prototype.update = function() {
-	//get row and column
+	// Get row and column.
 	this.getRow();
 	this.getColumn();
-	// Check for collisions
+	// Check for collisions.
 	this.checkCollisions();
 };
 
@@ -188,44 +192,44 @@ Player.prototype.render = function() {
 };
 
 Player.prototype.handleInput = function(input) {
-	// Move up if space remaining above
+	// Move up if space remaining above.
 	if(input === 'up' && this.row > game.minPlayerRow) {
 		this.moveUp();
 	}
-	// Reset to beginning if this move would reach water (row zero)
+	// Reset to beginning if this move would reach water (row zero).
 	else if(input === 'up' && this.row === game.minPlayerRow) {
 		this.setPosition();
 	}
-	// Move down if space remaining
+	// Move down if space remaining.
 	else if(input === 'down' && this.row < game.maxPlayerRow) {
 		this.moveDown();
 	}
-	// Remain in place if no space remaining above
+	// Remain in place if no space remaining above.
 	else if(input === 'down' && this.row === game.maxPlayerRow) {
 		// No action, leaving as placeholder to explicitly
-		// account for this case
+		// account for this case.
 	}
-	// Move left if space remaining to left
+	// Move left if space remaining to left.
 	else if(input === 'left' && this.column > game.minPlayerColumn) {
 		this.moveLeft();
 	}
-	// Remain in place if no space remaining to left
+	// Remain in place if no space remaining to left.
 	else if(input === 'left' && this.column === game.minPlayerColumn) {
 		// No action, leaving as placeholder to explicitly
-		// account for this case
+		// account for this case.
 	}
-	// Move right if space remaining to the right
+	// Move right if space remaining to the right.
 	else if(input === 'right' && this.column < game.maxPlayerColumn) {
 		this.moveRight();
 	}
-	// Remain in place if no space remaining to the right
+	// Remain in place if no space remaining to the right.
 	else if(input === 'right' && this.column === game.maxPlayerColumn) {
 		// No action, leaving as placeholder to explicitly
-		// account for this case
+		// account for this case.
 	}
 };
 
-// instantiate Game, Enemy, and Player objects; build enemy array
+// Instantiate Game, Enemy, and Player objects; build enemy array.
 var game = new Game();
 
 var enemy1 = new Enemy();
