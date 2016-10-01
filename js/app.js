@@ -6,6 +6,7 @@ var Game = function() {
 	this.rowHeight = 83;
 	this.columnWidth = 101;
 	this.numLanes = 3; // 3x stone blocks.
+	this.width = this.numColumns * this.columnWidth;
 
 	// Many below amounts are somewhat arbitrary, but are set in attempt
 	// to match the demo.
@@ -13,7 +14,7 @@ var Game = function() {
 	// Board limits and positioning for Player.
 	this.initialColumn = 2; // Middle row for 5 column game board.
 	this.playerYOffset = 25;  // Player feet slightly above bottom of tile.
-	this.minPlayerRow = 1; // Row zero is water.
+	this.minPlayerRow = 1; // Row zero is water, player doesn't travel to this row
 	this.maxPlayerRow = this.numRows - 1; // Rows are zero-indexed.
 	this.minPlayerColumn = 0;
 	this.maxPlayerColumn = this.numColumns - 1; // Columns are zero-indexed.
@@ -28,7 +29,7 @@ var Game = function() {
 	this.enemySpeedRange = 250;
 
 	// Collision distance.
-	this.collisionDistance = 50; // Slight overlap of sprites before collision.
+	this.collisionDistance = 50; // Allows slight overlap of sprites before collision.
 
 	this.phase = "new";
 	this.score = 0;
@@ -40,44 +41,45 @@ var Game = function() {
 	this.winScore = 10;
 };
 
-Game.prototype.printText = function(text, center, height, size, x) {
-	ctx.font = "900" + " " + size + " " + "Sans";
+Game.prototype.printText = function(text, fontSize, xCoordinate, yCoordinate) {
+	// Simplify redering text to canvas
+	var fontWeight = "900";
+	var font = "Sans"
+	ctx.font = fontWeight + " " + fontSize + " " + font;
 	ctx.lineWidth = "2";
 	ctx.fillStyle = "white";
-	if (center === "center") {
-		ctx.textAlign = "center";
-		x = this.numColumns * this.columnWidth / 2;
-	} else if (center === "left") {
-		ctx.textAlign = "left";
-	}
-	ctx.fillText(text, x, height);
-	ctx.strokeText(text, x, height);
+	ctx.textAlign = "left"
+	ctx.fillText(text, xCoordinate, yCoordinate);
+	ctx.strokeText(text, xCoordinate, yCoordinate);
 };
 
 Game.prototype.printNew = function() {
-	this.printText("Enter difficulty:", "center", 200, "50px");
-	this.printText("1 for easy", "left", 250, "50px", 50);
-	this.printText("2 for increasing", "left", 300, "50px", 50);
+	// Write text for new game
+	this.printText("Enter difficulty", "50px", 50, 200);
+	this.printText("Press 1 for easy", "30px", 60, 250);
+	this.printText("Press 2 for increasing", "30px", 60, 300);
 };
 
 Game.prototype.printFooter = function() {
-	this.printText("Score: " + this.score, "left", this.numRows * this.rowHeight + 80,
-		"25px", 1 * this.columnWidth + 5);
-	this.printText("Lives: " + this.lives, "left", this.numRows * this.rowHeight + 80,
-		"25px", 3 * this.columnWidth + 5);
+	// Write text for footer (score and lives)
+	this.printText("Score: " + this.score, "25px", 50, 575);
+	this.printText("Lives: " + this.lives, "25px", 350, 575);
 };
 
 Game.prototype.printWin = function() {
-	this.printText("You win!!!!!!:", "center", 200, "50px");
-	this.printText("Enter for new game", "center", 250, "40px");
+	// Write text for win
+	this.printText("You win!!!!!!", "50px", 50, 200);
+	this.printText("Press enter for new game", "30px", 50, 250);
 };
 
 Game.prototype.printLose = function() {
-	this.printText("You lose!!!!!!:", "center", 200, "50px");
-	this.printText("Enter for new game", "center", 250, "40px");
+	// Write text for lose
+	this.printText("You lose!!!!!!", "50px", 50, 200);
+	this.printText("Press enter for new game", "30px", 50, 250);
 };
 
 Game.prototype.render = function() {
+	// Render Game txt
 	if (this.phase === "new") {
 		this.printNew();
 	}
@@ -96,6 +98,7 @@ Game.prototype.render = function() {
 
 Game.prototype.handleInput = function(input) {
 	if ((input === '1' || input === '2') && this.phase === "new")  {
+		game.reset();
 		this.phase = "playing";
 		if (input === '2') {
 			this.difficulty = "increasing";
@@ -131,7 +134,6 @@ Game.prototype.reset = function() {
 		enemy.set();
     });
 };
-
 
 // Enemies our player must avoid.
 var Enemy = function() {
@@ -379,7 +381,6 @@ document.addEventListener('keyup', function(e) {
         39: 'right',
         40: 'down'
     };
-
     player.handleInput(allowedKeys[e.keyCode]);
     game.handleInput(allowedKeys[e.keyCode]);
 });

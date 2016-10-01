@@ -92,10 +92,12 @@ var Engine = (function(global) {
      * render methods.
      */
     function updateEntities(dt) {
-        allEnemies.forEach(function(enemy) {
-            enemy.update(dt);
-        });
-        player.update();
+        if (game.phase === "playing") {
+            allEnemies.forEach(function(enemy) {
+                enemy.update(dt);
+            });
+            player.update();
+        }
         game.update();
     }
 
@@ -152,11 +154,14 @@ var Engine = (function(global) {
 
         game.render();
 
-        allEnemies.forEach(function(enemy) {
+        if (game.phase === "playing") {
+            allEnemies.forEach(function(enemy) {
             enemy.render();
-        });
+            });
 
-        player.render();
+            player.render();
+        }
+
     }
 
     /* This function does nothing but it could have been a good place to
