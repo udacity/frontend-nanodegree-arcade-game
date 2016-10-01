@@ -1,6 +1,6 @@
-// Game play variables
+// Game play variables.  Gathering in a central object.
 var Game = function() {
-	// Row and column info, based on engine.js Engine.render().
+	// Row and column info, based on engine.js Engine.render.
 	this.numRows = 6;
 	this.numColumns = 5;
 	this.rowHeight = 83;
@@ -8,13 +8,13 @@ var Game = function() {
 	this.numLanes = 3; // 3x stone blocks.
 	this.width = this.numColumns * this.columnWidth;
 
-	// Many below amounts are somewhat arbitrary, but are set in attempt
+	// Many below amounts are somewhat arbitrary, but are set in attempt.
 	// to match the demo.
 
 	// Board limits and positioning for Player.
 	this.initialColumn = 2; // Middle row for 5 column game board.
 	this.playerYOffset = 25;  // Player feet slightly above bottom of tile.
-	this.minPlayerRow = 1; // Row zero is water, player doesn't travel to this row
+	this.minPlayerRow = 1; // Row zero is water, player doesn't travel to this row.
 	this.maxPlayerRow = this.numRows - 1; // Rows are zero-indexed.
 	this.minPlayerColumn = 0;
 	this.maxPlayerColumn = this.numColumns - 1; // Columns are zero-indexed.
@@ -31,55 +31,54 @@ var Game = function() {
 	// Collision distance.
 	this.collisionDistance = 50; // Allows slight overlap of sprites before collision.
 
-	this.phase = "new";
-	this.score = 0;
-	this.lives = 3; // initial number of lives
-	this.speed = 1;	// initial speed multiplier
-	this.increase = 0.20; // multiplier for speed increase per point
-	this.difficulty = "";
-
-	this.winScore = 10;
+	this.phase = "new"; // Current phase of game (new, playing, win, lose).
+	this.score = 0; // Current score.
+	this.lives = 3; // Initial number of lives.
+	this.speed = 1;	// Initial speed multiplier.
+	this.increase = 0.20; // Multiplier for speed increase per point.
+	this.difficulty = ""; // Game difficulty level.
+	this.winScore = 10;  // Score needed for a win.
 };
 
 Game.prototype.printText = function(text, fontSize, xCoordinate, yCoordinate) {
-	// Simplify redering text to canvas
+	// Simplify redering text to canvas.
 	var fontWeight = "900";
-	var font = "Sans"
+	var font = "Sans";
 	ctx.font = fontWeight + " " + fontSize + " " + font;
 	ctx.lineWidth = "2";
 	ctx.fillStyle = "white";
-	ctx.textAlign = "left"
+	ctx.textAlign = "left";
 	ctx.fillText(text, xCoordinate, yCoordinate);
 	ctx.strokeText(text, xCoordinate, yCoordinate);
 };
 
 Game.prototype.printNew = function() {
-	// Write text for new game
+	// Write text for new game.
 	this.printText("Enter difficulty", "50px", 50, 200);
 	this.printText("Press 1 for easy", "30px", 60, 250);
 	this.printText("Press 2 for increasing", "30px", 60, 300);
 };
 
 Game.prototype.printFooter = function() {
-	// Write text for footer (score and lives)
+	// Write text for footer (score and lives).
 	this.printText("Score: " + this.score, "25px", 50, 575);
 	this.printText("Lives: " + this.lives, "25px", 350, 575);
 };
 
 Game.prototype.printWin = function() {
-	// Write text for win
+	// Write text for win.
 	this.printText("You win!!!!!!", "50px", 50, 200);
 	this.printText("Press enter for new game", "30px", 50, 250);
 };
 
 Game.prototype.printLose = function() {
-	// Write text for lose
+	// Write text for lose.
 	this.printText("You lose!!!!!!", "50px", 50, 200);
 	this.printText("Press enter for new game", "30px", 50, 250);
 };
 
 Game.prototype.render = function() {
-	// Render Game txt
+	// Render Game text.
 	if (this.phase === "new") {
 		this.printNew();
 	}
@@ -97,8 +96,9 @@ Game.prototype.render = function() {
 };
 
 Game.prototype.handleInput = function(input) {
+	// Initial selection of game difficulty.
 	if ((input === '1' || input === '2') && this.phase === "new")  {
-		game.reset();
+		game.reset(); // Reset entities and game variables before play begins.
 		this.phase = "playing";
 		if (input === '2') {
 			this.difficulty = "increasing";
@@ -106,7 +106,7 @@ Game.prototype.handleInput = function(input) {
 	}
 	if ((this.phase === "lose" || this.phase === "win") && input === "enter") {
 		this.phase = "new";
-		game.reset();
+		game.reset(); // Reset entities and game variables before play begins.
 	}
 };
 
@@ -125,9 +125,9 @@ Game.prototype.update = function() {
 Game.prototype.reset = function() {
 	this.phase = "new";
 	this.score = 0;
-	this.lives = 3; // initial number of lives
-	this.speed = 1;	// initial speed multiplier
-	this.increase = 0.20; // multiplier for speed increase per point
+	this.lives = 3; // Initial number of lives.
+	this.speed = 1;	// Initial speed multiplier.
+	this.increase = 0.20; // Multiplier for speed increase per point.
 	this.difficulty = "";
 	player.setPosition();
 	allEnemies.forEach(function(enemy) {
@@ -152,7 +152,7 @@ Enemy.prototype.setX = function() {
 
 Enemy.prototype.setY = function() {
     // Generate a random lane number between 0 and
-    //game.numLanes - 1, inclusive.
+    // game.numLanes - 1, inclusive.
     var laneNumber = Math.floor(Math.random() * game.numLanes);
 
     // Place Enemy in a lane.
@@ -237,6 +237,8 @@ Player.prototype.resetPosition = function(collision) {
 	}
 };
 
+// Work with rows and columns in moving player/collisions
+// simplifies logic.
 Player.prototype.getRow = function() {
 	// Work back from y position to row index
 	this.row = (this.y + game.playerYOffset) / game.rowHeight;
@@ -297,7 +299,8 @@ Player.prototype.checkCollisions = function() {
     var collision = false;
     allEnemies.forEach(function(enemy) {
     	if (self.checkCollision(enemy)) {
-    		collision = true;
+    		collision = true; // Only need to register that at least
+   			// one collision has ocurred.
     	}
     });
     if (collision === true) {
@@ -314,11 +317,13 @@ Player.prototype.update = function() {
 };
 
 Player.prototype.render = function() {
+	// Draw player sprite if in play phase.
 	if (game.phase === "playing") {
 		ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 		}
 	};
 
+// Handle input for player movement
 Player.prototype.handleInput = function(input) {
 	// Move up if space remaining above.
 	if(input === 'up' && this.row > game.minPlayerRow) {
@@ -381,6 +386,7 @@ document.addEventListener('keyup', function(e) {
         39: 'right',
         40: 'down'
     };
+    // Send input to player and game handlers
     player.handleInput(allowedKeys[e.keyCode]);
     game.handleInput(allowedKeys[e.keyCode]);
 });
