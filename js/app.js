@@ -21,6 +21,7 @@ var Game = function() {
 	// board limits for Enemy
 	this.enemyXStart = -150; // Start of screen, minor delay before return
 	this.enemyTopY = 60;
+	this.maxEnemyX = this.numColumns * this.columnWidth;
 
 	// Enemy speed
 	this.enemyMinSpeed = 100;
@@ -36,10 +37,12 @@ var Enemy = function() {
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
 
-    // Set x and y position, speed
     this.setX();
 	this.setY();
 	this.setSpeed();
+
+    // Set x and y position, speed
+	//this.setSpeedAndPosition();
 };
 
 Enemy.prototype.setX = function() {
@@ -67,20 +70,28 @@ Enemy.prototype.getRow = function() {
 	this.row = (this.y - game.enemyTopY)/game.rowHeight + 1;
 };
 
+Enemy.prototype.testScreenExit = function() {
+	if (this.x > game.maxEnemyX) {
+		this.setSpeed();
+		this.setX();
+		this.setY();
+	}
+};
+
+Enemy.prototype.move = function(dt) {
+	// move enemy x-coordinate
+	this.x = this.x + this.speed * dt;
+}
+
 Enemy.prototype.update = function(dt) {
 	// scaling by the dt parameter makes game run
 	// same speed on any system, see engine.js
     this.getRow();
 
-    this.x = this.x + this.speed * dt;
+    this.move(dt);
 
     // reset enemy to left of screen if leaves screen to right
-    this.leftEdgeX = game.numColumns * game.columnWidth;
-    if (this.x > this.leftEdgeX) {
-    	this.setX();
-    	this.setY();
-    	this.setSpeed();
-    }
+    this.testScreenExit();
 };
 
 // Draw the enemy on the screen
@@ -138,7 +149,6 @@ Player.prototype.getXDistance = function(enemy) {
 };
 
 Player.prototype.compareRows = function(enemy) {
-	console.log(enemy.row, this.row);
 	// Check if player and enemy are in same row
 	if (this.row === enemy.row) {
 		return true;
