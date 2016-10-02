@@ -27,6 +27,8 @@ var Game = function() {
 
 	/* Board limits and positioning for Player. */
 
+	/* Middle column for 5 column board */
+	this.initialColumn = 2;
 	/* Player feet slightly above bottom of tile. */
 	this.playerYOffset = 25;
 	/* Row zero is water -- player doesn't travel to this row. */
@@ -182,7 +184,7 @@ Game.prototype.reset = function() {
 
 
 var Enemy = function() {
-	/* Represents the enemy th player must avoid.*/
+	/* Represents the enemy the player must avoid.*/
 
     /* Set the image/sprite for our enemies, this uses a helper we've
      * provided to easily load images.
