@@ -11,6 +11,7 @@ game Frogger.
 
 1) Clone or download the game from:
 	https://github.com/josef-mirante/frontend-nanodegree-arcade-game
+
 2) Open the included index.html with your web browser.
 
 
