@@ -27,8 +27,12 @@ you would like to play the easy version.  In the easy version, the enemies move
 within a constant range of speeds. Press 2 for the more difficult option,
 in which the enemy speeds increase with each point you score.
 
+To move the player character, use the up, right, down, and left arrow keys to
+move in the respective directions.
+
 If you lose the game, you will be given the change to play the game again, and
 choose a new difficulty level, if you desire.  Likewise, When you win the game,
 you will be able to play again and choose a difficulty.
+
 
 Enjoy!
