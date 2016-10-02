@@ -1,20 +1,20 @@
-Udacity Front-End Nanodegree Arcade Game
+<h1>Udacity Front-End Nanodegree Arcade Game</h1>
 
 
-About
+<h2>About</h2>
 
 This is a browser-based game that works along the lines of the classic arcade
 game Frogger.
 
 
-How to Run the Game
+<h2>How to Run the Game</h2>
 
 1) Clone or download the game from:
 	https://github.com/josef-mirante/frontend-nanodegree-arcade-game
 2) Open the included index.html with your web browser.
 
 
-How to Play the Game
+<h2>How to Play the Game</h2>
 
 The object of the game is to score ten points before you lose all three of
 your lives.  You gain points by moving the player character upwards across the
