@@ -49,7 +49,8 @@ var Game = function() {
 	this.enemySpeedRange = 250;
 
 	/* Collision distance -- allows slight overlap of sprites before
-	 * collision is registered. */
+	 * collision is registered.
+	 */
 	this.collisionDistance = 50;
 
 	/* Current phase of game (new, playing, win, lose). */
@@ -69,7 +70,13 @@ var Game = function() {
 };
 
 Game.prototype.printText = function(text, fontSize, xCoordinate, yCoordinate) {
-	/* Simplify redering text to canvas. */
+	/* Simplify redering text to canvas.
+	 * required parameters:
+	 * text - the text to be written out.
+	 * fontSize - font size to be written.
+	 * xCoordinate - xCoordinate that left of text should start at.
+	 * yCoordinate - yCoordinate that text should start at.
+	 */
 	var fontWeight = "900";
 	var font = "Sans";
 	ctx.font = fontWeight + " " + fontSize + " " + font;
@@ -106,7 +113,7 @@ Game.prototype.printLose = function() {
 };
 
 Game.prototype.render = function() {
-	/* Render Game text. */
+	/* Render menu and game-play text. */
 	if (this.phase === "new") {
 		this.printNew();
 	}
@@ -124,6 +131,8 @@ Game.prototype.render = function() {
 };
 
 Game.prototype.handleInput = function(input) {
+	/* Handle keyboard input for Game */
+
 	/* Initial selection of game difficulty. */
 	if ((input === '1' || input === '2') && this.phase === "new")  {
 		/* Reset entities and game variables before play begins. */
@@ -141,6 +150,8 @@ Game.prototype.handleInput = function(input) {
 };
 
 Game.prototype.update = function() {
+	/* Update game data*/
+
 	if (this.difficulty === "increasing") {
 		this.speed = 1 + this.increase * this.score;
 	}
@@ -153,6 +164,7 @@ Game.prototype.update = function() {
 };
 
 Game.prototype.reset = function() {
+	/* Reset game to its starting parameters */
 	this.phase = "new";
 	this.score = 0;
 	/* Initial number of lives. */
@@ -167,6 +179,7 @@ Game.prototype.reset = function() {
 		enemy.set();
     });
 };
+
 
 var Enemy = function() {
 	/* Represents the enemy th player must avoid.*/
@@ -205,6 +218,7 @@ Enemy.prototype.setSpeed = function() {
 };
 
 Enemy.prototype.set = function() {
+	/* Set the enemy x and y positions and speed. */
 	this.setX();
 	this.setY();
 	this.setSpeed();
@@ -234,8 +248,8 @@ Enemy.prototype.move = function(dt) {
 };
 
 Enemy.prototype.update = function(dt) {
-	/* Scaling by the dt parameter makes game run the same speed on any
-	 * system, see engine.js.
+	/* Scale by the dt parameter to make the game run the same speed on any
+	 * system. See engine.js.
 	 */
     this.getRow();
 
@@ -252,15 +266,16 @@ Enemy.prototype.update = function(dt) {
      */
 };
 
-/* Draw the enemy on the screen. */
 Enemy.prototype.render = function() {
+	/* Draw the enemy on the screen. */
 	if (game.phase === "playing") {
 		ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 	}
 };
 
-/* Player character the user moves around the screen. */
+
 var Player = function() {
+	/* Represents the player character the user moves around the screen. */
 	this.sprite = 'images/char-boy.png';
 	this.setPosition();
 };
@@ -273,6 +288,10 @@ Player.prototype.setPosition = function() {
 };
 
 Player.prototype.resetPosition = function(collision) {
+	/* Reset player to start position.
+	 * required parameters:
+	 * collision - boolean for whether or not reset is due to a collision.
+	 */
 	this.setPosition();
 	if (collision === false) {
 		game.score = game.score + 1;
@@ -281,13 +300,20 @@ Player.prototype.resetPosition = function(collision) {
 	}
 };
 
-/* Work with rows and columns in moving player/collisions simplifies logic. */
 Player.prototype.getRow = function() {
+	/* From player object's x location, determine its row. Working with
+	 * rows and columns in movement and collisions simplifies logic.
+	 */
+
 	/* Work back from y position to row index. */
 	this.row = (this.y + game.playerYOffset) / game.rowHeight;
 };
 
 Player.prototype.getColumn = function() {
+	/* From player object's y location, determine its column. Working with
+	 * rows and columns in movement and collisions simplifies logic.
+	 */
+
 	/* Work back from x position to column index. */
 	this.column = this.x / game.columnWidth;
 };
@@ -313,13 +339,19 @@ Player.prototype.moveRight = function() {
 };
 
 Player.prototype.getXDistance = function(enemy) {
-	/* Find absolute difference in x coordinate between player and enemy */
+	/* Find absolute difference in x coordinate between player and enemy.
+	 * Parameters:
+	 * enemy - an enemy object.
+	 */
 	var xDistance = Math.abs(this.x - enemy.x);
 	return xDistance;
 };
 
 Player.prototype.compareRows = function(enemy) {
-	/* Check if player and enemy are in same row. */
+	/* Check if player and enemy are in same row.
+	 * Parameters:
+	 * enemy - an enemy object.
+	 */
 	if (this.row === enemy.row) {
 		return true;
 	}
@@ -328,6 +360,8 @@ Player.prototype.compareRows = function(enemy) {
 Player.prototype.checkCollision = function(enemy) {
 	/*Check if player and enemy are in same row and their x-coordinates are
 	 * within collision distance.
+	 * Parameters:
+	 * enemy - an enemy object.
 	 */
 	var xDistance = this.getXDistance(enemy);
 	var sameRow = this.compareRows(enemy);
@@ -338,6 +372,7 @@ Player.prototype.checkCollision = function(enemy) {
 
 Player.prototype.checkCollisions = function() {
 	/* Loop through all enemies checking for a collision with player. */
+
 	/* Carry player variable into forEach loop. */
     var self = this;
     var collision = false;
@@ -357,6 +392,8 @@ Player.prototype.checkCollisions = function() {
 };
 
 Player.prototype.update = function() {
+	/* Update player object with new location and other information */
+
 	/*Get row and column. */
 	this.getRow();
 	this.getColumn();
@@ -371,8 +408,12 @@ Player.prototype.render = function() {
 		}
 	};
 
-/* Handle input for player movement. */
 Player.prototype.handleInput = function(input) {
+	/* Handle input for player movement.
+	 * Parameters:
+	 * input - a string representing a keypress
+	 */
+
 	/* Move up if space remaining above. */
 	if(input === 'up' && this.row > game.minPlayerRow) {
 		this.moveUp();
