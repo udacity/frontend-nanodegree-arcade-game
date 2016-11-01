@@ -67,17 +67,18 @@ Player.prototype.handleInput = function(keyPress) {
     if (keyPress == 'down') {
         player.y += player.speed - 20;
     }
+    console.log('keyPress is: ' + keyPress);
 };
 
 // Function to display player's score
 var displayScoreLevel = function(aScore, aLevel) {
     var canvas = document.getElementsByTagName('canvas');
-    var firstCanvasTag = canvas[0];
+    var firstCanvas = canvas[0];
 
     // add player score and level to div element created
     scoreLevelDiv.innerHTML = 'Score: ' + aScore
         + ' / ' + 'Level: ' + aLevel;
-    document.body.insertBefore(scoreLevelDiv, firstCanvasTag[0]);
+    document.body.insertBefore(scoreLevelDiv, firstCanvas);
 };
 
 var checkCollision = function(anEnemy) {
@@ -87,17 +88,16 @@ var checkCollision = function(anEnemy) {
         && player.x + 25 <= anEnemy.x + 88
         && player.y + 73 <= anEnemy.y + 135
         && player.x + 76 >= anEnemy.x + 11) {
-        console.log('collided');
-        player.x = 202.5;
-        player.y = 383;
+        player.x = Math.floor((Math.random() * 500) + 1);
+        player.y = 400;
     }
 
     // check for player reaching top of canvas and winning the game
     // if player wins, add 1 to the score and level
     // pass score as an argument to the increaseDifficulty function
     if (player.y + 63 <= 0) {
-        player.x = 202.5;
-        player.y = 383;
+        player.x = Math.floor((Math.random() * 500) + 1);
+        player.y = 400;
         console.log('you made it!');
 
         ctx.fillStyle = 'white';
@@ -110,8 +110,7 @@ var checkCollision = function(anEnemy) {
 
     }
 
-    // check if player runs into left, bottom, or right canvas walls
-    // prevent player from moving beyond canvas wall boundaries
+    //checking if player runs into walls
     if (player.y > 383 ) {
         player.y = 383;
     }
@@ -135,14 +134,15 @@ var increaseDifficulty = function(numEnemies) {
         allEnemies.push(enemy);
     }
 };
-
+// TODO: take out difficulty, score, move level to top of page
 // Now instantiate your objects.
+
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 // Enemy randomly placed vertically within section of canvas
 // Declare new score and gameLevel variables to store score and level
 var allEnemies = [];
-var player = new Player(202.5, 383, 50);
+var player = new Player(200, 400, 50);
 var score = 0;
 var gameLevel = 1;
 var scoreLevelDiv = document.createElement('div');
