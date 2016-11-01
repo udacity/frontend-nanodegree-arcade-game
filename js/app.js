@@ -71,13 +71,12 @@ Player.prototype.handleInput = function(keyPress) {
 };
 
 // Function to display player's score
-var displayScoreLevel = function(Score, Level) {
+var displayScoreLevel = function(Score, HighScore) {
     var canvas = document.getElementsByTagName('canvas');
     var firstCanvas = canvas[0];
 
     // add player score and level to div element created
-    scoreLevelDiv.innerHTML = 'Score: ' + Score
-        + ' / ' + 'Level: ' + Level;
+    scoreLevelDiv.innerHTML = 'Score: ' + Score + ' / HighScore: ' + HighScore;
     document.body.insertBefore(scoreLevelDiv, firstCanvas);
 };
 
