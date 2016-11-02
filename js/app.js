@@ -67,10 +67,9 @@ Player.prototype.handleInput = function(keyPress) {
     if (keyPress == 'down') {
         player.y += player.speed - 20;
     }
-    console.log('keyPress is: ' + keyPress);
 };
 
-// Function to display player's score
+// function to display players score and high score
 var displayScoreLevel = function(Score, HighScore) {
     var canvas = document.getElementsByTagName('canvas');
     var firstCanvas = canvas[0];
@@ -89,6 +88,7 @@ var checkCollision = function(anEnemy) {
         && player.x + 76 >= anEnemy.x + 11) {
         player.x = Math.floor((Math.random() * 500) + 1);
         player.y = 400;
+        score -= 1;
     }
 
     // check for player reaching top of canvas and winning the game
@@ -97,14 +97,12 @@ var checkCollision = function(anEnemy) {
     if (player.y + 63 <= 0) {
         player.x = Math.floor((Math.random() * 500) + 1);
         player.y = 400;
-        console.log('you made it!');
 
         ctx.fillStyle = 'white';
         ctx.fillRect(0, 0, 505, 171);
 
         score += 1;
         gameLevel += 1;
-        console.log('current score: ' + score + ', current level: ' + gameLevel);
         increaseDifficulty(score);
 
     }
@@ -160,5 +158,4 @@ document.addEventListener('keydown', function(e) {
     };
 
     player.handleInput(allowedKeys[e.keyCode]);
-    console.log(allowedKeys[e.keyCode]);
 });
