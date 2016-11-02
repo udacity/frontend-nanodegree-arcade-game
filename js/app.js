@@ -50,7 +50,7 @@ Player.prototype.update = function() {
 // Display score
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-    displayScoreLevel(score, gameLevel);
+    displayScoreLevel(score, highScore);
 
 };
 
@@ -102,9 +102,7 @@ var checkCollision = function(anEnemy) {
         ctx.fillRect(0, 0, 505, 171);
 
         score += 1;
-        gameLevel += 1;
         increaseDifficulty(score);
-
     }
 
     //checking if player runs into walls
@@ -116,6 +114,10 @@ var checkCollision = function(anEnemy) {
     }
     if (player.x < 2.5) {
         player.x = 2.5;
+    }
+
+    if (score > highScore){
+        highScore += 1;
     }
 };
 
@@ -131,17 +133,16 @@ var increaseDifficulty = function(numEnemies) {
         allEnemies.push(enemy);
     }
 };
-// TODO: take out difficulty, score, move level to top of page
-// Now instantiate your objects.
+// TODO: styling
 
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 // Enemy randomly placed vertically within section of canvas
-// Declare new score and gameLevel variables to store score and level
+// Declare new score and highScore variables to store score and level
 var allEnemies = [];
 var player = new Player(200, 400, 50);
 var score = 0;
-var gameLevel = 1;
+var highScore = 0;
 var scoreLevelDiv = document.createElement('div');
 var enemy = new Enemy(0, Math.random() * 184 + 50, Math.random() * 256);
 
