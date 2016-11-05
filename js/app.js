@@ -3,7 +3,7 @@ var Enemy = function(x, y) {
     this.sprite = 'images/enemy-bug.png';
     this.x = x;
     this.y = y;
-    this.speed = (Math.floor(Math.random() * (400 - 100)) + 100)
+    this.speed = (Math.floor(Math.random() * (500 - 200)) + 200)
 }; 
 
 // Updates the enemy's position.
@@ -11,18 +11,10 @@ var Enemy = function(x, y) {
 Enemy.prototype.update = function(dt) {
     if (this.x > 505) {
         this.x = -100
-y    } else {
+    } else {
         this.x += (this.speed * dt);
     };
  };
-
-
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
-    //Updates the Enemy location (you need to implement)
-    //Handles collision with the Player (you need to implement)
-
 
 // Draws the enemy on the screen.
 Enemy.prototype.render = function() {
@@ -33,28 +25,33 @@ Enemy.prototype.render = function() {
 // This class requires an update(), render() and
 // a handleInput() method.
 var Player = function(x, y) {
-    //checkCollisions function
     this.sprite = 'images/char-boy.png';
     this.x = x;
     this.y = y;
 };
 
 Player.prototype.update = function(dt) {
-    //Updates the Player location (you need to implement)
-    //Handles collision with the Player (you need to implement)
+    this.checkCollisions();
+    if (this.y < 100) {
+        this.reset();
+    };
 };
 
 Player.prototype.checkCollisions = function() {
-    for (i = 0; i <= allEnemies.length; i++) {
-        if ((allEnemies[i].x + 100 >= player.x) 
-            && (allEnemies[i].x <= player.x + 100) 
-            && (allEnemies[i].y + 80 >= player.y) 
-            && (allEnemies[i].y <= player.y + 80)) {
-            this.x = 202;
-            this.y = 400;
+    for(i = 0; i <= allEnemies.length; i++) {
+        if (this.x >= allEnemies[i].x &&
+            this.x < allEnemies[i].x + 100 &&
+            this.y >= allEnemies[i].y &&
+            this.y < allEnemies[i].y + 80) {
+                this.reset();
         }
     }
-}
+};
+
+Player.prototype.reset = function() {
+    this.x = 202;
+    this.y = 400;
+};
 
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
