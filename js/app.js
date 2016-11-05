@@ -32,7 +32,7 @@ var Player = function(x, y) {
 
 Player.prototype.update = function(dt) {
     this.checkCollisions();
-    if (this.y < 100) {
+    if (this.y < 0) {
         this.reset();
     };
 };
