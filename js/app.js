@@ -4,17 +4,23 @@ var Enemy = function(x, y) {
     this.sprite = 'images/enemy-bug.png';
     this.x = x;
     this.y = y;
-    this.speed = (Math.floor(Math.random() * (500 - 200)) + 200);
+    this.randomSpeed();
 };
 
 // Updates the enemy's position. moving the enemy 
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
     if (this.x > 505) {
+        this.randomSpeed()
         this.x = -100;
     } else {
         this.x += (this.speed * dt);
     }
+};
+
+// Produces a random speed to be used each time enemy reaches end of the screen
+Enemy.prototype.randomSpeed = function() {
+    this.speed = (Math.floor(Math.random() * (500 - 200)) + 200);
 };
 
 // Draws the enemy on the screen.
@@ -26,9 +32,7 @@ Enemy.prototype.render = function() {
 // This class has an update(), checkCollisions(),
 // reset(), render() and a handleInput() method.
 var Player = function(x, y) {
-    this.sprite = 'images/char-boy.png';
-    this.x = x;
-    this.y = y;
+    this.reset();
 };
 
 Player.prototype.update = function(dt) {
@@ -51,10 +55,12 @@ Player.prototype.checkCollisions = function() {
     }
 };
 
-// this method resets the player to the starting position
+// this method sets and resets the player to the starting position
+// and randomizes which sprite the player plays as.
 Player.prototype.reset = function() {
     this.x = 202;
     this.y = 400;
+    this.sprite = sprites[Math.floor(Math.random() * sprites.length)];
 };
 
 Player.prototype.render = function() {
@@ -65,15 +71,15 @@ Player.prototype.render = function() {
 Player.prototype.handleInput = function(direction) {
     if (direction === 'up') {
         if (this.y > 100) {
-            this.y -= 80;
+            this.y -= 82;
         } else {
             alert("You did it!");
-            this.y = 400;
+            this.reset();
         }
     }
     if (direction === 'down') {
         if (this.y < 400) {
-            this.y += 80;
+            this.y += 82;
         } else {
             this.y = 400;
         }
@@ -97,10 +103,11 @@ Player.prototype.handleInput = function(direction) {
 // Objects instantiation.
 // all enemy objects in an array called allEnemies
 // player object in a variable called player
-var enemyOne = new Enemy(0, 240);
-var enemyTwo = new Enemy(0, 160);
-var enemyThree = new Enemy(0, 80);
-
+// sprites array has three possible player sprites to be chosen at random
+var enemyOne = new Enemy(0, 235);
+var enemyTwo = new Enemy(0, 150);
+var enemyThree = new Enemy(0, 66);
+var sprites = ['images/char-boy.png', 'images/char-cat-girl.png', 'images/char-horn-girl.png'];
 var allEnemies = [enemyOne, enemyTwo, enemyThree];
 var player = new Player(202, 400);
 
