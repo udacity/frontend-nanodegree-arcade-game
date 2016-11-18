@@ -6,14 +6,17 @@ var Map = {
     colWidth: 101,
     offsetY: 41
 };
+var Game = {
+    numEnemies : 4
+};
 // Enemies our player must avoid
 var Enemy = function() {
-    this.sprite = 'images/enemy-bug.png';
-    this.setStartCol();
-    this.generateRow();
-    this.generateSpeed();
+    this.setStartCol(); //this.x
+    this.generateRow(); //this.y
+    this.generateSpeed();   //this.speed
 };
 
+Enemy.prototype.sprite = 'images/enemy-bug.png';
 Enemy.prototype.generateRow = function() {
     this.y = getRandomInt(1, 3) * Map.rowHeight - Map.offsetY;
 };
@@ -23,6 +26,15 @@ Enemy.prototype.setStartCol = function() {
 Enemy.prototype.generateSpeed = function() {
     this.speed = getRandomInt(1,4);
 };
+
+var switchSpeed = function(leader,folower) {
+    var currentSpeed = leader.speed;
+    leader.speed = folower.speed;
+    folower.speed = currentSpeed;
+}
+var optimaseDistance = function(leader,folower) {
+    folower.x = leader.x - Map.colWidth;
+}
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
@@ -36,6 +48,24 @@ Enemy.prototype.update = function(dt) {
         } else {
             this.x += Map.colWidth * dt * this.speed;
         }
+    var current = this;
+    allEnemies.forEach(function(enemy) {
+        if (current !== enemy &&   //different enemy
+            current.y === enemy.y &&  //same row
+            Math.abs(current.x - enemy.x) < Map.colWidth    //no space between
+           ) {
+
+            if (current.x < enemy.x) {
+                var leader = enemy;
+                var folower = current;
+            } else {
+                var leader = current;
+                var folower = enemy;
+            }
+            optimaseDistance(leader,folower);
+            switchSpeed(leader,folower);
+        }
+    });
 };
 
 // Draw the enemy on the screen, required method for game
@@ -56,6 +86,7 @@ Player.prototype.render = function() {
 };
 Player.prototype.update = function() {
 };
+
 Player.prototype.handleInput = function(direction) {
     switch(direction) {
         case 'left':
@@ -101,7 +132,7 @@ var player = new Player();
 var allEnemies = [];
 var createEnemies = setInterval(function(){
     allEnemies.push(new Enemy);
-    if (allEnemies.length > 1 ) {
+    if (allEnemies.length === Game.numEnemies ) {
         clearInterval(createEnemies);
     }
 }, 400);
