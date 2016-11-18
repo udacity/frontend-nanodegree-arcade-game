@@ -69,8 +69,7 @@ Player.prototype.handleInput = function(direction) {
             }
             break;
         case 'up':
-            if (this.y > Map.rowHeight-this.offsetY ||  //first row
-                this.x === Map.colWidth * 2) {      //under the bridge
+            if (this.y > Map.rowHeight - Map.offsetY) {      //under the bridge
                 this.y -= Map.rowHeight;
             }
             break;
