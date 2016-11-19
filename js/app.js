@@ -4,7 +4,8 @@ function getRandomInt(min, max) {
 var Map = {
     rowHeight: 83,  //hight of cell
     colWidth: 101,  //width of cell
-    offsetY: 50    //invisible padding top on every cell
+    cellPaddingTop: 50,   //invisible padding top on every cell
+    cellPaddingBottom: 38
 };
 var Game = {
     numEnemies : 4

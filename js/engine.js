@@ -26,7 +26,7 @@ var Engine = (function(global) {
         lastTime;
 
     canvas.width = Map.colWidth * 5;
-    canvas.height = Map.rowHeight * 6 + 38;
+    canvas.height = Map.rowHeight * 6 + Map.cellPaddingBottom;
     doc.body.appendChild(canvas);
 
     /* This function serves as the kickoff point for the game loop itself
@@ -132,7 +132,7 @@ var Engine = (function(global) {
                  * so that we get the benefits of caching these images, since
                  * we're using them over and over.
                  */
-                ctx.drawImage(Resources.get(rowImages[row]), col * Map.colWidth, row * Map.rowHeight - Map.offsetY);
+                ctx.drawImage(Resources.get(rowImages[row]), col * Map.colWidth, row * Map.rowHeight - Map.cellPaddingTop);
             }
         }
 
