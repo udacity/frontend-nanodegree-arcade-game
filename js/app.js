@@ -4,8 +4,8 @@ function getRandomInt(min, max) {
 var Map = {
     rowHeight: 83,  //hight of cell
     colWidth: 101,  //width of cell
-    cellPaddingTop: 50,   //invisible padding top on every cell
-    cellPaddingBottom: 38
+    cellPaddingTop: 50,   //top, transparent part of cell
+    cellPaddingBottom: 38   //bottom, extra texture of cell
 };
 var Game = {
     numEnemies : 4
@@ -28,33 +28,13 @@ Enemy.prototype.setStartCol = function() {
 Enemy.prototype.generateSpeed = function() {
     this.speed = getRandomInt(1,3); //slow 1x, normal 2x, fast 3x
 };
-
-var switchSpeed = function(leader,folower) {
-    var currentSpeed = leader.speed;
-    leader.speed = folower.speed;
-    folower.speed = currentSpeed;
-}
-var optimaseDistance = function(leader,folower) {
-    folower.x = leader.x - Map.colWidth;
-}
-// Update the enemy's position, required method for game
-// Parameter: dt, a time delta between ticks
-Enemy.prototype.update = function(dt) {
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
-    if (this.x >= Map.colWidth*5) {
-            this.generateRow(1,3);
-            this.generateSpeed();
-            this.setStartCol();
-        } else {
-            this.x += Map.colWidth * dt * this.speed;
-        }
+Enemy.prototype.checkCollision = function(index) {
     var current = this;
-    allEnemies.forEach(function(enemy) {
-        if (current !== enemy &&   //different enemy
+    allEnemies.forEach(function(enemy,index2) {
+        if (index2 > index &&   //uncheck enemy
+            current !== enemy &&   //different enemy
             current.y === enemy.y &&  //same row
-            Math.abs(current.x - enemy.x) < Map.colWidth    //no space between
+            Math.abs(current.x - enemy.x) < Map.colWidth    //has contact
            ) {
 
             if (current.x < enemy.x) {
@@ -68,6 +48,29 @@ Enemy.prototype.update = function(dt) {
             switchSpeed(leader,folower);
         }
     });
+}
+var switchSpeed = function(leader,folower) {
+    var currentSpeed = leader.speed;
+    leader.speed = folower.speed;
+    folower.speed = currentSpeed;
+}
+var optimaseDistance = function(leader,folower) {
+    folower.x = leader.x - Map.colWidth;
+}
+// Update the enemy's position, required method for game
+// Parameter: dt, a time delta between ticks
+Enemy.prototype.update = function(dt, index) {
+    // You should multiply any movement by the dt parameter
+    // which will ensure the game runs at the same speed for
+    // all computers.
+    if (this.x >= Map.colWidth*5) {
+            this.generateRow(1,3);
+            this.generateSpeed();
+            this.setStartCol();
+        } else {
+            this.x += Map.colWidth * dt * this.speed;
+        }
+    this.checkCollision(index);
 };
 
 // Draw the enemy on the screen, required method for game
