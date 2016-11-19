@@ -31,7 +31,7 @@ Enemy.prototype.generateSpeed = function() {
 Enemy.prototype.checkCollision = function(index) {
     var current = this;
     allEnemies.forEach(function(enemy,index2) {
-        if (index2 > index &&   //uncheck enemy
+        if (index2 >= index &&   //uncheck enemy
             current !== enemy &&   //different enemy
             current.y === enemy.y &&  //same row
             Math.abs(current.x - enemy.x) < Map.colWidth    //has contact
