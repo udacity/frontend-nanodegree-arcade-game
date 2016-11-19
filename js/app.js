@@ -28,6 +28,11 @@ Enemy.prototype.setStartCol = function() {
 Enemy.prototype.generateSpeed = function() {
     this.speed = getRandomInt(1,3); //slow 1x, normal 2x, fast 3x
 };
+Enemy.prototype.isBefore = function(enemy) {
+    var result = enemy.x < this.x ? true : false;
+    return result;
+};
+
 Enemy.prototype.checkCollision = function(index) {
     var current = this;
     allEnemies.forEach(function(enemy,index2) {
@@ -36,26 +41,23 @@ Enemy.prototype.checkCollision = function(index) {
             current.y === enemy.y &&  //same row
             Math.abs(current.x - enemy.x) < Map.colWidth    //has contact
            ) {
-
-            if (current.x < enemy.x) {
-                var leader = enemy;
-                var folower = current;
+            if (current.isBefore(enemy)) {
+                current.optimaseDistance(enemy);
+                current.switchSpeed(enemy);
             } else {
-                var leader = current;
-                var folower = enemy;
+                enemy.optimaseDistance(current);
+                enemy.switchSpeed(current);
             }
-            optimaseDistance(leader,folower);
-            switchSpeed(leader,folower);
         }
     });
 }
-var switchSpeed = function(leader,folower) {
-    var currentSpeed = leader.speed;
-    leader.speed = folower.speed;
-    folower.speed = currentSpeed;
+Enemy.prototype.switchSpeed = function(enemy) {
+    var currentSpeed = this.speed;
+    this.speed = enemy.speed;
+    enemy.speed = currentSpeed;
 }
-var optimaseDistance = function(leader,folower) {
-    folower.x = leader.x - Map.colWidth;
+Enemy.prototype.optimaseDistance = function(folower) {
+    folower.x = this.x - Map.colWidth;
 }
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
