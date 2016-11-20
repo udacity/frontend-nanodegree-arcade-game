@@ -12,10 +12,14 @@ var Game = {
 };
 
 var Enemy = function() {
+       this.init()
+};
+
+Enemy.prototype.init = function() {
     this.setStartCol(); //set this.x
     this.generateRow(1,3); //set this.y
     this.generateSpeed();   //set this.speed
-};
+}
 
 Enemy.prototype.sprite = 'images/enemy-bug.png';
 /*this generates a */
@@ -65,10 +69,8 @@ Enemy.prototype.update = function(dt, index) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-    if (this.x >= Map.colWidth*5) {
-            this.generateRow(1,3);
-            this.generateSpeed();
-            this.setStartCol();
+    if (this.x >= Map.colWidth*5) { //bug left the screen
+            this.init();
         } else {
             this.x += Map.colWidth * dt * this.speed;
         }
