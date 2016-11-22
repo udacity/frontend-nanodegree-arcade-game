@@ -27,8 +27,6 @@ var Engine = (function(global) {
         ctx = canvas.getContext('2d'),
         lastTime;
 
-    //canvas.width = 505;
-    //canvas.height = 606;
     canvas.width = 704;
     canvas.height = 896;
 
@@ -79,14 +77,8 @@ var Engine = (function(global) {
      */
     function init() {
         reset();
-        /* soundtrack source: Edward Shallow
-        * url= http://freemusicarchive.org/music/Edward_Shallow/
-        */
-        /*
-        var soundtrack = new Audio('sounds/Edward_Shallow_The_Infinite_Railroad.mp3');
-        soundtrack.loop = true;
-        soundtrack.play();
-        */
+
+
         lastTime = Date.now();
         main();
     }
@@ -117,19 +109,27 @@ var Engine = (function(global) {
         //    enemy.update(dt);
         //});
         if (player.level === 1) {
-          allGroundBugs.forEach(function(enemy) {
+          levelOne.forEach(function(enemy) {
             enemy.update(dt);
           });
         } else if (player.level === 2) {
-          allFlyingBugs.forEach(function(enemy) {
+          levelTwo.forEach(function(enemy) {
             enemy.update(dt);
           });
         } else if (player.level === 3) {
-          allWorgs.forEach(function(enemy) {
+          levelThree.forEach(function(enemy) {
             enemy.update(dt);
           });
         } else if (player.level === 4) {
-          allGoblins.forEach(function(enemy) {
+          levelFour.forEach(function(enemy) {
+            enemy.update(dt);
+          });
+        } else if (player.level === 5) {
+          levelFive.forEach(function(enemy) {
+            enemy.update(dt);
+          });
+        } else if (player.level === 6) {
+          levelSix.forEach(function(enemy) {
             enemy.update(dt);
           });
         }
@@ -147,8 +147,16 @@ var Engine = (function(global) {
          * for that particular row of the game level.
          */
         var rowImages = [];
-
             if (player.level == 1) {
+              rowImages = [
+                  'img/grass_light.png',   // Top Row
+                  'img/grass_dark.png', // Row 2
+                  'img/grass_dark.png', // Row 3
+                  'img/grass_dark.png', // Row 4
+                  'img/grass_light.png', // Row 5
+                  'img/grass_light.png' // Row 6 Starting location
+              ];
+            } if (player.level == 2) {
               rowImages = [
                   'img/sand_light.png',   // Top Row - Advances to next level
                   'img/grass_red.png', // Row 2 - Centipedes
@@ -157,7 +165,7 @@ var Engine = (function(global) {
                   'img/grass_light.png', // Row 5
                   'img/grass_light.png' // Row 6 Starting location
               ];
-            } else if (player.level == 2) {
+            } else if (player.level == 3) {
               rowImages = [
                   'img/rock_path.png',   // Top row
                   'img/sand_brick.png',   // Row 2
@@ -166,7 +174,7 @@ var Engine = (function(global) {
                   'img/sand_light.png',   // Row 5
                   'img/sand_light.png'    // Row 6 - Bottom Row
               ];
-            } else if (player.level == 3) {
+            } else if (player.level == 4) {
               rowImages = [
                   'img/rock_path.png',   // Top row
                   'img/sand_dark.png',  // Row 2
@@ -175,14 +183,23 @@ var Engine = (function(global) {
                   'img/sand_light.png',   // Row 5
                   'img/rock_path.png',    // Row 6 - Bottom Row
               ];
-            } else if (player.level == 4) {
+            } else if (player.level == 5) {
               rowImages = [
-                  'img/ocean.png',   // Top row
+                  'img/grass_dark.png',   // Top row
                   'img/grey_brick.png',  // Row 2
                   'img/grey_brick.png',   // Row 3
                   'img/grey_brick.png',   // Row 4
-                  'img/rock_path.png',   // Row 5
+                  'img/grey_brick.png',   // Row 5
                   'img/rock_path.png'    // Row 6 - Bottom Row
+              ];
+            } else if (player.level == 6) {
+              rowImages = [
+                  'img/grass_light.png',        // Top row
+                  'img/grass_red.png',    // Row 2
+                  'img/grass_yellow.png', // Row 3
+                  'img/grass_blue.png',   // Row 4
+                  'img/grass_dark.png',  // Row 5
+                  'img/grass_light.png'    // Row 6 - Bottom Row
               ];
             }
 
@@ -307,19 +324,27 @@ var Engine = (function(global) {
         // renders the enemies for each level
         // each level's array name begins with 'all'
         if (player.level === 1) {
-          allGroundBugs.forEach(function(enemy) {
+          levelOne.forEach(function(enemy) {
             enemy.render();
           });
         } else if (player.level === 2) {
-          allFlyingBugs.forEach(function(enemy) {
+          levelTwo.forEach(function(enemy) {
             enemy.render();
           });
         } else if (player.level === 3) {
-          allWorgs.forEach(function(enemy) {
+          levelThree.forEach(function(enemy) {
             enemy.render();
           });
         } else if (player.level === 4) {
-          allGoblins.forEach(function(enemy) {
+          levelFour.forEach(function(enemy) {
+            enemy.render();
+          });
+        } else if (player.level === 5) {
+          levelFive.forEach(function(enemy) {
+            enemy.render();
+          });
+        } else if (player.level === 6) {
+          levelSix.forEach(function(enemy) {
             enemy.render();
           });
         }
@@ -334,6 +359,8 @@ var Engine = (function(global) {
     var audio, playbtn;
     function initAudioPlayer(){
     	audio = new Audio();
+      // soundtrack source: Edward Shallow
+      // url= http://freemusicarchive.org/music/Edward_Shallow/
     	audio.src = "sounds/Edward_Shallow_The_Infinite_Railroad.mp3";
     	audio.loop = true;
     	audio.pause();
@@ -382,6 +409,9 @@ var Engine = (function(global) {
         'img/grass_yellow.png',
         'img/grass_light.png',
         'img/grass_dark.png',
+        'img/snail.png',
+        'img/scorpion.png',
+        'img/beetle.png',
         'img/centipede.png',
         'img/roach.png',
         'img/spider.png',
@@ -395,6 +425,10 @@ var Engine = (function(global) {
         'img/worg_warrior.png',
         'img/worg_mage.png',
         'img/worg_rogue.png',
+        'img/elf_warrior.png',
+        'img/elf_mage.png',
+        'img/elf_priest.png',
+        'img/elf_necromancer.png',
         'img/hero_knight.png'
     ]);
     Resources.onReady(init);
