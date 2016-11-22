@@ -22,12 +22,24 @@ var Engine = (function(global) {
     var doc = global.document,
         win = global.window,
         canvas = doc.createElement('canvas'),
+        gameArea = doc.createElement('div'),
+        musicButton = doc.createElement('button'),
         ctx = canvas.getContext('2d'),
         lastTime;
 
-    canvas.width = 505;
-    canvas.height = 606;
-    doc.body.appendChild(canvas);
+    //canvas.width = 505;
+    //canvas.height = 606;
+    canvas.width = 704;
+    canvas.height = 896;
+
+    doc.body.appendChild(gameArea);
+    doc.body.appendChild(musicButton);
+    gameArea.setAttribute("id", "game-area");
+    canvas.setAttribute("id", "game-canvas");
+    musicButton.setAttribute("id", "music-btn");
+    $(musicButton).text("Music On/Off");
+
+    gameArea.appendChild(canvas);
 
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
@@ -65,6 +77,14 @@ var Engine = (function(global) {
      */
     function init() {
         reset();
+        /* soundtrack source: Edward Shallow
+        * url= http://freemusicarchive.org/music/Edward_Shallow/
+        */
+        /*
+        var soundtrack = new Audio('sounds/Edward_Shallow_The_Infinite_Railroad.mp3');
+        soundtrack.loop = true;
+        soundtrack.play();
+        */
         lastTime = Date.now();
         main();
     }
@@ -91,9 +111,26 @@ var Engine = (function(global) {
      * render methods.
      */
     function updateEntities(dt) {
-        allEnemies.forEach(function(enemy) {
+        //allEnemies.forEach(function(enemy) {
+        //    enemy.update(dt);
+        //});
+        if (player.level === 1) {
+          allGroundBugs.forEach(function(enemy) {
             enemy.update(dt);
-        });
+          });
+        } else if (player.level === 2) {
+          allFlyingBugs.forEach(function(enemy) {
+            enemy.update(dt);
+          });
+        } else if (player.level === 3) {
+          allWorgs.forEach(function(enemy) {
+            enemy.update(dt);
+          });
+        } else if (player.level === 4) {
+          allGoblins.forEach(function(enemy) {
+            enemy.update(dt);
+          });
+        }
         player.update();
     }
 
@@ -107,17 +144,49 @@ var Engine = (function(global) {
         /* This array holds the relative URL to the image used
          * for that particular row of the game level.
          */
-        var rowImages = [
-                'images/water-block.png',   // Top row is water
-                'images/stone-block.png',   // Row 1 of 3 of stone
-                'images/stone-block.png',   // Row 2 of 3 of stone
-                'images/stone-block.png',   // Row 3 of 3 of stone
-                'images/grass-block.png',   // Row 1 of 2 of grass
-                'images/grass-block.png'    // Row 2 of 2 of grass
-            ],
-            numRows = 6,
-            numCols = 5,
-            row, col;
+        var rowImages = [];
+
+            if (player.level == 1) {
+              rowImages = [
+                  'img/sand_light.png',   // Top Row - Advances to next level
+                  'img/grass_red.png', // Row 2 - Centipedes
+                  'img/grass_blue.png', // Row 3 - Roaches
+                  'img/grass_yellow.png', // Row 4 - Spiders
+                  'img/grass_light.png', // Row 5
+                  'img/grass_light.png' // Row 6 Starting location
+              ];
+            } else if (player.level == 2) {
+              rowImages = [
+                  'img/rock_path.png',   // Top row
+                  'img/sand_brick.png',   // Row 2
+                  'img/sand_brick.png',   // Row 3
+                  'img/sand_brick.png',   // Row 4
+                  'img/sand_light.png',   // Row 5
+                  'img/sand_light.png'    // Row 6 - Bottom Row
+              ];
+            } else if (player.level == 3) {
+              rowImages = [
+                  'img/rock_path.png',   // Top row
+                  'img/sand_dark.png',  // Row 2
+                  'img/sand_dark.png',   // Row 3
+                  'img/sand_dark.png',   // Row 4
+                  'img/sand_light.png',   // Row 5
+                  'img/rock_path.png',    // Row 6 - Bottom Row
+              ];
+            } else if (player.level == 4) {
+              rowImages = [
+                  'img/ocean.png',   // Top row
+                  'img/grey_brick.png',  // Row 2
+                  'img/grey_brick.png',   // Row 3
+                  'img/grey_brick.png',   // Row 4
+                  'img/rock_path.png',   // Row 5
+                  'img/rock_path.png'    // Row 6 - Bottom Row
+              ];
+            }
+
+        var  numRows = 6,
+             numCols = 5,
+             row, col;
 
         /* Loop through the number of rows and columns we've defined above
          * and, using the rowImages array, draw the correct image for that
@@ -132,48 +201,199 @@ var Engine = (function(global) {
                  * so that we get the benefits of caching these images, since
                  * we're using them over and over.
                  */
-                ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
+                ctx.drawImage(Resources.get(rowImages[row]), (col * 128) + 32, (row * 128) + 64);
             }
         }
 
+        // call renderEntities before ui so monsters to under UI
         renderEntities();
+
+        // UI outline section ///////////////
+        //draw top side
+        ctx.beginPath();
+        ctx.fillStyle = "black";
+        ctx.fillRect(0, 0, 672, 64);
+
+        // draw bottom side
+        ctx.beginPath();
+        ctx.fillStyle = "black";
+        ctx.fillRect(32, 830, 672, 896);
+
+        // draw left side
+        ctx.beginPath();
+        ctx.fillStyle = "black";
+        ctx.fillRect(0, 0, 32, 896);
+
+        // draw right side
+        ctx.beginPath();
+        ctx.fillStyle = "black";
+        ctx.fillRect(672, 0, 704, 896);
+
+
+        // UI statistics section //////////
+        // draw level
+        ctx.font = '24pt Arial';
+        ctx.strokeStyle = 'black';
+        ctx.lineWidth = 3;
+        ctx.strokeText('Level: ' + player.level, 552, 40);
+        ctx.fillStyle = 'yellow';
+        ctx.fillText('Level: ' + player.level, 552, 40);
+
+        // draw score
+        ctx.font = '24pt Arial';
+        ctx.strokeStyle = 'black';
+        ctx.lineWidth = 3;
+        ctx.strokeText('Score: ' + player.score, 36, 40);
+        ctx.fillStyle = 'yellow';
+        ctx.fillText('Score: ' + player.score, 36, 40);
+
+        // draw lives ///////////////////////////
+        // TODO maybe make this into a loop?
+        ctx.font = '24pt Arial';
+        ctx.strokeStyle = 'black';
+        ctx.lineWidth = 3;
+        ctx.strokeText('Lives:', 36, 870);
+        ctx.fillStyle = 'red';
+        ctx.fillText('Lives:', 36, 870);
+        if (player.lives === 1) {
+         ctx.drawImage(Resources.get('img/heart.png'), 110, 832);
+        } else if (player.lives === 2) {
+         ctx.drawImage(Resources.get('img/heart.png'), 110, 832);
+         ctx.drawImage(Resources.get('img/heart.png'), 135, 832);
+        } else if (player.lives === 3) {
+         ctx.drawImage(Resources.get('img/heart.png'), 110, 832);
+         ctx.drawImage(Resources.get('img/heart.png'), 135, 832);
+         ctx.drawImage(Resources.get('img/heart.png'), 160, 832);
+       } else if (player.lives === 4) {
+         ctx.drawImage(Resources.get('img/heart.png'), 110, 832);
+         ctx.drawImage(Resources.get('img/heart.png'), 135, 832);
+         ctx.drawImage(Resources.get('img/heart.png'), 160, 832);
+         ctx.drawImage(Resources.get('img/heart.png'), 185, 832);
+       } else if (player.lives === 5) {
+         ctx.drawImage(Resources.get('img/heart.png'), 110, 832);
+         ctx.drawImage(Resources.get('img/heart.png'), 135, 832);
+         ctx.drawImage(Resources.get('img/heart.png'), 160, 832);
+         ctx.drawImage(Resources.get('img/heart.png'), 185, 832);
+         ctx.drawImage(Resources.get('img/heart.png'), 210, 832);
+       }
     }
+
 
     /* This function is called by the render function and is called on each game
      * tick. Its purpose is to then call the render functions you have defined
      * on your enemy and player entities within app.js
      */
     function renderEntities() {
-        /* Loop through all of the objects within the allEnemies array and call
-         * the render function you have defined.
-         */
-        allEnemies.forEach(function(enemy) {
+
+        // renders the enemies for each level
+        // each level's array name begins with 'all'
+        if (player.level === 1) {
+          allGroundBugs.forEach(function(enemy) {
             enemy.render();
-        });
+          });
+        } else if (player.level === 2) {
+          allFlyingBugs.forEach(function(enemy) {
+            enemy.render();
+          });
+        } else if (player.level === 3) {
+          allWorgs.forEach(function(enemy) {
+            enemy.render();
+          });
+        } else if (player.level === 4) {
+          allGoblins.forEach(function(enemy) {
+            enemy.render();
+          });
+        }
 
         player.render();
     }
+
+    //////////////////////////////////////////////////////////////////////
+    // Props to "Audio Play Pause Mute Buttons Tutorial" for helping me
+    // create the functionality behind makining a music/on off button
+    // Source: http://tinyurl.com/pauseplaysource
+    var audio, playbtn, mutebtn, seek_bar;
+    function initAudioPlayer(){
+    	audio = new Audio();
+    	audio.src = "sounds/Edward_Shallow_The_Infinite_Railroad.mp3";
+    	audio.loop = true;
+    	audio.pause();
+    	// Set object references
+    	playbtn = document.getElementById("music-btn");
+
+    	playbtn.addEventListener("click", playPause);
+
+    	function playPause(){
+    		if(audio.paused){
+    		    audio.play();
+    	    } else {
+    		    audio.pause();
+    	    }
+    	}
+    }
+    window.addEventListener("load", initAudioPlayer);
 
     /* This function does nothing but it could have been a good place to
      * handle game reset states - maybe a new game menu or a game over screen
      * those sorts of things. It's only called once by the init() method.
      */
-    function reset() {
-        // noop
+     function reset() {
+       // noop
     }
 
     /* Go ahead and load all of the images we know we're going to need to
      * draw our game level. Then set init as the callback method, so that when
      * all of these images are properly loaded our game will start.
      */
+    /////////////////////////////////////////////////////////////////
+    // All sprites for this game came from one tileset
+    // Source: OpenArt.org
+    // url='http://opengameart.org/content/dungeon-crawl-32x32-tiles'
+    // Note: All images added to game must be called by Resources.load()
     Resources.load([
-        'images/stone-block.png',
-        'images/water-block.png',
-        'images/grass-block.png',
-        'images/enemy-bug.png',
-        'images/char-boy.png'
+        'img/heart.png',
+        'img/grey_brick.png',
+        'img/rock_path.png',
+        'img/ocean.png',
+        'img/sand_brick.png',
+        'img/sand_light.png',
+        'img/sand_dark.png',
+        'img/grass_red.png',
+        'img/grass_blue.png',
+        'img/grass_yellow.png',
+        'img/grass_light.png',
+        'img/grass_dark.png',
+        'img/centipede.png',
+        'img/roach.png',
+        'img/spider.png',
+        'img/hornet.png',
+        'img/firefly.png',
+        'img/moth.png',
+        'img/goblin_fighter.png',
+        'img/goblin_warrior.png',
+        'img/goblin_mage.png',
+        'img/goblin_sorc.png',
+        'img/worg_warrior.png',
+        'img/worg_mage.png',
+        'img/worg_rogue.png',
+        'img/hero_knight.png'
     ]);
     Resources.onReady(init);
+
+    //$(document).ready(function() {
+    //  $('#music-btn').click(function() {
+
+    //  var soundfile = new Audio('sounds/Edward_Shallow_The_Infinite_Railroad.mp3');
+
+    //  global.soundtrack = soundfile;
+
+    //  if (global.soundtrack.paused) {
+    //    global.soundtrack.play();
+    //  } else {
+    //    global.soundtrack.pause();
+    //  }
+    //  });
+    //});
 
     /* Assign the canvas' context object to the global variable (the window
      * object when run in a browser) so that developers can use it more easily

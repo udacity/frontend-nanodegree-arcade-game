@@ -1,3 +1,33 @@
+html {
+  /* Source: https://pixabay.com/en/time-fantasy-pull-surreal-watch-1662954/*/
+  background-image: url('../img/time.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
 body {
     text-align: center;
+}
+
+#music-btn {
+  font-family: "Arial Black", "Arial Bold", "Gadget", sans-serif;
+  width: 100px;
+  height: 40px;
+  border-radius: 10px;
+  background-color: #262228;
+  color: #efce00;
+}
+
+@media screen and (max-width: 1200px) {
+
+  #game-area {
+  	max-width: 640px;
+  	margin-left: auto;
+  	margin-right: auto;
+  }
+
+  #game-canvas {
+  	max-width: 80%;
+  }
 }
