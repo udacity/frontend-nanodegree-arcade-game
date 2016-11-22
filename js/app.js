@@ -68,7 +68,7 @@ Bug.prototype.constructor = Enemy;
 function Spider(y) {
   var obj = new Bug(y);
   obj.sprite = 'img/spider.png';
-  obj.speed = 100;
+  obj.speed = 120;
   return obj;
 }
 Spider.prototype = Object.create(Bug.prototype);
@@ -77,7 +77,7 @@ Spider.prototype.constructor = Bug;
 function Roach(y) {
   var obj = new Bug(y);
   obj.sprite = 'img/roach.png';
-  obj.speed = 80;
+  obj.speed = 100;
   return obj;
 }
 Roach.prototype = Object.create(Bug.prototype);
@@ -86,7 +86,7 @@ Roach.prototype.constructor = Bug;
 function Centipede(y) {
   var obj = new Bug(y);
   obj.sprite = 'img/centipede.png';
-  obj.speed = 90;
+  obj.speed = 130;
   return obj;
 }
 Centipede.prototype = Object.create(Bug.prototype);
@@ -96,7 +96,7 @@ Centipede.prototype.constructor = Bug;
 function Hornet(y) {
   var obj = new Bug(y);
   obj.sprite = 'img/hornet.png';
-  obj.speed = 110;
+  obj.speed = 140;
   return obj;
 }
 Hornet.prototype = Object.create(Bug.prototype);
@@ -105,7 +105,7 @@ Hornet.prototype.constructor = Bug;
 function Firefly(y) {
   var obj = new Bug(y);
   obj.sprite = 'img/firefly.png';
-  obj.speed = 130;
+  obj.speed = 185;
   return obj;
 }
 Firefly.prototype = Object.create(Bug.prototype);
@@ -114,7 +114,7 @@ Firefly.prototype.constructor = Bug;
 function Moth(y) {
   var obj = new Bug(y);
   obj.sprite = 'img/moth.png';
-  obj.speed = 90;
+  obj.speed = 50;
   return obj;
 }
 Moth.prototype = Object.create(Bug.prototype);
@@ -127,7 +127,7 @@ Moth.prototype.constructor = Bug;
 function WorgWarrior(y) {
   var obj = new Humanoid(y);
   obj.sprite = 'img/worg_warrior.png';
-  obj.speed = 94;
+  obj.speed = 200;
   return obj;
 }
 WorgWarrior.prototype = Object.create(Humanoid.prototype);
@@ -136,7 +136,7 @@ WorgWarrior.prototype.constructor = Humanoid;
 function WorgMage(y) {
   var obj = new Humanoid(y);
   obj.sprite = 'img/worg_mage.png';
-  obj.speed = 94;
+  obj.speed = 188;
   obj.direction = "left";
   return obj;
 }
@@ -146,7 +146,7 @@ WorgMage.prototype.constructor = Humanoid;
 function WorgRogue(y) {
   var obj = new Humanoid(y);
   obj.sprite = 'img/worg_rogue.png';
-  obj.speed = 94;
+  obj.speed = 220;
   obj.direction = "left";
   return obj;
 }
@@ -160,7 +160,7 @@ WorgRogue.prototype.constructor = Humanoid;
 function GobMage(y) {
   var obj = new Humanoid(y);
   obj.sprite = 'img/goblin_mage.png';
-  obj.speed = 100;
+  obj.speed = 230;
   return obj;
 }
 GobMage.prototype = Object.create(Humanoid.prototype);
@@ -169,7 +169,7 @@ GobMage.prototype.constructor = Humanoid;
 function GobSorc(y) {
   var obj = new Humanoid(y);
   obj.sprite = 'img/goblin_sorc.png';
-  obj.speed = 120;
+  obj.speed = 240;
   return obj;
 }
 GobSorc.prototype = Object.create(Humanoid.prototype);
@@ -178,7 +178,7 @@ GobSorc.prototype.constructor = Humanoid;
 function GobWarrior(y) {
   var obj = new Humanoid(y);
   obj.sprite = 'img/goblin_warrior.png';
-  obj.speed = 100;
+  obj.speed = 280;
   return obj;
 }
 GobWarrior.prototype = Object.create(Humanoid.prototype);
@@ -187,7 +187,7 @@ GobWarrior.prototype.constructor = Humanoid;
 function GobFighter(y) {
   var obj = new Humanoid(y);
   obj.sprite = 'img/goblin_fighter.png';
-  obj.speed = 88;
+  obj.speed = 290;
   return obj;
 }
 GobWarrior.prototype = Object.create(Humanoid.prototype);
@@ -205,6 +205,7 @@ var Player = function(x, y) {
   this.sprite = 'img/hero_knight.png';
   this.lives = 3;
   this.level = 1;
+  this.completedLevels = 1;
   this.score = 0;
   this.collided = false;
   this.initialX = 288;
@@ -257,6 +258,7 @@ Player.prototype.reset = function() {
   this.lives = 3;
   this.score = 0;
   this.level = 1;
+  this.completedLevels = 1;
   this.x = this.initialX;
   this.y = this.initialY;
 };
@@ -278,15 +280,22 @@ Player.prototype.update = function(dt) {
   }
 
   // Level up conditional
-  if (this.y <= 129) {
+  if (this.y <= 32) {
     if (this.level >= 4) {
       player.reset();
+      // only add to score if it is first time player made it up
+    } else if (this.level == this.completedLevels) {
+      this.level++;
+      this.completedLevels++;
+      this.score += 1000;
+      this.y = this.initialY;
     } else {
-    this.level++;
-    this.score += 1000;
-    this.x = this.initialX;
-    this.y = this.initialY;
+      this.level++;
+      this.y = this.initialY;
     }
+  } else if (this.y > this.initialY) {
+  this.level--;
+  this.y = 64;
   }
 };
 
@@ -300,10 +309,10 @@ Player.prototype.handleInput = function(key) {
   else if (key === 'up') {
     this.y -= 128;
   }
-  else if (key === 'down' && this.y < this.initialY) {
+  else if ((key === 'down' && this.y < this.initialY) || (key === 'down' && this.level > 1)) {
     this.y += 128;
   }
-  else if (key === 'down' && this.y >= this.initialY) {
+  else if (key === 'down' && this.y >= this.initialY && this.level <= 1) {
     console.log("Error! Can't go farther down.");
   }
   else if (key === 'right' && this.x < 544) {

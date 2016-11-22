@@ -17,6 +17,12 @@ body {
   border-radius: 10px;
   background-color: #262228;
   color: #efce00;
+  float: right;
+}
+
+
+#game-canvas {
+  display: inline;
 }
 
 @media screen and (max-width: 1200px) {

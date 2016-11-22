@@ -33,13 +33,15 @@ var Engine = (function(global) {
     canvas.height = 896;
 
     doc.body.appendChild(gameArea);
-    doc.body.appendChild(musicButton);
+    $(gameArea).append(canvas);
+    $(gameArea).append(musicButton);
+
+
     gameArea.setAttribute("id", "game-area");
     canvas.setAttribute("id", "game-canvas");
     musicButton.setAttribute("id", "music-btn");
     $(musicButton).text("Music On/Off");
 
-    gameArea.appendChild(canvas);
 
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
@@ -231,30 +233,47 @@ var Engine = (function(global) {
 
 
         // UI statistics section //////////
-        // draw level
-        ctx.font = '24pt Arial';
+        // Draw name
+        ctx.font = '24pt Impact';
         ctx.strokeStyle = 'black';
         ctx.lineWidth = 3;
-        ctx.strokeText('Level: ' + player.level, 552, 40);
+        ctx.strokeText('Dungeon Crawl', 250, 40);
+        ctx.fillStyle = 'white';
+        ctx.fillText('Dungeon Crawl', 250, 40);
+        // Draw line underneath
+        ctx.beginPath();
+        ctx.moveTo(230, 48);
+        ctx.lineTo(470, 48);
+        ctx.strokeStyle = 'white';
+        ctx.lineWidth = 5;
+        ctx.stroke();
+
+
+
+        // draw level
+        ctx.font = '18pt Arial';
+        ctx.strokeStyle = 'black';
+        ctx.lineWidth = 3;
+        ctx.strokeText('Level: ' + player.level, 580, 40);
         ctx.fillStyle = 'yellow';
-        ctx.fillText('Level: ' + player.level, 552, 40);
+        ctx.fillText('Level: ' + player.level, 580, 40);
 
         // draw score
-        ctx.font = '24pt Arial';
+        ctx.font = '18pt Arial';
         ctx.strokeStyle = 'black';
         ctx.lineWidth = 3;
-        ctx.strokeText('Score: ' + player.score, 36, 40);
+        ctx.strokeText('Score: ' + player.score, 20, 40);
         ctx.fillStyle = 'yellow';
-        ctx.fillText('Score: ' + player.score, 36, 40);
+        ctx.fillText('Score: ' + player.score, 20, 40);
 
         // draw lives ///////////////////////////
         // TODO maybe make this into a loop?
         ctx.font = '24pt Arial';
         ctx.strokeStyle = 'black';
         ctx.lineWidth = 3;
-        ctx.strokeText('Lives:', 36, 870);
+        ctx.strokeText('Lives:', 36, 875);
         ctx.fillStyle = 'red';
-        ctx.fillText('Lives:', 36, 870);
+        ctx.fillText('Lives:', 36, 875);
         if (player.lives === 1) {
          ctx.drawImage(Resources.get('img/heart.png'), 110, 832);
         } else if (player.lives === 2) {
@@ -310,9 +329,9 @@ var Engine = (function(global) {
 
     //////////////////////////////////////////////////////////////////////
     // Props to "Audio Play Pause Mute Buttons Tutorial" for helping me
-    // create the functionality behind makining a music/on off button
+    // create the functionality behind the music/on off button
     // Source: http://tinyurl.com/pauseplaysource
-    var audio, playbtn, mutebtn, seek_bar;
+    var audio, playbtn;
     function initAudioPlayer(){
     	audio = new Audio();
     	audio.src = "sounds/Edward_Shallow_The_Infinite_Railroad.mp3";
