@@ -63,7 +63,8 @@ function Humanoid(y) {
 Bug.prototype = Object.create(Enemy.prototype);
 Bug.prototype.constructor = Enemy;
 
-// Define ground bugs level 1
+/////////////////////////////////////////////////
+// Define level 1 bugs
 function Snail(y) {
   var obj = new Bug(y);
   obj.sprite = 'img/snail.png';
@@ -91,7 +92,8 @@ function Beetle(y) {
 Beetle.prototype = Object.create(Bug.prototype);
 Beetle.prototype.constructor = Bug;
 
-// Define ground bugs level 1
+///////////////////////////////////////////////
+// Define ground bugs level 2
 function Spider(y) {
   var obj = new Bug(y);
   obj.sprite = 'img/spider.png';
@@ -119,7 +121,8 @@ function Centipede(y) {
 Centipede.prototype = Object.create(Bug.prototype);
 Centipede.prototype.constructor = Bug;
 
-// Define level 2 bugs
+//////////////////////////////////////////////////////
+// Define flying bugs level 3
 function Hornet(y) {
   var obj = new Bug(y);
   obj.sprite = 'img/hornet.png';
@@ -147,8 +150,8 @@ function Moth(y) {
 Moth.prototype = Object.create(Bug.prototype);
 Moth.prototype.constructor = Bug;
 
-//////////////////////////////
-// Define Worgs - level 3 mobs
+////////////////////////////////////////////////////
+// Define Worgs - level 4 mobs
 //////////////////////////////
 
 function WorgWarrior(y) {
@@ -181,8 +184,8 @@ WorgRogue.prototype = Object.create(Humanoid.prototype);
 WorgRogue.prototype.constructor = Humanoid;
 
 
-////////////////////////////////
-// Define goblins level 4 mobs
+///////////////////////////////////////////////////
+// Define goblins level 5 mobs
 //////////////////////////////////
 function GobMage(y) {
   var obj = new Humanoid(y);
@@ -220,8 +223,8 @@ function GobFighter(y) {
 GobWarrior.prototype = Object.create(Humanoid.prototype);
 GobWarrior.prototype.constructor = Humanoid;
 
-////////////////////////////////
-// Define goblins level 5 mobs
+///////////////////////////////////////////////////
+// Define elves level 6 mobs
 //////////////////////////////////
 function ElfWarrior(y) {
   var obj = new Humanoid(y);
@@ -265,11 +268,8 @@ ElfNecromancer.prototype.constructor = Humanoid;
 
 
 ///////////////////////////////////////////////////////
-// Instantiate all objects section
-// Each level is an array beginning with 'all' e.g. levelTwo
-// Place player object in a variable called player
-////////////////////////////////////////////////////////
-
+// Instantiate all objects
+//////////////////////////
 // rows for setting positioning entities
 // row 1 = bottom || row 4 = top
 var row1 = 576;

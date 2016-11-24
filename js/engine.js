@@ -27,18 +27,25 @@ var Engine = (function(global) {
         ctx = canvas.getContext('2d'),
         lastTime;
 
+    // set game area dimensions
+    // Dungeon Frogger is set to a 128x128 grid
     canvas.width = 704;
     canvas.height = 896;
 
+    // add game display elements to html document
     doc.body.appendChild(gameArea);
     $(gameArea).append(canvas);
-    $(gameArea).append(musicButton);
-
 
     gameArea.setAttribute("id", "game-area");
     canvas.setAttribute("id", "game-canvas");
+
+    // display music button
+    $(gameArea).append(musicButton);
     musicButton.setAttribute("id", "music-btn");
     $(musicButton).text("Music On/Off");
+    // add functionality to music button
+    window.addEventListener("load", initAudioPlayer);
+
 
 
     /* This function serves as the kickoff point for the game loop itself
@@ -94,7 +101,6 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        // checkCollisions();
     }
 
     /* This is called by the update function and loops through all of the
@@ -104,37 +110,6 @@ var Engine = (function(global) {
      * the data/properties related to the object. Do your drawing in your
      * render methods.
      */
-    function updateEntities(dt) {
-        //allEnemies.forEach(function(enemy) {
-        //    enemy.update(dt);
-        //});
-        if (player.level === 1) {
-          levelOne.forEach(function(enemy) {
-            enemy.update(dt);
-          });
-        } else if (player.level === 2) {
-          levelTwo.forEach(function(enemy) {
-            enemy.update(dt);
-          });
-        } else if (player.level === 3) {
-          levelThree.forEach(function(enemy) {
-            enemy.update(dt);
-          });
-        } else if (player.level === 4) {
-          levelFour.forEach(function(enemy) {
-            enemy.update(dt);
-          });
-        } else if (player.level === 5) {
-          levelFive.forEach(function(enemy) {
-            enemy.update(dt);
-          });
-        } else if (player.level === 6) {
-          levelSix.forEach(function(enemy) {
-            enemy.update(dt);
-          });
-        }
-        player.update();
-    }
 
     /* This function initially draws the "game level", it will then call
      * the renderEntities function. Remember, this function is called every
@@ -143,88 +118,10 @@ var Engine = (function(global) {
      * they are just drawing the entire screen over and over.
      */
     function render() {
-        /* This array holds the relative URL to the image used
-         * for that particular row of the game level.
-         */
-        var rowImages = [];
-            if (player.level == 1) {
-              rowImages = [
-                  'img/grass_light.png',   // Top Row
-                  'img/grass_dark.png', // Row 2
-                  'img/grass_dark.png', // Row 3
-                  'img/grass_dark.png', // Row 4
-                  'img/grass_light.png', // Row 5
-                  'img/grass_light.png' // Row 6 Starting location
-              ];
-            } if (player.level == 2) {
-              rowImages = [
-                  'img/sand_light.png',   // Top Row - Advances to next level
-                  'img/grass_red.png', // Row 2 - Centipedes
-                  'img/grass_blue.png', // Row 3 - Roaches
-                  'img/grass_yellow.png', // Row 4 - Spiders
-                  'img/grass_light.png', // Row 5
-                  'img/grass_light.png' // Row 6 Starting location
-              ];
-            } else if (player.level == 3) {
-              rowImages = [
-                  'img/rock_path.png',   // Top row
-                  'img/sand_brick.png',   // Row 2
-                  'img/sand_brick.png',   // Row 3
-                  'img/sand_brick.png',   // Row 4
-                  'img/sand_light.png',   // Row 5
-                  'img/sand_light.png'    // Row 6 - Bottom Row
-              ];
-            } else if (player.level == 4) {
-              rowImages = [
-                  'img/rock_path.png',   // Top row
-                  'img/sand_dark.png',  // Row 2
-                  'img/sand_dark.png',   // Row 3
-                  'img/sand_dark.png',   // Row 4
-                  'img/sand_light.png',   // Row 5
-                  'img/rock_path.png',    // Row 6 - Bottom Row
-              ];
-            } else if (player.level == 5) {
-              rowImages = [
-                  'img/grass_dark.png',   // Top row
-                  'img/grey_brick.png',  // Row 2
-                  'img/grey_brick.png',   // Row 3
-                  'img/grey_brick.png',   // Row 4
-                  'img/grey_brick.png',   // Row 5
-                  'img/rock_path.png'    // Row 6 - Bottom Row
-              ];
-            } else if (player.level == 6) {
-              rowImages = [
-                  'img/grass_light.png',        // Top row
-                  'img/grass_red.png',    // Row 2
-                  'img/grass_yellow.png', // Row 3
-                  'img/grass_blue.png',   // Row 4
-                  'img/grass_dark.png',  // Row 5
-                  'img/grass_light.png'    // Row 6 - Bottom Row
-              ];
-            }
+        // displays the game tiles, definition is in levelBuilder.js
+        renderWorld();
 
-        var  numRows = 6,
-             numCols = 5,
-             row, col;
-
-        /* Loop through the number of rows and columns we've defined above
-         * and, using the rowImages array, draw the correct image for that
-         * portion of the "grid"
-         */
-        for (row = 0; row < numRows; row++) {
-            for (col = 0; col < numCols; col++) {
-                /* The drawImage function of the canvas' context element
-                 * requires 3 parameters: the image to draw, the x coordinate
-                 * to start drawing and the y coordinate to start drawing.
-                 * We're using our Resources helpers to refer to our images
-                 * so that we get the benefits of caching these images, since
-                 * we're using them over and over.
-                 */
-                ctx.drawImage(Resources.get(rowImages[row]), (col * 128) + 32, (row * 128) + 64);
-            }
-        }
-
-        // call renderEntities before ui so monsters to under UI
+        // call renderEntities before ui so monsters display on top layer
         renderEntities();
 
         // UI outline section ///////////////
@@ -315,70 +212,6 @@ var Engine = (function(global) {
     }
 
 
-    /* This function is called by the render function and is called on each game
-     * tick. Its purpose is to then call the render functions you have defined
-     * on your enemy and player entities within app.js
-     */
-    function renderEntities() {
-
-        // renders the enemies for each level
-        // each level's array name begins with 'all'
-        if (player.level === 1) {
-          levelOne.forEach(function(enemy) {
-            enemy.render();
-          });
-        } else if (player.level === 2) {
-          levelTwo.forEach(function(enemy) {
-            enemy.render();
-          });
-        } else if (player.level === 3) {
-          levelThree.forEach(function(enemy) {
-            enemy.render();
-          });
-        } else if (player.level === 4) {
-          levelFour.forEach(function(enemy) {
-            enemy.render();
-          });
-        } else if (player.level === 5) {
-          levelFive.forEach(function(enemy) {
-            enemy.render();
-          });
-        } else if (player.level === 6) {
-          levelSix.forEach(function(enemy) {
-            enemy.render();
-          });
-        }
-
-        player.render();
-    }
-
-    //////////////////////////////////////////////////////////////////////
-    // Props to "Audio Play Pause Mute Buttons Tutorial" for helping me
-    // create the functionality behind the music/on off button
-    // Source: http://tinyurl.com/pauseplaysource
-    var audio, playbtn;
-    function initAudioPlayer(){
-    	audio = new Audio();
-      // soundtrack source: Edward Shallow
-      // url= http://freemusicarchive.org/music/Edward_Shallow/
-    	audio.src = "sounds/Edward_Shallow_The_Infinite_Railroad.mp3";
-    	audio.loop = true;
-    	audio.pause();
-    	// Set object references
-    	playbtn = document.getElementById("music-btn");
-
-    	playbtn.addEventListener("click", playPause);
-
-    	function playPause(){
-    		if(audio.paused){
-    		    audio.play();
-    	    } else {
-    		    audio.pause();
-    	    }
-    	}
-    }
-    window.addEventListener("load", initAudioPlayer);
-
     /* This function does nothing but it could have been a good place to
      * handle game reset states - maybe a new game menu or a game over screen
      * those sorts of things. It's only called once by the init() method.
@@ -432,21 +265,6 @@ var Engine = (function(global) {
         'img/hero_knight.png'
     ]);
     Resources.onReady(init);
-
-    //$(document).ready(function() {
-    //  $('#music-btn').click(function() {
-
-    //  var soundfile = new Audio('sounds/Edward_Shallow_The_Infinite_Railroad.mp3');
-
-    //  global.soundtrack = soundfile;
-
-    //  if (global.soundtrack.paused) {
-    //    global.soundtrack.play();
-    //  } else {
-    //    global.soundtrack.pause();
-    //  }
-    //  });
-    //});
 
     /* Assign the canvas' context object to the global variable (the window
      * object when run in a browser) so that developers can use it more easily

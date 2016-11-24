@@ -90,22 +90,23 @@ Player.prototype.update = function(dt) {
 
   // Level up conditional
   if (this.y <= 32) {
-    //if (this.level >= 6) {
-      //player.reset();}
-      // only add to score if it is first time player made it up
+    // only add to score if it is first time player made it up
     if (this.level == this.completedLevels) {
       this.level++;
-      if (this.level <= 6) {
-        this.completedLevels++;
-        this.score += 1000;
-        this.y = this.initialY;
-      } else {
-        player.reset();
-      }
+      // TODO add endgame scenario
+      //if (this.level <= 6) {
+      this.completedLevels++;
+      this.score += 1000;
+      this.y = this.initialY;
+      //} else {
+      //  player.reset();
+      //}
+    // if already been on this level, don't add score
     } else {
       this.level++;
       this.y = this.initialY;
     }
+  // conditional for going down to previous level
   } else if (this.y > this.initialY) {
   this.level--;
   this.y = 64;
