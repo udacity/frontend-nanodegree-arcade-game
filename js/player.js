@@ -86,6 +86,10 @@ Player.prototype.update = function(dt) {
     this.checkCollisions(levelFive);
   } else if (player.level === 6) {
     this.checkCollisions(levelSix);
+  } else if (player.level === 7) {
+    this.checkCollisions(levelSeven);
+  } else if (player.level === 8) {
+    this.checkCollisions(levelEight);
   }
 
   // Level up conditional
@@ -115,7 +119,6 @@ Player.prototype.update = function(dt) {
 
 // handleInput is passed 1 parameter: (key pressed)
 // from document.addEventListener('keyup', function....)
-// located near line 400
 Player.prototype.handleInput = function(key) {
   if (key === 'reset') {
     player.reset();

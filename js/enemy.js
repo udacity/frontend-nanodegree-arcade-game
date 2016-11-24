@@ -42,6 +42,20 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+////////////////////////////////////////////////
+///////////////////////////////////////////////////////
+// Set Speeds for each level
+//////////////////////////
+
+var speedOne = 100;
+var speedTwo = 110;
+var speedThree = 120;
+var speedFour = 130;
+var speedFive = 140;
+var speedSix = 150;
+var speedSeven = 160;
+var speedEight = 170;
+
 ////////////////////////////////////////////////////////////
 // Enemy type definition section
 // Define superclasses of Enemy
@@ -63,12 +77,17 @@ function Humanoid(y) {
 Bug.prototype = Object.create(Enemy.prototype);
 Bug.prototype.constructor = Enemy;
 
+//////////////////////////////////////////////////////
+///////////////////////////////////////////////////////
+// Define subclass enemies for each level now
+//
+////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // Define level 1 bugs
 function Snail(y) {
   var obj = new Bug(y);
   obj.sprite = 'img/snail.png';
-  obj.speed = 50;
+  obj.speed = speedOne - 10;
   return obj;
 }
 Snail.prototype = Object.create(Bug.prototype);
@@ -77,7 +96,7 @@ Snail.prototype.constructor = Bug;
 function Scorpion(y) {
   var obj = new Bug(y);
   obj.sprite = 'img/scorpion.png';
-  obj.speed = 80;
+  obj.speed = speedOne + 30;
   return obj;
 }
 Scorpion.prototype = Object.create(Bug.prototype);
@@ -86,7 +105,7 @@ Scorpion.prototype.constructor = Bug;
 function Beetle(y) {
   var obj = new Bug(y);
   obj.sprite = 'img/beetle.png';
-  obj.speed = 130;
+  obj.speed = speedOne + 10;
   return obj;
 }
 Beetle.prototype = Object.create(Bug.prototype);
@@ -97,7 +116,7 @@ Beetle.prototype.constructor = Bug;
 function Spider(y) {
   var obj = new Bug(y);
   obj.sprite = 'img/spider.png';
-  obj.speed = 120;
+  obj.speed = speedTwo + 30;
   return obj;
 }
 Spider.prototype = Object.create(Bug.prototype);
@@ -106,7 +125,7 @@ Spider.prototype.constructor = Bug;
 function Roach(y) {
   var obj = new Bug(y);
   obj.sprite = 'img/roach.png';
-  obj.speed = 100;
+  obj.speed = speedTwo + 20;
   return obj;
 }
 Roach.prototype = Object.create(Bug.prototype);
@@ -115,18 +134,85 @@ Roach.prototype.constructor = Bug;
 function Centipede(y) {
   var obj = new Bug(y);
   obj.sprite = 'img/centipede.png';
-  obj.speed = 130;
+  obj.speed = speedTwo;
   return obj;
 }
 Centipede.prototype = Object.create(Bug.prototype);
 Centipede.prototype.constructor = Bug;
 
+///////////////////////////////////////////////
+// Define ground bugs level 3
+
+function AntWorker(y) {
+  var obj = new Bug(y);
+  obj.sprite = 'img/ant_1.png';
+  obj.speed = speedThree + 30;
+  obj. direction = "left";
+  return obj;
+}
+AntWorker.prototype = Object.create(Bug.prototype);
+AntWorker.prototype.constructor = Bug;
+
+function AntSoldier(y) {
+  var obj = new Bug(y);
+  obj.sprite = 'img/ant_2.png';
+  obj.speed = speedThree + 20;
+  obj. direction = "left";
+  return obj;
+}
+AntSoldier.prototype = Object.create(Bug.prototype);
+AntSoldier.prototype.constructor = Bug;
+
+function Mosquito(y) {
+  var obj = new Bug(y);
+  obj.sprite = 'img/mosquito.png';
+  obj.speed = speedThree - 5;
+  obj. direction = "left";
+  return obj;
+}
+Mosquito.prototype = Object.create(Bug.prototype);
+Mosquito.prototype.constructor = Bug;
+
+///////////////////////////////////////////////
+// Define larva bugs level 4
+
+function LarvaGrey(y) {
+  var obj = new Bug(y);
+  obj.sprite = 'img/larva_grey.png';
+  obj.speed = speedFour + 10;
+  obj. direction = "left";
+  return obj;
+}
+LarvaGrey.prototype = Object.create(Bug.prototype);
+LarvaGrey.prototype.constructor = Bug;
+
+function LarvaOrange(y) {
+  var obj = new Bug(y);
+  obj.sprite = 'img/larva_orange.png';
+  obj.speed = speedFour;
+  obj. direction = "left";
+  return obj;
+}
+LarvaOrange.prototype = Object.create(Bug.prototype);
+LarvaOrange.prototype.constructor = Bug;
+
+function BrainBug(y) {
+  var obj = new Bug(y);
+  obj.sprite = 'img/brain_bug.png';
+  obj.speed = speedFour;
+  obj. direction = "left";
+  return obj;
+}
+BrainBug.prototype = Object.create(Bug.prototype);
+BrainBug.prototype.constructor = Bug;
+
+
 //////////////////////////////////////////////////////
-// Define flying bugs level 3
+// Define flying bugs level 5
 function Hornet(y) {
   var obj = new Bug(y);
   obj.sprite = 'img/hornet.png';
-  obj.speed = 140;
+  obj.speed = speedFive + 30;
   return obj;
 }
 Hornet.prototype = Object.create(Bug.prototype);
@@ -135,7 +221,7 @@ Hornet.prototype.constructor = Bug;
 function Firefly(y) {
   var obj = new Bug(y);
   obj.sprite = 'img/firefly.png';
-  obj.speed = 185;
+  obj.speed = speedFive;
   return obj;
 }
 Firefly.prototype = Object.create(Bug.prototype);
@@ -144,20 +230,20 @@ Firefly.prototype.constructor = Bug;
 function Moth(y) {
   var obj = new Bug(y);
   obj.sprite = 'img/moth.png';
-  obj.speed = 50;
+  obj.speed = speedFive - 30;
   return obj;
 }
 Moth.prototype = Object.create(Bug.prototype);
 Moth.prototype.constructor = Bug;
 
 ////////////////////////////////////////////////////
-// Define Worgs - level 4 mobs
+// Define Worgs - level 6 mobs
 //////////////////////////////
 
 function WorgWarrior(y) {
   var obj = new Humanoid(y);
   obj.sprite = 'img/worg_warrior.png';
-  obj.speed = 200;
+  obj.speed = speedSix + 10;
   return obj;
 }
 WorgWarrior.prototype = Object.create(Humanoid.prototype);
@@ -166,7 +252,7 @@ WorgWarrior.prototype.constructor = Humanoid;
 function WorgMage(y) {
   var obj = new Humanoid(y);
   obj.sprite = 'img/worg_mage.png';
-  obj.speed = 188;
+  obj.speed = speedSix;
   obj.direction = "left";
   return obj;
 }
@@ -176,7 +262,7 @@ WorgMage.prototype.constructor = Humanoid;
 function WorgRogue(y) {
   var obj = new Humanoid(y);
   obj.sprite = 'img/worg_rogue.png';
-  obj.speed = 220;
+  obj.speed = speedSix + 40;
   obj.direction = "left";
   return obj;
 }
@@ -185,12 +271,12 @@ WorgRogue.prototype.constructor = Humanoid;
 
 
 ///////////////////////////////////////////////////
-// Define goblins level 5 mobs
+// Define goblins level 7 mobs
 //////////////////////////////////
 function GobMage(y) {
   var obj = new Humanoid(y);
   obj.sprite = 'img/goblin_mage.png';
-  obj.speed = 230;
+  obj.speed = speedSeven + 10;
   return obj;
 }
 GobMage.prototype = Object.create(Humanoid.prototype);
@@ -199,7 +285,7 @@ GobMage.prototype.constructor = Humanoid;
 function GobSorc(y) {
   var obj = new Humanoid(y);
   obj.sprite = 'img/goblin_sorc.png';
-  obj.speed = 240;
+  obj.speed = speedSeven;
   return obj;
 }
 GobSorc.prototype = Object.create(Humanoid.prototype);
@@ -208,7 +294,7 @@ GobSorc.prototype.constructor = Humanoid;
 function GobWarrior(y) {
   var obj = new Humanoid(y);
   obj.sprite = 'img/goblin_warrior.png';
-  obj.speed = 280;
+  obj.speed = speedSeven;
   return obj;
 }
 GobWarrior.prototype = Object.create(Humanoid.prototype);
@@ -217,7 +303,7 @@ GobWarrior.prototype.constructor = Humanoid;
 function GobFighter(y) {
   var obj = new Humanoid(y);
   obj.sprite = 'img/goblin_fighter.png';
-  obj.speed = 290;
+  obj.speed = speedSeven + 40;
   return obj;
 }
 GobWarrior.prototype = Object.create(Humanoid.prototype);
@@ -229,7 +315,7 @@ GobWarrior.prototype.constructor = Humanoid;
 function ElfWarrior(y) {
   var obj = new Humanoid(y);
   obj.sprite = 'img/elf_warrior.png';
-  obj.speed = 50;
+  obj.speed = speedEight + 30;
   obj.direction = "left";
   return obj;
 }
@@ -239,7 +325,7 @@ ElfWarrior.prototype.constructor = Humanoid;
 function ElfMage(y) {
   var obj = new Humanoid(y);
   obj.sprite = 'img/elf_mage.png';
-  obj.speed = 230;
+  obj.speed = speedEight;
   obj.direction = "left";
   return obj;
 }
@@ -249,7 +335,7 @@ ElfMage.prototype.constructor = Humanoid;
 function ElfPriest(y) {
   var obj = new Humanoid(y);
   obj.sprite = 'img/elf_priest.png';
-  obj.speed = 250;
+  obj.speed = speedEight + 20;
   return obj;
 }
 ElfPriest.prototype = Object.create(Humanoid.prototype);
@@ -258,12 +344,16 @@ ElfPriest.prototype.constructor = Humanoid;
 function ElfNecromancer(y) {
   var obj = new Humanoid(y);
   obj.sprite = 'img/elf_necromancer.png';
-  obj.speed = 210;
+  obj.speed = speedEight + 30;
   obj.direction = "left";
   return obj;
 }
 ElfNecromancer.prototype = Object.create(Humanoid.prototype);
 ElfNecromancer.prototype.constructor = Humanoid;
+
+
+
+
 
 
 
@@ -286,6 +376,8 @@ var levelThree = []; // level 2
 var levelFour = [];      // level 3
 var levelFive = [];    // level 4
 var levelSix = [];    // level 5
+var levelSeven = [];
+var levelEight = [];
 
 
 // Instantiate bugs lvl 1 enemies
@@ -298,7 +390,7 @@ levelOne.push(scorpion);
 levelOne.push(beetle);
 
 
-// Instantiate bugs lvl 1 enemies
+// Instantiate bugs lvl 2 enemies
 var spider = new Spider(row2);
 var roach = new Roach(row3);
 var centipede = new Centipede(row4);
@@ -307,43 +399,63 @@ levelTwo.push(spider);
 levelTwo.push(roach);
 levelTwo.push(centipede);
 
-// Instantiate bugs lvl 2 enemies
+// Instantiate bugs lvl 3 enemies
+var antWorker = new AntWorker(row2);
+var antSoldier = new AntSoldier(row3);
+var mosquito = new Mosquito(row4);
+
+levelThree.push(antWorker);
+levelThree.push(antSoldier);
+levelThree.push(mosquito);
+
+// Instantiate bugs lvl 4 enemies
+var larvaGrey = new LarvaGrey(row2);
+var larvaOrange = new LarvaOrange(row3);
+var brainBug = new BrainBug(row4);
+
+levelFour.push(larvaGrey);
+levelFour.push(larvaOrange);
+levelFour.push(brainBug);
+
+
+// Instantiate bugs lvl 5 enemies
 var hornet = new Hornet(row2);
 var firefly = new Firefly(row3);
 var moth = new Moth(row4);
 
-levelThree.push(hornet);
-levelThree.push(firefly);
-levelThree.push(moth);
+levelFive.push(hornet);
+levelFive.push(firefly);
+levelFive.push(moth);
 
-// Instantiate worgs lvl 3 enemies
+
+// Instantiate worgs lvl 6 enemies
 var worgWarrior = new WorgWarrior(row2);
 var worgMage = new WorgMage(row3);
 var worgRogue = new WorgRogue(row4);
 
-levelFour.push(worgWarrior);
-levelFour.push(worgMage);
-levelFour.push(worgRogue);
+levelSix.push(worgWarrior);
+levelSix.push(worgMage);
+levelSix.push(worgRogue);
 
-// Instantiate Goblins lvl 4 enemies
+// Instantiate Goblins lvl 7 enemies
 var gobFighter = new GobFighter(row1);
 var gobWarrior = new GobWarrior(row2);
 var gobMage = new GobMage(row3);
 var gobSorc = new GobSorc(row4);
 
-levelFive.push(gobFighter);
-levelFive.push(gobWarrior);
-levelFive.push(gobMage);
-levelFive.push(gobSorc);
+levelSeven.push(gobFighter);
+levelSeven.push(gobWarrior);
+levelSeven.push(gobMage);
+levelSeven.push(gobSorc);
 
 
-// Instantiate Elves lvl 5 enemies
+// Instantiate Elves lvl 8 enemies
 var elfWarrior = new ElfWarrior(row1);
 var elfMage = new ElfMage(row2);
 var elfPriest = new ElfPriest(row3);
 var elfNecromancer = new ElfNecromancer(row4);
 
-levelSix.push(elfWarrior);
-levelSix.push(elfMage);
-levelSix.push(elfPriest);
-levelSix.push(elfNecromancer);
+levelEight.push(elfWarrior);
+levelEight.push(elfMage);
+levelEight.push(elfPriest);
+levelEight.push(elfNecromancer);

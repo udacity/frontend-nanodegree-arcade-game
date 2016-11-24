@@ -36,6 +36,14 @@ function renderEntities() {
       levelSix.forEach(function(enemy) {
         enemy.render();
       });
+    } else if (player.level === 7) {
+      levelSeven.forEach(function(enemy) {
+        enemy.render();
+      });
+    } else if (player.level === 8) {
+      levelEight.forEach(function(enemy) {
+        enemy.render();
+      });
     }
 
     player.render();
@@ -68,6 +76,14 @@ function updateEntities(dt) {
       levelSix.forEach(function(enemy) {
         enemy.update(dt);
       });
+    } else if (player.level === 7) {
+      levelSeven.forEach(function(enemy) {
+        enemy.update(dt);
+      });
+    } else if (player.level === 8) {
+      levelEight.forEach(function(enemy) {
+        enemy.update(dt);
+      });
     }
     player.update();
 }
@@ -94,7 +110,25 @@ function renderWorld() {
             'img/grass_light.png', // Row 5
             'img/grass_light.png' // Row 6 Starting location
         ];
-      } else if (player.level == 3) {
+      } if (player.level == 3) {
+        rowImages = [
+            'img/grass_yellow.png',   // Top Row - Advances to next level
+            'img/sand_light.png', // Row 2
+            'img/sand_light.png', // Row 3
+            'img/sand_light.png', // Row 4
+            'img/grass_light.png', // Row 5
+            'img/grass_light.png' // Row 6 Starting location
+        ];
+      } if (player.level == 4) {
+        rowImages = [
+            'img/sand_light.png',   // Top Row - Advances to next level
+            'img/grass_light.png', // Row 2
+            'img/grass_light.png', // Row 3
+            'img/grass_light.png', // Row 4
+            'img/grass_red.png', // Row 5
+            'img/grass_blue.png' // Row 6 Starting location
+        ];
+      } else if (player.level == 5) {
         rowImages = [
             'img/rock_path.png',   // Top row
             'img/sand_brick.png',   // Row 2
@@ -103,7 +137,7 @@ function renderWorld() {
             'img/sand_light.png',   // Row 5
             'img/sand_light.png'    // Row 6 - Bottom Row
         ];
-      } else if (player.level == 4) {
+      } else if (player.level == 6) {
         rowImages = [
             'img/rock_path.png',   // Top row
             'img/sand_dark.png',  // Row 2
@@ -112,7 +146,7 @@ function renderWorld() {
             'img/sand_light.png',   // Row 5
             'img/rock_path.png',    // Row 6 - Bottom Row
         ];
-      } else if (player.level == 5) {
+      } else if (player.level == 7) {
         rowImages = [
             'img/grass_dark.png',   // Top row
             'img/grey_brick.png',  // Row 2
@@ -121,7 +155,7 @@ function renderWorld() {
             'img/grey_brick.png',   // Row 5
             'img/rock_path.png'    // Row 6 - Bottom Row
         ];
-      } else if (player.level == 6) {
+      } else if (player.level == 8) {
         rowImages = [
             'img/grass_light.png',        // Top row
             'img/grass_red.png',    // Row 2
