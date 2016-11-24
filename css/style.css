@@ -1,6 +1,7 @@
 html {
-  /* Source: https://pixabay.com/en/time-fantasy-pull-surreal-watch-1662954/*/
-  background-image: url('../img/time.png');
+  /* Background Image Source: https://blogs.msdn.microsoft.com/cdnstudents/2013/07/22/free-fantasy-art-assets-to-help-you-build-your-games/
+  */
+  background-image: url('../img/fantasy_2.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -17,13 +18,14 @@ body {
   border-radius: 10px;
   background-color: #262228;
   color: #efce00;
-  float: right;
+  position: absolute;
 }
 
 
 #game-canvas {
   display: inline;
 }
+
 
 @media screen and (max-width: 1200px) {
 
@@ -36,4 +38,5 @@ body {
   #game-canvas {
   	max-width: 80%;
   }
+
 }

@@ -11,7 +11,6 @@
 function renderEntities() {
 
     // renders the enemies for each level
-    // each level's array name begins with 'all'
     if (player.level === 1) {
       levelOne.forEach(function(enemy) {
         enemy.render();

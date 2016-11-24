@@ -84,8 +84,7 @@ var Engine = (function(global) {
      */
     function init() {
         reset();
-
-
+        player.startSound.play();
         lastTime = Date.now();
         main();
     }
@@ -118,97 +117,148 @@ var Engine = (function(global) {
      * they are just drawing the entire screen over and over.
      */
     function render() {
-        // displays the game tiles, definition is in levelBuilder.js
-        renderWorld();
 
-        // call renderEntities before ui so monsters display on top layer
-        renderEntities();
-
-        // UI outline section ///////////////
-        //draw top side
+      // start screen
+      if (player.level === 0) {
         ctx.beginPath();
         ctx.fillStyle = "black";
-        ctx.fillRect(0, 0, 672, 64);
+        ctx.fillRect(0, 0, 672, 896);
 
-        // draw bottom side
-        ctx.beginPath();
-        ctx.fillStyle = "black";
-        ctx.fillRect(32, 830, 672, 896);
-
-        // draw left side
-        ctx.beginPath();
-        ctx.fillStyle = "black";
-        ctx.fillRect(0, 0, 32, 896);
-
-        // draw right side
-        ctx.beginPath();
-        ctx.fillStyle = "black";
-        ctx.fillRect(672, 0, 704, 896);
-
-
-        // UI statistics section //////////
         // Draw name
-        ctx.font = '24pt Impact';
+        ctx.font = '48pt Impact';
         ctx.strokeStyle = 'black';
         ctx.lineWidth = 3;
-        ctx.strokeText('Dungeon Crawl', 250, 40);
+        ctx.strokeText('Dungeon Dash', 170, 150);
+        ctx.fillStyle = 'yellow';
+        ctx.fillText('Dungeon Dash', 170, 150);
+
+        // select class message
+        ctx.font = '36pt sans-serif';
+        ctx.strokeStyle = 'black';
+        ctx.lineWidth = 3;
+        ctx.strokeText('Select your class:', 170, 200);
         ctx.fillStyle = 'white';
-        ctx.fillText('Dungeon Crawl', 250, 40);
-        // Draw line underneath
-        ctx.beginPath();
-        ctx.moveTo(230, 48);
-        ctx.lineTo(470, 48);
-        ctx.strokeStyle = 'white';
-        ctx.lineWidth = 5;
-        ctx.stroke();
+        ctx.fillText('Select your class:', 170, 200);
 
-
-
-        // draw level
-        ctx.font = '18pt Arial';
+        // select class instructions
+        ctx.font = '20pt sans-serif';
         ctx.strokeStyle = 'black';
         ctx.lineWidth = 3;
-        ctx.strokeText('Level: ' + player.level, 580, 40);
+        ctx.strokeText('Use left or right keys to switch classes', 100, 600);
+        ctx.fillStyle = 'white';
+        ctx.fillText('Use left or right keys to switch classes', 100, 600);
+        // press enter instructions
+        ctx.font = '20pt sans-serif';
+        ctx.strokeStyle = 'black';
+        ctx.lineWidth = 3;
+        ctx.strokeText('Press enter to choose a class', 100, 630);
+        ctx.fillStyle = 'white';
+        ctx.fillText('Press enter to choose a class', 100, 630);
+
+
+
+        ctx.drawImage(Resources.get(player.sprite), 300, 300)
+        ctx.font = '20pt sans-serif';
+        ctx.strokeStyle = 'black';
+        ctx.lineWidth = 3;
+        ctx.strokeText(player.classes[player.classIndex].className, 325, 460);
         ctx.fillStyle = 'yellow';
-        ctx.fillText('Level: ' + player.level, 580, 40);
+        ctx.fillText(player.classes[player.classIndex].className, 325, 460);
 
-        // draw score
-        ctx.font = '18pt Arial';
-        ctx.strokeStyle = 'black';
-        ctx.lineWidth = 3;
-        ctx.strokeText('Score: ' + player.score, 20, 40);
-        ctx.fillStyle = 'yellow';
-        ctx.fillText('Score: ' + player.score, 20, 40);
+      // game render conditions
+      } else {
+          // displays the game tiles, definition is in levelBuilder.js
+          renderWorld();
+          // call renderEntities before ui so monsters display on top layer
+          renderEntities();
 
-        // draw lives ///////////////////////////
-        // TODO maybe make this into a loop?
-        ctx.font = '24pt Arial';
-        ctx.strokeStyle = 'black';
-        ctx.lineWidth = 3;
-        ctx.strokeText('Lives:', 36, 875);
-        ctx.fillStyle = 'red';
-        ctx.fillText('Lives:', 36, 875);
-        if (player.lives === 1) {
-         ctx.drawImage(Resources.get('img/heart.png'), 110, 832);
-        } else if (player.lives === 2) {
-         ctx.drawImage(Resources.get('img/heart.png'), 110, 832);
-         ctx.drawImage(Resources.get('img/heart.png'), 135, 832);
-        } else if (player.lives === 3) {
-         ctx.drawImage(Resources.get('img/heart.png'), 110, 832);
-         ctx.drawImage(Resources.get('img/heart.png'), 135, 832);
-         ctx.drawImage(Resources.get('img/heart.png'), 160, 832);
-       } else if (player.lives === 4) {
-         ctx.drawImage(Resources.get('img/heart.png'), 110, 832);
-         ctx.drawImage(Resources.get('img/heart.png'), 135, 832);
-         ctx.drawImage(Resources.get('img/heart.png'), 160, 832);
-         ctx.drawImage(Resources.get('img/heart.png'), 185, 832);
-       } else if (player.lives === 5) {
-         ctx.drawImage(Resources.get('img/heart.png'), 110, 832);
-         ctx.drawImage(Resources.get('img/heart.png'), 135, 832);
-         ctx.drawImage(Resources.get('img/heart.png'), 160, 832);
-         ctx.drawImage(Resources.get('img/heart.png'), 185, 832);
-         ctx.drawImage(Resources.get('img/heart.png'), 210, 832);
-       }
+          // UI outline section ///////////////
+          //draw top side
+          ctx.beginPath();
+          ctx.fillStyle = "black";
+          ctx.fillRect(0, 0, 672, 64);
+
+          // draw bottom side
+          ctx.beginPath();
+          ctx.fillStyle = "black";
+          ctx.fillRect(32, 830, 672, 896);
+
+          // draw left side
+          ctx.beginPath();
+          ctx.fillStyle = "black";
+          ctx.fillRect(0, 0, 32, 896);
+
+          // draw right side
+          ctx.beginPath();
+          ctx.fillStyle = "black";
+          ctx.fillRect(672, 0, 704, 896);
+
+
+          // UI statistics section //////////
+          // Draw name
+          ctx.font = '24pt Impact';
+          ctx.strokeStyle = 'black';
+          ctx.lineWidth = 3;
+          ctx.strokeText('Dungeon Dash', 255, 40);
+          ctx.fillStyle = 'white';
+          ctx.fillText('Dungeon Dash', 255, 40);
+          // Draw line underneath
+          ctx.beginPath();
+          ctx.moveTo(230, 48);
+          ctx.lineTo(470, 48);
+          ctx.strokeStyle = 'white';
+          ctx.lineWidth = 5;
+          ctx.stroke();
+
+
+
+          // draw level
+          ctx.font = '18pt Arial';
+          ctx.strokeStyle = 'black';
+          ctx.lineWidth = 3;
+          ctx.strokeText('Level: ' + player.level, 580, 40);
+          ctx.fillStyle = 'yellow';
+          ctx.fillText('Level: ' + player.level, 580, 40);
+
+          // draw score
+          ctx.font = '18pt Arial';
+          ctx.strokeStyle = 'black';
+          ctx.lineWidth = 3;
+          ctx.strokeText('Score: ' + player.score, 20, 40);
+          ctx.fillStyle = 'yellow';
+          ctx.fillText('Score: ' + player.score, 20, 40);
+
+          // draw lives ///////////////////////////
+          // TODO maybe make this into a loop?
+          ctx.font = '24pt Arial';
+          ctx.strokeStyle = 'black';
+          ctx.lineWidth = 3;
+          ctx.strokeText('Lives:', 36, 875);
+          ctx.fillStyle = 'red';
+          ctx.fillText('Lives:', 36, 875);
+          if (player.lives === 1) {
+           ctx.drawImage(Resources.get('img/heart.png'), 110, 832);
+           ctx.drawImage(Resources.get('img/heart.png'), 110, 832);
+          } else if (player.lives === 2) {
+           ctx.drawImage(Resources.get('img/heart.png'), 110, 832);
+           ctx.drawImage(Resources.get('img/heart.png'), 135, 832);
+          } else if (player.lives === 3) {
+           ctx.drawImage(Resources.get('img/heart.png'), 110, 832);
+           ctx.drawImage(Resources.get('img/heart.png'), 135, 832);
+           ctx.drawImage(Resources.get('img/heart.png'), 160, 832);
+         } else if (player.lives === 4) {
+           ctx.drawImage(Resources.get('img/heart.png'), 110, 832);
+           ctx.drawImage(Resources.get('img/heart.png'), 135, 832);
+           ctx.drawImage(Resources.get('img/heart.png'), 160, 832);
+           ctx.drawImage(Resources.get('img/heart.png'), 185, 832);
+         } else if (player.lives === 5) {
+           ctx.drawImage(Resources.get('img/heart.png'), 110, 832);
+           ctx.drawImage(Resources.get('img/heart.png'), 135, 832);
+           ctx.drawImage(Resources.get('img/heart.png'), 160, 832);
+           ctx.drawImage(Resources.get('img/heart.png'), 185, 832);
+           ctx.drawImage(Resources.get('img/heart.png'), 210, 832);
+         }
+      }
     }
 
 
@@ -246,8 +296,8 @@ var Engine = (function(global) {
         'img/scorpion.png',
         'img/beetle.png',
         'img/centipede.png',
-        'img/ant_1.png',
-        'img/ant_2.png',
+        'img/ant_worker.png',
+        'img/ant_soldier.png',
         'img/mosquito.png',
         'img/larva_orange.png',
         'img/larva_grey.png',
@@ -268,7 +318,10 @@ var Engine = (function(global) {
         'img/elf_mage.png',
         'img/elf_priest.png',
         'img/elf_necromancer.png',
-        'img/hero_knight.png'
+        'img/hero_knight.png',
+        'img/hero_wizard.png',
+        'img/hero_mage.png',
+        'img/hero_scribe.png'
     ]);
     Resources.onReady(init);
 

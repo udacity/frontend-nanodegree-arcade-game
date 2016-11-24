@@ -1,9 +1,3 @@
-
-// Define random number function for randomizing enemy starter location
-function getRandomX(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
 // Enemies our player must avoid
 function Enemy(y) {
     // Variables applied to each of our instances go here,
@@ -13,15 +7,19 @@ function Enemy(y) {
 
     // randomX variable positions enemies randomly
     // random placement looks better than having them all start at 0
-    var randomX = getRandomX(33, 640);
+    var randomX = this.getRandomX(33, 640);
     this.x = randomX;
     this.y = y;
     this.direction = "right";
 }
 
+// Define random number function for randomizing enemy starter location
+Enemy.prototype.getRandomX = function(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+};
+
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
-
 Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
@@ -41,6 +39,7 @@ Enemy.prototype.update = function(dt) {
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
+
 
 ////////////////////////////////////////////////
 ///////////////////////////////////////////////////////
@@ -145,9 +144,9 @@ Centipede.prototype.constructor = Bug;
 
 function AntWorker(y) {
   var obj = new Bug(y);
-  obj.sprite = 'img/ant_1.png';
+  obj.sprite = 'img/ant_worker.png';
   obj.speed = speedThree + 30;
-  obj. direction = "left";
+  obj.direction = "left";
   return obj;
 }
 AntWorker.prototype = Object.create(Bug.prototype);
@@ -155,9 +154,9 @@ AntWorker.prototype.constructor = Bug;
 
 function AntSoldier(y) {
   var obj = new Bug(y);
-  obj.sprite = 'img/ant_2.png';
+  obj.sprite = 'img/ant_soldier.png';
   obj.speed = speedThree + 20;
-  obj. direction = "left";
+  obj.direction = "left";
   return obj;
 }
 AntSoldier.prototype = Object.create(Bug.prototype);
@@ -167,7 +166,7 @@ function Mosquito(y) {
   var obj = new Bug(y);
   obj.sprite = 'img/mosquito.png';
   obj.speed = speedThree - 5;
-  obj. direction = "left";
+  obj.direction = "left";
   return obj;
 }
 Mosquito.prototype = Object.create(Bug.prototype);
@@ -180,7 +179,7 @@ function LarvaGrey(y) {
   var obj = new Bug(y);
   obj.sprite = 'img/larva_grey.png';
   obj.speed = speedFour + 10;
-  obj. direction = "left";
+  obj.direction = "left";
   return obj;
 }
 LarvaGrey.prototype = Object.create(Bug.prototype);
@@ -190,7 +189,7 @@ function LarvaOrange(y) {
   var obj = new Bug(y);
   obj.sprite = 'img/larva_orange.png';
   obj.speed = speedFour;
-  obj. direction = "left";
+  obj.direction = "left";
   return obj;
 }
 LarvaOrange.prototype = Object.create(Bug.prototype);
@@ -200,7 +199,7 @@ function BrainBug(y) {
   var obj = new Bug(y);
   obj.sprite = 'img/brain_bug.png';
   obj.speed = speedFour;
-  obj. direction = "left";
+  obj.direction = "left";
   return obj;
 }
 BrainBug.prototype = Object.create(Bug.prototype);

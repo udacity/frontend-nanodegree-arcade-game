@@ -1,4 +1,5 @@
 
+
 //////////////////////////////////////////////////////////
 // Now write your own player class
 // This class requires an update(), render() and
@@ -7,9 +8,10 @@
 var Player = function(x, y) {
   this.x = x;
   this.y = y;
-  this.sprite = 'img/hero_knight.png';
+  this.moveSound = new Audio('sounds/cloth.wav');
+  this.startSound = new Audio('sounds/spell.wav');
   this.lives = 3;
-  this.level = 1;
+  this.level = 0;
   this.completedLevels = 1;
   this.score = 0;
   this.collided = false;
@@ -17,7 +19,37 @@ var Player = function(x, y) {
   this.initialY = 704;
   this.x = this.initialX;
   this.y = this.initialY;
+  this.classes = [];
+
+  var knight = {
+    "className": "Knight",
+    "spriteUrl": "img/hero_knight.png"
+  };
+
+  var wizard = {
+    "className": "Wizard",
+    "spriteUrl": "img/hero_wizard.png"
+  };
+
+  var mage = {
+    "className": "Mage",
+    "spriteUrl": "img/hero_mage.png"
+  };
+
+  var scribe = {
+    "className": "Scribe",
+    "spriteUrl": "img/hero_scribe.png"
+  };
+
+  this.classes.push(knight);
+  this.classes.push(wizard);
+  this.classes.push(mage);
+  this.classes.push(scribe);
+
+  this.classIndex = 0;
+  this.sprite = this.classes[this.classIndex].spriteUrl;
 };
+
 
 // checkCollisions is invoked by player.update method
 // checkCollisions takes 1 parameter: array of current level's mobs
@@ -62,10 +94,11 @@ Player.prototype.collide = function() {
 Player.prototype.reset = function() {
   this.lives = 3;
   this.score = 0;
-  this.level = 1;
-  this.completedLevels = 1;
+  this.level = 0;
+  this.completedLevels = 0;
   this.x = this.initialX;
   this.y = this.initialY;
+  this.startSound.play();
 };
 
 Player.prototype.render = function() {
@@ -120,37 +153,65 @@ Player.prototype.update = function(dt) {
 // handleInput is passed 1 parameter: (key pressed)
 // from document.addEventListener('keyup', function....)
 Player.prototype.handleInput = function(key) {
-  if (key === 'reset') {
-    player.reset();
+if (player.level === 0){
+  if (key === 'right') {
+    this.classIndex ++;
+
+    if (this.classIndex < this.classes.length) {
+      this.sprite = this.classes[this.classIndex].spriteUrl;
+    } else {
+      this.classIndex = 0;
+      this.sprite = this.classes[this.classIndex].spriteUrl;
+    }
+
+  } else if (key === 'left') {
+    this.classIndex --;
+    console.log(this.classIndex);
+    if (this.classIndex > 0) {
+      this.sprite = this.classes[this.classIndex].spriteUrl;
+    } else {
+      this.classIndex = this.classes.length - 1;
+      this.sprite = this.classes[this.classIndex].spriteUrl;
+    }
+  } else if (key === 'enter'){
+    this.startSound.play();
+    this.level ++;
   }
-  else if (key === 'up') {
+}
+
+else {
+  if (key === 'enter') {
+    this.reset();
+  } else if (key === 'up') {
     this.y -= 128;
-  }
-  else if ((key === 'down' && this.y < this.initialY) || (key === 'down' && this.level > 1)) {
+    this.moveSound.play();
+
+  } else if ((key === 'down' && this.y < this.initialY)
+    || (key === 'down' && this.level > 1)) {
     this.y += 128;
-  }
-  else if (key === 'down' && this.y >= this.initialY && this.level <= 1) {
+    this.moveSound.play();
+  } else if (key === 'down' && this.y >= this.initialY && this.level <= 1) {
     console.log("Error! Can't go farther down.");
-  }
-  else if (key === 'right' && this.x < 544) {
+
+  } else if (key === 'right' && this.x < 544) {
     this.x += 128;
-  }
-  else if (key === 'right' && this.x >= 544) {
+    this.moveSound.play();
+  } else if (key === 'right' && this.x >= 544) {
     console.log("Error! Can't go farther right.");
-  }
-  else if (key === 'left' && this.x > 33) {
+
+  } else if (key === 'left' && this.x > 33) {
     this.x -= 128;
-  }
-  else if (key === 'left' && this.x <= 33) {
+    this.moveSound.play();
+  } else if (key === 'left' && this.x <= 33) {
     console.log("Error! Can't go farther left.");
-  } else if (key === 'pause') {
+
+  } else if (key === 'p') {
     console.log("Place a pause function here");
   }
+}
 };
 
 var player = new Player();
-
-
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method
@@ -160,9 +221,9 @@ document.addEventListener('keyup', function(e) {
         38: 'up',
         39: 'right',
         40: 'down',
-        80: 'pause',
-        13: 'reset'
+        80: 'p',
+        13: 'enter'
     };
 
-    player.handleInput(allowedKeys[e.keyCode]);
+  player.handleInput(allowedKeys[e.keyCode]);
 });
