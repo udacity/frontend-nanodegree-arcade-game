@@ -26,9 +26,9 @@ var Player = function(x, y) {
     "spriteUrl": "img/hero_knight.png"
   };
 
-  var wizard = {
-    "className": "Wizard",
-    "spriteUrl": "img/hero_wizard.png"
+  var sorceress = {
+    "className": "Sorceress",
+    "spriteUrl": "img/hero_sorceress.png"
   };
 
   var mage = {
@@ -41,10 +41,52 @@ var Player = function(x, y) {
     "spriteUrl": "img/hero_scribe.png"
   };
 
+  var templar = {
+    "className": "Templar",
+    "spriteUrl": "img/hero_templar.png"
+  };
+
+  var oracle = {
+    "className": "Oracle",
+    "spriteUrl": "img/hero_oracle.png"
+  };
+
+  var priest = {
+    "className": "Priest",
+    "spriteUrl": "img/hero_priest.png"
+  };
+
+  var monk = {
+    "className": "Monk",
+    "spriteUrl": "img/hero_monk.png"
+  };
+
+  var rogue = {
+    "className": "Rogue",
+    "spriteUrl": "img/hero_rogue.png"
+  };
+
+  var enchantress = {
+    "className": "Enchantress",
+    "spriteUrl": "img/hero_enchantress.png"
+  };
+
+  var paladin = {
+    "className": "Paladin",
+    "spriteUrl": "img/hero_paladin.png"
+  };
+
   this.classes.push(knight);
-  this.classes.push(wizard);
+  this.classes.push(sorceress);
   this.classes.push(mage);
   this.classes.push(scribe);
+  this.classes.push(templar);
+  this.classes.push(oracle);
+  this.classes.push(priest);
+  this.classes.push(monk);
+  this.classes.push(rogue);
+  this.classes.push(enchantress);
+  this.classes.push(paladin);
 
   this.classIndex = 0;
   this.sprite = this.classes[this.classIndex].spriteUrl;

@@ -118,54 +118,93 @@ var Engine = (function(global) {
      */
     function render() {
 
-      // start screen
+      // First, render start screen
       if (player.level === 0) {
+        // Draw main background
         ctx.beginPath();
         ctx.fillStyle = "black";
         ctx.fillRect(0, 0, 672, 896);
 
-        // Draw name
+        // Draw class box
+        ctx.beginPath();
+        ctx.fillStyle = "grey";
+        ctx.fillRect(245, 280, 180, 200);
+
+        // Draw game name
         ctx.font = '48pt Impact';
         ctx.strokeStyle = 'black';
         ctx.lineWidth = 3;
-        ctx.strokeText('Dungeon Dash', 170, 150);
+        ctx.strokeText('Dungeon Dash', 150, 150);
         ctx.fillStyle = 'yellow';
-        ctx.fillText('Dungeon Dash', 170, 150);
+        ctx.fillText('Dungeon Dash', 150, 150);
+        // Draw line underneath game name
+        ctx.beginPath();
+        ctx.moveTo(130, 162);
+        ctx.lineTo(540, 162);
+        ctx.strokeStyle = 'yellow';
+        ctx.lineWidth = 5;
+        ctx.stroke();
 
         // select class message
-        ctx.font = '36pt sans-serif';
+        ctx.font = '36pt Ravi Prakash';
         ctx.strokeStyle = 'black';
         ctx.lineWidth = 3;
-        ctx.strokeText('Select your class:', 170, 200);
-        ctx.fillStyle = 'white';
-        ctx.fillText('Select your class:', 170, 200);
+        ctx.strokeText('Select your class:', 180, 260);
+        ctx.fillStyle = 'red';
+        ctx.fillText('Select your class:', 180, 260);
 
         // select class instructions
-        ctx.font = '20pt sans-serif';
+        ctx.font = '24pt Ravi Prakash';
         ctx.strokeStyle = 'black';
         ctx.lineWidth = 3;
-        ctx.strokeText('Use left or right keys to switch classes', 100, 600);
         ctx.fillStyle = 'white';
-        ctx.fillText('Use left or right keys to switch classes', 100, 600);
+        ctx.strokeText('Use left or right keys to switch classes', 120, 600);
+        ctx.fillText('Use left or right keys to switch classes', 120, 600);
         // press enter instructions
-        ctx.font = '20pt sans-serif';
+        ctx.strokeText('Press enter to choose a class', 190, 670);
+        ctx.fillText('Press enter to choose a class', 190, 670);
+
+
+        // draw class sprite
+        ctx.drawImage(Resources.get(player.sprite), 270, 300)
+
+        // draw class name section
+        // set class name font style
+        ctx.font = '20pt Impact';
         ctx.strokeStyle = 'black';
         ctx.lineWidth = 3;
-        ctx.strokeText('Press enter to choose a class', 100, 630);
-        ctx.fillStyle = 'white';
-        ctx.fillText('Press enter to choose a class', 100, 630);
-
-
-
-        ctx.drawImage(Resources.get(player.sprite), 300, 300)
-        ctx.font = '20pt sans-serif';
-        ctx.strokeStyle = 'black';
-        ctx.lineWidth = 3;
-        ctx.strokeText(player.classes[player.classIndex].className, 325, 460);
         ctx.fillStyle = 'yellow';
-        ctx.fillText(player.classes[player.classIndex].className, 325, 460);
+        // conditional to align class names characters 10+ long
+        if (player.classes[player.classIndex].className.length >= 10) {
+         ctx.strokeText(player.classes[player.classIndex].className, 272, 460);
+         ctx.fillText(player.classes[player.classIndex].className, 272, 460);
 
-      // game render conditions
+         // conditional to align class names characters 8+ long
+        } else if (player.classes[player.classIndex].className.length
+          >= 8) {
+          ctx.strokeText(player.classes[player.classIndex].className, 282, 460);
+          ctx.fillText(player.classes[player.classIndex].className, 282, 460);
+
+          // conditional to align class names characters 7 characters long
+        } else if (player.classes[player.classIndex].className.length
+          === 7) {
+          ctx.strokeText(player.classes[player.classIndex].className, 291, 460);
+          ctx.fillText(player.classes[player.classIndex].className, 291, 460);
+
+          // conditional to align class names characters 5-6 long
+        } else if (player.classes[player.classIndex].className.length
+          >= 5) {
+          ctx.strokeText(player.classes[player.classIndex].className, 297, 460);
+          ctx.fillText(player.classes[player.classIndex].className, 297, 460);
+
+          // conditional to align class names characters 4- short
+        } else {
+          ctx.strokeText(player.classes[player.classIndex].className, 304, 460);
+          ctx.fillText(player.classes[player.classIndex].className, 304, 460);
+        }
+        // end start screen rendering
+        ////////////////////////////////////////////////////////////////////
+        // begin game render conditions
       } else {
           // displays the game tiles, definition is in levelBuilder.js
           renderWorld();
@@ -319,9 +358,17 @@ var Engine = (function(global) {
         'img/elf_priest.png',
         'img/elf_necromancer.png',
         'img/hero_knight.png',
-        'img/hero_wizard.png',
+        'img/hero_sorceress.png',
         'img/hero_mage.png',
-        'img/hero_scribe.png'
+        'img/hero_scribe.png',
+        'img/hero_templar.png',
+        'img/hero_oracle.png',
+        'img/hero_priest.png',
+        'img/hero_monk.png',
+        'img/hero_rogue.png',
+        'img/hero_enchantress.png',
+        'img/hero_paladin.png'
+
     ]);
     Resources.onReady(init);
 

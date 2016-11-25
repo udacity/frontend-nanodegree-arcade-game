@@ -1,3 +1,10 @@
+@font-face {
+  /*
+  * google web font: https://fonts.google.com/?selection.family=Ravi+Prakash */
+  font-family: 'Ravi Prakash';
+  src: url('RaviPrakash-Regular.ttf');
+}
+
 html {
   /* Background Image Source: https://blogs.msdn.microsoft.com/cdnstudents/2013/07/22/free-fantasy-art-assets-to-help-you-build-your-games/
   */
