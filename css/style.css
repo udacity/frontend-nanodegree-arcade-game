@@ -12,13 +12,14 @@ html {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  height: 100%;
 }
 
 body {
     text-align: center;
 }
 
-#music-btn {
+/* #music-btn {
   font-family: "Arial Black", "Arial Bold", "Gadget", sans-serif;
   width: 100px;
   height: 40px;
@@ -26,24 +27,17 @@ body {
   background-color: #262228;
   color: #efce00;
   position: absolute;
-}
+} */
 
 
-#game-canvas {
-  display: inline;
-}
-
-
-@media screen and (max-width: 1200px) {
-
-  #game-area {
-  	max-width: 640px;
-  	margin-left: auto;
-  	margin-right: auto;
-  }
-
+@media screen and (max-height: 899px) {
   #game-canvas {
-  	max-width: 80%;
+    max-height: 800px;
   }
+}
 
+@media screen and (min-height: 900px) {
+  #game-canvas {
+    max-height: 900px;
+  }
 }

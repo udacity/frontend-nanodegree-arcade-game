@@ -125,7 +125,6 @@ Player.prototype.collide = function() {
   if (this.lives < 1) {
     player.reset();
   } else {
-    this.collided = false;
     this.x = this.initialX;
     this.y = this.initialY;
   }
@@ -195,6 +194,7 @@ Player.prototype.update = function(dt) {
 // handleInput is passed 1 parameter: (key pressed)
 // from document.addEventListener('keyup', function....)
 Player.prototype.handleInput = function(key) {
+// start screen controls
 if (player.level === 0){
   if (key === 'right') {
     this.classIndex ++;
@@ -222,6 +222,7 @@ if (player.level === 0){
   }
 }
 
+// game controls
 else {
   if (key === 'enter') {
     this.reset();
