@@ -10,8 +10,11 @@
 // Display the proper level of enemies
 function renderEntities() {
 
-    // renders the enemies for each level
+    // renders the enemies and obstacles for each level
     if (player.level === 1) {
+      obstaclesOne.forEach(function(obstacle) {
+        obstacle.render();
+      });
       levelOne.forEach(function(enemy) {
         enemy.render();
       });
@@ -41,6 +44,10 @@ function renderEntities() {
       });
     } else if (player.level === 8) {
       levelEight.forEach(function(enemy) {
+        enemy.render();
+      });
+    } else if (player.level === 9) {
+      levelNine.forEach(function(enemy) {
         enemy.render();
       });
     }
@@ -83,7 +90,13 @@ function updateEntities(dt) {
       levelEight.forEach(function(enemy) {
         enemy.update(dt);
       });
+    } else if (player.level === 9) {
+      levelNine.forEach(function(enemy) {
+        enemy.update(dt);
+      });
     }
+
+
     player.update();
 }
 
@@ -154,7 +167,7 @@ function renderWorld() {
             'img/grey_brick.png',   // Row 5
             'img/rock_path.png'    // Row 6 - Bottom Row
         ];
-      } else if (player.level == 8) {
+      } else if (player.level == 8 || player.level == 9) {
         rowImages = [
             'img/grass_light.png',        // Top row
             'img/grass_red.png',    // Row 2

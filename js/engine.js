@@ -369,6 +369,9 @@ var Engine = (function(global) {
     // Note: All images added to game must be called by Resources.load()
     Resources.load([
         'img/heart.png',
+        'img/grey_border_block.png',
+        'img/grey_border_block_small.png',
+        'img/gate_three_blocks.png',
         'img/grey_brick.png',
         'img/rock_path.png',
         'img/ocean.png',
@@ -406,6 +409,10 @@ var Engine = (function(global) {
         'img/elf_mage.png',
         'img/elf_priest.png',
         'img/elf_necromancer.png',
+        'img/centaur_archer_orange.png',
+        'img/centaur_archer_red.png',
+        'img/centaur_xbow_brown.png',
+        'img/centaur_xbow_grey.png',
         'img/hero_knight.png',
         'img/hero_sorceress.png',
         'img/hero_mage.png',
@@ -417,9 +424,8 @@ var Engine = (function(global) {
         'img/hero_rogue.png',
         'img/hero_enchantress.png',
         'img/hero_paladin.png',
-        'img/grey_border_block.png',
-        'img/gate_three_blocks.png',
-        'img/grey_border_block_small.png'
+        'img/hero_berserker.png',
+        'img/tree_1.png'
 
     ]);
     Resources.onReady(init);

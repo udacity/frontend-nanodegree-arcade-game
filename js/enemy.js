@@ -54,6 +54,7 @@ var speedFive = 140;
 var speedSix = 150;
 var speedSeven = 160;
 var speedEight = 170;
+var speedNine = 180;
 
 ////////////////////////////////////////////////////////////
 // Enemy type definition section
@@ -309,7 +310,7 @@ GobWarrior.prototype = Object.create(Humanoid.prototype);
 GobWarrior.prototype.constructor = Humanoid;
 
 ///////////////////////////////////////////////////
-// Define elves level 6 mobs
+// Define elves level 8 mobs
 //////////////////////////////////
 function ElfWarrior(y) {
   var obj = new Humanoid(y);
@@ -350,11 +351,46 @@ function ElfNecromancer(y) {
 ElfNecromancer.prototype = Object.create(Humanoid.prototype);
 ElfNecromancer.prototype.constructor = Humanoid;
 
+///////////////////////////////////////////////////
+// Define elves level 8 mobs
+//////////////////////////////////
+function CentaurArcherOrange(y) {
+  var obj = new Humanoid(y);
+  obj.sprite = 'img/centaur_archer_orange.png';
+  obj.speed = speedNine + 60;
+  return obj;
+}
+CentaurArcherOrange.prototype = Object.create(Humanoid.prototype);
+CentaurArcherOrange.prototype.constructor = Humanoid;
 
+function CentaurArcherRed(y) {
+  var obj = new Humanoid(y);
+  obj.sprite = 'img/centaur_archer_red.png';
+  obj.speed = speedNine + 60;
+  obj.direction = "left";
+  return obj;
+}
+CentaurArcherRed.prototype = Object.create(Humanoid.prototype);
+CentaurArcherRed.prototype.constructor = Humanoid;
 
+function CentaurXbowBrown(y) {
+  var obj = new Humanoid(y);
+  obj.sprite = 'img/centaur_xbow_brown.png';
+  obj.speed = speedNine + 20;
+  obj.direction = "left";
+  return obj;
+}
+CentaurXbowBrown.prototype = Object.create(Humanoid.prototype);
+CentaurXbowBrown.prototype.constructor = Humanoid;
 
-
-
+function CentaurXbowGrey(y) {
+  var obj = new Humanoid(y);
+  obj.sprite = 'img/centaur_xbow_grey.png';
+  obj.speed = speedNine + 20;
+  return obj;
+}
+CentaurXbowGrey.prototype = Object.create(Humanoid.prototype);
+CentaurXbowGrey.prototype.constructor = Humanoid;
 
 ///////////////////////////////////////////////////////
 // Instantiate all objects
@@ -377,6 +413,7 @@ var levelFive = [];    // level 4
 var levelSix = [];    // level 5
 var levelSeven = [];
 var levelEight = [];
+var levelNine = [];
 
 
 // Instantiate bugs lvl 1 enemies
@@ -458,3 +495,14 @@ levelEight.push(elfWarrior);
 levelEight.push(elfMage);
 levelEight.push(elfPriest);
 levelEight.push(elfNecromancer);
+
+// Instantiate Centaurs lvl 9 enemies
+var centaurArcherOrange = new CentaurArcherOrange(row1);
+var centaurArcherRed = new CentaurArcherRed(row2);
+var centaurXbowBrown = new CentaurXbowBrown(row3);
+var centaurXbowGrey = new CentaurXbowGrey(row4);
+
+levelNine.push(centaurArcherOrange);
+levelNine.push(centaurArcherRed);
+levelNine.push(centaurXbowBrown);
+levelNine.push(centaurXbowGrey);
