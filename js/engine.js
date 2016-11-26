@@ -118,12 +118,25 @@ var Engine = (function(global) {
      */
     function render() {
 
+      // draw ui border
+
+      // draw ui top
+      //var  numTopRows = 11,
+      //     topRow;
+      //     for (topRow = 0; topRow < numTopRows; topRow++) {
+      //      ctx.drawImage(Resources.get('img/grey_border_block.png'), (topRow * //64), 0);
+      //     }
+      //
+      // draw ui left
+
+
+
       // First, render start screen
       if (player.level === 0) {
         // Draw main background
         ctx.beginPath();
         ctx.fillStyle = "black";
-        ctx.fillRect(0, 0, 672, 896);
+        ctx.fillRect(0, 0, 704, 896);
 
         // Draw class box
         ctx.beginPath();
@@ -212,55 +225,90 @@ var Engine = (function(global) {
           renderEntities();
 
           // UI outline section ///////////////
-          //draw top side
-          ctx.beginPath();
-          ctx.fillStyle = "black";
-          ctx.fillRect(0, 0, 672, 64);
+          //draw ui background top side
+          // ctx.beginPath();
+          // ctx.fillStyle = "black";
+           //ctx.fillRect(0, 0, 672, 64);
 
-          // draw bottom side
-          ctx.beginPath();
-          ctx.fillStyle = "black";
-          ctx.fillRect(32, 830, 672, 896);
+           // draw ui background top left side
+          var  numTopLeftCols = 3,
+                topLeftCol;
+                for (topLeftCol = 0; topLeftCol < numTopLeftCols; topLeftCol++) {
+                  ctx.drawImage(Resources.get('img/grey_border_block.png'), (topLeftCol * 64), 0);
+                }
 
+           // draw ui background top right side
+          var  numTopLeftCols = 3,
+                topLeftCol;
+                for (topLeftCol = 0; topLeftCol < numTopLeftCols; topLeftCol++) {
+                  ctx.drawImage(Resources.get('img/grey_border_block.png'), (topLeftCol * 64) + 512, 0);
+                }
+
+          // draw ui background bottom side
+           ctx.beginPath();
+           ctx.fillStyle = "black";
+           ctx.fillRect(0, 830, 672, 896);
+
+          // draw ui left
+           var  numLeftRows = 24,
+                leftRow;
+                for (leftRow = 0; leftRow < numLeftRows; leftRow++) {
+                ctx.drawImage(Resources.get('img/grey_border_block_small.png'), 0, (leftRow * 32) + 64);
+              }
+
+          // draw ui right
+          var  numRightRows = 24,
+              rightRow;
+              for (rightRow = 0; rightRow < numRightRows; rightRow++) {
+                ctx.drawImage(Resources.get('img/grey_border_block_small.png'), 672, (rightRow * 32) + 64);
+              }
+
+        ctx.drawImage(Resources.get('img/gate_three_blocks.png'), 192, 0);
           // draw left side
-          ctx.beginPath();
-          ctx.fillStyle = "black";
-          ctx.fillRect(0, 0, 32, 896);
-
+          //ctx.beginPath();
+          //ctx.fillStyle = "black";
+          //ctx.fillRect(0, 0, 32, 896);
           // draw right side
-          ctx.beginPath();
-          ctx.fillStyle = "black";
-          ctx.fillRect(672, 0, 704, 896);
-
+          //ctx.beginPath();
+          //ctx.fillStyle = "black";
+          //ctx.fillRect(672, 0, 704, 896);
 
           // UI statistics section //////////
           // Draw name
-          ctx.font = '24pt Impact';
-          ctx.strokeStyle = 'black';
-          ctx.lineWidth = 3;
-          ctx.strokeText('Dungeon Dash', 255, 40);
-          ctx.fillStyle = 'white';
-          ctx.fillText('Dungeon Dash', 255, 40);
+          //ctx.font = '24pt Impact';
+          //ctx.strokeStyle = 'black';
+          //ctx.lineWidth = 3;
+          //ctx.strokeText('Dungeon Dash', 255, 40);
+          //ctx.fillStyle = 'white';
+          //ctx.fillText('Dungeon Dash', 255, 40);
           // Draw line underneath
+          //ctx.beginPath();
+          //ctx.moveTo(230, 48);
+          //ctx.lineTo(470, 48);
+          //ctx.strokeStyle = 'white';
+          //ctx.lineWidth = 5;
+          //ctx.stroke();
+
+
+
+          // draw level background
           ctx.beginPath();
-          ctx.moveTo(230, 48);
-          ctx.lineTo(470, 48);
-          ctx.strokeStyle = 'white';
-          ctx.lineWidth = 5;
-          ctx.stroke();
-
-
-
-          // draw level
-          ctx.font = '18pt Arial';
+          ctx.fillStyle = "black";
+          ctx.fillRect(576, 14, 90, 38);
+          // draw level text
+          ctx.font = '18pt Impact';
           ctx.strokeStyle = 'black';
           ctx.lineWidth = 3;
           ctx.strokeText('Level: ' + player.level, 580, 40);
           ctx.fillStyle = 'yellow';
           ctx.fillText('Level: ' + player.level, 580, 40);
 
-          // draw score
-          ctx.font = '18pt Arial';
+          // draw score background
+          ctx.beginPath();
+          ctx.fillStyle = "black";
+          ctx.fillRect(14, 14, 124, 38);
+          // draw score text
+          ctx.font = '18pt Impact';
           ctx.strokeStyle = 'black';
           ctx.lineWidth = 3;
           ctx.strokeText('Score: ' + player.score, 20, 40);
@@ -367,7 +415,10 @@ var Engine = (function(global) {
         'img/hero_monk.png',
         'img/hero_rogue.png',
         'img/hero_enchantress.png',
-        'img/hero_paladin.png'
+        'img/hero_paladin.png',
+        'img/grey_border_block.png',
+        'img/gate_three_blocks.png',
+        'img/grey_border_block_small.png'
 
     ]);
     Resources.onReady(init);

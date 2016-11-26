@@ -12,7 +12,7 @@ var Player = function(x, y) {
   this.startSound = new Audio('sounds/spell.wav');
   this.lives = 3;
   this.level = 0;
-  this.completedLevels = 1;
+  this.completedLevels = 0;
   this.score = 0;
   this.collided = false;
   this.initialX = 288;
@@ -175,7 +175,7 @@ Player.prototype.update = function(dt) {
       // TODO add endgame scenario
       //if (this.level <= 6) {
       this.completedLevels++;
-      this.score += 1000;
+      this.score += 100;
       this.y = this.initialY;
       //} else {
       //  player.reset();
@@ -186,7 +186,7 @@ Player.prototype.update = function(dt) {
       this.y = this.initialY;
     }
   // conditional for going down to previous level
-  } else if (this.y > this.initialY) {
+} else if (this.y > this.initialY) {
   this.level--;
   this.y = 64;
   }
@@ -218,6 +218,7 @@ if (player.level === 0){
   } else if (key === 'enter'){
     this.startSound.play();
     this.level ++;
+    this.completedLevels ++;
   }
 }
 
