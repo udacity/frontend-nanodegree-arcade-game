@@ -29,7 +29,7 @@ var Engine = (function(global) {
 
     // set game area dimensions
     // Dungeon Frogger is set to a 128x128 grid
-    canvas.width = 704;
+    canvas.width = 960;
     canvas.height = 896;
 
     // add game display elements to html document
@@ -137,24 +137,19 @@ var Engine = (function(global) {
         // Draw main background
         ctx.beginPath();
         ctx.fillStyle = "black";
-        ctx.fillRect(0, 0, 704, 896);
-
-        // Draw class box
-        ctx.beginPath();
-        ctx.fillStyle = "grey";
-        ctx.fillRect(245, 280, 180, 200);
+        ctx.fillRect(0, 0, 960, 896);
 
         // Draw game name
-        ctx.font = '48pt Impact';
+        ctx.font = '56pt Impact';
         ctx.strokeStyle = 'black';
         ctx.lineWidth = 3;
-        ctx.strokeText('Dungeon Dash', 150, 150);
+        ctx.strokeText('Dungeon Dash', 260, 150);
         ctx.fillStyle = 'yellow';
-        ctx.fillText('Dungeon Dash', 150, 150);
+        ctx.fillText('Dungeon Dash', 260, 150);
         // Draw line underneath game name
         ctx.beginPath();
-        ctx.moveTo(130, 162);
-        ctx.lineTo(540, 162);
+        ctx.moveTo(230, 162);
+        ctx.lineTo(730, 162);
         ctx.strokeStyle = 'yellow';
         ctx.lineWidth = 5;
         ctx.stroke();
@@ -163,24 +158,27 @@ var Engine = (function(global) {
         ctx.font = '36pt Ravi Prakash';
         ctx.strokeStyle = 'black';
         ctx.lineWidth = 3;
-        ctx.strokeText('Select your class:', 180, 260);
+        ctx.strokeText('Select your class:', 320, 228);
         ctx.fillStyle = 'red';
-        ctx.fillText('Select your class:', 180, 260);
+        ctx.fillText('Select your class:', 320, 228);
 
         // select class instructions
         ctx.font = '24pt Ravi Prakash';
         ctx.strokeStyle = 'black';
         ctx.lineWidth = 3;
         ctx.fillStyle = 'white';
-        ctx.strokeText('Use left or right keys to switch classes', 120, 600);
-        ctx.fillText('Use left or right keys to switch classes', 120, 600);
+        ctx.strokeText('Use left or right keys to switch classes', 260, 600);
+        ctx.fillText('Use left or right keys to switch classes', 260, 600);
         // press enter instructions
-        ctx.strokeText('Press enter to choose a class', 190, 670);
-        ctx.fillText('Press enter to choose a class', 190, 670);
+        ctx.strokeText('Press enter to choose a class', 320, 670);
+        ctx.fillText('Press enter to choose a class', 320, 670);
 
-
+        // Draw class box
+        ctx.beginPath();
+        ctx.fillStyle = "grey";
+        ctx.fillRect(380, 240, 180, 200);
         // draw class sprite
-        ctx.drawImage(Resources.get(player.sprite), 270, 300)
+        ctx.drawImage(Resources.get(player.sprite), 402, 270)
 
         // draw class name section
         // set class name font style
@@ -190,31 +188,31 @@ var Engine = (function(global) {
         ctx.fillStyle = 'yellow';
         // conditional to align class names characters 10+ long
         if (player.classes[player.classIndex].className.length >= 10) {
-         ctx.strokeText(player.classes[player.classIndex].className, 272, 460);
-         ctx.fillText(player.classes[player.classIndex].className, 272, 460);
+         ctx.strokeText(player.classes[player.classIndex].className, 400, 424);
+         ctx.fillText(player.classes[player.classIndex].className, 400, 424);
 
          // conditional to align class names characters 8+ long
         } else if (player.classes[player.classIndex].className.length
           >= 8) {
-          ctx.strokeText(player.classes[player.classIndex].className, 282, 460);
-          ctx.fillText(player.classes[player.classIndex].className, 282, 460);
+          ctx.strokeText(player.classes[player.classIndex].className, 404, 424);
+          ctx.fillText(player.classes[player.classIndex].className, 404, 424);
 
           // conditional to align class names characters 7 characters long
         } else if (player.classes[player.classIndex].className.length
           === 7) {
-          ctx.strokeText(player.classes[player.classIndex].className, 291, 460);
-          ctx.fillText(player.classes[player.classIndex].className, 291, 460);
+          ctx.strokeText(player.classes[player.classIndex].className, 416, 424);
+          ctx.fillText(player.classes[player.classIndex].className, 416, 424);
 
           // conditional to align class names characters 5-6 long
         } else if (player.classes[player.classIndex].className.length
           >= 5) {
-          ctx.strokeText(player.classes[player.classIndex].className, 297, 460);
-          ctx.fillText(player.classes[player.classIndex].className, 297, 460);
+          ctx.strokeText(player.classes[player.classIndex].className, 430, 424);
+          ctx.fillText(player.classes[player.classIndex].className, 430, 424);
 
           // conditional to align class names characters 4- short
         } else {
-          ctx.strokeText(player.classes[player.classIndex].className, 304, 460);
-          ctx.fillText(player.classes[player.classIndex].className, 304, 460);
+          ctx.strokeText(player.classes[player.classIndex].className, 440, 424);
+          ctx.fillText(player.classes[player.classIndex].className, 440, 424);
         }
         // end start screen rendering
         ////////////////////////////////////////////////////////////////////
@@ -232,23 +230,23 @@ var Engine = (function(global) {
            //ctx.fillRect(0, 0, 672, 64);
 
            // draw ui background top left side
-          var  numTopLeftCols = 3,
+          var  numTopLeftCols = 5,
                 topLeftCol;
                 for (topLeftCol = 0; topLeftCol < numTopLeftCols; topLeftCol++) {
                   ctx.drawImage(Resources.get('img/grey_border_block.png'), (topLeftCol * 64), 0);
                 }
 
            // draw ui background top right side
-          var  numTopLeftCols = 3,
+          var  numTopLeftCols = 5,
                 topLeftCol;
                 for (topLeftCol = 0; topLeftCol < numTopLeftCols; topLeftCol++) {
-                  ctx.drawImage(Resources.get('img/grey_border_block.png'), (topLeftCol * 64) + 512, 0);
+                  ctx.drawImage(Resources.get('img/grey_border_block.png'), (topLeftCol * 64) + 640, 0);
                 }
 
           // draw ui background bottom side
            ctx.beginPath();
            ctx.fillStyle = "black";
-           ctx.fillRect(0, 830, 672, 896);
+           ctx.fillRect(0, 830, 906, 896);
 
           // draw ui left
            var  numLeftRows = 24,
@@ -261,10 +259,10 @@ var Engine = (function(global) {
           var  numRightRows = 24,
               rightRow;
               for (rightRow = 0; rightRow < numRightRows; rightRow++) {
-                ctx.drawImage(Resources.get('img/grey_border_block_small.png'), 672, (rightRow * 32) + 64);
+                ctx.drawImage(Resources.get('img/grey_border_block_small.png'), 928, (rightRow * 32) + 64);
               }
 
-        ctx.drawImage(Resources.get('img/gate_three_blocks.png'), 192, 0);
+        ctx.drawImage(Resources.get('img/gate_three_blocks.png'), 320, 0);
           // draw left side
           //ctx.beginPath();
           //ctx.fillStyle = "black";
@@ -295,14 +293,14 @@ var Engine = (function(global) {
           // draw level background
           ctx.beginPath();
           ctx.fillStyle = "black";
-          ctx.fillRect(576, 14, 90, 38);
+          ctx.fillRect(854, 14, 90, 38);
           // draw level text
           ctx.font = '18pt Impact';
           ctx.strokeStyle = 'black';
           ctx.lineWidth = 3;
-          ctx.strokeText('Level: ' + player.level, 580, 40);
+          ctx.strokeText('Level: ' + player.level, 860, 40);
           ctx.fillStyle = 'yellow';
-          ctx.fillText('Level: ' + player.level, 580, 40);
+          ctx.fillText('Level: ' + player.level, 860, 40);
 
           // draw score background
           ctx.beginPath();

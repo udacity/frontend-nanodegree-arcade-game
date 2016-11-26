@@ -15,7 +15,7 @@ var Player = function(x, y) {
   this.completedLevels = 0;
   this.score = 0;
   this.collided = false;
-  this.initialX = 288;
+  this.initialX = 416;
   this.initialY = 704;
   this.startY = 576;
   this.x = this.initialX;
@@ -135,6 +135,9 @@ Player.prototype.collide = function() {
   this.lives--;
   if (this.lives < 1) {
     player.reset();
+  } else if (this.level === 1) {
+    this.x = this.initialX;
+    this.y = this.startY;
   } else {
     this.x = this.initialX;
     this.y = this.initialY;
@@ -309,10 +312,10 @@ else {
   } else if (key === 'down' && this.y >= this.initialY && this.level <= 1) {
     console.log("Error! Can't go farther down.");
 
-  } else if (key === 'right' && this.x < 544 && this.obstacleLeft === false) {
+  } else if (key === 'right' && this.x < 800 && this.obstacleLeft === false) {
     this.x += 128;
     this.moveSound.play();
-  } else if (key === 'right' && this.x >= 544) {
+  } else if (key === 'right' && this.x >= 800) {
     console.log("Error! Can't go farther right.");
 
   } else if (key === 'left' && this.x > 33 && this.obstacleRight === false) {

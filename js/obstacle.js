@@ -68,12 +68,14 @@ var colTwo = 160;
 var colThree = 288;
 var colFour = 416;
 var colFive = 544;
+var colSix = 672;
+var colSeven = 800;
 
 // rows (y-value)
 var rowOne = 704;
 var rowTwo = 576;
 var rowThree = 448;
-var rowThree = 320;
+var rowFour = 320;
 
 
 var obstaclesOne = [];
@@ -87,10 +89,20 @@ var oneTree2 = new Obstacle(colTwo, rowOne, 1, "img/tree_1.png");
 var oneTree3 = new Obstacle(colThree, rowOne, 1, "img/tree_1.png");
 var oneTree4 = new Obstacle(colFour, rowOne, 1, "img/tree_1.png");
 var oneTree5 = new Obstacle(colFive, rowOne, 1, "img/tree_1.png");
-var oneTree6 = new Obstacle(colThree, rowThree, 1, "img/tree_1.png");
+var oneTree6 = new Obstacle(colSix, rowOne, 1, "img/tree_1.png");
+var oneTree7 = new Obstacle(colSeven, rowOne, 1, "img/tree_1.png");
+
+var oneTree10 = new Obstacle(colThree, rowFour, 1, "img/tree_1.png");
+var oneTree8 = new Obstacle(colFour, rowFour, 1, "img/tree_1.png");
+var oneTree9 = new Obstacle(colFive, rowFour, 1, "img/tree_1.png");
 
 obstaclesOne.push(oneTree1);
 obstaclesOne.push(oneTree2);
 obstaclesOne.push(oneTree3);
 obstaclesOne.push(oneTree4);
 obstaclesOne.push(oneTree5);
+obstaclesOne.push(oneTree6);
+obstaclesOne.push(oneTree7);
+obstaclesOne.push(oneTree8);
+obstaclesOne.push(oneTree9);
+obstaclesOne.push(oneTree10);

@@ -179,7 +179,7 @@ function renderWorld() {
       }
 
   var  numRows = 6,
-       numCols = 5,
+       numCols = 7,
        row, col;
 
   /* Loop through the number of rows and columns we've defined above

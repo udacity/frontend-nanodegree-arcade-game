@@ -24,14 +24,14 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-  if (this.direction == "right" && this.x <= 704) {
+  if (this.direction == "right" && this.x <= 960) {
     this.x += (this.speed * dt) + 1;
   } else if (this.direction == "right") {
     this.x = 0;
   } else if (this.direction == "left" && this.x >= 1) {
     this.x -= (this.speed *dt) + 1;
   } else if (this.direction == "left") {
-    this.x = 704;
+    this.x = 960;
   }
 };
 
