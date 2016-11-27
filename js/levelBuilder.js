@@ -26,10 +26,16 @@ function renderEntities() {
         enemy.render();
       });
     } else if (player.level === 3) {
+      obstaclesThree.forEach(function(obstacle) {
+        obstacle.render();
+      });
       levelThree.forEach(function(enemy) {
         enemy.render();
       });
     } else if (player.level === 4) {
+      obstaclesFour.forEach(function(obstacle) {
+        obstacle.render();
+      });
       levelFour.forEach(function(enemy) {
         enemy.render();
       });

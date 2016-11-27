@@ -21,10 +21,10 @@ var Player = function(x, y) {
   this.x = this.initialX;
   this.y = this.startY;
   this.classes = [];
-  this.obstacleTop = false;
-  this.obstacleBottom = false;
-  this.obstacleLeft = false;
-  this.obstacleRight = false;
+  this.topBlocked = false;
+  this.bottomBlocked = false;
+  this.rightBlocked = false;
+  this.leftBlocked = false;
 
   var knight = {
     "className": "Knight",
@@ -146,55 +146,51 @@ Player.prototype.collide = function() {
 
 Player.prototype.checkObstacles = function(obstaclesList) {
 
-
+  // setup player hitbox
   var playerY = this.y;
   var playerX = this.x;
   var playerTop = this.y - 128;
   var playerBottom = this.y + 128;
   var playerLeft = this.x - 128;
   var playerRight = this.x + 128;
+  var blockedDirections = [];
 
 
 
-    for (var i = 0; i < obstaclesList.length; i++) {
+  for (var i = 0; i < obstaclesList.length; i++) {
 
-      var obstacleTop = obstaclesList[i].top;
-      var obstacleBottom = obstaclesList[i].bottom;
-      var obstacleRight = obstaclesList[i].right;
-      var obstacleLeft = obstaclesList[i].left;
+    // set each obstacles location
+    var thisObstacle = obstaclesList[i];
+    var obstacleX = obstaclesList[i].x;
+    var obstacleY = obstaclesList[i].y;
 
-      // prevents moving left
-      if (playerLeft === obstaclesList[i].x && playerY === obstaclesList[i].y) {
-        this.obstacleRight = true;
-        break;
-      } else if (playerLeft !== obstaclesList[i].x || playerY !== obstaclesList[i].y) {
-        this.obstacleRight = false;
-      }
+    var obstacleLeft = obstaclesList[i].left;
+    var obstacleRight = obstaclesList[i].right;
+    var obstacleTop = obstaclesList[i].top;
+    var obstacleBottom = obstaclesList[i].bottom;
 
-      // prevents moving right
-      if (playerRight === obstaclesList[i].x && playerY === obstaclesList[i].y) {
-        this.obstacleLeft = true;
-        break;
-      } else if (playerRight !== obstaclesList[i].x || playerY !== obstaclesList[i].y) {
-        this.obstacleLeft = false;
-      }
+    // prevents moving left
+    if (playerLeft === obstacleX && playerY === obstacleY) {
+      blockedDirections.push("Left is Blocked");
+    }
+
+    // prevents moving right
+    if (playerRight === obstacleX && playerY === obstacleY) {
+      blockedDirections.push("Right is Blocked");
+    }
 
       // prevents moving down
-      if (playerBottom === obstaclesList[i].y && playerX === obstaclesList[i].x) {
-        this.obstacleTop = true;
-        break;
-      } else if (playerBottom !== obstaclesList[i].y || playerX !== obstaclesList[i].x) {
-        this.obstacleTop = false;
-      }
-
-      // prevents moving up
-      if (playerTop === obstaclesList[i].y && playerX === obstaclesList[i].x) {
-        this.obstacleBottom = true;
-        break;
-      } else if (playerTop !== obstaclesList[i].y || playerX !== obstaclesList[i].x) {
-        this.obstacleBottom = false;
-      }
+    if (playerBottom === obstacleY && playerX === obstacleX) {
+      blockedDirections.push("Down is Blocked");
     }
+
+    // prevents moving up
+    if (playerTop === obstacleY && playerX === obstacleX) {
+      blockedDirections.push("Up is Blocked");
+    }
+
+  }
+  return blockedDirections;
 };
 
 Player.prototype.blockMove = function() {
@@ -222,10 +218,8 @@ Player.prototype.update = function(dt) {
   // Collision conditional for each level
   if (player.level === 1) {
     this.checkCollisions(levelOne);
-    this.checkObstacles(obstaclesOne);
   } else if (player.level === 2) {
     this.checkCollisions(levelTwo);
-    this.checkObstacles(obstaclesTwo);
   } else if (player.level === 3) {
     this.checkCollisions(levelThree);
   } else if (player.level === 4) {
@@ -300,28 +294,41 @@ if (player.level === 0){
 
 // game controls
 else {
+  var currentObstacles = [];
+  if (this.level === 1) {
+    currentObstacles = this.checkObstacles(obstaclesOne);
+  } else if (this.level === 2) {
+    currentObstacles = this.checkObstacles(obstaclesTwo)
+  } else if (this.level === 3) {
+    currentObstacles = this.checkObstacles(obstaclesThree)
+  } else if (this.level === 4) {
+    currentObstacles = this.checkObstacles(obstaclesFour)
+  }
+
   if (key === 'enter') {
     this.reset();
-  } else if (key === 'up' && this.obstacleBottom === false &&
-    (this.y > 64 || (this.x >= 288 && this.x <= 544))) {
+  } else if (key === 'up' && (currentObstacles.indexOf("Up is Blocked") == -1)
+    && (this.y > 64 || (this.x >= 288 && this.x <= 544))) {
     this.y -= 128;
     this.moveSound.play();
 
-  } else if ( ((key === 'down' && this.y < this.initialY)
-    || (key === 'down' && this.level > 1)) &&
-    (this.y < 704 || (this.x >= 288 && this.x <= 544)) && this.obstacleTop === false) {
+  } else if (key === 'down' &&
+    (currentObstacles.indexOf("Down is Blocked") == -1)
+    && (this.y < 704 || (this.x >= 288 && this.x <= 544))) {
     this.y += 128;
     this.moveSound.play();
   } else if (key === 'down' && this.y >= this.initialY && this.level <= 1) {
     console.log("Error! Can't go farther down.");
 
-  } else if (key === 'right' && this.x < 800 && this.obstacleLeft === false) {
+  } else if ((key === 'right' && this.x < 800)
+    && (currentObstacles.indexOf("Right is Blocked") == -1)) {
     this.x += 128;
     this.moveSound.play();
   } else if (key === 'right' && this.x >= 800) {
     console.log("Error! Can't go farther right.");
 
-  } else if (key === 'left' && this.x > 33 && this.obstacleRight === false) {
+  } else if ((key === 'left' && this.x > 33)
+    && (currentObstacles.indexOf("Left is Blocked") == -1)) {
     this.x -= 128;
     this.moveSound.play();
   } else if (key === 'left' && this.x <= 33) {
@@ -330,8 +337,6 @@ else {
   } else if (key === 'p') {
     console.log("Place a pause function here");
   }
-  console.log("Y:", this.y);
-  console.log("X:", this.x);
 }
 };
 
