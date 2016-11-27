@@ -1,6 +1,6 @@
 // obstacle.js creates obstacles that player must navigate around
 
-var Obstacle = function(x, y, image, special) {
+var Obstacle = function(x, y, image) {
   this.x = x;
   this.y = y;
   this.left = this.x - 128;
@@ -8,10 +8,6 @@ var Obstacle = function(x, y, image, special) {
   this.top = this.y - 128;
   this.bottom = this.y + 128;
   this.sprite = image;
-  this.obstacleRight = false;
-  this.obstacleLeft = false;
-  this.obstacleTop = special;
-  this.obstacleBottom = false;
 };
 
 Obstacle.prototype.render = function() {
@@ -19,46 +15,11 @@ Obstacle.prototype.render = function() {
 };
 
 Obstacle.prototype.update = function() {
-//  if (player.level === 1) {
-//    this.checkObstacles(obstaclesOne);
-//  }
+
 };
 
 Obstacle.prototype.checkObstacles = function(obstaclesList) {
-/*
-  var playerY = player.y;
-  var playerX = player.x;
 
-  for (var i = 0; i < obstaclesList.length; i++) {
-
-    // prevents moving left
-    if (playerX === this.right && playerY === this.y) {
-      this.obstacleRight = true;
-    } else if (playerX !== this.right || playerY !== this.y) {
-      this.obstacleRight = false;
-    }
-
-    // prevents moving right
-    if (playerX === this.left && playerY === this.y) {
-      this.obstacleLeft = true;
-    } else if (playerX !== this.left || playerY !== this.y) {
-      this.obstacleLeft = false;
-    }
-
-    // prevents moving down
-    if (playerY === this.top && playerX === this.x) {
-      this.obstacleTop = true;
-    } else if (playerY !== this.top || playerX !== this.x) {
-      this.obstacleTop = false;
-    }
-
-    // prevents moving up
-    if (playerY === this.bottom && playerX === this.x) {
-      this.obstacleBottom = true;
-    } else if (playerY !== this.bottom || playerX !== this.x) {
-      this.obstacleBottom = false;
-    }
-  }*/
 };
 
 // columns (x-value)
@@ -79,6 +40,7 @@ var rowFive = 192;
 
 var goldTree = "img/tree_gold.png";
 var redTree = "img/tree_red.png";
+var rock = "img/rock.png";
 
 
 var obstaclesOne = [];
@@ -98,8 +60,8 @@ var obstaclesEleven = [];
 /////////////////////////////////////////////
 // level one obstacles
 
-// bottom row
-var oneTree1 = new Obstacle(colOne, rowOne, goldTree, true);
+// bottom row trees
+var oneTree1 = new Obstacle(colOne, rowOne, goldTree);
 var oneTree2 = new Obstacle(colTwo, rowOne, goldTree);
 var oneTree3 = new Obstacle(colThree, rowOne, goldTree);
 var oneTree4 = new Obstacle(colFour, rowOne, goldTree);
@@ -107,12 +69,12 @@ var oneTree5 = new Obstacle(colFive, rowOne, goldTree);
 var oneTree6 = new Obstacle(colSix, rowOne, goldTree);
 var oneTree7 = new Obstacle(colSeven, rowOne, goldTree);
 
-// middle row
+// middle row trees
 var oneTree8 = new Obstacle(colThree, rowFour, goldTree);
 var oneTree9 = new Obstacle(colFour, rowFour, goldTree);
 var oneTree10 = new Obstacle(colFive, rowFour, goldTree);
 
-
+// oddball trees
 var oneTree11 = new Obstacle(colSeven, rowThree, goldTree);
 var oneTree12 = new Obstacle(colOne, rowThree, goldTree);
 var oneTree13 = new Obstacle(colOne, rowFour, goldTree);
@@ -171,23 +133,23 @@ var threeTree3 = new Obstacle(colOne, rowOne, redTree);
 var threeTree4 = new Obstacle(colOne, rowTwo, redTree);
 
 // middle
-var threeTree5 = new Obstacle(colThree, rowThree, goldTree);
-var threeTree6 = new Obstacle(colFour, rowThree, goldTree);
-var threeTree7 = new Obstacle(colFive, rowThree, goldTree);
+var threeRock1 = new Obstacle(colThree, rowThree, rock);
+var threeRock2 = new Obstacle(colFour, rowThree, rock);
+var threeRock3 = new Obstacle(colFive, rowThree, rock);
 
 // top
-var threeTree8 = new Obstacle(colTwo, rowFive, goldTree);
-var threeTree9 = new Obstacle(colSix, rowFive, goldTree);
+var threeRock4 = new Obstacle(colTwo, rowFive, rock);
+var threeRock5 = new Obstacle(colSix, rowFive, rock);
 
 obstaclesThree.push(threeTree1);
 obstaclesThree.push(threeTree2);
 obstaclesThree.push(threeTree3);
 obstaclesThree.push(threeTree4);
-obstaclesThree.push(threeTree5);
-obstaclesThree.push(threeTree6);
-obstaclesThree.push(threeTree7);
-obstaclesThree.push(threeTree8);
-obstaclesThree.push(threeTree9);
+obstaclesThree.push(threeRock1);
+obstaclesThree.push(threeRock2);
+obstaclesThree.push(threeRock3);
+obstaclesThree.push(threeRock4);
+obstaclesThree.push(threeRock5);
 
 /////////////////////////////////////////
 // obstacles level 4 (larva)
@@ -216,3 +178,30 @@ obstaclesFour.push(fourTree6);
 obstaclesFour.push(fourTree7);
 obstaclesFour.push(fourTree8);
 obstaclesFour.push(fourTree9);
+
+/////////////////////////////////////////
+// obstacles level 5 (flying bugs)
+
+// lower left rocks
+var fiveRock1 = new Obstacle(colThree, rowThree, rock);
+var fiveRock2 = new Obstacle(colFour, rowThree, rock);
+var fiveRock3 = new Obstacle(colTwo, rowThree, rock);
+var fiveRock4 = new Obstacle(colOne, rowThree, rock);
+
+// upper right rocks
+var fiveRock5 = new Obstacle(colSeven, rowFive, rock);
+var fiveRock6 = new Obstacle(colSix, rowFive, rock);
+var fiveRock7 = new Obstacle(colFive, rowFive, rock);
+var fiveRock8 = new Obstacle(colFour, rowFive, rock);
+var fiveRock9 = new Obstacle(colThree, rowFive, rock);
+
+obstaclesFive.push(fiveRock1);
+obstaclesFive.push(fiveRock2);
+obstaclesFive.push(fiveRock3);
+obstaclesFive.push(fiveRock4);
+
+obstaclesFive.push(fiveRock5);
+obstaclesFive.push(fiveRock6);
+obstaclesFive.push(fiveRock7);
+obstaclesFive.push(fiveRock8);
+obstaclesFive.push(fiveRock9);

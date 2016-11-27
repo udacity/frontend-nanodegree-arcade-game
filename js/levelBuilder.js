@@ -40,6 +40,9 @@ function renderEntities() {
         enemy.render();
       });
     } else if (player.level === 5) {
+      obstaclesFive.forEach(function(obstacle) {
+        obstacle.render();
+      });
       levelFive.forEach(function(enemy) {
         enemy.render();
       });

@@ -424,7 +424,8 @@ var Engine = (function(global) {
         'img/hero_paladin.png',
         'img/hero_berserker.png',
         'img/tree_gold.png',
-        'img/tree_red.png'
+        'img/tree_red.png',
+        'img/rock.png'
 
     ]);
     Resources.onReady(init);
