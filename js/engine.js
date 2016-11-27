@@ -423,7 +423,8 @@ var Engine = (function(global) {
         'img/hero_enchantress.png',
         'img/hero_paladin.png',
         'img/hero_berserker.png',
-        'img/tree_1.png'
+        'img/tree_gold.png',
+        'img/tree_red.png'
 
     ]);
     Resources.onReady(init);

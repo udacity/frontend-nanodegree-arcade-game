@@ -19,6 +19,9 @@ function renderEntities() {
         enemy.render();
       });
     } else if (player.level === 2) {
+      obstaclesTwo.forEach(function(obstacle) {
+        obstacle.render();
+      });
       levelTwo.forEach(function(enemy) {
         enemy.render();
       });

@@ -225,6 +225,7 @@ Player.prototype.update = function(dt) {
     this.checkObstacles(obstaclesOne);
   } else if (player.level === 2) {
     this.checkCollisions(levelTwo);
+    this.checkObstacles(obstaclesTwo);
   } else if (player.level === 3) {
     this.checkCollisions(levelThree);
   } else if (player.level === 4) {
@@ -301,12 +302,14 @@ if (player.level === 0){
 else {
   if (key === 'enter') {
     this.reset();
-  } else if (key === 'up' && this.obstacleBottom === false) {
+  } else if (key === 'up' && this.obstacleBottom === false &&
+    (this.y > 64 || (this.x >= 288 && this.x <= 544))) {
     this.y -= 128;
     this.moveSound.play();
 
-  } else if (this.obstacleTop === false && (key === 'down' && this.y < this.initialY)
-    || (key === 'down' && this.level > 1)) {
+  } else if ( ((key === 'down' && this.y < this.initialY)
+    || (key === 'down' && this.level > 1)) &&
+    (this.y < 704 || (this.x >= 288 && this.x <= 544)) && this.obstacleTop === false) {
     this.y += 128;
     this.moveSound.play();
   } else if (key === 'down' && this.y >= this.initialY && this.level <= 1) {
@@ -327,6 +330,8 @@ else {
   } else if (key === 'p') {
     console.log("Place a pause function here");
   }
+  console.log("Y:", this.y);
+  console.log("X:", this.x);
 }
 };
 
