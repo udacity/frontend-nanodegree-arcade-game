@@ -188,31 +188,31 @@ var Engine = (function(global) {
         ctx.fillStyle = 'yellow';
         // conditional to align class names characters 10+ long
         if (player.classes[player.classIndex].className.length >= 10) {
-         ctx.strokeText(player.classes[player.classIndex].className, 400, 424);
-         ctx.fillText(player.classes[player.classIndex].className, 400, 424);
+         ctx.strokeText(player.classes[player.classIndex].className, 400, 426);
+         ctx.fillText(player.classes[player.classIndex].className, 400, 426);
 
          // conditional to align class names characters 8+ long
         } else if (player.classes[player.classIndex].className.length
           >= 8) {
-          ctx.strokeText(player.classes[player.classIndex].className, 404, 424);
-          ctx.fillText(player.classes[player.classIndex].className, 404, 424);
+          ctx.strokeText(player.classes[player.classIndex].className, 410, 426);
+          ctx.fillText(player.classes[player.classIndex].className, 410, 426);
 
           // conditional to align class names characters 7 characters long
         } else if (player.classes[player.classIndex].className.length
           === 7) {
-          ctx.strokeText(player.classes[player.classIndex].className, 416, 424);
-          ctx.fillText(player.classes[player.classIndex].className, 416, 424);
+          ctx.strokeText(player.classes[player.classIndex].className, 422, 426);
+          ctx.fillText(player.classes[player.classIndex].className, 422, 426);
 
           // conditional to align class names characters 5-6 long
         } else if (player.classes[player.classIndex].className.length
           >= 5) {
-          ctx.strokeText(player.classes[player.classIndex].className, 430, 424);
-          ctx.fillText(player.classes[player.classIndex].className, 430, 424);
+          ctx.strokeText(player.classes[player.classIndex].className, 430, 426);
+          ctx.fillText(player.classes[player.classIndex].className, 430, 426);
 
           // conditional to align class names characters 4- short
         } else {
-          ctx.strokeText(player.classes[player.classIndex].className, 440, 424);
-          ctx.fillText(player.classes[player.classIndex].className, 440, 424);
+          ctx.strokeText(player.classes[player.classIndex].className, 440, 426);
+          ctx.fillText(player.classes[player.classIndex].className, 440, 426);
         }
         // end start screen rendering
         ////////////////////////////////////////////////////////////////////

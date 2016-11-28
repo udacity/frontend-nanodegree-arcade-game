@@ -47,18 +47,30 @@ function renderEntities() {
         enemy.render();
       });
     } else if (player.level === 6) {
+      obstaclesSix.forEach(function(obstacle) {
+        obstacle.render();
+      });
       levelSix.forEach(function(enemy) {
         enemy.render();
       });
     } else if (player.level === 7) {
+      obstaclesSeven.forEach(function(obstacle) {
+        obstacle.render();
+      });
       levelSeven.forEach(function(enemy) {
         enemy.render();
       });
     } else if (player.level === 8) {
+      obstaclesEight.forEach(function(obstacle) {
+        obstacle.render();
+      });
       levelEight.forEach(function(enemy) {
         enemy.render();
       });
     } else if (player.level === 9) {
+      obstaclesNine.forEach(function(obstacle) {
+        obstacle.render();
+      });
       levelNine.forEach(function(enemy) {
         enemy.render();
       });
@@ -116,77 +128,86 @@ function updateEntities(dt) {
 // Place tiles for each level
 function renderWorld() {
   var rowImages = [];
-      if (player.level == 1) {
+      if (player.level === 1) { // bugs lvl 1
         rowImages = [
-            'img/grass_light.png',   // Top Row
-            'img/grass_dark.png', // Row 2
-            'img/grass_dark.png', // Row 3
-            'img/grass_dark.png', // Row 4
+            'img/grass_light.png', // Top Row
+            'img/grass_dark.png',  // Row 2
+            'img/grass_dark.png',  // Row 3
+            'img/grass_dark.png',  // Row 4
             'img/grass_light.png', // Row 5
-            'img/grass_light.png' // Row 6 Starting location
+            'img/grass_light.png'  // Row 6 Starting location
         ];
-      } if (player.level == 2) {
+      } if (player.level === 2) { // bugs lvl 2
         rowImages = [
-            'img/sand_light.png',   // Top Row - Advances to next level
-            'img/grass_red.png', // Row 2 - Centipedes
-            'img/grass_blue.png', // Row 3 - Roaches
+            'img/sand_light.png',   // Row 6 - Top Row
+            'img/grass_red.png',    // Row 2 - Centipedes
+            'img/grass_blue.png',   // Row 3 - Roaches
             'img/grass_yellow.png', // Row 4 - Spiders
-            'img/grass_light.png', // Row 5
-            'img/grass_light.png' // Row 6 Starting location
+            'img/grass_light.png',  // Row 5
+            'img/grass_light.png'   // Row 6 Starting location
         ];
-      } if (player.level == 3) {
+      } if (player.level === 3) { // ant bugs
         rowImages = [
-            'img/grass_yellow.png',   // Top Row - Advances to next level
-            'img/sand_light.png', // Row 2
-            'img/sand_light.png', // Row 3
-            'img/sand_light.png', // Row 4
-            'img/grass_light.png', // Row 5
-            'img/grass_light.png' // Row 6 Starting location
+            'img/grass_yellow.png',   // Row 6 - Top Row
+            'img/sand_light.png',     // Row 5
+            'img/sand_light.png',     // Row 4
+            'img/sand_light.png',     // Row 3
+            'img/grass_light.png',    // Row 2
+            'img/grass_light.png'     // Row 1 - Bottom Row
         ];
-      } if (player.level == 4) {
+      } if (player.level === 4) { // larva bugs
         rowImages = [
-            'img/sand_light.png',   // Top Row - Advances to next level
-            'img/grass_light.png', // Row 2
-            'img/grass_light.png', // Row 3
+            'img/sand_light.png',  // Row 6 - Top Row - Advances to next level
+            'img/grass_light.png', // Row 5
             'img/grass_light.png', // Row 4
-            'img/grass_red.png', // Row 5
-            'img/grass_blue.png' // Row 6 Starting location
+            'img/grass_light.png', // Row 3
+            'img/grass_red.png',   // Row 2
+            'img/grass_blue.png'   // Row 1 Starting location
         ];
-      } else if (player.level == 5) {
+      } else if (player.level === 5) { // flying bugs
         rowImages = [
-            'img/rock_path.png',   // Top row
-            'img/sand_brick.png',   // Row 2
-            'img/sand_brick.png',   // Row 3
+            'img/rock_path.png',    // Row 6 - Top row - Advances to next level
+            'img/sand_brick.png',   // Row 5
             'img/sand_brick.png',   // Row 4
-            'img/sand_light.png',   // Row 5
-            'img/sand_light.png'    // Row 6 - Bottom Row
+            'img/sand_brick.png',   // Row 3
+            'img/sand_light.png',   // Row 2
+            'img/sand_light.png'    // Row 1 - Bottom Row
         ];
-      } else if (player.level == 6) {
+      } else if (player.level === 6) { // worgs
         rowImages = [
-            'img/rock_path.png',   // Top row
-            'img/sand_dark.png',  // Row 2
-            'img/sand_dark.png',   // Row 3
+            'img/rock_path.png',   // Row 6 - Top row - Advances to next level
+            'img/sand_dark.png',   // Row 5
             'img/sand_dark.png',   // Row 4
-            'img/sand_light.png',   // Row 5
-            'img/rock_path.png',    // Row 6 - Bottom Row
+            'img/sand_dark.png',   // Row 3
+            'img/sand_light.png',  // Row 2
+            'img/rock_path.png',   // Row 1 - Bottom Row
         ];
-      } else if (player.level == 7) {
+      } else if (player.level === 7) { // goblins
         rowImages = [
-            'img/grass_dark.png',   // Top row
+            'img/grass_dark.png',  // Row 6 - Top row - Advances to next level
+            'img/grey_brick.png',  // Row 5
+            'img/grey_brick.png',  // Row 4
+            'img/grey_brick.png',  // Row 3
             'img/grey_brick.png',  // Row 2
-            'img/grey_brick.png',   // Row 3
-            'img/grey_brick.png',   // Row 4
-            'img/grey_brick.png',   // Row 5
-            'img/rock_path.png'    // Row 6 - Bottom Row
+            'img/rock_path.png'    // Row 1 - Bottom Row
         ];
-      } else if (player.level == 8 || player.level == 9) {
+      } else if (player.level === 8) { // elves
         rowImages = [
-            'img/grass_light.png',        // Top row
-            'img/grass_red.png',    // Row 2
-            'img/grass_yellow.png', // Row 3
-            'img/grass_blue.png',   // Row 4
-            'img/grass_dark.png',  // Row 5
-            'img/grass_light.png'    // Row 6 - Bottom Row
+            'img/grass_light.png',  // Row 6 - Top row - Advances to next level
+            'img/grass_red.png',    // Row 5
+            'img/grass_yellow.png', // Row 4
+            'img/grass_blue.png',   // Row 3
+            'img/grass_dark.png',   // Row 2
+            'img/grass_light.png'   // Row 1 - Bottom Row
+        ];
+      } else if (player.level === 9) {
+        rowImages = [
+            'img/sand_dark.png',     // Row 6 - Top row
+            'img/grass_yellow.png',  // Row 5
+            'img/grass_red.png',     // Row 4
+            'img/grass_blue.png',    // Row 3
+            'img/grass_dark.png',    // Row 2
+            'img/grass_light.png'    // Row 1 - Bottom Row
         ];
       }
 

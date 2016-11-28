@@ -352,7 +352,7 @@ ElfNecromancer.prototype = Object.create(Humanoid.prototype);
 ElfNecromancer.prototype.constructor = Humanoid;
 
 ///////////////////////////////////////////////////
-// Define elves level 8 mobs
+// Define Centaurs level 9 mobs
 //////////////////////////////////
 function CentaurArcherOrange(y) {
   var obj = new Humanoid(y);

@@ -37,6 +37,7 @@ var rowTwo = 576;
 var rowThree = 448;
 var rowFour = 320;
 var rowFive = 192;
+var rowSix = 64;
 
 var goldTree = "img/tree_gold.png";
 var redTree = "img/tree_red.png";
@@ -205,3 +206,165 @@ obstaclesFive.push(fiveRock6);
 obstaclesFive.push(fiveRock7);
 obstaclesFive.push(fiveRock8);
 obstaclesFive.push(fiveRock9);
+
+
+/////////////////////////////////////////
+// obstacles level 6 (worgs)
+
+// lower middle trees
+var sixTree1 = new Obstacle(colTwo, rowTwo, redTree);
+var sixTree2 = new Obstacle(colThree, rowTwo, goldTree);
+var sixTree3 = new Obstacle(colFour, rowTwo, goldTree);
+var sixTree4 = new Obstacle(colFive, rowTwo, goldTree);
+var sixTree5 = new Obstacle(colSix, rowTwo, redTree);
+
+// left middle rocks
+var sixRock1 = new Obstacle(colOne, rowFour, rock);
+var sixRock2 = new Obstacle(colTwo, rowFour, rock);
+var sixRock3 = new Obstacle(colThree, rowFour, rock);
+
+// right middle rocks
+var sixRock4 = new Obstacle(colFive, rowFour, rock);
+var sixRock5 = new Obstacle(colSix, rowFour, rock);
+var sixRock6 = new Obstacle(colSeven, rowFour, rock);
+
+// top trees
+var sixTree6 = new Obstacle(colOne, rowSix, goldTree);
+var sixTree7 = new Obstacle(colSeven, rowSix, goldTree);
+
+// add obstacles to level six obstacle array
+obstaclesSix.push(sixTree1);
+obstaclesSix.push(sixTree2);
+obstaclesSix.push(sixTree3);
+obstaclesSix.push(sixTree4);
+obstaclesSix.push(sixTree5);
+
+obstaclesSix.push(sixRock1);
+obstaclesSix.push(sixRock2);
+obstaclesSix.push(sixRock3);
+
+obstaclesSix.push(sixRock4);
+obstaclesSix.push(sixRock5);
+obstaclesSix.push(sixRock6);
+
+obstaclesSix.push(sixTree6);
+obstaclesSix.push(sixTree7);
+
+
+/////////////////////////////////////////
+// obstacles level 7 (goblins)
+
+// lower left rocks
+var sevenRock1 = new Obstacle(colOne, rowTwo, rock);
+var sevenRock2 = new Obstacle(colTwo, rowTwo, rock);
+var sevenRock3 = new Obstacle(colThree, rowTwo, rock);
+
+// middle right rocks
+var sevenRock4 = new Obstacle(colSix, rowThree, rock);
+var sevenRock5 = new Obstacle(colThree, rowFour, rock);
+var sevenRock6 = new Obstacle(colFour, rowFour, rock);
+var sevenRock7 = new Obstacle(colFive, rowFour, rock);
+var sevenRock8 = new Obstacle(colSix, rowFour, rock);
+var sevenRock9 = new Obstacle(colSeven, rowFour, rock);
+
+// upper left rocks
+var sevenRock10 = new Obstacle(colOne, rowSix, rock);
+var sevenRock11 = new Obstacle(colTwo, rowSix, rock);
+
+//upper right trees
+var sevenTree1 = new Obstacle(colSix, rowFive, goldTree);
+var sevenTree2 = new Obstacle(colSeven, rowFive, goldTree);
+var sevenTree3 = new Obstacle(colSix, rowSix, goldTree);
+var sevenTree4 = new Obstacle(colSeven, rowSix, goldTree);
+
+// add obstacles to level seven obstacle array
+obstaclesSeven.push(sevenRock1);
+obstaclesSeven.push(sevenRock2);
+obstaclesSeven.push(sevenRock3);
+
+obstaclesSeven.push(sevenRock4);
+obstaclesSeven.push(sevenRock5);
+obstaclesSeven.push(sevenRock6);
+obstaclesSeven.push(sevenRock7);
+obstaclesSeven.push(sevenRock8);
+obstaclesSeven.push(sevenRock9);
+
+obstaclesSeven.push(sevenRock10);
+obstaclesSeven.push(sevenRock11);
+
+obstaclesSeven.push(sevenTree1);
+obstaclesSeven.push(sevenTree2);
+obstaclesSeven.push(sevenTree3);
+obstaclesSeven.push(sevenTree4);
+
+
+/////////////////////////////////////////
+// obstacles level 8 (elves)
+
+// middle trees
+var eightTree1 = new Obstacle(colTwo, rowTwo, goldTree);
+var eightTree2 = new Obstacle(colSix, rowTwo, goldTree);
+var eightTree3 = new Obstacle(colThree, rowThree, redTree);
+var eightTree4 = new Obstacle(colFour, rowThree, redTree);
+var eightTree5 = new Obstacle(colFive, rowThree, redTree);
+
+// top trees
+var eightTree6 = new Obstacle(colOne, rowFour, goldTree);
+var eightTree7 = new Obstacle(colSeven, rowFour, goldTree);
+var eightTree8 = new Obstacle(colOne, rowFive, redTree);
+var eightTree9 = new Obstacle(colTwo, rowFive, redTree);
+var eightTree10 = new Obstacle(colThree, rowFive, redTree);
+var eightTree11 = new Obstacle(colFive, rowFive, redTree);
+var eightTree12 = new Obstacle(colSix, rowFive, redTree);
+var eightTree13 = new Obstacle(colSeven, rowFive, redTree);
+
+obstaclesEight.push(eightTree1);
+obstaclesEight.push(eightTree2);
+obstaclesEight.push(eightTree3);
+obstaclesEight.push(eightTree4);
+obstaclesEight.push(eightTree5);
+
+obstaclesEight.push(eightTree6);
+obstaclesEight.push(eightTree7);
+obstaclesEight.push(eightTree8);
+obstaclesEight.push(eightTree9);
+obstaclesEight.push(eightTree10);
+obstaclesEight.push(eightTree11);
+obstaclesEight.push(eightTree12);
+obstaclesEight.push(eightTree13);
+
+
+/////////////////////////////////////////
+// obstacles level 9 (centaurs)
+
+// lower trees
+var nineTree1 = new Obstacle(colTwo, rowTwo, goldTree);
+var nineTree2 = new Obstacle(colThree, rowTwo, goldTree);
+var nineTree3 = new Obstacle(colFour, rowTwo, goldTree);
+var nineTree4 = new Obstacle(colFive, rowTwo, goldTree);
+var nineTree5 = new Obstacle(colSix, rowTwo, goldTree);
+var nineTree6 = new Obstacle(colSeven, rowTwo, goldTree);
+var nineTree7 = new Obstacle(colTwo, rowThree, goldTree);
+
+//upper trees
+var nineTree8 = new Obstacle(colFive, rowFour, redTree);
+var nineTree9 = new Obstacle(colOne, rowFive, redTree);
+var nineTree10 = new Obstacle(colTwo, rowFive, redTree);
+var nineTree11 = new Obstacle(colThree, rowFive, redTree);
+var nineTree12 = new Obstacle(colFour, rowFive, redTree);
+var nineTree13 = new Obstacle(colFive, rowFive, redTree);
+
+obstaclesNine.push(nineTree1);
+obstaclesNine.push(nineTree2);
+obstaclesNine.push(nineTree3);
+obstaclesNine.push(nineTree4);
+obstaclesNine.push(nineTree5);
+obstaclesNine.push(nineTree6);
+obstaclesNine.push(nineTree7);
+
+obstaclesNine.push(nineTree8);
+obstaclesNine.push(nineTree9);
+obstaclesNine.push(nineTree10);
+obstaclesNine.push(nineTree11);
+obstaclesNine.push(nineTree12);
+obstaclesNine.push(nineTree13);

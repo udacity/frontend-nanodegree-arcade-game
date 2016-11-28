@@ -305,6 +305,18 @@ else {
     currentObstacles = this.checkObstacles(obstaclesFour);
   } else if (this.level === 5) {
     currentObstacles = this.checkObstacles(obstaclesFive);
+  } else if (this.level === 6) {
+    currentObstacles = this.checkObstacles(obstaclesSix);
+  } else if (this.level === 7) {
+    currentObstacles = this.checkObstacles(obstaclesSeven);
+  } else if (this.level === 8) {
+    currentObstacles = this.checkObstacles(obstaclesEight);
+  } else if (this.level === 9) {
+    currentObstacles = this.checkObstacles(obstaclesNine);
+  } else if (this.level === 10) {
+    currentObstacles = this.checkObstacles(obstaclesTen);
+  } else if (this.level === 11) {
+    currentObstacles = this.checkObstacles(obstaclesEleven);
   }
 
   if (key === 'enter') {
