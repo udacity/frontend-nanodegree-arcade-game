@@ -80,6 +80,15 @@ function Humanoid(y) {
 Bug.prototype = Object.create(Enemy.prototype);
 Bug.prototype.constructor = Enemy;
 
+function WaterBeast(y) {
+  var obj = new Enemy(y);
+  obj.sound = new Audio('sounds/ogre.wav');
+  return obj;
+}
+
+WaterBeast.prototype = Object.create(Enemy.prototype);
+WaterBeast.prototype.constructor = Enemy;
+
 //////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////
 // Define subclass enemies for each level now
@@ -421,7 +430,7 @@ OgreWarrior.prototype.constructor = Humanoid;
 function CyclopsWarrior(y) {
   var obj = new Humanoid(y);
   obj.sprite = 'img/cyclops_warrior.png';
-  obj.speed = speedTen + 20;
+  obj.speed = speedTen - 5;
   return obj;
 }
 CyclopsWarrior.prototype = Object.create(Humanoid.prototype);
@@ -435,6 +444,10 @@ function CyclopsOfficer(y) {
 }
 CyclopsOfficer.prototype = Object.create(Humanoid.prototype);
 CyclopsOfficer.prototype.constructor = Humanoid;
+
+///////////////////////////////////////////////////
+// Define Sea Creatures level 11 mobs
+//////////////////////////////////
 
 ///////////////////////////////////////////////////////
 // Instantiate all objects

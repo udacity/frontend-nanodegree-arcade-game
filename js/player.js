@@ -8,7 +8,6 @@
 var Player = function(x, y) {
   this.x = x;
   this.y = y;
-  this.moveSound = new Audio('sounds/cloth.wav');
   this.startSound = new Audio('sounds/spell.wav');
   this.lives = 3;
   this.level = 0;
@@ -28,61 +27,73 @@ var Player = function(x, y) {
 
   var knight = {
     "className": "Knight",
+    "moveSound": "sounds/chainmail.wav",
     "spriteUrl": "img/hero_knight.png"
   };
 
   var sorceress = {
     "className": "Sorceress",
+    "moveSound": "sounds/cloth.wav",
     "spriteUrl": "img/hero_sorceress.png"
   };
 
   var mage = {
     "className": "Mage",
+    "moveSound": "sounds/cloth.wav",
     "spriteUrl": "img/hero_mage.png"
   };
 
   var scribe = {
     "className": "Scribe",
+    "moveSound": "sounds/cloth.wav",
     "spriteUrl": "img/hero_scribe.png"
   };
 
   var templar = {
     "className": "Templar",
+    "moveSound": "sounds/chainmail.wav",
     "spriteUrl": "img/hero_templar.png"
   };
 
   var oracle = {
     "className": "Oracle",
+    "moveSound": "sounds/cloth.wav",
     "spriteUrl": "img/hero_oracle.png"
   };
 
   var priest = {
     "className": "Priest",
+    "moveSound": "sounds/cloth.wav",
     "spriteUrl": "img/hero_priest.png"
   };
 
   var monk = {
     "className": "Monk",
+    "moveSound": "sounds/cloth.wav",
     "spriteUrl": "img/hero_monk.png"
   };
 
   var rogue = {
     "className": "Rogue",
+    "moveSound": "sounds/cloth.wav",
     "spriteUrl": "img/hero_rogue.png"
   };
 
   var enchantress = {
     "className": "Enchantress",
+    "moveSound": "sounds/cloth.wav",
     "spriteUrl": "img/hero_enchantress.png"
   };
 
   var paladin = {
     "className": "Paladin",
+    "moveSound": "sounds/chainmail.wav",
     "spriteUrl": "img/hero_paladin.png"
   };
 
   var berserker = {
     "className": "Berserker",
+    "moveSound": "sounds/chainmail.wav",
     "spriteUrl": "img/hero_berserker.png"
   };
 
@@ -100,6 +111,7 @@ var Player = function(x, y) {
   this.classes.push(berserker);
 
   this.classIndex = 0;
+//  this.moveSound = new Audio(this.classes[this.classIndex].moveSound);
   this.sprite = this.classes[this.classIndex].spriteUrl;
 };
 
@@ -238,6 +250,8 @@ Player.prototype.update = function(dt) {
     this.checkCollisions(levelTen);
   } else if (player.level === 11) {
     this.checkCollisions(levelEleven);
+  } else if (player.level === 12) {
+    this.checkCollisions(levelTwelve);
   }
 
   // Level up conditional
@@ -249,6 +263,9 @@ Player.prototype.update = function(dt) {
 
       this.completedLevels++;
       this.score += 100;
+      if (this.score === 1000) {
+        this.lives ++;
+      }
       if (this.level === 1) {
         this.y = this.startY;
       } else {
@@ -291,8 +308,10 @@ if (player.level === 0){
     }
   } else if (key === 'enter'){
     this.startSound.play();
+    this.moveSound = new Audio(this.classes[this.classIndex].moveSound);
     this.level ++;
     this.completedLevels ++;
+    this.score += 100;
   }
 }
 
@@ -321,6 +340,8 @@ else {
     currentObstacles = this.checkObstacles(obstaclesTen);
   } else if (this.level === 11) {
     currentObstacles = this.checkObstacles(obstaclesEleven);
+  } else if (this.level === 12) {
+    currentObstacles = this.checkObstacles(obstaclesTwelve);
   }
 
   if (key === 'enter') {

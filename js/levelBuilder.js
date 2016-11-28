@@ -88,6 +88,13 @@ function renderEntities() {
       levelEleven.forEach(function(enemy) {
         enemy.render();
       });
+    } else if (player.level === 12) {
+      obstaclesTwelve.forEach(function(obstacle) {
+        obstacle.render();
+      });
+      levelTwelve.forEach(function(enemy) {
+        enemy.render();
+      });
     }
 
     player.render();
@@ -138,6 +145,10 @@ function updateEntities(dt) {
       });
     } else if (player.level === 11) {
       levelEleven.forEach(function(enemy) {
+        enemy.update(dt);
+      });
+    } else if (player.level === 12) {
+      levelTwelve.forEach(function(enemy) {
         enemy.update(dt);
       });
     }
@@ -233,12 +244,21 @@ function renderWorld() {
         ];
       } else if (player.level === 10) {
         rowImages = [
-            'img/sand_dark.png',     // Row 6 - Top row
+            'img/ocean.png',     // Row 6 - Top row
             'img/sand_light.png',  // Row 5
             'img/sand_light.png',     // Row 4
             'img/sand_light.png',    // Row 3
             'img/sand_dark.png',    // Row 2
             'img/sand_dark.png'    // Row 1 - Bottom Row
+        ];
+      } else if (player.level === 11) {
+        rowImages = [
+            'img/sand_dark.png',     // Row 6 - Top row
+            'img/ocean.png',  // Row 5
+            'img/ocean.png',     // Row 4
+            'img/ocean.png',    // Row 3
+            'img/ocean.png',    // Row 2
+            'img/ocean.png'    // Row 1 - Bottom Row
         ];
       }
 
