@@ -25,8 +25,8 @@ var Engine = (function(global) {
         ctx = canvas.getContext('2d'),
         lastTime;
 
-    canvas.width = map.colWidth * 5;
-    canvas.height = map.rowHeight * 6 + map.cellPaddingBottom;
+    canvas.width = game.colWidth * 5;
+    canvas.height = game.rowHeight * 6 + game.cellPaddingBottom;
     doc.body.appendChild(canvas);
 
     /* This function serves as the kickoff point for the game loop itself
