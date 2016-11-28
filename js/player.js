@@ -234,6 +234,10 @@ Player.prototype.update = function(dt) {
     this.checkCollisions(levelEight);
   } else if (player.level === 9) {
     this.checkCollisions(levelNine);
+  } else if (player.level === 10) {
+    this.checkCollisions(levelTen);
+  } else if (player.level === 11) {
+    this.checkCollisions(levelEleven);
   }
 
   // Level up conditional

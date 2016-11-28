@@ -55,6 +55,9 @@ var speedSix = 150;
 var speedSeven = 160;
 var speedEight = 170;
 var speedNine = 180;
+var speedTen = 190;
+var speedEleven = 200;
+var speedTwelve = 210;
 
 ////////////////////////////////////////////////////////////
 // Enemy type definition section
@@ -366,7 +369,7 @@ CentaurArcherOrange.prototype.constructor = Humanoid;
 function CentaurArcherRed(y) {
   var obj = new Humanoid(y);
   obj.sprite = 'img/centaur_archer_red.png';
-  obj.speed = speedNine + 60;
+  obj.speed = speedNine + 40;
   obj.direction = "left";
   return obj;
 }
@@ -376,7 +379,7 @@ CentaurArcherRed.prototype.constructor = Humanoid;
 function CentaurXbowBrown(y) {
   var obj = new Humanoid(y);
   obj.sprite = 'img/centaur_xbow_brown.png';
-  obj.speed = speedNine + 20;
+  obj.speed = speedNine - 10;
   obj.direction = "left";
   return obj;
 }
@@ -391,6 +394,47 @@ function CentaurXbowGrey(y) {
 }
 CentaurXbowGrey.prototype = Object.create(Humanoid.prototype);
 CentaurXbowGrey.prototype.constructor = Humanoid;
+
+///////////////////////////////////////////////////
+// Define Ogre/Cyclops level 10 mobs
+//////////////////////////////////
+function OgreTwoHead(y) {
+  var obj = new Humanoid(y);
+  obj.sprite = 'img/ogre_two.png';
+  obj.speed = speedTen;
+  obj.direction = "left";
+  return obj;
+}
+OgreTwoHead.prototype = Object.create(Humanoid.prototype);
+OgreTwoHead.prototype.constructor = Humanoid;
+
+function OgreWarrior(y) {
+  var obj = new Humanoid(y);
+  obj.sprite = 'img/ogre_warrior.png';
+  obj.speed = speedTen - 20;
+  obj.direction = "left";
+  return obj;
+}
+OgreWarrior.prototype = Object.create(Humanoid.prototype);
+OgreWarrior.prototype.constructor = Humanoid;
+
+function CyclopsWarrior(y) {
+  var obj = new Humanoid(y);
+  obj.sprite = 'img/cyclops_warrior.png';
+  obj.speed = speedTen + 20;
+  return obj;
+}
+CyclopsWarrior.prototype = Object.create(Humanoid.prototype);
+CyclopsWarrior.prototype.constructor = Humanoid;
+
+function CyclopsOfficer(y) {
+  var obj = new Humanoid(y);
+  obj.sprite = 'img/cyclops_officer.png';
+  obj.speed = speedTen + 20;
+  return obj;
+}
+CyclopsOfficer.prototype = Object.create(Humanoid.prototype);
+CyclopsOfficer.prototype.constructor = Humanoid;
 
 ///////////////////////////////////////////////////////
 // Instantiate all objects
@@ -414,6 +458,7 @@ var levelSix = [];    // level 5
 var levelSeven = [];
 var levelEight = [];
 var levelNine = [];
+var levelTen = [];
 
 
 // Instantiate bugs lvl 1 enemies
@@ -506,3 +551,14 @@ levelNine.push(centaurArcherOrange);
 levelNine.push(centaurArcherRed);
 levelNine.push(centaurXbowBrown);
 levelNine.push(centaurXbowGrey);
+
+// Instantiate Cyclops lvl 10 enemies
+var ogreTwoHead = new OgreTwoHead(row1);
+var ogreWarrior = new OgreWarrior(row2);
+var cyclopsWarrior = new CyclopsWarrior(row3);
+var cyclopsOfficer = new CyclopsOfficer(row4);
+
+levelTen.push(ogreTwoHead);
+levelTen.push(ogreWarrior);
+levelTen.push(cyclopsWarrior);
+levelTen.push(cyclopsOfficer);

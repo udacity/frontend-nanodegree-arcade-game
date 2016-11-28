@@ -74,6 +74,20 @@ function renderEntities() {
       levelNine.forEach(function(enemy) {
         enemy.render();
       });
+    } else if (player.level === 10) {
+      obstaclesTen.forEach(function(obstacle) {
+        obstacle.render();
+      });
+      levelTen.forEach(function(enemy) {
+        enemy.render();
+      });
+    } else if (player.level === 11) {
+      obstaclesEleven.forEach(function(obstacle) {
+        obstacle.render();
+      });
+      levelEleven.forEach(function(enemy) {
+        enemy.render();
+      });
     }
 
     player.render();
@@ -116,6 +130,14 @@ function updateEntities(dt) {
       });
     } else if (player.level === 9) {
       levelNine.forEach(function(enemy) {
+        enemy.update(dt);
+      });
+    } else if (player.level === 10) {
+      levelTen.forEach(function(enemy) {
+        enemy.update(dt);
+      });
+    } else if (player.level === 11) {
+      levelEleven.forEach(function(enemy) {
         enemy.update(dt);
       });
     }
@@ -208,6 +230,15 @@ function renderWorld() {
             'img/grass_blue.png',    // Row 3
             'img/grass_dark.png',    // Row 2
             'img/grass_light.png'    // Row 1 - Bottom Row
+        ];
+      } else if (player.level === 10) {
+        rowImages = [
+            'img/sand_dark.png',     // Row 6 - Top row
+            'img/sand_light.png',  // Row 5
+            'img/sand_light.png',     // Row 4
+            'img/sand_light.png',    // Row 3
+            'img/sand_dark.png',    // Row 2
+            'img/sand_dark.png'    // Row 1 - Bottom Row
         ];
       }
 

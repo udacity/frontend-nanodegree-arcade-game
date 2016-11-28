@@ -338,21 +338,21 @@ obstaclesEight.push(eightTree13);
 // obstacles level 9 (centaurs)
 
 // lower trees
-var nineTree1 = new Obstacle(colTwo, rowTwo, goldTree);
-var nineTree2 = new Obstacle(colThree, rowTwo, goldTree);
-var nineTree3 = new Obstacle(colFour, rowTwo, goldTree);
-var nineTree4 = new Obstacle(colFive, rowTwo, goldTree);
-var nineTree5 = new Obstacle(colSix, rowTwo, goldTree);
-var nineTree6 = new Obstacle(colSeven, rowTwo, goldTree);
-var nineTree7 = new Obstacle(colTwo, rowThree, goldTree);
+var nineTree1 = new Obstacle(colTwo, rowTwo, redTree);
+var nineTree2 = new Obstacle(colThree, rowTwo, redTree);
+var nineTree3 = new Obstacle(colFour, rowTwo, redTree);
+var nineTree4 = new Obstacle(colFive, rowTwo, redTree);
+var nineTree5 = new Obstacle(colSix, rowTwo, redTree);
+var nineTree6 = new Obstacle(colSeven, rowTwo, redTree);
+var nineTree7 = new Obstacle(colTwo, rowThree, redTree);
 
 //upper trees
-var nineTree8 = new Obstacle(colFive, rowFour, redTree);
-var nineTree9 = new Obstacle(colOne, rowFive, redTree);
-var nineTree10 = new Obstacle(colTwo, rowFive, redTree);
-var nineTree11 = new Obstacle(colThree, rowFive, redTree);
-var nineTree12 = new Obstacle(colFour, rowFive, redTree);
-var nineTree13 = new Obstacle(colFive, rowFive, redTree);
+var nineTree8 = new Obstacle(colFive, rowFour, goldTree);
+var nineTree9 = new Obstacle(colOne, rowFive, goldTree);
+var nineTree10 = new Obstacle(colTwo, rowFive, goldTree);
+var nineTree11 = new Obstacle(colThree, rowFive, goldTree);
+var nineTree12 = new Obstacle(colFour, rowFive, goldTree);
+var nineTree13 = new Obstacle(colFive, rowFive, goldTree);
 
 obstaclesNine.push(nineTree1);
 obstaclesNine.push(nineTree2);
@@ -368,3 +368,40 @@ obstaclesNine.push(nineTree10);
 obstaclesNine.push(nineTree11);
 obstaclesNine.push(nineTree12);
 obstaclesNine.push(nineTree13);
+
+/////////////////////////////////////////
+// obstacles level 10 (ogres)
+
+// lower left and right rocks
+var tenRock1 = new Obstacle(colOne, rowOne, rock);
+var tenRock2 = new Obstacle(colSeven, rowOne, rock);
+var tenRock3 = new Obstacle(colOne, rowTwo, rock);
+var tenRock4 = new Obstacle(colSeven, rowTwo, rock);
+
+// middle rocks
+var tenRock5 = new Obstacle(colThree, rowThree, rock);
+var tenRock6 = new Obstacle(colFour, rowThree, rock);
+var tenRock7 = new Obstacle(colFive, rowThree, rock);
+var tenRock8 = new Obstacle(colTwo, rowFour, rock);
+var tenRock9 = new Obstacle(colThree, rowFour, rock);
+var tenRock10 = new Obstacle(colFour, rowFour, rock);
+var tenRock11 = new Obstacle(colFive, rowFour, rock);
+var tenRock12 = new Obstacle(colSix, rowFour, rock);
+var tenRock13 = new Obstacle(colOne, rowSix, rock);
+var tenRock14 = new Obstacle(colSeven, rowSix, rock);
+
+obstaclesTen.push(tenRock1);
+obstaclesTen.push(tenRock2);
+obstaclesTen.push(tenRock3);
+obstaclesTen.push(tenRock4);
+
+obstaclesTen.push(tenRock5);
+obstaclesTen.push(tenRock6);
+obstaclesTen.push(tenRock7);
+obstaclesTen.push(tenRock8);
+obstaclesTen.push(tenRock9);
+obstaclesTen.push(tenRock10);
+obstaclesTen.push(tenRock11);
+obstaclesTen.push(tenRock12);
+obstaclesTen.push(tenRock13);
+obstaclesTen.push(tenRock14);
