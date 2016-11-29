@@ -18,7 +18,7 @@ var Player = function(x, y) {
   this.initialY = 704;
   this.startY = 576;
   this.x = this.initialX;
-  this.y = this.startY;
+  this.y = this.initialY;
   this.classes = [];
   this.topBlocked = false;
   this.bottomBlocked = false;
@@ -97,6 +97,18 @@ var Player = function(x, y) {
     "spriteUrl": "img/hero_berserker.png"
   };
 
+  var ninja = {
+    "className": "Ninja",
+    "moveSound": "sounds/cloth.wav",
+    "spriteUrl": "img/hero_ninja.png"
+  };
+
+  var engineer = {
+    "className": "Engineer",
+    "moveSound": "sounds/cloth.wav",
+    "spriteUrl": "img/hero_engineer.png"
+  };
+
   this.classes.push(knight);
   this.classes.push(sorceress);
   this.classes.push(mage);
@@ -109,6 +121,8 @@ var Player = function(x, y) {
   this.classes.push(enchantress);
   this.classes.push(paladin);
   this.classes.push(berserker);
+  this.classes.push(ninja);
+  this.classes.push(engineer);
 
   this.classIndex = 0;
 //  this.moveSound = new Audio(this.classes[this.classIndex].moveSound);
@@ -288,8 +302,13 @@ Player.prototype.update = function(dt) {
 Player.prototype.handleInput = function(key) {
 // start screen controls
 if (player.level === 0){
+  // create sound for flipping between classes
+  var newSwitchSound = new Audio("sounds/class_switch.wav");
+  this.switchSound = newSwitchSound;
   if (key === 'right') {
+    // increasing class index moves class selection right
     this.classIndex ++;
+    this.switchSound.play();
 
     if (this.classIndex < this.classes.length) {
       this.sprite = this.classes[this.classIndex].spriteUrl;
@@ -299,18 +318,22 @@ if (player.level === 0){
     }
 
   } else if (key === 'left') {
+    // decreasing class index moves class selection left
     this.classIndex --;
-    if (this.classIndex > 0) {
+    this.switchSound.play();
+    if (this.classIndex > -1) {
       this.sprite = this.classes[this.classIndex].spriteUrl;
     } else {
       this.classIndex = this.classes.length - 1;
       this.sprite = this.classes[this.classIndex].spriteUrl;
     }
+  // pressing enter selects class and begins game
   } else if (key === 'enter'){
     this.startSound.play();
     this.moveSound = new Audio(this.classes[this.classIndex].moveSound);
     this.level ++;
     this.completedLevels ++;
+    this.y = this.startY;
     this.score += 100;
   }
 }

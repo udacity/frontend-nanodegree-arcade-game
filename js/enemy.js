@@ -80,14 +80,14 @@ function Humanoid(y) {
 Bug.prototype = Object.create(Enemy.prototype);
 Bug.prototype.constructor = Enemy;
 
-function WaterBeast(y) {
+function Beast(y) {
   var obj = new Enemy(y);
-  obj.sound = new Audio('sounds/ogre.wav');
+  obj.sound = new Audio('sounds/beast.wav');
   return obj;
 }
 
-WaterBeast.prototype = Object.create(Enemy.prototype);
-WaterBeast.prototype.constructor = Enemy;
+Beast.prototype = Object.create(Enemy.prototype);
+Beast.prototype.constructor = Enemy;
 
 //////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////
@@ -448,6 +448,35 @@ CyclopsOfficer.prototype.constructor = Humanoid;
 ///////////////////////////////////////////////////
 // Define Sea Creatures level 11 mobs
 //////////////////////////////////
+function Octopus(y) {
+  var obj = new Humanoid(y);
+  obj.sprite = 'img/octopus.png';
+  obj.speed = speedEleven + 10;
+  return obj;
+}
+Jellyfish.prototype = Object.create(Beast.prototype);
+Jellyfish.prototype.constructor = Beast;
+
+function Jellyfish(y, speed, direction) {
+  var obj = new Humanoid(y);
+  obj.sprite = 'img/jellyfish.png';
+  obj.direction = direction;
+  obj.speed = speedEleven + speed;
+  return obj;
+}
+Jellyfish.prototype = Object.create(Beast.prototype);
+Jellyfish.prototype.constructor = Beast;
+
+function Dolphin(y) {
+  var obj = new Humanoid(y);
+  obj.sprite = 'img/dolphin.png';
+  obj.speed = speedEleven + 50;
+  obj.direction = "left";
+  return obj;
+}
+Dolphin.prototype = Object.create(Beast.prototype);
+Dolphin.prototype.constructor = Beast;
+
 
 ///////////////////////////////////////////////////////
 // Instantiate all objects
@@ -472,6 +501,9 @@ var levelSeven = [];
 var levelEight = [];
 var levelNine = [];
 var levelTen = [];
+var levelEleven = [];
+var levelTwelve = [];
+var levelThirteen = [];
 
 
 // Instantiate bugs lvl 1 enemies
@@ -575,3 +607,20 @@ levelTen.push(ogreTwoHead);
 levelTen.push(ogreWarrior);
 levelTen.push(cyclopsWarrior);
 levelTen.push(cyclopsOfficer);
+
+/////////////////////////////////////////
+// Instantiate Sea Beasts lvl 11 enemies
+
+var octopus = new Octopus(row1);
+var jellyfish1 = new Jellyfish(row2, -20, "left");
+var jellyfish2 = new Jellyfish(row2, 30, "right");
+var jellyfish3 = new Jellyfish(row3, 40, "left");
+var jellyfish4 = new Jellyfish(row3, 1, "right");
+var dolphin = new Dolphin(row4);
+
+levelEleven.push(octopus);
+levelEleven.push(jellyfish1);
+levelEleven.push(jellyfish2);
+levelEleven.push(jellyfish3);
+levelEleven.push(jellyfish4);
+levelEleven.push(dolphin);

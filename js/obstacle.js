@@ -405,3 +405,11 @@ obstaclesTen.push(tenRock11);
 obstaclesTen.push(tenRock12);
 obstaclesTen.push(tenRock13);
 obstaclesTen.push(tenRock14);
+
+/////////////////////////////////////////
+// No obstacles level 11 (Sea Beasts 1)
+//////////////////////////////////////////
+
+
+/////////////////////////////////////////
+// No obstacles level 12 Sea (Naga)

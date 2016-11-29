@@ -194,8 +194,8 @@ var Engine = (function(global) {
          // conditional to align class names characters 8+ long
         } else if (player.classes[player.classIndex].className.length
           >= 8) {
-          ctx.strokeText(player.classes[player.classIndex].className, 410, 426);
-          ctx.fillText(player.classes[player.classIndex].className, 410, 426);
+          ctx.strokeText(player.classes[player.classIndex].className, 412, 426);
+          ctx.fillText(player.classes[player.classIndex].className, 412, 426);
 
           // conditional to align class names characters 7 characters long
         } else if (player.classes[player.classIndex].className.length
@@ -206,8 +206,8 @@ var Engine = (function(global) {
           // conditional to align class names characters 5-6 long
         } else if (player.classes[player.classIndex].className.length
           >= 5) {
-          ctx.strokeText(player.classes[player.classIndex].className, 430, 426);
-          ctx.fillText(player.classes[player.classIndex].className, 430, 426);
+          ctx.strokeText(player.classes[player.classIndex].className, 432, 426);
+          ctx.fillText(player.classes[player.classIndex].className, 432, 426);
 
           // conditional to align class names characters 4- short
         } else {
@@ -373,8 +373,18 @@ var Engine = (function(global) {
         'img/grey_brick.png',
         'img/rock_path.png',
         'img/ocean.png',
+        'img/ocean_light.png',
+        'img/ocean_bubbles.png',
+        'img/ocean_deep.png',
+        'img/ocean_deep_dark.png',
+        'img/aqua_brick.png',
+        'img/shore_top.png',
+        'img/shore_bottom.png',
+        'img/shore_jungle_top.png',
+        'img/shore_jungle_bottom.png',
         'img/sand_brick.png',
         'img/sand_light.png',
+        'img/sand_bright.png',
         'img/sand_dark.png',
         'img/grass_red.png',
         'img/grass_blue.png',
@@ -415,6 +425,9 @@ var Engine = (function(global) {
         'img/ogre_warrior.png',
         'img/cyclops_warrior.png',
         'img/cyclops_officer.png',
+        'img/octopus.png',
+        'img/jellyfish.png',
+        'img/dolphin.png',
         'img/hero_knight.png',
         'img/hero_sorceress.png',
         'img/hero_mage.png',
@@ -427,6 +440,8 @@ var Engine = (function(global) {
         'img/hero_enchantress.png',
         'img/hero_paladin.png',
         'img/hero_berserker.png',
+        'img/hero_ninja.png',
+        'img/hero_engineer.png',
         'img/tree_gold.png',
         'img/tree_red.png',
         'img/rock.png'
