@@ -23,8 +23,8 @@
       canvas = doc.createElement('canvas'),
       ctx = canvas.getContext('2d'),
       lastTime,
-      gameElement = doc.getElementById("game"),
-      description = doc.getElementById("description");
+      gameElement = doc.getElementById('game'),
+      description = doc.getElementById('description');
 
   canvas.width = 505;
   canvas.height = 606;
@@ -52,6 +52,8 @@
       game.update();
       render();
     }
+    // Render the game differently depending on whether the player leveled
+    // up or whether the game is over.
     if (game.gameover) {
       render();
       game.showGameOver();
@@ -151,7 +153,7 @@
      * and, using the rowImages array, draw the correct image for that
      * portion of the "grid"
      */
-    ctx.fillStyle = "#9FABE7";
+    ctx.fillStyle = '#9FABE7';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     for (row = 0; row < numRows; row++) {
       for (col = 0; col < numCols; col++) {
