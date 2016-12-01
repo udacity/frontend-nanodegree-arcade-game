@@ -100,6 +100,13 @@ function renderEntities() {
       levelFourteen.forEach(function(enemy) {
         enemy.render();
       });
+    } else if (player.level === 15) {
+      obstaclesFifteen.forEach(function(obstacle) {
+        obstacle.render();
+      });
+      levelFifteen.forEach(function(enemy) {
+        enemy.render();
+      });
     }
 
     player.render();
@@ -162,6 +169,10 @@ function updateEntities(dt) {
       });
     } else if (player.level === 14) {
       levelFourteen.forEach(function(enemy) {
+        enemy.update(dt);
+      });
+    } else if (player.level === 15) {
+      levelFifteen.forEach(function(enemy) {
         enemy.update(dt);
       });
     }

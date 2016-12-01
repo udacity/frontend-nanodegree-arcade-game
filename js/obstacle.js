@@ -443,3 +443,41 @@ obstaclesThirteen.push(thirteenBell5);
 /////////////////////////////////////////
 // No obstacles level 14 Deep Sea Mobs
 ////////////////////////////////////////////
+
+/////////////////////////////////////////
+// obstacles level 15 (Land Beasts)
+
+// bottom row of rocks
+var fifteenRock1 = new Obstacle(colOne, rowTwo, rock);
+var fifteenRock2 = new Obstacle(colTwo, rowTwo, rock);
+var fifteenRock3 = new Obstacle(colThree, rowTwo, rock);
+var fifteenRock4 = new Obstacle(colFive, rowTwo, rock);
+var fifteenRock5 = new Obstacle(colSix, rowTwo, rock);
+var fifteenRock6 = new Obstacle(colSeven, rowTwo, rock);
+
+// middle row of rocks
+var fifteenRock7 = new Obstacle(colThree, rowFour, rock);
+var fifteenRock8 = new Obstacle(colFour, rowFour, rock);
+var fifteenRock9 = new Obstacle(colFive, rowFour, rock);
+
+// top left row of redTrees
+var fifteenTree1 = new Obstacle(colTwo, rowSix, redTree);
+var fifteenTree2 = new Obstacle(colThree, rowSix, redTree);
+
+// top right row of redTrees
+var fifteenTree3 = new Obstacle(colFive, rowSix, redTree);
+var fifteenTree4 = new Obstacle(colSix, rowSix, redTree);
+
+obstaclesFifteen.push(fifteenRock1);
+obstaclesFifteen.push(fifteenRock2);
+obstaclesFifteen.push(fifteenRock3);
+obstaclesFifteen.push(fifteenRock4);
+obstaclesFifteen.push(fifteenRock5);
+obstaclesFifteen.push(fifteenRock6);
+obstaclesFifteen.push(fifteenRock7);
+obstaclesFifteen.push(fifteenRock8);
+obstaclesFifteen.push(fifteenRock9);
+obstaclesFifteen.push(fifteenTree1);
+obstaclesFifteen.push(fifteenTree2);
+obstaclesFifteen.push(fifteenTree3);
+obstaclesFifteen.push(fifteenTree4);

@@ -270,6 +270,8 @@ Player.prototype.update = function(dt) {
     this.checkCollisions(levelThirteen);
   } else if (player.level === 14) {
     this.checkCollisions(levelFourteen);
+  } else if (player.level === 15) {
+    this.checkCollisions(levelFifteen);
   }
 
   // Level up conditional
@@ -371,13 +373,15 @@ else {
   } else if (this.level === 10) {
     currentObstacles = this.checkObstacles(obstaclesTen);
   } else if (this.level === 11) {
-    // do nothing
+    // do nothing - no obstacles on level 11
   } else if (this.level === 12) {
-    // do nothing
+    // do nothing - no obstacles on level 12
   } else if (this.level === 13) {
     currentObstacles = this.checkObstacles(obstaclesThirteen);
   } else if (this.level === 14) {
-    // do nothing
+    // do nothing - no obstacles on level 14
+  } else if (this.level === 15) {
+    currentObstacles = this.checkObstacles(obstaclesFifteen);
   }
 
   if (key === 'enter') {

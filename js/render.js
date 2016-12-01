@@ -34,8 +34,10 @@ function render() {
          ctx.drawImage(Resources.get('img/grey_border_block_small.png'), 928, (rightRow * 32) + 64);
        }
 
+       // draw gate at top middle of screen
        ctx.drawImage(Resources.get('img/gate_three_blocks.png'), 320, 0);
        if (player.level > 1) {
+        // draw gate at bottom middle of screen is player is above level 1
         ctx.drawImage(Resources.get('img/gate_three_blocks.png'), 320, 832);
 
         // draw ui background bottom left side
@@ -53,13 +55,14 @@ function render() {
              }
 
       } else if (player.level <= 1) {
+        // draw solid border at bottom if player is below level 2
         var  numBotLeftCols = 15,
               botLeftCol;
               for (botLeftCol = 0; botLeftCol < numBotLeftCols; botLeftCol++) {
                 ctx.drawImage(Resources.get('img/grey_border_block.png'), (botLeftCol * 64) + 0, 832);
               }
       }
-  }
+  } // end renderUI definition
 
   // First, render start screen
   if (player.level === 0) {
@@ -148,8 +151,9 @@ function render() {
   } else {
       // displays the game tiles, definition is in levelBuilder.js
       renderWorld();
-      // call renderEntities before ui so monsters display on top layer
+      // invoke renderEntities before ui so monsters display on top layer
       renderEntities();
+      // render UI above world and entities
       renderUI();
 
 

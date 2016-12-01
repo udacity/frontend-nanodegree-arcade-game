@@ -456,7 +456,7 @@ CyclopsOfficer.prototype.constructor = Humanoid;
 // Define Sea Creatures level 11 mobs
 //////////////////////////////////
 function Octopus(y) {
-  var obj = new Humanoid(y);
+  var obj = new Beast(y);
   obj.sprite = 'img/octopus.png';
   obj.speed = speedEleven + 10;
   return obj;
@@ -465,7 +465,7 @@ Octopus.prototype = Object.create(Beast.prototype);
 Octopus.prototype.constructor = Beast;
 
 function Jellyfish(y, speed, direction) {
-  var obj = new Humanoid(y);
+  var obj = new Beast(y);
   obj.sprite = 'img/jellyfish.png';
   obj.direction = direction;
   obj.speed = speedEleven + speed;
@@ -475,7 +475,7 @@ Jellyfish.prototype = Object.create(Beast.prototype);
 Jellyfish.prototype.constructor = Beast;
 
 function Dolphin(y) {
-  var obj = new Humanoid(y);
+  var obj = new Beast(y);
   obj.sprite = 'img/dolphin.png';
   obj.speed = speedEleven + 50;
   obj.direction = "left";
@@ -555,24 +555,15 @@ NagaSoothsayer.prototype.constructor = Humanoid;
 // Define Deep Sea Creatures level 14 mobs
 //////////////////////////////////
 
-function Turtle(y) {
-  var obj = new Humanoid(y);
-  obj.sprite = 'img/turtle.png';
-  obj.speed = speedFourteen - 100;
+function Anemone(y) {
+  var obj = new Beast(y);
+  obj.sprite = 'img/anemone.png';
+  obj.speed = speedFourteen;
   obj.direction = "left";
   return obj;
 }
-Turtle.prototype = Object.create(Beast.prototype);
-Turtle.prototype.constructor = Beast;
-
-function SpikedTurtle(y) {
-  var obj = new Humanoid(y);
-  obj.sprite = 'img/spiked_turtle.png';
-  obj.speed = speedFourteen - 40;
-  return obj;
-}
-SpikedTurtle.prototype = Object.create(Beast.prototype);
-SpikedTurtle.prototype.constructor = Beast;
+Anemone.prototype = Object.create(Beast.prototype);
+Anemone.prototype.constructor = Beast;
 
 function Eel(y, speed, direction, image) {
   var obj = new Beast(y);
@@ -584,6 +575,78 @@ function Eel(y, speed, direction, image) {
 Eel.prototype = Object.create(Beast.prototype);
 Eel.prototype.constructor = Beast;
 
+function Turtle(y) {
+  var obj = new Beast(y);
+  obj.sprite = 'img/turtle.png';
+  obj.speed = speedFourteen - 100;
+  obj.direction = "left";
+  return obj;
+}
+Turtle.prototype = Object.create(Beast.prototype);
+Turtle.prototype.constructor = Beast;
+
+function SpikedTurtle(y) {
+  var obj = new Beast(y);
+  obj.sprite = 'img/spiked_turtle.png';
+  obj.speed = speedFourteen - 120;
+  return obj;
+}
+SpikedTurtle.prototype = Object.create(Beast.prototype);
+SpikedTurtle.prototype.constructor = Beast;
+
+///////////////////////////////////////////////////
+// Define Beach Beastss level 15 mobs
+//////////////////////////////////
+
+function Crocodile(y) {
+  var obj = new Beast(y);
+  obj.sprite = 'img/crocodile.png';
+  obj.speed = speedFifteen + 20;
+  return obj;
+}
+Crocodile.prototype = Object.create(Beast.prototype);
+Crocodile.prototype.constructor = Beast;
+
+function Gecko(y) {
+  var obj = new Beast(y);
+  obj.sprite = 'img/gecko.png';
+  obj.speed = speedFifteen - 30;
+  obj.direction = "left";
+  return obj;
+}
+Gecko.prototype = Object.create(Beast.prototype);
+Gecko.prototype.constructor = Beast;
+
+function Lizard(y) {
+  var obj = new Beast(y);
+  obj.sprite = 'img/lizard.png';
+  obj.speed = speedFifteen - 20;
+  return obj;
+}
+Lizard.prototype = Object.create(Beast.prototype);
+Lizard.prototype.constructor = Beast;
+
+
+function StripedSnake(y) {
+  var obj = new Beast(y);
+  obj.sprite = 'img/snake_white_stripe.png';
+  obj.speed = speedFifteen;
+  obj.direction = "left";
+  return obj;
+}
+StripedSnake.prototype = Object.create(Beast.prototype);
+StripedSnake.prototype.constructor = Beast;
+
+function GiantSerpent(y) {
+  var obj = new Beast(y);
+  obj.sprite = 'img/giant_serpent.png';
+  obj.speed = speedFifteen + 40;
+  return obj;
+}
+GiantSerpent.prototype = Object.create(Beast.prototype);
+GiantSerpent.prototype.constructor = Beast;
+
+
 ///////////////////////////////////////////////////////
 // Instantiate all objects
 //////////////////////////
@@ -593,6 +656,7 @@ var row1 = 576;
 var row2 = 448;
 var row3 = 320;
 var row4 = 192;
+var row5 = 64;
 
 
 // Instantiate arrays for each level
@@ -779,7 +843,8 @@ levelThirteen.push(nagaSirenLeft2);
 /////////////////////////////////////////
 // Instantiate Water Beasts lvl 14 enemies
 
-var turtle = new Turtle(row1);
+var anemone = new Anemone(row1);
+var turtle = new Turtle(row4);
 var spikedTurtle = new SpikedTurtle(row4);
 var eel1 = new Eel(row2, 10, "left", "img/eel_left.png");
 var eel2 = new Eel(row2, 0, "right", "img/eel_right.png");
@@ -788,6 +853,7 @@ var eel4 = new Eel(row3, -10, "left", "img/eel_left.png");
 var eel5 = new Eel(row3, 40, "left", "img/eel_left.png");
 var eel6 = new Eel(row3, 20, "right", "img/eel_right.png");
 
+levelFourteen.push(anemone);
 levelFourteen.push(turtle);
 levelFourteen.push(spikedTurtle);
 levelFourteen.push(eel1);
@@ -796,3 +862,19 @@ levelFourteen.push(eel3);
 levelFourteen.push(eel4);
 levelFourteen.push(eel5);
 levelFourteen.push(eel6);
+
+/////////////////////////////////////////
+// Instantiate Land Beasts lvl 15 enemies
+
+var crocodile = new Crocodile(row1);
+var stripedSnake = new StripedSnake(row2);
+var lizard = new Lizard(row3);
+var gecko = new Gecko(row4);
+var giantSerpent = new GiantSerpent(row5);
+
+
+levelFifteen.push(crocodile);
+levelFifteen.push(stripedSnake);
+levelFifteen.push(lizard);
+levelFifteen.push(gecko);
+levelFifteen.push(giantSerpent);
