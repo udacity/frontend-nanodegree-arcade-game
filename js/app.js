@@ -1,7 +1,7 @@
 (function () {
     var game = {
-        update: function() {
-            allStages[currentStage].update()
+        update: function(dt) {
+            allStages[currentStage].update(dt)
         },
         render: function() {
             allStages[currentStage].render()
@@ -41,22 +41,30 @@
     };
     Map.prototype.update = function(){};
 
-    Map.prototype.move = function(rowImages){
+    Map.prototype.move = function(rowImages, callback){
         this.numRows++;     //insert an extra row
         this.y -= game.rowHeight;
         rowImages.reverse();    //the array of rows will inserted backward
         this.rowImages.unshift(rowImages[0]);
-        Map.prototype.update = (function(rowImages){
+        Map.prototype.update = (function(rowImages, callback){
+            var allowedKeys = allStages[currentStage].allowedKeys;
+            allStages[currentStage].allowedKeys = {};
             var row = 1;    //1 row has already loaded
-            //var rowImages = rowImages;
+            var rowImages = rowImages;
             var rowLeft = rowImages.length;
             var y = this.y;
-            return function(){
-                console.log(rowLeft);
+            var callback = callback || function(){};
+            player.y -= game.rowHeight;
+            return function(dt){
                 if (this.y < -50) {
-                    this.y++;
+                    this.y += game.rowHeight * dt;
+                    allPlayers.forEach(function(player){
+                        player.y += game.rowHeight * dt;
+                    });
+                    //pl += game.rowHeight * dt;
                 } else {
-                    this.y = -133;
+                    this.y -= game.rowHeight;
+                    player.y = game.rowHeight * 3;
                     this.rowImages.pop();
                     rowLeft--;
                     if (rowLeft){
@@ -66,16 +74,49 @@
                         this.numRows--;
                         this.y = -50;
                         Map.prototype.update = function() {};
+                        allStages[currentStage].allowedKeys = allowedKeys;
+                        callback();
                     }
                 }
             };
-        })(rowImages)
+        })(rowImages, callback)
     };
 
     function getRandomInt(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
+    var Gem = function() {
+        this.install();
+        this.color = 0;
+        this.sprite = this.colors[0];
+        this.collectedAll = false;
+    };
+    Gem.prototype.render = function() {
+        if (this.color < this.colors.length) {
+            ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+        }
 
+    };
+    Gem.prototype.colors = [
+        'images/Gem Blue.png',
+        'images/Gem Green.png',
+        'images/Gem Orange.png',
+        'images/Key.png'
+    ];
+    Gem.prototype.install = function () {
+        this.y = getRandomInt(0,2) * game.rowHeight;
+        this.x = getRandomInt(0,4) * game.colWidth;
+    }
+    Gem.prototype.update = function() {
+        if (!this.collectedAll && this.x === player.x && this.y === player.y){
+            if (this.color === this.colors.length - 1) {
+                this.collectedAll = true;
+            }
+            this.sprite = this.colors[++this.color];
+            this.install();
+            allEnemies.push(new Enemy);
+        }
+    }
     var Enemy = function() {
         this.init()
     };
@@ -159,6 +200,7 @@
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     };
     Player.prototype.update = function() {};
+
     Player.allSprites = [
         'images/char-boy.png',
         'images/char-cat-girl.png',
@@ -166,29 +208,27 @@
         'images/char-pink-girl.png',
         'images/char-princess-girl.png'
     ];
-    Player.prototype.handleInput = function(direction) {
-        switch (direction) {
-            case 'left':
-                if (this.x > 0) { //not on first coll
+    Player.prototype.moveLeft = function() {
+        if (this.x > 0) { //not at first coll
                     this.x -= game.colWidth;
                 }
-                break;
-            case 'right':
-                if (this.x < game.colWidth * 4) { //not on last col
-                    this.x += game.colWidth;
-                }
-                break;
-            case 'up':
-                if (this.y > 0) { //under the bridge
+    };
+    Player.prototype.moveUp = function() {
+        if (this.y > 0) { //under the water
                     this.y -= game.rowHeight;
                 }
-                break;
-            case 'down':
-                if (this.y < game.rowHeight * 4) { //last row
+    };
+    Player.prototype.moveRight = function(){
+        if (this.x < game.colWidth * 4) { //not beyond last col
+                    this.x += game.colWidth;
+                }
+    };
+    Player.prototype.moveDown = function() {
+        if (this.y < game.rowHeight * 4) { //not beyond last row
                     this.y += game.rowHeight;
                 }
-        }
     };
+
     // Now instantiate your objects.
     // Place all enemy objects in an array called allEnemies
     // Place the player object in a variable called player
@@ -210,24 +250,48 @@
             this.x += game.colWidth;
         }
     }
+    Selector.prototype.selectPlayer = function() {
+        var i;
+        for(i = 0; i < allPlayers.length; i++){
+            if (this.x === allPlayers[i].x) {
+            player = allPlayers[i];
+            }
+        }
+    };
     // This listens for key presses and sends the keys to your
     // Player.handleInput() method. You don't need to modify this.
     document.addEventListener('keyup', function(e) {
         var task = allStages[currentStage].allowedKeys[e.keyCode];
         if (task) {
-            task()
+            task();
         };
     });
     var player = new Player();
     var allPlayers = [];
     var allEnemies = [];
-    var createEnemies = setInterval(function() {
-        allEnemies.push(new Enemy());
-        if (allEnemies.length === 4) {
-            clearInterval(createEnemies);
-        }
-    }, 400);
-
+    var createEnemies = (function(){
+        var triggerAbleInterval;
+        var enemiesNum = allEnemies.length;
+        return function(num){
+            triggeraAbleInterval = setInterval(function() {
+            allEnemies.push(new Enemy());
+                if (allEnemies.length >= enemiesNum + num) {
+                    clearInterval(triggeraAbleInterval);
+                }
+            }, 400);
+        };
+    }());
+    /*var triggeraAbleInterval;
+    var createEnemies = function(num) {
+        var enemiesNum = allEnemies.length;
+        triggeraAbleInterval = setInterval(function() {
+            allEnemies.push(new Enemy());
+            if (allEnemies.length >= enemiesNum + num) {
+                clearInterval(triggeraAbleInterval);
+            }
+        }, 400);
+    };
+*/
     function nextStage() {
         currentStage++;
         allStages[currentStage].init();
@@ -242,21 +306,74 @@
             allPlayers.push(player);
         }
     }
-    var Text = function(text, x, y, color) {
+    var Text = function(text, x, y, alpha) {
         this.text = text;
         this.x = x || 0;
-        this.y = y || 0;
-        this.color = color || 'white';
+        this.y = y || 0 - game.rowHeight;
+        this.alpha = alpha || 1;
+        this.visible = 0;
     }
     Text.prototype.render = function() {
-        ctx.fillStyle = this.color;
-        ctx.font = "30px Arial";
+        ctx.fillStyle = "rgba(255, 255, 255, "+this.alpha+")";
+        ctx.font = this.font;
         ctx.textAlign = "center";
         ctx.fillText(this.text, this.x, this.y);
     };
+    Text.prototype.show = function(callback) {
+        var y = this.y;
+        this.y = 0;
+        var text = this;
+        var allowedKeys = allStages[currentStage].allowedKeys;
+        allStages[currentStage].allowedKeys = {};
+        text.constructor.prototype.update = (function(callback){
+
+            var callback = callback || function(){};
+            return function(dt){
+                if(this.y < y) {
+                    this.y += game.rowHeight * dt *2;
+                } else {
+                    this.constructor.prototype.update = function(){};
+                    allStages[currentStage].allowedKeys = allowedKeys;
+                    callback();
+                }
+            };
+        }(callback));
+    };
+    Text.prototype.pulse = function() {
+        this.constructor.prototype.update = (function(){
+            return function(){
+                if (this.visible) {
+            if(this.alpha > 0) {
+                this.alpha -= 0.03;
+            } else {
+                this.visible = false;
+            }
+        } else if (this.alpha < 1) {
+            this.alpha += 0.015;
+        } else {
+            this.visible = true;
+        }
+            };
+        }())
+    }
+    Text.prototype.update = function() {};
+    var H1 = function(text, x, y, alpha) {
+        Text.call(this, text, x, y, alpha);
+    };
+    H1.prototype = Object.create(Text.prototype);
+    H1.prototype.constructor = H1;
+    H1.prototype.font = "50px Arial";
+    var H2 = function(text, x, y, alpha) {
+        Text.call(this, text, x, y, alpha);
+    };
+    H2.prototype = Object.create(Text.prototype);
+    H2.prototype.constructor = H2;
+    H2.prototype.font = "30px Arial";
+
     var background = new Map(-game.cellPaddingTop,[],6,5)
-    var heading1 = new Text("", game.colWidth * 2.5, game.rowHeight * 2.5);
-    var heading2 = new Text("", game.colWidth * 2.5, game.rowHeight * 3.5);
+    var heading1 = new H1("", game.colWidth * 2.5, game.rowHeight * 2.5);
+    var heading2 = new H2("", game.colWidth * 2.5, game.rowHeight * 3.5, 0.01);
+    var gem = new Gem();
     var currentStage = 0;
     var allStages = [{ //stage 0, welcome screen
         init: function () {
@@ -264,12 +381,17 @@
 
             heading1.text = 'FROGGER GAME';
             heading2.text = 'press SPACE to start';
-            background.move(['images/water-block.png',
+            /*background.move(['images/water-block.png',
         'images/stone-block.png','images/stone-block.png',
-        'images/stone-block.png']);
+        'images/stone-block.png']);*/
+            heading1.show(function(){
+                heading2.pulse();
+            });
         },
-        update: function () {
-            background.update();
+        update: function (dt) {
+            background.update(dt);
+            heading1.update(dt);
+            heading2.update(dt);
         },
         render: function(dt) {
             background.render();
@@ -285,9 +407,12 @@
             selector = new Selector('images/Selector.png', 2 * game.colWidth, 4 * game.rowHeight);
             heading1.text = 'SELECT YOUR CHARACTER';
             heading2.text = 'press SPACE to apply';
-
+            heading1.font = "30px Arial";
+            heading2.pulse();
         },
-        update: function() {},
+        update: function(dt) {
+            heading2.update();
+        },
         render: function() {
             background.render();
             selector.render();
@@ -299,7 +424,10 @@
 
         },
         allowedKeys: {
-            32: nextStage,
+            32: function(){
+                selector.selectPlayer();
+                nextStage();
+            },
             37: function() {
                 selector.moveLeft()
             },
@@ -308,7 +436,42 @@
             }
         }
 
-    }];
+    }, {
+        //stage 2 - level 1
+        init : function(){
+            background.move(['images/water-block.png',
+        'images/stone-block.png','images/stone-block.png',
+        'images/stone-block.png'], function(){
+                createEnemies(4);
+            });
+        },
+        update : function(dt){
+            background.update(dt);
+            allEnemies.forEach(function(enemy,index) {
+                enemy.update(dt);
+                enemy.checkCollision(index);
+            });
+            gem.update();
+            player.update();
+        },
+        render : function(){
+            background.render();
+            allPlayers.forEach(function(player) {
+                player.render();
+            });
+            allEnemies.forEach(function(enemy) {
+                enemy.render();
+            });
+            gem.render();
+        },
+        allowedKeys : {
+            37 : function() {player.moveLeft()},
+            38 : function(){player.moveUp()},
+            39 : function(){player.moveRight()},
+            40 : function(){player.moveDown()}
+        }
+    }
+                    ];
     allStages[0].init();
     window.game = game;
 }())
