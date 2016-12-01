@@ -82,17 +82,22 @@ function renderEntities() {
         enemy.render();
       });
     } else if (player.level === 11) {
-      obstaclesEleven.forEach(function(obstacle) {
-        obstacle.render();
-      });
       levelEleven.forEach(function(enemy) {
         enemy.render();
       });
     } else if (player.level === 12) {
-      obstaclesTwelve.forEach(function(obstacle) {
+      levelTwelve.forEach(function(enemy) {
+        enemy.render();
+      });
+    } else if (player.level === 13) {
+      obstaclesThirteen.forEach(function(obstacle) {
         obstacle.render();
       });
-      levelTwelve.forEach(function(enemy) {
+      levelThirteen.forEach(function(enemy) {
+        enemy.render();
+      });
+    } else if (player.level === 14) {
+      levelFourteen.forEach(function(enemy) {
         enemy.render();
       });
     }
@@ -149,6 +154,14 @@ function updateEntities(dt) {
       });
     } else if (player.level === 12) {
       levelTwelve.forEach(function(enemy) {
+        enemy.update(dt);
+      });
+    } else if (player.level === 13) {
+      levelThirteen.forEach(function(enemy) {
+        enemy.update(dt);
+      });
+    } else if (player.level === 14) {
+      levelFourteen.forEach(function(enemy) {
         enemy.update(dt);
       });
     }
@@ -253,7 +266,7 @@ function renderWorld() {
         ];
       } else if (player.level === 11) {
         rowImages = [
-            'img/ocean_light.png',     // Row 6 - Top row
+            'img/ocean_deep_dark.png',     // Row 6 - Top row
             'img/ocean_deep.png',  // Row 5
             'img/ocean_deep.png',     // Row 4
             'img/ocean_deep.png',    // Row 3
@@ -263,11 +276,11 @@ function renderWorld() {
       } else if (player.level === 12) {
         rowImages = [
             'img/ocean_light.png',     // Row 6 - Top row
-            'img/ocean_deep.png',  // Row 5
-            'img/ocean_deep.png',     // Row 4
-            'img/ocean_deep.png',    // Row 3
-            'img/ocean_deep.png',    // Row 2
-            'img/ocean_light.png'    // Row 1 - Bottom Row
+            'img/ocean_deep_dark.png',  // Row 5
+            'img/ocean_deep_dark.png',     // Row 4
+            'img/ocean_deep_dark.png',    // Row 3
+            'img/ocean_deep_dark.png',    // Row 2
+            'img/ocean_deep.png'    // Row 1 - Bottom Row
         ];
       } else if (player.level === 13) {
         rowImages = [
@@ -277,6 +290,24 @@ function renderWorld() {
             'img/aqua_brick.png',    // Row 3
             'img/aqua_brick.png',    // Row 2
             'img/ocean_light.png'    // Row 1 - Bottom Row
+        ];
+      } else if (player.level === 14) {
+        rowImages = [
+            'img/ocean.png',     // Row 6 - Top row
+            'img/ocean_deep_dark.png',  // Row 5
+            'img/ocean_deep_dark.png',     // Row 4
+            'img/ocean_deep_dark.png',    // Row 3
+            'img/ocean_deep_dark.png',    // Row 2
+            'img/ocean_light.png'    // Row 1 - Bottom Row
+        ];
+      } else if (player.level === 15) {
+        rowImages = [
+            'img/grass_jungle.png',     // Row 6 - Top row
+            'img/shore_jungle_top.png',  // Row 5
+            'img/sand_dark.png',     // Row 4
+            'img/sand_dark.png',    // Row 3
+            'img/sand_dark.png',    // Row 2
+            'img/ocean.png'    // Row 1 - Bottom Row
         ];
       }
 

@@ -58,6 +58,13 @@ var speedNine = 180;
 var speedTen = 190;
 var speedEleven = 200;
 var speedTwelve = 210;
+var speedThirteen = 220;
+var speedFourteen = 230;
+var speedFifteen= 240;
+var speedSixteen = 250;
+var speedSeventeen = 260;
+var speedEighteen = 270;
+var speedNineteen = 290;
 
 ////////////////////////////////////////////////////////////
 // Enemy type definition section
@@ -454,8 +461,8 @@ function Octopus(y) {
   obj.speed = speedEleven + 10;
   return obj;
 }
-Jellyfish.prototype = Object.create(Beast.prototype);
-Jellyfish.prototype.constructor = Beast;
+Octopus.prototype = Object.create(Beast.prototype);
+Octopus.prototype.constructor = Beast;
 
 function Jellyfish(y, speed, direction) {
   var obj = new Humanoid(y);
@@ -477,6 +484,105 @@ function Dolphin(y) {
 Dolphin.prototype = Object.create(Beast.prototype);
 Dolphin.prototype.constructor = Beast;
 
+///////////////////////////////////////////////////
+// Define Naga level 12 mobs
+//////////////////////////////////
+function NagaWarrior(y, speed, direction, image) {
+  var obj = new Humanoid(y);
+  obj.sprite = image;
+  obj.speed = speedTwelve + speed;
+  obj.direction = direction;
+  return obj;
+}
+NagaWarrior.prototype = Object.create(Humanoid.prototype);
+NagaWarrior.prototype.constructor = Humanoid;
+
+function NagaRogue(y, speed, direction, image) {
+  var obj = new Humanoid(y);
+  obj.sprite = image;
+  obj.speed = speedTwelve + speed;
+  obj.direction = direction;
+  return obj;
+}
+NagaRogue.prototype = Object.create(Humanoid.prototype);
+NagaRogue.prototype.constructor = Humanoid;
+
+function NagaMage(y, speed, direction, image) {
+  var obj = new Humanoid(y);
+  obj.sprite = image;
+  obj.speed = speedTwelve + speed;
+  obj.direction = direction;
+  return obj;
+}
+NagaMage.prototype = Object.create(Humanoid.prototype);
+NagaMage.prototype.constructor = Humanoid;
+
+function NagaFighter(y, speed, direction, image) {
+  var obj = new Humanoid(y);
+  obj.sprite = image;
+  obj.speed = speedTwelve + speed;
+  obj.direction = direction;
+  return obj;
+}
+NagaFighter.prototype = Object.create(Humanoid.prototype);
+NagaFighter.prototype.constructor = Humanoid;
+
+///////////////////////////////////////////////////
+// Define Naga level 13 mobs
+//////////////////////////////////
+
+function NagaSiren(y, speed, direction, image) {
+  var obj = new Humanoid(y);
+  obj.sprite = image;
+  obj.speed = speedTwelve + speed;
+  obj.direction = direction;
+  return obj;
+}
+NagaSiren.prototype = Object.create(Humanoid.prototype);
+NagaSiren.prototype.constructor = Humanoid;
+
+function NagaSoothsayer(y, speed, direction, image) {
+  var obj = new Humanoid(y);
+  obj.sprite = image;
+  obj.speed = speedTwelve + speed;
+  obj.direction = direction;
+  return obj;
+}
+NagaSoothsayer.prototype = Object.create(Humanoid.prototype);
+NagaSoothsayer.prototype.constructor = Humanoid;
+
+///////////////////////////////////////////////////
+// Define Deep Sea Creatures level 14 mobs
+//////////////////////////////////
+
+function Turtle(y) {
+  var obj = new Humanoid(y);
+  obj.sprite = 'img/turtle.png';
+  obj.speed = speedFourteen - 100;
+  obj.direction = "left";
+  return obj;
+}
+Turtle.prototype = Object.create(Beast.prototype);
+Turtle.prototype.constructor = Beast;
+
+function SpikedTurtle(y) {
+  var obj = new Humanoid(y);
+  obj.sprite = 'img/spiked_turtle.png';
+  obj.speed = speedFourteen - 40;
+  return obj;
+}
+SpikedTurtle.prototype = Object.create(Beast.prototype);
+SpikedTurtle.prototype.constructor = Beast;
+
+function Eel(y, speed, direction, image) {
+  var obj = new Beast(y);
+  obj.sprite = image;
+  obj.speed = speedFourteen + speed;
+  obj.direction = direction;
+  return obj;
+}
+Eel.prototype = Object.create(Beast.prototype);
+Eel.prototype.constructor = Beast;
 
 ///////////////////////////////////////////////////////
 // Instantiate all objects
@@ -504,6 +610,13 @@ var levelTen = [];
 var levelEleven = [];
 var levelTwelve = [];
 var levelThirteen = [];
+var levelFourteen = [];
+var levelFifteen = [];
+var levelSixteen = [];
+var levelSeventeen = [];
+var levelEighteen = [];
+var levelNineteen = [];
+var levelTwenty = [];
 
 
 // Instantiate bugs lvl 1 enemies
@@ -624,3 +737,62 @@ levelEleven.push(jellyfish2);
 levelEleven.push(jellyfish3);
 levelEleven.push(jellyfish4);
 levelEleven.push(dolphin);
+
+/////////////////////////////////////////
+// Instantiate Naga lvl 12 enemies
+
+var nagaWarriorLeft = new NagaWarrior(row1, -10, "left", "img/naga_warrior_left.png");
+var nagaWarriorRight = new NagaWarrior(row1, 10, "right", "img/naga_warrior_right.png");
+var nagaRogueLeft = new NagaRogue(row2, 20, "left", "img/naga_rogue_left.png");
+var nagaRogueRight = new NagaRogue(row3, 30, "right", "img/naga_rogue_right.png");
+var nagaMageLeft = new NagaMage(row3, 0, "left", "img/naga_mage_left.png");
+var nagaMageRight = new NagaMage(row2, -5, "right", "img/naga_mage_right.png");
+var nagaFighterLeft = new NagaFighter(row4, 20, "left", "img/naga_fighter_left.png");
+var nagaFighterRight = new NagaFighter(row4, -10, "right", "img/naga_fighter_right.png");
+
+levelTwelve.push(nagaWarriorLeft);
+levelTwelve.push(nagaWarriorRight);
+levelTwelve.push(nagaRogueLeft);
+levelTwelve.push(nagaRogueRight);
+levelTwelve.push(nagaMageLeft);
+levelTwelve.push(nagaMageRight);
+levelTwelve.push(nagaFighterLeft);
+levelTwelve.push(nagaFighterRight);
+
+/////////////////////////////////////////
+// Instantiate Naga lvl 13 enemies
+
+var nagaSoothsayerRight1 = new NagaSoothsayer(row1, 10, "right", "img/naga_soothsayer_right.png");
+var nagaSoothsayerLeft1 = new NagaSoothsayer(row2, -20, "left", "img/naga_soothsayer_left.png");
+var nagaSirenRight1 = new NagaSiren(row2, -5, "right", "img/naga_siren_right.png");
+var nagaSirenLeft1 = new NagaSiren(row3, 0, "left", "img/naga_siren_left.png");
+var nagaSoothsayerRight3 = new NagaSoothsayer(row3, 30, "right", "img/naga_soothsayer_right.png");
+var nagaSirenLeft2 = new NagaSiren(row4, 8, "left", "img/naga_siren_left.png");
+
+levelThirteen.push(nagaSoothsayerRight1);
+levelThirteen.push(nagaSoothsayerLeft1);
+levelThirteen.push(nagaSirenRight1);
+levelThirteen.push(nagaSirenLeft1);
+levelThirteen.push(nagaSoothsayerRight3);
+levelThirteen.push(nagaSirenLeft2);
+
+/////////////////////////////////////////
+// Instantiate Water Beasts lvl 14 enemies
+
+var turtle = new Turtle(row1);
+var spikedTurtle = new SpikedTurtle(row4);
+var eel1 = new Eel(row2, 10, "left", "img/eel_left.png");
+var eel2 = new Eel(row2, 0, "right", "img/eel_right.png");
+var eel3 = new Eel(row2, 30, "right", "img/eel_right.png");
+var eel4 = new Eel(row3, -10, "left", "img/eel_left.png");
+var eel5 = new Eel(row3, 40, "left", "img/eel_left.png");
+var eel6 = new Eel(row3, 20, "right", "img/eel_right.png");
+
+levelFourteen.push(turtle);
+levelFourteen.push(spikedTurtle);
+levelFourteen.push(eel1);
+levelFourteen.push(eel2);
+levelFourteen.push(eel3);
+levelFourteen.push(eel4);
+levelFourteen.push(eel5);
+levelFourteen.push(eel6);

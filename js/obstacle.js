@@ -42,6 +42,7 @@ var rowSix = 64;
 var goldTree = "img/tree_gold.png";
 var redTree = "img/tree_red.png";
 var rock = "img/rock.png";
+var bell = "img/bell.png";
 
 
 var obstaclesOne = [];
@@ -54,7 +55,15 @@ var obstaclesSeven = [];
 var obstaclesEight = [];
 var obstaclesNine = [];
 var obstaclesTen = [];
-var obstaclesEleven = [];
+//var obstaclesEleven = [];
+var obstaclesThirteen = [];
+var obstaclesFourteen = [];
+var obstaclesFifteen = [];
+var obstaclesSixteen = [];
+var obstaclesSeventeen = [];
+var obstaclesEighteen = [];
+var obstaclesNineteen = [];
+var obstaclesTwenty = [];
 
 // Obstacle parameters - x, y, level, image
 
@@ -413,3 +422,24 @@ obstaclesTen.push(tenRock14);
 
 /////////////////////////////////////////
 // No obstacles level 12 Sea (Naga)
+////////////////////////////////////////////
+
+/////////////////////////////////////////
+// obstacles level 13 (Naga)
+
+var thirteenBell1 = new Obstacle(colThree, rowThree, bell);
+var thirteenBell2 = new Obstacle(colFive, rowThree, bell);
+
+var thirteenBell3 = new Obstacle(colTwo, rowFive, bell);
+var thirteenBell4 = new Obstacle(colFour, rowFive, bell);
+var thirteenBell5 = new Obstacle(colSix, rowFive, bell);
+
+obstaclesThirteen.push(thirteenBell1);
+obstaclesThirteen.push(thirteenBell2);
+obstaclesThirteen.push(thirteenBell3);
+obstaclesThirteen.push(thirteenBell4);
+obstaclesThirteen.push(thirteenBell5);
+
+/////////////////////////////////////////
+// No obstacles level 14 Deep Sea Mobs
+////////////////////////////////////////////

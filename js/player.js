@@ -266,6 +266,10 @@ Player.prototype.update = function(dt) {
     this.checkCollisions(levelEleven);
   } else if (player.level === 12) {
     this.checkCollisions(levelTwelve);
+  } else if (player.level === 13) {
+    this.checkCollisions(levelThirteen);
+  } else if (player.level === 14) {
+    this.checkCollisions(levelFourteen);
   }
 
   // Level up conditional
@@ -330,7 +334,6 @@ if (player.level === 0){
   // pressing enter selects class and begins game
   } else if (key === 'enter'){
     this.startSound.play();
-    this.moveSound = new Audio(this.classes[this.classIndex].moveSound);
     this.level ++;
     this.completedLevels ++;
     this.y = this.startY;
@@ -340,6 +343,12 @@ if (player.level === 0){
 
 // game controls
 else {
+  if (this.level >= 11 && this.level <= 14) {
+    var waterWalkSound = new Audio("sounds/bubbles.wav");
+    this.moveSound = waterWalkSound;
+  } else {
+    this.moveSound = new Audio(this.classes[this.classIndex].moveSound);
+  }
   var currentObstacles = [];
   if (this.level === 1) {
     currentObstacles = this.checkObstacles(obstaclesOne);
@@ -362,9 +371,13 @@ else {
   } else if (this.level === 10) {
     currentObstacles = this.checkObstacles(obstaclesTen);
   } else if (this.level === 11) {
-    currentObstacles = this.checkObstacles(obstaclesEleven);
+    // do nothing
   } else if (this.level === 12) {
-    currentObstacles = this.checkObstacles(obstaclesTwelve);
+    // do nothing
+  } else if (this.level === 13) {
+    currentObstacles = this.checkObstacles(obstaclesThirteen);
+  } else if (this.level === 14) {
+    // do nothing
   }
 
   if (key === 'enter') {
