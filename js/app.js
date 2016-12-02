@@ -1,3 +1,29 @@
+update = [];
+update.forEach(function(item){
+    item();
+});
+render = [];
+render.forEach(function(item){
+    item();
+});
+
+function addToUpdate(entity) {
+    update.push(entity);
+}
+
+function removeFromUpdate(entity) {
+
+}
+
+
+
+Object.keys(a).forEach(function(item){a[item] *= 2;});
+
+
+
+
+
+
 (function () {
     var game = {
         update: function(dt) {
