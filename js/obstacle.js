@@ -461,12 +461,12 @@ var fifteenRock8 = new Obstacle(colFour, rowFour, rock);
 var fifteenRock9 = new Obstacle(colFive, rowFour, rock);
 
 // top left row of redTrees
-var fifteenTree1 = new Obstacle(colTwo, rowSix, redTree);
-var fifteenTree2 = new Obstacle(colThree, rowSix, redTree);
+var fifteenTree1 = new Obstacle(colOne, rowSix, redTree);
+var fifteenTree2 = new Obstacle(colTwo, rowSix, redTree);
 
 // top right row of redTrees
-var fifteenTree3 = new Obstacle(colFive, rowSix, redTree);
-var fifteenTree4 = new Obstacle(colSix, rowSix, redTree);
+var fifteenTree3 = new Obstacle(colSix, rowSix, redTree);
+var fifteenTree4 = new Obstacle(colSeven, rowSix, redTree);
 
 obstaclesFifteen.push(fifteenRock1);
 obstaclesFifteen.push(fifteenRock2);
@@ -481,3 +481,6 @@ obstaclesFifteen.push(fifteenTree1);
 obstaclesFifteen.push(fifteenTree2);
 obstaclesFifteen.push(fifteenTree3);
 obstaclesFifteen.push(fifteenTree4);
+
+/////////////////////////////////////////
+// obstacles level 16 (Land Beasts)

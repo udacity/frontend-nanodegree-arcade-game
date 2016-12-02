@@ -8,7 +8,8 @@
 var Player = function(x, y) {
   this.x = x;
   this.y = y;
-  this.startSound = new Audio('sounds/spell.wav');
+  this.startSound = new Audio("sounds/spell.wav");
+  this.itemSound = new Audio("sounds/item.wav");
   this.lives = 3;
   this.level = 0;
   this.completedLevels = 0;
@@ -24,6 +25,9 @@ var Player = function(x, y) {
   this.bottomBlocked = false;
   this.rightBlocked = false;
   this.leftBlocked = false;
+  this.collided = false;
+  this.gamePaused = false;
+  this.gameOver = false;
 
   var knight = {
     "className": "Knight",
@@ -232,7 +236,6 @@ Player.prototype.reset = function() {
   this.completedLevels = 0;
   this.x = this.initialX;
   this.y = this.startY;
-;
   this.startSound.play();
 };
 
@@ -284,6 +287,7 @@ Player.prototype.update = function(dt) {
       this.completedLevels++;
       this.score += 100;
       if (this.score === 1000) {
+        this.itemSound.play();
         this.lives ++;
       }
       if (this.level === 1) {
@@ -297,9 +301,9 @@ Player.prototype.update = function(dt) {
       this.y = this.initialY;
     }
   // conditional for going down to previous level
-} else if (this.y > this.initialY) {
-  this.level--;
-  this.y = 64;
+  } else if (this.y > this.initialY) {
+    this.level--;
+    this.y = 64;
   }
 };
 
@@ -344,7 +348,7 @@ if (player.level === 0){
 }
 
 // game controls
-else {
+else if (this.gamePaused === false && player.level > 0) {
   if (this.level >= 11 && this.level <= 14) {
     var waterWalkSound = new Audio("sounds/bubbles.wav");
     this.moveSound = waterWalkSound;
@@ -382,11 +386,11 @@ else {
     // do nothing - no obstacles on level 14
   } else if (this.level === 15) {
     currentObstacles = this.checkObstacles(obstaclesFifteen);
+  } else if (this.level === 16) {
+    currentObstacles = this.checkObstacles(obstaclesFifteen);
   }
 
-  if (key === 'enter') {
-    this.reset();
-  } else if (key === 'up' && (currentObstacles.indexOf("Up is Blocked") == -1)
+  if (key === 'up' && (currentObstacles.indexOf("Up is Blocked") == -1)
     && (this.y > 64 || (this.x >= 288 && this.x <= 544))) {
     this.y -= 128;
     this.moveSound.play();
@@ -413,11 +417,18 @@ else {
   } else if (key === 'left' && this.x <= 33) {
     console.log("Error! Can't go farther left.");
 
-  } else if (key === 'p') {
-    console.log("Place a pause function here");
+  } else if (key === 'space') {
+    this.gamePaused = true;
+  }
+} else if (this.gamePaused === true) {
+  if (key === 'enter') {
+    this.reset();
+  } else if (key === 'space') {
+    this.gamePaused = false;
   }
 }
-};
+
+}; // end of Player.prototype.handleInput definition
 
 var player = new Player();
 
@@ -429,7 +440,7 @@ document.addEventListener('keyup', function(e) {
         38: 'up',
         39: 'right',
         40: 'down',
-        80: 'p',
+        32: 'space',
         13: 'enter'
     };
 

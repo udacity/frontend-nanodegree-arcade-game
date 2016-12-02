@@ -65,9 +65,12 @@ var Engine = (function(global) {
         /* Call our update/render functions, pass along the time delta to
          * our update function since it may be used for smooth animation.
          */
-        update(dt);
-        render();
+        if (player.gamePaused === true) {
 
+        } else {
+          update(dt);
+          render();
+        }
         /* Set our lastTime variable which is used to determine the time delta
          * for the next time this function is called.
          */
@@ -117,14 +120,27 @@ var Engine = (function(global) {
      * they are flipbooks creating the illusion of animation but in reality
      * they are just drawing the entire screen over and over.
      */
-
-
-
+    function render() {
+      if (player.level === 0) {
+       renderStartScreen();
+       renderBorder();
+      } else if (player.gamePaused === false) {
+       // displays the game tiles, definition is in levelBuilder.js
+       renderWorld();
+       // invoke renderEntities before ui so monsters display on top layer
+       // renderEntities definition is in levelBuilder.js
+       renderEntities();
+       // render UI above world and entities
+       renderBorder();
+       // render statistics above the border
+       renderStatistics();
+      }
+    }
     /* This function does nothing but it could have been a good place to
      * handle game reset states - maybe a new game menu or a game over screen
      * those sorts of things. It's only called once by the init() method.
      */
-     function reset() {
+    function reset() {
        // noop
     }
 
@@ -164,6 +180,10 @@ var Engine = (function(global) {
         'img/grass_light.png',
         'img/grass_dark.png',
         'img/grass_jungle.png',
+        'img/badlands_green.png',
+        'img/badlands_gold.png',
+        'img/badlands_yellow.png',
+        'img/badlands_orange.png',
         'img/snail.png',
         'img/scorpion.png',
         'img/beetle.png',
@@ -195,7 +215,7 @@ var Engine = (function(global) {
         'img/centaur_xbow_brown.png',
         'img/centaur_xbow_grey.png',
         'img/ogre_two.png',
-        'img/ogre_warrior.png',
+        'img/ogre_witch.png',
         'img/cyclops_warrior.png',
         'img/cyclops_officer.png',
         'img/octopus.png',

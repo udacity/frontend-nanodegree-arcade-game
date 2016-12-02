@@ -320,6 +320,15 @@ function renderWorld() {
             'img/sand_dark.png',    // Row 2
             'img/ocean.png'    // Row 1 - Bottom Row
         ];
+      } else if (player.level === 16) {
+        rowImages = [
+            'img/badlands_gold.png',     // Row 6 - Top row
+            'img/badlands_green.png',  // Row 5
+            'img/badlands_green.png',     // Row 4
+            'img/badlands_green.png',    // Row 3
+            'img/badlands_green.png',    // Row 2
+            'img/grass_jungle.png'    // Row 1 - Bottom Row
+        ];
       }
 
   var  numRows = 6,
