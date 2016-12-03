@@ -13,10 +13,10 @@ function renderBorder() {
          ctx.drawImage(Resources.get('img/grey_border_block.png'), (topRightCol * 64) + 640, 0);
        }
 
- // draw ui background bottom side
-  ctx.beginPath();
-  ctx.fillStyle = "black";
-  ctx.fillRect(0, 830, 906, 896);
+ // draw ui background bottom side (black coloring within the gate)
+    ctx.beginPath();
+    ctx.fillStyle = "black";
+    ctx.fillRect(0, 830, 906, 896);
 
  // draw ui left
   var  numLeftRows = 24,
@@ -54,13 +54,13 @@ function renderBorder() {
 
     } else if (player.level <= 1) {
       // draw solid border at bottom if player is below level 2
-      var  numBotLeftCols = 15,
-            botLeftCol;
-            for (botLeftCol = 0; botLeftCol < numBotLeftCols; botLeftCol++) {
-              ctx.drawImage(Resources.get('img/grey_border_block.png'), (botLeftCol * 64) + 0, 832);
+      var  numBotCols = 15,
+            botCol;
+            for (botCol = 0; botCol < numBotCols; botCol++) {
+              ctx.drawImage(Resources.get('img/grey_border_block.png'), (botCol * 64) + 0, 832);
             }
     }
-} // end renderUI definition
+}
 
 function renderStartScreen() {
   // Draw main background
@@ -286,9 +286,23 @@ function renderCollideScreen() {
 }
 
 function renderGameOverScreen() {
+  // draw bottom border
+  var  numBotCols = 15,
+    botCol;
+    for (botCol = 0; botCol < numBotCols; botCol++) {
+      ctx.drawImage(Resources.get('img/grey_border_block.png'), (botCol * 64) + 0, 832);
+    }
+  // draw top border
+  var  numTopCols = 5,
+    topCol;
+    for (topCol = 0; topCol < numTopCols; topCol++) {
+      ctx.drawImage(Resources.get('img/grey_border_block.png'), (topCol * 64) + 320, 0);
+    }
+  // draw background
   ctx.beginPath();
   ctx.fillStyle = "black";
   ctx.fillRect(32, 64, 896, 768);
+  // draw skull image
   ctx.drawImage(Resources.get("img/skull_large.png"), 230, 180);
 
   // Draw game over words
@@ -298,13 +312,6 @@ function renderGameOverScreen() {
   ctx.strokeText('Game Over', 240, 180);
   ctx.fillStyle = 'red';
   ctx.fillText('Game Over', 240, 180);
-  // draw line underneath game over
-  ctx.beginPath();
-  ctx.moveTo(300, 200);
-  ctx.lineTo(300, 200);
-  ctx.strokeStyle = 'red';
-  ctx.lineWidth = 5;
-  ctx.stroke();
 
   // draw reset instructions
   ctx.font = '24pt Arial';
