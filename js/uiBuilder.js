@@ -96,11 +96,14 @@ function renderStartScreen() {
   ctx.strokeStyle = 'black';
   ctx.lineWidth = 3;
   ctx.fillStyle = 'white';
-  ctx.strokeText('Use left or right keys to switch classes', 260, 650);
-  ctx.fillText('Use left or right keys to switch classes', 260, 650);
+  ctx.strokeText('Use \'left\' or \'right\' keys to switch classes', 260, 650);
+  ctx.fillText('Use \'left or \'right\' keys to switch classes', 260, 650);
   // press enter instructions
-  ctx.strokeText('Press enter to choose a class', 320, 720);
-  ctx.fillText('Press enter to choose a class', 320, 720);
+  ctx.strokeText('Press \'enter\' to choose a class', 320, 720);
+  ctx.fillText('Press \'enter\' to choose a class', 320, 720);
+  // music button instructions
+  ctx.strokeText('Press \'m\' to play/pause music', 316, 790);
+  ctx.fillText('Press \'m\' to play/pause music', 316, 790);
 
   // Draw class box
   ctx.beginPath();

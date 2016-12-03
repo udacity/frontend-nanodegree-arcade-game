@@ -11,7 +11,12 @@ var Player = function(x, y) {
   this.startSound = new Audio("sounds/spell.wav");
   this.itemSound = new Audio("sounds/item.wav");
   this.gameOverSound = new Audio("sounds/game_over.wav");
-  // source: http://soundbible.com/2052-Creepy-Laugh.html
+  // game over source: http://soundbible.com/2052-Creepy-Laugh.html
+  this.soundtrack = new Audio("sounds/Edward_Shallow_The_Infinite_Railroad.mp3");
+  // soundtrack source: Edward Shallow
+  // url= http://freemusicarchive.org/music/Edward_Shallow/
+  this.soundtrack.loop = true;
+  this.soundtrack.playing = false;
   this.lives = 3;
   this.level = 0;
   this.completedLevels = 0;
@@ -243,8 +248,28 @@ Player.prototype.resetGame = function() {
   this.completedLevels = 0;
   this.x = this.initialX;
   this.y = this.startY;
+  this.pauseMusic();
   this.startSound.play();
 };
+
+Player.prototype.toggleMusic = function() {
+  if (this.soundtrack.playing === false) {
+    this.playMusic();
+  } else {
+    this.pauseMusic();
+  }
+};
+
+Player.prototype.playMusic = function() {
+  this.soundtrack.play();
+  this.soundtrack.playing = true;
+};
+
+Player.prototype.pauseMusic = function() {
+  this.soundtrack.pause();
+  this.soundtrack.playing = false;
+};
+
 
 Player.prototype.render = function() {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
@@ -317,6 +342,9 @@ Player.prototype.update = function(dt) {
 // handleInput is passed 1 parameter: (key pressed)
 // from document.addEventListener('keyup', function....)
 Player.prototype.handleInput = function(key) {
+if (key === 'music') {
+  this.toggleMusic();
+}
 // start screen controls
 if (player.level === 0){
   // create sound for flipping between classes
@@ -432,7 +460,7 @@ else if (player.level > 0 && this.gamePaused === false
 } else if (this.gamePaused === true) {
   if (key === 'enter') {
     this.gamePaused = false;
-    this.reset();
+    this.resetGame();
   } else if (key === 'space') {
     this.gamePaused = false;
   }
@@ -459,7 +487,8 @@ document.addEventListener('keyup', function(e) {
         39: 'right',
         40: 'down',
         32: 'space',
-        13: 'enter'
+        13: 'enter',
+        77: 'music'
     };
 
   player.handleInput(allowedKeys[e.keyCode]);
