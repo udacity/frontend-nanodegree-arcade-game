@@ -34,7 +34,8 @@ var Engine = (function(global) {
 
     // add game display elements to html document
     doc.body.appendChild(gameArea);
-    $(gameArea).append(canvas);
+    gameArea.appendChild(canvas);
+//    $(gameArea).append(canvas);
 
     gameArea.setAttribute("id", "game-area");
     canvas.setAttribute("id", "game-canvas");
