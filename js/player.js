@@ -10,6 +10,8 @@ var Player = function(x, y) {
   this.y = y;
   this.startSound = new Audio("sounds/spell.wav");
   this.itemSound = new Audio("sounds/item.wav");
+  this.gameOverSound = new Audio("sounds/game_over.wav");
+  // source: http://soundbible.com/2052-Creepy-Laugh.html
   this.lives = 3;
   this.level = 0;
   this.completedLevels = 0;
@@ -157,12 +159,12 @@ Player.prototype.checkCollisions = function(enemiesList) {
 // Reduces life and sends player back to beginning of level
 // Resets game if player is out of lives
 Player.prototype.collide = function() {
-  this.collided = true;
   this.lives--;
   if (this.lives < 1) {
-    this.collided = false;
-    this.reset();
-    // TODO replace this.reset with this.gameOver function
+    this.gameOverSound.play();
+    this.gameOver = true;
+  } else {
+    this.collided = true;
   }
 }
 
@@ -233,7 +235,8 @@ Player.prototype.blockMove = function() {
 
 // Reset game to the beginning
 // Reset includes lives, score, level, original position
-Player.prototype.reset = function() {
+Player.prototype.resetGame = function() {
+  this.gameOver = false;
   this.lives = 3;
   this.score = 0;
   this.level = 0;
@@ -353,7 +356,8 @@ if (player.level === 0){
 
 // game controls
 else if (player.level > 0 && this.gamePaused === false
-  && this.collided === false) {
+  && this.collided === false
+  && this.gameOver === false) {
   if (this.level >= 11 && this.level <= 14) {
     var waterWalkSound = new Audio("sounds/bubbles.wav");
     this.moveSound = waterWalkSound;
@@ -435,6 +439,10 @@ else if (player.level > 0 && this.gamePaused === false
 } else if (this.collided === true) {
   if (key === 'space') {
     this.resetAfterCollision();
+  }
+} else if (this.gameOver === true) {
+  if (key === 'enter') {
+    this.resetGame();
   }
 }
 

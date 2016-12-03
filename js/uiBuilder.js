@@ -281,3 +281,33 @@ function renderCollideScreen() {
   ctx.strokeText('Lives Remaining: ' + player.lives, 550, 680);
   ctx.fillText('Lives Remaining: ' + player.lives, 550, 680);
 }
+
+function renderGameOverScreen() {
+  ctx.beginPath();
+  ctx.fillStyle = "black";
+  ctx.fillRect(32, 64, 896, 768);
+  ctx.drawImage(Resources.get("img/skull_large.png"), 230, 180);
+
+  // Draw game over words
+  ctx.font = '84pt Impact';
+  ctx.strokeStyle = 'black';
+  ctx.lineWidth = 3;
+  ctx.strokeText('Game Over', 240, 180);
+  ctx.fillStyle = 'red';
+  ctx.fillText('Game Over', 240, 180);
+  // draw line underneath game over
+  ctx.beginPath();
+  ctx.moveTo(300, 200);
+  ctx.lineTo(300, 200);
+  ctx.strokeStyle = 'red';
+  ctx.lineWidth = 5;
+  ctx.stroke();
+
+  // draw reset instructions
+  ctx.font = '24pt Arial';
+  ctx.strokeStyle = 'black';
+  ctx.lineWidth = 3;
+  ctx.fillStyle = 'yellow';
+  ctx.strokeText('Press \'enter\' to reset game', 290, 800);
+  ctx.fillText('Press \'enter\' to reset game', 290, 800);
+}

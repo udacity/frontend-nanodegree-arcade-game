@@ -62,14 +62,18 @@ var Engine = (function(global) {
         var now = Date.now(),
             dt = (now - lastTime) / 1000.0;
 
-        /* Call our update/render functions, pass along the time delta to
-         * our update function since it may be used for smooth animation.
-         */
+        // this conditional controls different game states
+        // e.g. pause, collision, and game over events
         if (player.gamePaused === true) {
           renderPauseScreen();
         } else if (player.collided === true) {
           renderCollideScreen();
+        } else if (player.gameOver === true) {
+          renderGameOverScreen();
         } else {
+          /* Call our update/render functions, pass along the time delta to
+           * our update function since it may be used for smooth animation.
+           */
           update(dt);
           render();
         }
@@ -89,7 +93,7 @@ var Engine = (function(global) {
      * game loop.
      */
     function init() {
-        reset();
+        //reset();
         player.startSound.play();
         lastTime = Date.now();
         main();
@@ -126,7 +130,7 @@ var Engine = (function(global) {
       if (player.level === 0) {
        renderStartScreen();
        renderBorder();
-      } else if (player.gamePaused === false) {
+      } else {
        // displays the game tiles, definition is in levelBuilder.js
        renderWorld();
        // invoke renderEntities before ui so monsters display on top layer
@@ -264,7 +268,9 @@ var Engine = (function(global) {
         'img/rock.png',
         'img/bell.png',
         'img/skull.png',
-        'img/game_over.png'
+        'img/skull_large.png',
+        'img/explosion.png'
+
 
     ]);
     Resources.onReady(init);
