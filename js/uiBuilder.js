@@ -99,9 +99,11 @@ function renderStartScreen() {
   ctx.strokeText('Use \'left\' or \'right\' keys to switch classes', 260, 650);
   ctx.fillText('Use \'left or \'right\' keys to switch classes', 260, 650);
   // press enter instructions
-  ctx.strokeText('Press \'enter\' to choose a class', 320, 720);
-  ctx.fillText('Press \'enter\' to choose a class', 320, 720);
+  ctx.fillStyle = 'yellow';
+  ctx.strokeText('Press \'enter\' to choose a class and start game', 220, 720);
+  ctx.fillText('Press \'enter\' to choose a class and start game', 220, 720);
   // music button instructions
+  ctx.fillStyle = 'red';
   ctx.strokeText('Press \'m\' to play/pause music', 316, 790);
   ctx.fillText('Press \'m\' to play/pause music', 316, 790);
 

@@ -484,3 +484,51 @@ obstaclesFifteen.push(fifteenTree4);
 
 /////////////////////////////////////////
 // obstacles level 16 (Land Beasts)
+
+// lower left trees
+var sixteenTree1 = new Obstacle(colOne, rowOne, goldTree);
+var sixteenTree2 = new Obstacle(colOne, rowTwo, goldTree);
+
+// lower right trees
+var sixteenTree3 = new Obstacle(colSeven, rowOne, goldTree);
+var sixteenTree4 = new Obstacle(colSeven, rowTwo, goldTree);
+
+// lower middle trees
+var sixteenTree5 = new Obstacle(colThree, rowTwo, redTree);
+var sixteenTree6 = new Obstacle(colFour, rowTwo, redTree);
+var sixteenTree7 = new Obstacle(colFive, rowTwo, redTree);
+
+// upper middle trees
+var sixteenRock1 = new Obstacle(colTwo, rowFour, rock);
+var sixteenRock2 = new Obstacle(colThree, rowFour, rock);
+var sixteenRock3 = new Obstacle(colFive, rowFour, rock);
+var sixteenRock4 = new Obstacle(colSix, rowFour, rock);
+
+// top left trees
+var sixteenRock5 = new Obstacle(colOne, rowSix, rock);
+var sixteenRock6 = new Obstacle(colTwo, rowSix, rock);
+// top right trees
+var sixteenRock7 = new Obstacle(colSix, rowSix, rock);
+var sixteenRock8 = new Obstacle(colSeven, rowSix, rock);
+
+obstaclesSixteen.push(sixteenTree1);
+obstaclesSixteen.push(sixteenTree2);
+obstaclesSixteen.push(sixteenTree3);
+obstaclesSixteen.push(sixteenTree4);
+
+obstaclesSixteen.push(sixteenTree5);
+obstaclesSixteen.push(sixteenTree6);
+obstaclesSixteen.push(sixteenTree7);
+
+obstaclesSixteen.push(sixteenRock1);
+obstaclesSixteen.push(sixteenRock2);
+obstaclesSixteen.push(sixteenRock3);
+obstaclesSixteen.push(sixteenRock4);
+
+obstaclesSixteen.push(sixteenRock5);
+obstaclesSixteen.push(sixteenRock6);
+obstaclesSixteen.push(sixteenRock7);
+obstaclesSixteen.push(sixteenRock8);
+
+/////////////////////////////////////////
+// obstacles level 17 (Land Beasts)

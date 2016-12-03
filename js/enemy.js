@@ -535,7 +535,7 @@ NagaFighter.prototype.constructor = Humanoid;
 function NagaSiren(y, speed, direction, image) {
   var obj = new Humanoid(y);
   obj.sprite = image;
-  obj.speed = speedTwelve + speed;
+  obj.speed = speedThirteen + speed;
   obj.direction = direction;
   return obj;
 }
@@ -545,13 +545,22 @@ NagaSiren.prototype.constructor = Humanoid;
 function NagaSoothsayer(y, speed, direction, image) {
   var obj = new Humanoid(y);
   obj.sprite = image;
-  obj.speed = speedTwelve + speed;
+  obj.speed = speedThirteen + speed;
   obj.direction = direction;
   return obj;
 }
 NagaSoothsayer.prototype = Object.create(Humanoid.prototype);
 NagaSoothsayer.prototype.constructor = Humanoid;
 
+function Squidman(y, speed, direction, image) {
+var obj = new Humanoid(y);
+obj.sprite = image;
+obj.speed = speedThirteen + speed;
+obj.direction = direction;
+return obj;
+}
+Squidman.prototype = Object.create(Humanoid.prototype);
+Squidman.prototype.constructor = Humanoid;
 ///////////////////////////////////////////////////
 // Define Deep Sea Creatures level 14 mobs
 //////////////////////////////////
@@ -596,7 +605,7 @@ SpikedTurtle.prototype = Object.create(Beast.prototype);
 SpikedTurtle.prototype.constructor = Beast;
 
 ///////////////////////////////////////////////////
-// Define Beach Beastss level 15 mobs
+// Define Beach Beasts level 15 mobs
 //////////////////////////////////
 
 function Crocodile(y) {
@@ -646,6 +655,67 @@ function GiantSerpent(y) {
 }
 GiantSerpent.prototype = Object.create(Beast.prototype);
 GiantSerpent.prototype.constructor = Beast;
+
+///////////////////////////////////////////////////
+// Define Trolls level 16 mobs
+//////////////////////////////////
+
+function TrollFat(y) {
+  var obj = new Beast(y);
+  obj.sprite = 'img/troll_fat.png';
+  obj.speed = speedSixteen - 150;
+  obj.direction = "left";
+  return obj;
+}
+TrollFat.prototype = Object.create(Beast.prototype);
+TrollFat.prototype.constructor = Beast;
+
+function TrollGrey(y) {
+  var obj = new Beast(y);
+  obj.sprite = 'img/troll_grey.png';
+  obj.speed = speedSixteen + 30;
+  obj.direction = "left";
+  return obj;
+}
+TrollGrey.prototype = Object.create(Beast.prototype);
+TrollGrey.prototype.constructor = Beast;
+
+function TrollGreen(y) {
+  var obj = new Beast(y);
+  obj.sprite = 'img/troll_green.png';
+  obj.speed = speedSixteen - 40;
+  obj.direction = "left";
+  return obj;
+}
+TrollGreen.prototype = Object.create(Beast.prototype);
+TrollGreen.prototype.constructor = Beast;
+
+function TrollRed(y) {
+  var obj = new Beast(y);
+  obj.sprite = 'img/troll_red.png';
+  obj.speed = speedSixteen - 30;
+  return obj;
+}
+TrollRed.prototype = Object.create(Beast.prototype);
+TrollRed.prototype.constructor = Beast;
+
+function TrollBlack(y) {
+  var obj = new Beast(y);
+  obj.sprite = 'img/troll_black.png';
+  obj.speed = speedSixteen + 40;
+  return obj;
+}
+TrollBlack.prototype = Object.create(Beast.prototype);
+TrollBlack.prototype.constructor = Beast;
+
+function TrollWhite(y) {
+  var obj = new Beast(y);
+  obj.sprite = 'img/troll_white.png';
+  obj.speed = speedSixteen - 80;
+  return obj;
+}
+TrollWhite.prototype = Object.create(Beast.prototype);
+TrollWhite.prototype.constructor = Beast;
 
 
 ///////////////////////////////////////////////////////
@@ -829,19 +899,20 @@ levelTwelve.push(nagaFighterRight);
 /////////////////////////////////////////
 // Instantiate Naga lvl 13 enemies
 
-var nagaSoothsayerRight1 = new NagaSoothsayer(row2, 10, "right", "img/naga_soothsayer_right.png");
+var squidmanLeft = new Squidman(row2, 10, "left", "img/squidman_left.png");
 var nagaSoothsayerLeft1 = new NagaSoothsayer(row3, -20, "left", "img/naga_soothsayer_left.png");
 var nagaSirenRight1 = new NagaSiren(row3, -5, "right", "img/naga_siren_right.png");
 var nagaSirenLeft1 = new NagaSiren(row4, 0, "left", "img/naga_siren_left.png");
-var nagaSoothsayerRight3 = new NagaSoothsayer(row4, 30, "right", "img/naga_soothsayer_right.png");
-var nagaSirenLeft2 = new NagaSiren(row5, 8, "left", "img/naga_siren_left.png");
+var nagaSoothsayerRight1 = new NagaSoothsayer(row4, -20, "right", "img/naga_soothsayer_right.png");
+var squidmanRight = new Squidman(row5, 30, "right", "img/squidman_right.png");
 
 levelThirteen.push(nagaSoothsayerRight1);
 levelThirteen.push(nagaSoothsayerLeft1);
 levelThirteen.push(nagaSirenRight1);
 levelThirteen.push(nagaSirenLeft1);
-levelThirteen.push(nagaSoothsayerRight3);
-levelThirteen.push(nagaSirenLeft2);
+levelThirteen.push(nagaSoothsayerRight1);
+levelThirteen.push(squidmanLeft);
+levelThirteen.push(squidmanRight);
 
 /////////////////////////////////////////
 // Instantiate Water Beasts lvl 14 enemies
@@ -881,3 +952,20 @@ levelFifteen.push(stripedSnake);
 levelFifteen.push(lizard);
 levelFifteen.push(gecko);
 levelFifteen.push(giantSerpent);
+
+/////////////////////////////////////////
+// Instantiate Land Beasts lvl 16 enemies
+
+var trollFat = new TrollFat(row2);
+var trollGrey = new TrollGrey(row3);
+var trollGreen = new TrollGreen(row4);
+var trollRed = new TrollRed(row3);
+var trollBlack = new TrollBlack(row4);
+var trollWhite = new TrollWhite(row5);
+
+levelSixteen.push(trollFat);
+levelSixteen.push(trollGrey);
+levelSixteen.push(trollGreen);
+levelSixteen.push(trollRed);
+levelSixteen.push(trollBlack);
+levelSixteen.push(trollWhite);

@@ -171,7 +171,7 @@ Player.prototype.collide = function() {
   } else {
     this.collided = true;
   }
-}
+};
 
 Player.prototype.resetAfterCollision = function() {
   this.collided = false;
@@ -307,6 +307,8 @@ Player.prototype.update = function(dt) {
     this.checkCollisions(levelFourteen);
   } else if (player.level === 15) {
     this.checkCollisions(levelFifteen);
+  } else if (player.level === 16) {
+    this.checkCollisions(levelSixteen);
   }
 
   // Level up conditional
