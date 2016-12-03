@@ -387,7 +387,7 @@ else if (this.gamePaused === false && player.level > 0) {
   } else if (this.level === 15) {
     currentObstacles = this.checkObstacles(obstaclesFifteen);
   } else if (this.level === 16) {
-    currentObstacles = this.checkObstacles(obstaclesFifteen);
+    currentObstacles = this.checkObstacles(obstaclesSixteen);
   }
 
   if (key === 'up' && (currentObstacles.indexOf("Up is Blocked") == -1)
@@ -422,6 +422,7 @@ else if (this.gamePaused === false && player.level > 0) {
   }
 } else if (this.gamePaused === true) {
   if (key === 'enter') {
+    this.gamePaused = false;
     this.reset();
   } else if (key === 'space') {
     this.gamePaused = false;

@@ -107,7 +107,7 @@ function renderStartScreen() {
   ctx.fillStyle = "grey";
   ctx.fillRect(380, 290, 180, 200);
   // draw class sprite
-  ctx.drawImage(Resources.get(player.sprite), 402, 320)
+  ctx.drawImage(Resources.get(player.sprite), 402, 320);
 
   // draw class name section
   // set class name font style
@@ -209,4 +209,38 @@ function renderStatistics() {
    ctx.drawImage(Resources.get('img/heart.png'), 185, 832);
    ctx.drawImage(Resources.get('img/heart.png'), 210, 832);
   }
+}
+
+function renderPauseScreen() {
+
+  // Draw Pause box
+  ctx.beginPath();
+  ctx.fillStyle = "grey";
+  ctx.globalAlpha = 0.08;
+  ctx.fillRect(192, 256, 576, 384);
+  ctx.globalAlpha = 1;
+
+  // Draw game name
+  ctx.font = '56pt Impact';
+  ctx.strokeStyle = 'black';
+  ctx.lineWidth = 3;
+  ctx.strokeText('Game Paused', 280, 360);
+  ctx.fillStyle = 'yellow';
+  ctx.fillText('Game Paused', 280, 360);
+
+  // draw unpause instructions
+  ctx.font = '24pt Arial';
+  ctx.strokeStyle = 'black';
+  ctx.lineWidth = 3;
+  ctx.fillStyle = 'yellow';
+  ctx.strokeText('Press \'space\' to unpause game', 260, 500);
+  ctx.fillText('Press \'space\' to unpause game', 260, 500);
+
+  // draw reset instructions
+  ctx.font = '24pt Arial';
+  ctx.strokeStyle = 'black';
+  ctx.lineWidth = 3;
+  ctx.fillStyle = 'yellow';
+  ctx.strokeText('Press \'enter\' to reset game', 290, 570);
+  ctx.fillText('Press \'enter\' to reset game', 290, 570);
 }

@@ -66,7 +66,7 @@ var Engine = (function(global) {
          * our update function since it may be used for smooth animation.
          */
         if (player.gamePaused === true) {
-
+          renderPauseScreen();
         } else {
           update(dt);
           render();
