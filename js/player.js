@@ -309,6 +309,10 @@ Player.prototype.update = function(dt) {
     this.checkCollisions(levelFifteen);
   } else if (player.level === 16) {
     this.checkCollisions(levelSixteen);
+  } else if (player.level === 17) {
+    this.checkCollisions(levelSeventeen);
+  } else if (player.level === 18) {
+    this.checkCollisions(levelEighteen);
   }
 
   // Level up conditional
@@ -427,6 +431,8 @@ else if (player.level > 0 && this.gamePaused === false
     currentObstacles = this.checkObstacles(obstaclesFifteen);
   } else if (this.level === 16) {
     currentObstacles = this.checkObstacles(obstaclesSixteen);
+  } else if (this.level === 17) {
+    currentObstacles = this.checkObstacles(obstaclesSeventeen);
   }
 
   if (key === 'up' && (currentObstacles.indexOf("Up is Blocked") == -1)

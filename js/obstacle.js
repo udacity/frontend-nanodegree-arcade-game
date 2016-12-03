@@ -531,4 +531,34 @@ obstaclesSixteen.push(sixteenRock7);
 obstaclesSixteen.push(sixteenRock8);
 
 /////////////////////////////////////////
-// obstacles level 17 (Land Beasts)
+// obstacles level 17 (Imps)
+
+// lower row of rocks
+var seventeenRock1 = new Obstacle(colOne, rowTwo, rock);
+var seventeenRock2 = new Obstacle(colThree, rowTwo, rock);
+var seventeenRock3 = new Obstacle(colFour, rowTwo, rock);
+var seventeenRock4 = new Obstacle(colFive, rowTwo, rock);
+var seventeenRock5 = new Obstacle(colSix, rowTwo, rock);
+var seventeenRock6 = new Obstacle(colSeven, rowTwo, rock);
+
+// top row of rocks
+var seventeenRock7 = new Obstacle(colOne, rowFive, rock);
+var seventeenRock8 = new Obstacle(colTwo, rowFive, rock);
+var seventeenRock9 = new Obstacle(colThree, rowFive, rock);
+var seventeenRock10 = new Obstacle(colFour, rowFive, rock);
+var seventeenRock11 = new Obstacle(colFive, rowFive, rock);
+var seventeenRock12 = new Obstacle(colSeven, rowFive, rock);
+
+obstaclesSeventeen.push(seventeenRock1);
+obstaclesSeventeen.push(seventeenRock2);
+obstaclesSeventeen.push(seventeenRock3);
+obstaclesSeventeen.push(seventeenRock4);
+obstaclesSeventeen.push(seventeenRock5);
+obstaclesSeventeen.push(seventeenRock6);
+
+obstaclesSeventeen.push(seventeenRock7);
+obstaclesSeventeen.push(seventeenRock8);
+obstaclesSeventeen.push(seventeenRock9);
+obstaclesSeventeen.push(seventeenRock10);
+obstaclesSeventeen.push(seventeenRock11);
+obstaclesSeventeen.push(seventeenRock12);

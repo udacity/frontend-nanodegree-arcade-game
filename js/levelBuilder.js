@@ -114,6 +114,20 @@ function renderEntities() {
       levelSixteen.forEach(function(enemy) {
         enemy.render();
       });
+    } else if (player.level === 17) {
+      obstaclesSeventeen.forEach(function(obstacle) {
+        obstacle.render();
+      });
+      levelSeventeen.forEach(function(enemy) {
+        enemy.render();
+      });
+    } else if (player.level === 18) {
+      obstaclesEighteen.forEach(function(obstacle) {
+        obstacle.render();
+      });
+      levelEighteen.forEach(function(enemy) {
+        enemy.render();
+      });
     }
 
     player.render();
@@ -184,6 +198,10 @@ function updateEntities(dt) {
       });
     } else if (player.level === 16) {
       levelSixteen.forEach(function(enemy) {
+        enemy.update(dt);
+      });
+    } else if (player.level === 17) {
+      levelSeventeen.forEach(function(enemy) {
         enemy.update(dt);
       });
     }
@@ -339,6 +357,24 @@ function renderWorld() {
             'img/badlands_green.png',    // Row 3
             'img/badlands_green.png',    // Row 2
             'img/grass_jungle.png'    // Row 1 - Bottom Row
+        ];
+      } else if (player.level === 17) {
+        rowImages = [
+            'img/badlands_jungle.png',     // Row 6 - Top row
+            'img/badlands_orange.png',  // Row 5
+            'img/badlands_orange.png',     // Row 4
+            'img/badlands_orange.png',    // Row 3
+            'img/badlands_orange.png',    // Row 2
+            'img/badlands_gold.png'    // Row 1 - Bottom Row
+        ];
+      } else if (player.level === 18) {
+        rowImages = [
+            'img/rock_path.png',     // Row 6 - Top row
+            'img/badlands_jungle.png',  // Row 5
+            'img/badlands_jungle.png',     // Row 4
+            'img/badlands_jungle.png',    // Row 3
+            'img/badlands_jungle.png',    // Row 2
+            'img/badlands_green.png'    // Row 1 - Bottom Row
         ];
       }
 

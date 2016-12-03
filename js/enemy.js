@@ -62,7 +62,7 @@ var speedThirteen = 220;
 var speedFourteen = 230;
 var speedFifteen= 240;
 var speedSixteen = 250;
-var speedSeventeen = 260;
+var speedSeventeen = 100;
 var speedEighteen = 270;
 var speedNineteen = 290;
 var speedTwenty = 300;
@@ -660,15 +660,15 @@ GiantSerpent.prototype.constructor = Beast;
 // Define Trolls level 16 mobs
 //////////////////////////////////
 
-function TrollFat(y) {
+function TrollBlue(y) {
   var obj = new Beast(y);
-  obj.sprite = 'img/troll_fat.png';
+  obj.sprite = 'img/troll_blue.png';
   obj.speed = speedSixteen - 150;
   obj.direction = "left";
   return obj;
 }
-TrollFat.prototype = Object.create(Beast.prototype);
-TrollFat.prototype.constructor = Beast;
+TrollBlue.prototype = Object.create(Beast.prototype);
+TrollBlue.prototype.constructor = Beast;
 
 function TrollGrey(y) {
   var obj = new Beast(y);
@@ -717,6 +717,60 @@ function TrollWhite(y) {
 TrollWhite.prototype = Object.create(Beast.prototype);
 TrollWhite.prototype.constructor = Beast;
 
+///////////////////////////////////////////////////
+// Define Imps level 17 mobs
+//////////////////////////////////
+
+function ImpPurple(y) {
+  var obj = new Beast(y);
+  obj.sprite = 'img/imp_purple.png';
+  obj.speed = speedSeventeen;
+  return obj;
+}
+ImpPurple.prototype = Object.create(Beast.prototype);
+ImpPurple.prototype.constructor = Beast;
+
+function ImpRed(y) {
+  var obj = new Beast(y);
+  obj.sprite = 'img/imp_red.png';
+  obj.speed = speedSeventeen + 8;
+  obj.direction = "left";
+  return obj;
+}
+ImpRed.prototype = Object.create(Beast.prototype);
+ImpRed.prototype.constructor = Beast;
+
+function ImpEnchanted(y) {
+  var obj = new Beast(y);
+  obj.sprite = 'img/imp_enchanted.png';
+  obj.speed = speedSeventeen + 80;
+  obj.direction = "left";
+  return obj;
+}
+ImpEnchanted.prototype = Object.create(Beast.prototype);
+ImpEnchanted.prototype.constructor = Beast;
+
+function ImpBlack(y) {
+  var obj = new Beast(y);
+  obj.sprite = 'img/imp_black.png';
+  obj.speed = speedSeventeen + 20;
+  return obj;
+}
+ImpBlack.prototype = Object.create(Beast.prototype);
+ImpBlack.prototype.constructor = Beast;
+
+function ImpMaster(y) {
+  var obj = new Beast(y);
+  obj.sprite = 'img/imp_master.png';
+  obj.speed = speedSeventeen + 140;
+  return obj;
+}
+ImpMaster.prototype = Object.create(Beast.prototype);
+ImpMaster.prototype.constructor = Beast;
+
+///////////////////////////////////////////////////
+// Define Elementals level 18 mobs
+//////////////////////////////////
 
 ///////////////////////////////////////////////////////
 // Instantiate all objects
@@ -956,16 +1010,31 @@ levelFifteen.push(giantSerpent);
 /////////////////////////////////////////
 // Instantiate Land Beasts lvl 16 enemies
 
-var trollFat = new TrollFat(row2);
+var trollBlue = new TrollBlue(row2);
 var trollGrey = new TrollGrey(row3);
 var trollGreen = new TrollGreen(row4);
 var trollRed = new TrollRed(row3);
 var trollBlack = new TrollBlack(row4);
 var trollWhite = new TrollWhite(row5);
 
-levelSixteen.push(trollFat);
+levelSixteen.push(trollBlue);
 levelSixteen.push(trollGrey);
 levelSixteen.push(trollGreen);
 levelSixteen.push(trollRed);
 levelSixteen.push(trollBlack);
 levelSixteen.push(trollWhite);
+
+/////////////////////////////////////////
+// Instantiate Imps lvl 17 enemies
+
+var impPurple = new ImpPurple(row3);
+var impRed = new ImpRed(row3);
+var impEnchanted = new ImpEnchanted(row4);
+var impBlack = new ImpBlack(row4);
+var impMaster = new ImpMaster(row6);
+
+levelSeventeen.push(impPurple);
+levelSeventeen.push(impRed);
+levelSeventeen.push(impEnchanted);
+levelSeventeen.push(impBlack);
+levelSeventeen.push(impMaster);
