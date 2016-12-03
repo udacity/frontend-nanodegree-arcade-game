@@ -772,6 +772,65 @@ ImpMaster.prototype.constructor = Beast;
 // Define Elementals level 18 mobs
 //////////////////////////////////
 
+function ElementalFire(y) {
+  var obj = new Beast(y);
+  obj.sprite = 'img/elemental_fire.png';
+  obj.speed = speedEighteen + 20;
+  return obj;
+}
+ElementalFire.prototype = Object.create(Beast.prototype);
+ElementalFire.prototype.constructor = Beast;
+
+function ElementalSteel(y) {
+  var obj = new Beast(y);
+  obj.sprite = 'img/elemental_steel.png';
+  obj.speed = speedEighteen + 40;
+  obj.direction = "left";
+  return obj;
+}
+ElementalSteel.prototype = Object.create(Beast.prototype);
+ElementalSteel.prototype.constructor = Beast;
+
+function ElementalFlesh(y) {
+  var obj = new Beast(y);
+  obj.sprite = 'img/elemental_flesh.png';
+  obj.speed = speedEighteen - 60;
+  return obj;
+}
+ElementalFlesh.prototype = Object.create(Beast.prototype);
+ElementalFlesh.prototype.constructor = Beast;
+
+function ElementalIce(y) {
+  var obj = new Beast(y);
+  obj.sprite = 'img/elemental_ice.png';
+  obj.speed = speedEighteen;
+  obj.direction = "left";
+  return obj;
+}
+ElementalIce.prototype = Object.create(Beast.prototype);
+ElementalIce.prototype.constructor = Beast;
+
+function ElementalRock(y) {
+  var obj = new Beast(y);
+  obj.sprite = 'img/elemental_rock.png';
+  obj.speed = speedEighteen - 10;
+  return obj;
+}
+ElementalRock.prototype = Object.create(Beast.prototype);
+ElementalRock.prototype.constructor = Beast;
+
+function ElementalLightning(y) {
+  var obj = new Beast(y);
+  obj.sprite = 'img/elemental_lightning.png';
+  obj.speed = speedEighteen + 70;
+  obj.direction = "left";
+  return obj;
+}
+ElementalLightning.prototype = Object.create(Beast.prototype);
+ElementalLightning.prototype.constructor = Beast;
+
+
+
 ///////////////////////////////////////////////////////
 // Instantiate all objects
 //////////////////////////
@@ -1038,3 +1097,21 @@ levelSeventeen.push(impRed);
 levelSeventeen.push(impEnchanted);
 levelSeventeen.push(impBlack);
 levelSeventeen.push(impMaster);
+
+/////////////////////////////////////////
+// Instantiate Elementals lvl 18 enemies
+
+var elementalSteel = new ElementalSteel(row2);
+var elementalFlesh = new ElementalFlesh(row3);
+var elementalLightning = new ElementalLightning(row3);
+var elementalIce = new ElementalIce(row4);
+var elementalRock = new ElementalRock(row4);
+var elementalFire = new ElementalFire(row5);
+
+
+levelEighteen.push(elementalSteel);
+levelEighteen.push(elementalFlesh);
+levelEighteen.push(elementalLightning);
+levelEighteen.push(elementalIce);
+levelEighteen.push(elementalRock);
+levelEighteen.push(elementalFire);

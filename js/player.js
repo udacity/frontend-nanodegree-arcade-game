@@ -433,6 +433,8 @@ else if (player.level > 0 && this.gamePaused === false
     currentObstacles = this.checkObstacles(obstaclesSixteen);
   } else if (this.level === 17) {
     currentObstacles = this.checkObstacles(obstaclesSeventeen);
+  } else if (this.level === 18) {
+    currentObstacles = this.checkObstacles(obstaclesEighteen);
   }
 
   if (key === 'up' && (currentObstacles.indexOf("Up is Blocked") == -1)

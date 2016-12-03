@@ -562,3 +562,34 @@ obstaclesSeventeen.push(seventeenRock9);
 obstaclesSeventeen.push(seventeenRock10);
 obstaclesSeventeen.push(seventeenRock11);
 obstaclesSeventeen.push(seventeenRock12);
+
+/////////////////////////////////////////
+// obstacles level 18 (Elementals)
+
+// row two
+var eighteenBell1 = new Obstacle(colTwo, rowTwo, bell);
+var eighteenBell2 = new Obstacle(colFour, rowTwo, bell);
+var eighteenBell3 = new Obstacle(colSix, rowTwo, bell);
+// row three
+var eighteenBell4 = new Obstacle(colTwo, rowThree, bell);
+var eighteenBell5 = new Obstacle(colSix, rowThree, bell);
+// row four
+var eighteenBell6 = new Obstacle(colTwo, rowFour, bell);
+var eighteenBell7 = new Obstacle(colThree, rowFour, bell);
+var eighteenBell8 = new Obstacle(colFive, rowFour, bell);
+var eighteenBell9 = new Obstacle(colSix, rowFour, bell);
+// row six
+var eighteenBell10 = new Obstacle(colOne, rowSix, bell);
+var eighteenBell11 = new Obstacle(colSeven, rowSix, bell);
+
+obstaclesEighteen.push(eighteenBell1);
+obstaclesEighteen.push(eighteenBell2);
+obstaclesEighteen.push(eighteenBell3);
+obstaclesEighteen.push(eighteenBell4);
+obstaclesEighteen.push(eighteenBell5);
+obstaclesEighteen.push(eighteenBell6);
+obstaclesEighteen.push(eighteenBell7);
+obstaclesEighteen.push(eighteenBell8);
+obstaclesEighteen.push(eighteenBell9);
+obstaclesEighteen.push(eighteenBell10);
+obstaclesEighteen.push(eighteenBell11);

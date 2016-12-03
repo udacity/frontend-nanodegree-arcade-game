@@ -204,6 +204,10 @@ function updateEntities(dt) {
       levelSeventeen.forEach(function(enemy) {
         enemy.update(dt);
       });
+    } else if (player.level === 18) {
+      levelEighteen.forEach(function(enemy) {
+        enemy.update(dt);
+      });
     }
 
 
@@ -369,7 +373,7 @@ function renderWorld() {
         ];
       } else if (player.level === 18) {
         rowImages = [
-            'img/rock_path.png',     // Row 6 - Top row
+            'img/grey_brick_cracked.png',     // Row 6 - Top row
             'img/badlands_jungle.png',  // Row 5
             'img/badlands_jungle.png',     // Row 4
             'img/badlands_jungle.png',    // Row 3
