@@ -67,6 +67,8 @@ var Engine = (function(global) {
          */
         if (player.gamePaused === true) {
           renderPauseScreen();
+        } else if (player.collided === true) {
+          renderCollideScreen();
         } else {
           update(dt);
           render();
@@ -260,7 +262,9 @@ var Engine = (function(global) {
         'img/tree_gold.png',
         'img/tree_red.png',
         'img/rock.png',
-        'img/bell.png'
+        'img/bell.png',
+        'img/skull.png',
+        'img/game_over.png'
 
     ]);
     Resources.onReady(init);

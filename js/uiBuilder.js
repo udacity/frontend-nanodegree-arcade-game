@@ -244,3 +244,40 @@ function renderPauseScreen() {
   ctx.strokeText('Press \'enter\' to reset game', 290, 570);
   ctx.fillText('Press \'enter\' to reset game', 290, 570);
 }
+
+function renderCollideScreen() {
+  // Draw Pause box
+  ctx.beginPath();
+  ctx.fillStyle = "grey";
+  ctx.globalAlpha = 0.08;
+  ctx.fillRect(192, 256, 576, 448);
+  ctx.globalAlpha = 1;
+
+  // Draw game name
+  ctx.font = '36pt Impact';
+  ctx.strokeStyle = 'black';
+  ctx.lineWidth = 3;
+  ctx.strokeText('You have been killed!', 260, 360);
+  ctx.fillStyle = 'yellow';
+  ctx.fillText('You have been killed!', 260, 360);
+
+  ctx.drawImage(Resources.get("img/skull.png"), 400, 404);
+
+
+  // draw restart level instructions
+  ctx.font = '24pt Arial';
+  ctx.strokeStyle = 'black';
+  ctx.lineWidth = 3;
+  ctx.fillStyle = 'yellow';
+  ctx.strokeText('Press \'space\' to restart level', 270, 590);
+  ctx.fillText('Press \'space\' to restart level', 270, 590);
+
+
+  // draw lives remaining
+  ctx.font = '18pt Arial';
+  ctx.strokeStyle = 'black';
+  ctx.lineWidth = 3;
+  ctx.fillStyle = 'red';
+  ctx.strokeText('Lives Remaining: ' + player.lives, 550, 680);
+  ctx.fillText('Lives Remaining: ' + player.lives, 550, 680);
+}

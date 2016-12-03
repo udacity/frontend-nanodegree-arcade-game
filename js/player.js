@@ -14,17 +14,12 @@ var Player = function(x, y) {
   this.level = 0;
   this.completedLevels = 0;
   this.score = 0;
-  this.collided = false;
   this.initialX = 416;
   this.initialY = 704;
   this.startY = 576;
   this.x = this.initialX;
   this.y = this.initialY;
   this.classes = [];
-  this.topBlocked = false;
-  this.bottomBlocked = false;
-  this.rightBlocked = false;
-  this.leftBlocked = false;
   this.collided = false;
   this.gamePaused = false;
   this.gameOver = false;
@@ -162,20 +157,29 @@ Player.prototype.checkCollisions = function(enemiesList) {
 // Reduces life and sends player back to beginning of level
 // Resets game if player is out of lives
 Player.prototype.collide = function() {
+  this.collided = true;
   this.lives--;
   if (this.lives < 1) {
-    player.reset();
-  } else if (this.level === 1) {
+    this.collided = false;
+    this.reset();
+    // TODO replace this.reset with this.gameOver function
+  }
+}
+
+Player.prototype.resetAfterCollision = function() {
+  this.collided = false;
+  if (this.level === 1) {
     this.x = this.initialX;
     this.y = this.startY;
   } else {
     this.x = this.initialX;
     this.y = this.initialY;
   }
-}
+};
+
+
 
 Player.prototype.checkObstacles = function(obstaclesList) {
-
   // setup player hitbox
   var playerY = this.y;
   var playerX = this.x;
@@ -348,7 +352,8 @@ if (player.level === 0){
 }
 
 // game controls
-else if (this.gamePaused === false && player.level > 0) {
+else if (player.level > 0 && this.gamePaused === false
+  && this.collided === false) {
   if (this.level >= 11 && this.level <= 14) {
     var waterWalkSound = new Audio("sounds/bubbles.wav");
     this.moveSound = waterWalkSound;
@@ -426,6 +431,10 @@ else if (this.gamePaused === false && player.level > 0) {
     this.reset();
   } else if (key === 'space') {
     this.gamePaused = false;
+  }
+} else if (this.collided === true) {
+  if (key === 'space') {
+    this.resetAfterCollision();
   }
 }
 
