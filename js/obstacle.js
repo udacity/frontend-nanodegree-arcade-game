@@ -645,16 +645,16 @@ obstaclesNineteen.push(nineteenHead8);
 // Obstacles Level 20 (Skeletons)
 
 // left side skull piles
-var twentySkullPile1 = new Obstacle(colOne, rowOne, skullPile);
-var twentySkullPile2 = new Obstacle(colOne, rowTwo, skullPile);
-var twentySkullPile3 = new Obstacle(colOne, rowThree, skullPile);
-var twentySkullPile4 = new Obstacle(colOne, rowFour, skullPile);
-var twentySkullPile5 = new Obstacle(colOne, rowFive, skullPile);
-var twentySkullPile6 = new Obstacle(colOne, rowSix, skullPile);
+var twentyPile1 = new Obstacle(colOne, rowOne, skullPile);
+var twentyPile2 = new Obstacle(colOne, rowTwo, skullPile);
+var twentyPile3 = new Obstacle(colOne, rowThree, skullPile);
+var twentyPile4 = new Obstacle(colOne, rowFour, skullPile);
+var twentyPile5 = new Obstacle(colOne, rowFive, skullPile);
+var twentyPile6 = new Obstacle(colOne, rowSix, skullPile);
 
 // right side skull piles
-var twentySkullPile7 = new Obstacle(colSeven, rowOne, skullPile);
-var twentySkullPile8 = new Obstacle(colSeven, rowTwo, skullPile);
+var twentyPile7 = new Obstacle(colSeven, rowOne, skullPile);
+var twentyPile8 = new Obstacle(colSeven, rowTwo, skullPile);
 
 // lower left skeleton chains
 var twentyChain1 = new Obstacle(colTwo, rowTwo, skeletonChain);
@@ -669,15 +669,15 @@ var twentyChain7 = new Obstacle(colFour, rowFive, skeletonChain);
 var twentyChain8 = new Obstacle(colFive, rowFive, skeletonChain);
 var twentyChain9 = new Obstacle(colSix, rowFive, skeletonChain);
 
-obstaclesTwenty.push(twentySkullPile1);
-obstaclesTwenty.push(twentySkullPile2);
-obstaclesTwenty.push(twentySkullPile3);
-obstaclesTwenty.push(twentySkullPile4);
-obstaclesTwenty.push(twentySkullPile5);
-obstaclesTwenty.push(twentySkullPile6);
+obstaclesTwenty.push(twentyPile1);
+obstaclesTwenty.push(twentyPile2);
+obstaclesTwenty.push(twentyPile3);
+obstaclesTwenty.push(twentyPile4);
+obstaclesTwenty.push(twentyPile5);
+obstaclesTwenty.push(twentyPile6);
 
-obstaclesTwenty.push(twentySkullPile7);
-obstaclesTwenty.push(twentySkullPile8);
+obstaclesTwenty.push(twentyPile7);
+obstaclesTwenty.push(twentyPile8);
 
 obstaclesTwenty.push(twentyChain1);
 obstaclesTwenty.push(twentyChain2);
@@ -689,3 +689,41 @@ obstaclesTwenty.push(twentyChain6);
 obstaclesTwenty.push(twentyChain7);
 obstaclesTwenty.push(twentyChain8);
 obstaclesTwenty.push(twentyChain9);
+
+///////////////////////////////////
+// Obstacles Level 21 (Ghosts)
+
+// lower skulls
+var twentyOnePile1 = new Obstacle(colOne, rowTwo, skullPile);
+var twentyOnePile2 = new Obstacle(colSeven, rowTwo, skullPile);
+// lower severed heads
+var twentyOneHead1 = new Obstacle(colTwo, rowTwo, severedHead);
+var twentyOneHead2 = new Obstacle(colSix, rowTwo, severedHead);
+
+// middle skeleton chains
+var twentyOneChain1 = new Obstacle(colThree, rowFour, skeletonChain);
+var twentyOneChain2 = new Obstacle(colFive, rowFour, skeletonChain);
+
+// top skull piles
+var twentyOnePile3 = new Obstacle(colTwo, rowFive, skullPile);
+var twentyOnePile4 = new Obstacle(colThree, rowFive, skullPile);
+var twentyOnePile5 = new Obstacle(colFour, rowFive, skullPile);
+var twentyOnePile6 = new Obstacle(colFive, rowFive, skullPile);
+var twentyOnePile7 = new Obstacle(colSix, rowFive, skullPile);
+
+obstaclesTwentyOne.push(twentyOnePile1);
+obstaclesTwentyOne.push(twentyOnePile2);
+obstaclesTwentyOne.push(twentyOneHead1);
+obstaclesTwentyOne.push(twentyOneHead2);
+
+obstaclesTwentyOne.push(twentyOneChain1);
+obstaclesTwentyOne.push(twentyOneChain2);
+
+obstaclesTwentyOne.push(twentyOnePile3);
+obstaclesTwentyOne.push(twentyOnePile4);
+obstaclesTwentyOne.push(twentyOnePile5);
+obstaclesTwentyOne.push(twentyOnePile6);
+obstaclesTwentyOne.push(twentyOnePile7);
+
+///////////////////////////////////
+// Obstacles Level 22 (Gargoyles)

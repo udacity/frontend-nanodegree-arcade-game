@@ -477,12 +477,21 @@ function renderWorld() {
         ];
       } else if (player.level === 21) {
         rowImages = [
-            'img/brick_black.png',     // Row 6 - Top row
+            'img/grey_brick_cracked.png',     // Row 6 - Top row
             'img/brick_fine_black.png',  // Row 5
-            'img/brick_fine_black.png',     // Row 4
-            'img/brick_fine_black.png',    // Row 3
+            'img/brick_fine_black_mossy.png',     // Row 4
+            'img/brick_fine_black_mossy.png',    // Row 3
             'img/brick_fine_black.png',    // Row 2
-            'img/brick_black.png'    // Row 1 - Bottom Row
+            'img/brick_black.png'   // Row 1 - Bottom Row
+        ];
+      } else if (player.level === 22) {
+        rowImages = [
+            'img/grey_brick_cracked.png',     // Row 6 - Top row
+            'img/brick_fine_black.png',  // Row 5
+            'img/brick_fine_black_mossy.png',     // Row 4
+            'img/brick_fine_black_mossy.png',    // Row 3
+            'img/brick_fine_black.png',    // Row 2
+            'img/brick_black.png'   // Row 1 - Bottom Row
         ];
       }
 
