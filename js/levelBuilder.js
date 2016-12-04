@@ -128,6 +128,55 @@ function renderEntities() {
       levelEighteen.forEach(function(enemy) {
         enemy.render();
       });
+    } else if (player.level === 19) {
+      obstaclesNineteen.forEach(function(obstacle) {
+        obstacle.render();
+      });
+      levelNineteen.forEach(function(enemy) {
+        enemy.render();
+      });
+    } else if (player.level === 20) {
+      obstaclesTwenty.forEach(function(obstacle) {
+        obstacle.render();
+      });
+      levelTwenty.forEach(function(enemy) {
+        enemy.render();
+      });
+    } else if (player.level === 21) {
+      obstaclesTwentyOne.forEach(function(obstacle) {
+        obstacle.render();
+      });
+      levelTwentyOne.forEach(function(enemy) {
+        enemy.render();
+      });
+    } else if (player.level === 22) {
+      obstaclesTwentyTwo.forEach(function(obstacle) {
+        obstacle.render();
+      });
+      levelTwentyTwo.forEach(function(enemy) {
+        enemy.render();
+      });
+    } else if (player.level === 23) {
+      obstaclesTwentyThree.forEach(function(obstacle) {
+        obstacle.render();
+      });
+      levelTwentyThree.forEach(function(enemy) {
+        enemy.render();
+      });
+    } else if (player.level === 24) {
+      obstaclesTwentyFour.forEach(function(obstacle) {
+        obstacle.render();
+      });
+      levelTwentyFour.forEach(function(enemy) {
+        enemy.render();
+      });
+    } else if (player.level === 25) {
+      obstaclesTwentyFive.forEach(function(obstacle) {
+        obstacle.render();
+      });
+      levelTwentyFive.forEach(function(enemy) {
+        enemy.render();
+      });
     }
 
     player.render();
@@ -206,6 +255,34 @@ function updateEntities(dt) {
       });
     } else if (player.level === 18) {
       levelEighteen.forEach(function(enemy) {
+        enemy.update(dt);
+      });
+    } else if (player.level === 19) {
+      levelNineteen.forEach(function(enemy) {
+        enemy.update(dt);
+      });
+    } else if (player.level === 20) {
+      levelTwenty.forEach(function(enemy) {
+        enemy.update(dt);
+      });
+    } else if (player.level === 21) {
+      levelTwentyOne.forEach(function(enemy) {
+        enemy.update(dt);
+      });
+    } else if (player.level === 22) {
+      levelTwentyTwo.forEach(function(enemy) {
+        enemy.update(dt);
+      });
+    } else if (player.level === 23) {
+      levelTwentyThree.forEach(function(enemy) {
+        enemy.update(dt);
+      });
+    } else if (player.level === 24) {
+      levelTwentyFour.forEach(function(enemy) {
+        enemy.update(dt);
+      });
+    } else if (player.level === 25) {
+      levelTwentyFive.forEach(function(enemy) {
         enemy.update(dt);
       });
     }
@@ -379,6 +456,33 @@ function renderWorld() {
             'img/badlands_jungle.png',    // Row 3
             'img/badlands_jungle.png',    // Row 2
             'img/badlands_green.png'    // Row 1 - Bottom Row
+        ];
+      } else if (player.level === 19) {
+        rowImages = [
+            'img/rock_white.png',     // Row 6 - Top row
+            'img/sand_white.png',  // Row 5
+            'img/sand_white.png',     // Row 4
+            'img/sand_white.png',    // Row 3
+            'img/rock_white.png',    // Row 2
+            'img/grey_brick_cracked.png'    // Row 1 - Bottom Row
+        ];
+      } else if (player.level === 20) {
+        rowImages = [
+            'img/brick_black.png',     // Row 6 - Top row
+            'img/badlands_black.png',  // Row 5
+            'img/badlands_black_bloody.png',     // Row 4
+            'img/badlands_black_bloody.png',    // Row 3
+            'img/badlands_black.png',    // Row 2
+            'img/rock_white.png'    // Row 1 - Bottom Row
+        ];
+      } else if (player.level === 21) {
+        rowImages = [
+            'img/brick_black.png',     // Row 6 - Top row
+            'img/brick_fine_black.png',  // Row 5
+            'img/brick_fine_black.png',     // Row 4
+            'img/brick_fine_black.png',    // Row 3
+            'img/brick_fine_black.png',    // Row 2
+            'img/brick_black.png'    // Row 1 - Bottom Row
         ];
       }
 

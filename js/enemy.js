@@ -66,6 +66,11 @@ var speedSeventeen = 100;
 var speedEighteen = 270;
 var speedNineteen = 290;
 var speedTwenty = 300;
+var speedTwentyOne = 310;
+var speedTwentyTwo = 320;
+var speedTwentyThree = 330;
+var speedTwentyFour = 340;
+var speedTwentyFive = 350;
 
 ////////////////////////////////////////////////////////////
 // Enemy type definition section
@@ -84,18 +89,24 @@ function Humanoid(y) {
   obj.sound = new Audio('sounds/ogre.wav');
   return obj;
 }
-
-Bug.prototype = Object.create(Enemy.prototype);
-Bug.prototype.constructor = Enemy;
+Humanoid.prototype = Object.create(Enemy.prototype);
+Humanoid.prototype.constructor = Enemy;
 
 function Beast(y) {
   var obj = new Enemy(y);
   obj.sound = new Audio('sounds/beast.wav');
   return obj;
 }
-
 Beast.prototype = Object.create(Enemy.prototype);
 Beast.prototype.constructor = Enemy;
+
+function Undead(y) {
+  var obj = new Enemy(y);
+  obj.sound = new Audio('sounds/undead.wav');
+  return obj;
+}
+Undead.prototype = Object.create(Enemy.prototype);
+Undead.prototype.constructor = Enemy;
 
 //////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////
@@ -829,6 +840,164 @@ function ElementalLightning(y) {
 ElementalLightning.prototype = Object.create(Beast.prototype);
 ElementalLightning.prototype.constructor = Beast;
 
+///////////////////////////////////////////////////
+// Define Abominations level 19 mobs
+//////////////////////////////////
+
+function AbominationRed(y) {
+  var obj = new Undead(y);
+  obj.sprite = 'img/abomination_red.png';
+  obj.speed = speedNineteen + 10;
+  obj.direction = "left";
+  return obj;
+}
+AbominationRed.prototype = Object.create(Undead.prototype);
+AbominationRed.prototype.constructor = Undead;
+
+function AbominationGreen(y) {
+  var obj = new Undead(y);
+  obj.sprite = 'img/abomination_green.png';
+  obj.speed = speedNineteen - 30;
+  return obj;
+}
+AbominationGreen.prototype = Object.create(Undead.prototype);
+AbominationGreen.prototype.constructor = Undead;
+
+function AbominationYellow(y) {
+  var obj = new Undead(y);
+  obj.sprite = 'img/abomination_yellow.png';
+  obj.speed = speedNineteen - 40;
+  obj.direction = "left";
+  return obj;
+}
+AbominationYellow.prototype = Object.create(Undead.prototype);
+AbominationYellow.prototype.constructor = Undead;
+
+function AbominationPink(y) {
+  var obj = new Undead(y);
+  obj.sprite = 'img/abomination_pink.png';
+  obj.speed = speedNineteen + 30;
+  return obj;
+}
+AbominationPink.prototype = Object.create(Undead.prototype);
+AbominationPink.prototype.constructor = Undead;
+
+function AbominationOrange(y) {
+  var obj = new Undead(y);
+  obj.sprite = 'img/abomination_orange.png';
+  obj.speed = speedNineteen - 50;
+  return obj;
+}
+AbominationOrange.prototype = Object.create(Undead.prototype);
+AbominationOrange.prototype.constructor = Undead;
+
+function AbominationBrown(y) {
+  var obj = new Undead(y);
+  obj.sprite = 'img/abomination_brown.png';
+  obj.speed = speedNineteen + 14;
+  obj.direction = "left";
+  return obj;
+}
+AbominationBrown.prototype = Object.create(Undead.prototype);
+AbominationBrown.prototype.constructor = Undead;
+
+///////////////////////////////////////////////////
+// Define Skeletons level 20 mobs
+//////////////////////////////////
+function SkeletonDancing(y) {
+  var obj = new Undead(y);
+  obj.sprite = 'img/skeleton_dancing.png';
+  obj.speed = speedTwenty - 20;
+  return obj;
+}
+SkeletonDancing.prototype = Object.create(Undead.prototype);
+SkeletonDancing.prototype.constructor = Undead;
+
+function SkeletonCentaur(y) {
+  var obj = new Undead(y);
+  obj.sprite = 'img/skeleton_centaur.png';
+  obj.speed = speedTwenty + 20;
+  obj.direction = "left";
+  return obj;
+}
+SkeletonCentaur.prototype = Object.create(Undead.prototype);
+SkeletonCentaur.prototype.constructor = Undead;
+
+function SkeletonSoldier(y) {
+  var obj = new Undead(y);
+  obj.sprite = 'img/skeleton_soldier.png';
+  obj.speed = speedTwenty + 25;
+  return obj;
+}
+SkeletonSoldier.prototype = Object.create(Undead.prototype);
+SkeletonSoldier.prototype.constructor = Undead;
+
+function SkeletonBear(y) {
+  var obj = new Undead(y);
+  obj.sprite = 'img/skeleton_bear.png';
+  obj.speed = speedTwenty - 15;
+  obj.direction = "left";
+  return obj;
+}
+SkeletonBear.prototype = Object.create(Undead.prototype);
+SkeletonBear.prototype.constructor = Undead;
+
+function SkeletonPriest(y) {
+  var obj = new Undead(y);
+  obj.sprite = 'img/skeleton_priest.png';
+  obj.speed = speedTwenty - 40;
+  return obj;
+}
+SkeletonPriest.prototype = Object.create(Undead.prototype);
+SkeletonPriest.prototype.constructor = Undead;
+
+function SkeletonSnake(y) {
+  var obj = new Undead(y);
+  obj.sprite = 'img/skeleton_snake.png';
+  obj.speed = speedTwenty - 10;
+  obj.direction = "left";
+  return obj;
+}
+SkeletonSnake.prototype = Object.create(Undead.prototype);
+SkeletonSnake.prototype.constructor = Undead;
+
+function SkeletonBird(y) {
+  var obj = new Undead(y);
+  obj.sprite = 'img/skeleton_bird.png';
+  obj.speed = speedTwenty + 24;
+  return obj;
+}
+SkeletonBird.prototype = Object.create(Undead.prototype);
+SkeletonBird.prototype.constructor = Undead;
+
+function SkeletonHound(y) {
+  var obj = new Undead(y);
+  obj.sprite = 'img/skeleton_hound.png';
+  obj.speed = speedTwenty - 18;
+  obj.direction = "left";
+  return obj;
+}
+SkeletonHound.prototype = Object.create(Undead.prototype);
+SkeletonHound.prototype.constructor = Undead;
+
+function SkeletonHydra(y) {
+  var obj = new Undead(y);
+  obj.sprite = 'img/skeleton_hydra.png';
+  obj.speed = speedTwenty + 40;
+  return obj;
+}
+SkeletonHydra.prototype = Object.create(Undead.prototype);
+SkeletonHydra.prototype.constructor = Undead;
+
+function SkeletonDragon(y) {
+  var obj = new Undead(y);
+  obj.sprite = 'img/skeleton_dragon.png';
+  obj.speed = speedTwenty + 60;
+  obj.direction = "left";
+  return obj;
+}
+SkeletonDragon.prototype = Object.create(Undead.prototype);
+SkeletonDragon.prototype.constructor = Undead;
 
 
 ///////////////////////////////////////////////////////
@@ -867,6 +1036,11 @@ var levelSeventeen = [];
 var levelEighteen = [];
 var levelNineteen = [];
 var levelTwenty = [];
+var levelTwentyOne = [];
+var levelTwentyTwo = [];
+var levelTwentyThree = [];
+var levelTwentyFour = [];
+var levelTwentyFive = [];
 
 
 // Instantiate bugs lvl 1 enemies
@@ -1115,3 +1289,41 @@ levelEighteen.push(elementalLightning);
 levelEighteen.push(elementalIce);
 levelEighteen.push(elementalRock);
 levelEighteen.push(elementalFire);
+
+/////////////////////////////////////////
+// Instantiate lvl 19 enemies (Abominations)
+
+var abominationRed = new AbominationRed(row2);
+var abominationGreen = new AbominationGreen(row2);
+var abominationOrange = new AbominationOrange(row3);
+var abominationBrown = new AbominationBrown(row4);
+var abominationPink = new AbominationPink(row5);
+var abominationYellow = new AbominationYellow(row5);
+
+levelNineteen.push(abominationRed);
+levelNineteen.push(abominationGreen);
+levelNineteen.push(abominationOrange);
+levelNineteen.push(abominationBrown);
+levelNineteen.push(abominationPink);
+levelNineteen.push(abominationYellow);
+
+/////////////////////////////////////////
+// Instantiate lvl 19 enemies (Skeletons)
+
+var skeletonDancing = new SkeletonDancing(row2);
+var skeletonCentaur = new SkeletonCentaur(row2);
+var skeletonSoldier = new SkeletonSoldier(row3);
+var skeletonBear = new SkeletonBear(row3);
+var skeletonBird = new SkeletonBird(row4);
+var skeletonHound = new SkeletonHound(row4);
+var skeletonHydra = new SkeletonHydra(row5);
+var skeletonDragon = new SkeletonDragon(row5);
+
+levelTwenty.push(skeletonDancing);
+levelTwenty.push(skeletonCentaur);
+levelTwenty.push(skeletonSoldier);
+levelTwenty.push(skeletonBear);
+levelTwenty.push(skeletonBird);
+levelTwenty.push(skeletonHound);
+levelTwenty.push(skeletonHydra);
+levelTwenty.push(skeletonDragon);

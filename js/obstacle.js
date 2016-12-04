@@ -43,6 +43,9 @@ var goldTree = "img/tree_gold.png";
 var redTree = "img/tree_red.png";
 var rock = "img/rock.png";
 var bell = "img/bell.png";
+var severedHead = "img/obstacle_severed_head.png";
+var skullPile = "img/obstacle_skull_pile.png";
+var skeletonChain = "img/obstacle_skeleton_chain.png";
 
 
 var obstaclesOne = [];
@@ -64,6 +67,11 @@ var obstaclesSeventeen = [];
 var obstaclesEighteen = [];
 var obstaclesNineteen = [];
 var obstaclesTwenty = [];
+var obstaclesTwentyOne = [];
+var obstaclesTwentyTwo = [];
+var obstaclesTwentyThree = [];
+var obstaclesTwentyFour = [];
+var obstaclesTwentyFive = [];
 
 // Obstacle parameters - x, y, level, image
 
@@ -593,3 +601,91 @@ obstaclesEighteen.push(eighteenBell8);
 obstaclesEighteen.push(eighteenBell9);
 obstaclesEighteen.push(eighteenBell10);
 obstaclesEighteen.push(eighteenBell11);
+
+///////////////////////////////////
+// Obstacles Level 19 (Abominations)
+
+// lower left rocks
+var nineteenRock1 = new Obstacle(colOne, rowOne, rock);
+var nineteenRock2 = new Obstacle(colTwo, rowOne, rock);
+
+// lower right rocks
+var nineteenRock3 = new Obstacle(colSix, rowOne, rock);
+var nineteenRock4 = new Obstacle(colSeven, rowOne, rock);
+
+// middle row severed heads
+var nineteenHead1 = new Obstacle(colOne, rowThree, severedHead);
+var nineteenHead2 = new Obstacle(colThree, rowThree, severedHead);
+var nineteenHead3 = new Obstacle(colFour, rowThree, severedHead);
+var nineteenHead4 = new Obstacle(colFive, rowThree, severedHead);
+var nineteenHead5 = new Obstacle(colSeven, rowThree, severedHead);
+
+// top row severed heads
+var nineteenHead6 = new Obstacle(colTwo, rowFive, severedHead);
+var nineteenHead7 = new Obstacle(colFour, rowFive, severedHead);
+var nineteenHead8 = new Obstacle(colSix, rowFive, severedHead);
+
+
+obstaclesNineteen.push(nineteenRock1);
+obstaclesNineteen.push(nineteenRock2);
+obstaclesNineteen.push(nineteenRock3);
+obstaclesNineteen.push(nineteenRock4);
+
+obstaclesNineteen.push(nineteenHead1);
+obstaclesNineteen.push(nineteenHead2);
+obstaclesNineteen.push(nineteenHead3);
+obstaclesNineteen.push(nineteenHead4);
+obstaclesNineteen.push(nineteenHead5);
+
+obstaclesNineteen.push(nineteenHead6);
+obstaclesNineteen.push(nineteenHead7);
+obstaclesNineteen.push(nineteenHead8);
+
+///////////////////////////////////
+// Obstacles Level 20 (Skeletons)
+
+// left side skull piles
+var twentySkullPile1 = new Obstacle(colOne, rowOne, skullPile);
+var twentySkullPile2 = new Obstacle(colOne, rowTwo, skullPile);
+var twentySkullPile3 = new Obstacle(colOne, rowThree, skullPile);
+var twentySkullPile4 = new Obstacle(colOne, rowFour, skullPile);
+var twentySkullPile5 = new Obstacle(colOne, rowFive, skullPile);
+var twentySkullPile6 = new Obstacle(colOne, rowSix, skullPile);
+
+// right side skull piles
+var twentySkullPile7 = new Obstacle(colSeven, rowOne, skullPile);
+var twentySkullPile8 = new Obstacle(colSeven, rowTwo, skullPile);
+
+// lower left skeleton chains
+var twentyChain1 = new Obstacle(colTwo, rowTwo, skeletonChain);
+var twentyChain2 = new Obstacle(colThree, rowTwo, skeletonChain);
+
+// upper right skeleton chains
+var twentyChain3 = new Obstacle(colFive, rowThree, skeletonChain);
+var twentyChain4 = new Obstacle(colFive, rowFour, skeletonChain);
+var twentyChain5 = new Obstacle(colSix, rowFour, skeletonChain);
+var twentyChain6 = new Obstacle(colThree, rowFive, skeletonChain);
+var twentyChain7 = new Obstacle(colFour, rowFive, skeletonChain);
+var twentyChain8 = new Obstacle(colFive, rowFive, skeletonChain);
+var twentyChain9 = new Obstacle(colSix, rowFive, skeletonChain);
+
+obstaclesTwenty.push(twentySkullPile1);
+obstaclesTwenty.push(twentySkullPile2);
+obstaclesTwenty.push(twentySkullPile3);
+obstaclesTwenty.push(twentySkullPile4);
+obstaclesTwenty.push(twentySkullPile5);
+obstaclesTwenty.push(twentySkullPile6);
+
+obstaclesTwenty.push(twentySkullPile7);
+obstaclesTwenty.push(twentySkullPile8);
+
+obstaclesTwenty.push(twentyChain1);
+obstaclesTwenty.push(twentyChain2);
+
+obstaclesTwenty.push(twentyChain3);
+obstaclesTwenty.push(twentyChain4);
+obstaclesTwenty.push(twentyChain5);
+obstaclesTwenty.push(twentyChain6);
+obstaclesTwenty.push(twentyChain7);
+obstaclesTwenty.push(twentyChain8);
+obstaclesTwenty.push(twentyChain9);

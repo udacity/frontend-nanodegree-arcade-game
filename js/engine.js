@@ -162,12 +162,14 @@ var Engine = (function(global) {
     // Note: All images added to game must be called by Resources.load()
     Resources.load([
         'img/heart.png',
+        // terrain section
         'img/grey_border_block.png',
         'img/grey_border_block_small.png',
         'img/gate_three_blocks.png',
         'img/grey_brick.png',
         'img/grey_brick_cracked.png',
         'img/rock_path.png',
+        'img/rock_white.png',
         'img/ocean.png',
         'img/ocean_light.png',
         'img/ocean_bubbles.png',
@@ -182,6 +184,7 @@ var Engine = (function(global) {
         'img/sand_light.png',
         'img/sand_bright.png',
         'img/sand_dark.png',
+        'img/sand_white.png',
         'img/grass_red.png',
         'img/grass_blue.png',
         'img/grass_yellow.png',
@@ -193,6 +196,12 @@ var Engine = (function(global) {
         'img/badlands_yellow.png',
         'img/badlands_orange.png',
         'img/badlands_jungle.png',
+        'img/badlands_black.png',
+        'img/badlands_black_bloody.png',
+        'img/brick_black.png',
+        'img/brick_fine_black.png',
+        'img/brick_fine_black_mossy.png',
+        // enemy section
         'img/snail.png',
         'img/scorpion.png',
         'img/beetle.png',
@@ -271,6 +280,23 @@ var Engine = (function(global) {
         'img/elemental_ice.png',
         'img/elemental_flesh.png',
         'img/elemental_lightning.png',
+        'img/abomination_red.png',
+        'img/abomination_green.png',
+        'img/abomination_brown.png',
+        'img/abomination_orange.png',
+        'img/abomination_pink.png',
+        'img/abomination_yellow.png',
+        'img/skeleton_dancing.png',
+        'img/skeleton_centaur.png',
+        'img/skeleton_soldier.png',
+        'img/skeleton_bear.png',
+        'img/skeleton_priest.png',
+        'img/skeleton_snake.png',
+        'img/skeleton_bird.png',
+        'img/skeleton_hound.png',
+        'img/skeleton_hydra.png',
+        'img/skeleton_dragon.png',
+        // hero section
         'img/hero_knight.png',
         'img/hero_sorceress.png',
         'img/hero_mage.png',
@@ -285,14 +311,17 @@ var Engine = (function(global) {
         'img/hero_berserker.png',
         'img/hero_ninja.png',
         'img/hero_engineer.png',
+        // obstacle section
         'img/tree_gold.png',
         'img/tree_red.png',
         'img/rock.png',
         'img/bell.png',
+        'img/obstacle_severed_head.png',
+        'img/obstacle_skull_pile.png',
+        'img/obstacle_skeleton_chain.png',
         'img/skull.png',
         'img/skull_large.png',
         'img/explosion.png'
-
 
     ]);
     Resources.onReady(init);

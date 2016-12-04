@@ -313,6 +313,20 @@ Player.prototype.update = function(dt) {
     this.checkCollisions(levelSeventeen);
   } else if (player.level === 18) {
     this.checkCollisions(levelEighteen);
+  } else if (player.level === 19) {
+    this.checkCollisions(levelNineteen);
+  } else if (player.level === 20) {
+    this.checkCollisions(levelTwenty);
+  } else if (player.level === 21) {
+    this.checkCollisions(levelTwentyOne);
+  } else if (player.level === 22) {
+    this.checkCollisions(levelTwentyTwo);
+  } else if (player.level === 23) {
+    this.checkCollisions(levelTwentyThree);
+  } else if (player.level === 24) {
+    this.checkCollisions(levelTwentyFour);
+  } else if (player.level === 25) {
+    this.checkCollisions(levelTwentyFive);
   }
 
   // Level up conditional
@@ -435,6 +449,20 @@ else if (player.level > 0 && this.gamePaused === false
     currentObstacles = this.checkObstacles(obstaclesSeventeen);
   } else if (this.level === 18) {
     currentObstacles = this.checkObstacles(obstaclesEighteen);
+  } else if (this.level === 19) {
+    currentObstacles = this.checkObstacles(obstaclesNineteen);
+  } else if (this.level === 20) {
+    currentObstacles = this.checkObstacles(obstaclesTwenty);
+  } else if (this.level === 21) {
+    currentObstacles = this.checkObstacles(obstaclesTwentyOne);
+  } else if (this.level === 22) {
+    currentObstacles = this.checkObstacles(obstaclesTwentyTwo);
+  } else if (this.level === 23) {
+    currentObstacles = this.checkObstacles(obstaclesTwentyThree);
+  } else if (this.level === 24) {
+    currentObstacles = this.checkObstacles(obstaclesTwentyFour);
+  } else if (this.level === 25) {
+    currentObstacles = this.checkObstacles(obstaclesTwentyFive);
   }
 
   if (key === 'up' && (currentObstacles.indexOf("Up is Blocked") == -1)

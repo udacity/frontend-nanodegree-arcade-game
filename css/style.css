@@ -29,12 +29,22 @@ body {
   position: absolute;
 } */
 
+#game-canvas {
+  max-width: 100%;
+}
+
+@media screen and (max-height: 699px) {
+  #game-canvas {
+    max-height: 600px;
+  }
+}
 
 @media screen and (max-height: 899px) {
   #game-canvas {
     max-height: 800px;
   }
 }
+
 
 @media screen and (min-height: 900px) {
   #game-canvas {
