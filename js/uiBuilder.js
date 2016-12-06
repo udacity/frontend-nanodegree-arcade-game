@@ -82,6 +82,25 @@ function renderStartScreen() {
   ctx.strokeStyle = 'yellow';
   ctx.lineWidth = 5;
   ctx.stroke();
+  // draw Ty Sabs logo
+  ctx.font = "12pt Impact";
+  ctx.strokeStyle = 'black';
+  ctx.lineWidth = 3;
+  ctx.strokeText('© Ty Sabs 2016', 824, 820);
+  ctx.fillStyle = 'cyan';
+  ctx.fillText('© Ty Sabs 2016', 824, 820);
+  // draw url
+  ctx.strokeText('tysabs.com', 40, 820);
+  ctx.fillStyle = 'cyan';
+  ctx.fillText('tysabs.com', 40, 820);
+  // draw line underneath url
+  ctx.beginPath();
+  ctx.moveTo(36, 825);
+  ctx.lineTo(120, 825);
+  ctx.strokeStyle = 'cyan';
+  ctx.lineWidth = 3;
+  ctx.stroke();
+
 
     // select class message
   ctx.font = '36pt Ravi Prakash';
@@ -251,10 +270,14 @@ function renderPauseScreen() {
 }
 
 function renderCollideScreen() {
+  // draw blood on player
+  ctx.globalAlpha = 0.05;
+  ctx.drawImage(Resources.get("img/blood_pool.png"), player.x, player.y);
+
   // Draw Pause box
   ctx.beginPath();
-  ctx.fillStyle = "grey";
   ctx.globalAlpha = 0.08;
+  ctx.fillStyle = "grey";
   ctx.fillRect(192, 256, 576, 448);
   ctx.globalAlpha = 1;
 
@@ -288,6 +311,12 @@ function renderCollideScreen() {
 }
 
 function renderGameOverScreen() {
+  // draw background
+  ctx.beginPath();
+  ctx.fillStyle = "black";
+  ctx.fillRect(32, 64, 896, 768);
+  // draw skull image
+  ctx.drawImage(Resources.get("img/skull_large.png"), 32, 0);
   // draw bottom border
   var  numBotCols = 15,
     botCol;
@@ -295,17 +324,48 @@ function renderGameOverScreen() {
       ctx.drawImage(Resources.get('img/grey_border_block.png'), (botCol * 64) + 0, 832);
     }
   // draw top border
-  var  numTopCols = 5,
+  var  numTopCols = 15,
     topCol;
     for (topCol = 0; topCol < numTopCols; topCol++) {
-      ctx.drawImage(Resources.get('img/grey_border_block.png'), (topCol * 64) + 320, 0);
+      ctx.drawImage(Resources.get('img/grey_border_block.png'), (topCol * 64) + 0, 0);
     }
-  // draw background
+    // draw ui left
+  var  numLeftRows = 24,
+        leftRow;
+        for (leftRow = 0; leftRow < numLeftRows; leftRow++) {
+          ctx.drawImage(Resources.get('img/grey_border_block_small.png'), 0, (leftRow * 32) + 64);
+        }
+
+    // draw ui right
+  var  numRightRows = 24,
+      rightRow;
+      for (rightRow = 0; rightRow < numRightRows; rightRow++) {
+          ctx.drawImage(Resources.get('img/grey_border_block_small.png'), 928, (rightRow * 32) + 64);
+          }
+
+  // draw level background
   ctx.beginPath();
   ctx.fillStyle = "black";
-  ctx.fillRect(32, 64, 896, 768);
-  // draw skull image
-  ctx.drawImage(Resources.get("img/skull_large.png"), 230, 180);
+  ctx.fillRect(854, 14, 90, 38);
+  // draw level text
+  ctx.font = '18pt Impact';
+  ctx.strokeStyle = 'black';
+  ctx.lineWidth = 3;
+  ctx.strokeText('Level: ' + player.level, 860, 40);
+  ctx.fillStyle = 'yellow';
+  ctx.fillText('Level: ' + player.level, 860, 40);
+
+  // draw score background
+  ctx.beginPath();
+  ctx.fillStyle = "black";
+  ctx.fillRect(14, 14, 124, 38);
+  // draw score text
+  ctx.font = '18pt Impact';
+  ctx.strokeStyle = 'black';
+  ctx.lineWidth = 3;
+  ctx.strokeText('Score: ' + player.score, 20, 40);
+  ctx.fillStyle = 'yellow';
+  ctx.fillText('Score: ' + player.score, 20, 40);
 
   // Draw game over words
   ctx.font = '84pt Impact';

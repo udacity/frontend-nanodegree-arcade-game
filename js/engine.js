@@ -339,6 +339,7 @@ var Engine = (function(global) {
         'img/obstacle_statue.png',
         'img/skull.png',
         'img/skull_large.png',
+        'img/blood_pool.png',
         'img/explosion.png'
 
     ]);
