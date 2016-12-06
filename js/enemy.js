@@ -69,7 +69,7 @@ var speedTwenty = 300;
 var speedTwentyOne = 175;
 var speedTwentyTwo = 320;
 var speedTwentyThree = 120;
-var speedTwentyFour = 340;
+var speedTwentyFour = 300;
 var speedTwentyFive = 350;
 
 ////////////////////////////////////////////////////////////
@@ -1211,6 +1211,85 @@ function DragonkinGreen(y) {
 DragonkinGreen.prototype = Object.create(Dragonkin.prototype);
 DragonkinGreen.prototype.constructor = Dragonkin;
 
+///////////////////////////////////////////////////
+// Define Demons level 24 mobs
+//////////////////////////////////
+
+function DemonKnight(y) {
+  var obj = new Dragonkin(y);
+  obj.sprite = 'img/demon_knight.png';
+  obj.speed = speedTwentyFour - 100;
+  obj.direction = "left";
+  return obj;
+}
+DemonKnight.prototype = Object.create(Dragonkin.prototype);
+DemonKnight.prototype.constructor = Dragonkin;
+
+function DemonGreen(y) {
+  var obj = new Dragonkin(y);
+  obj.sprite = 'img/demon_green.png';
+  obj.speed = speedTwentyFour - 200;
+  return obj;
+}
+DemonGreen.prototype = Object.create(Dragonkin.prototype);
+DemonGreen.prototype.constructor = Dragonkin;
+
+function BalrogLesser(y) {
+  var obj = new Dragonkin(y);
+  obj.sprite = 'img/balrog_lesser.png';
+  obj.speed = speedTwentyFour - 40;
+  obj.direction = "left";
+  return obj;
+}
+BalrogLesser.prototype = Object.create(Dragonkin.prototype);
+BalrogLesser.prototype.constructor = Dragonkin;
+
+function GazerRed(y) {
+  var obj = new Dragonkin(y);
+  obj.sprite = 'img/gazer_red.png';
+  obj.speed = speedTwentyFour + 10;
+  return obj;
+}
+GazerRed.prototype = Object.create(Dragonkin.prototype);
+GazerRed.prototype.constructor = Dragonkin;
+
+function GazerPurple(y) {
+  var obj = new Dragonkin(y);
+  obj.sprite = 'img/gazer_purple.png';
+  obj.speed = speedTwentyFour + 20;
+  obj.direction = "left";
+  return obj;
+}
+GazerPurple.prototype = Object.create(Dragonkin.prototype);
+GazerPurple.prototype.constructor = Dragonkin;
+
+function BalrogGreater(y) {
+  var obj = new Dragonkin(y);
+  obj.sprite = 'img/balrog_greater.png';
+  obj.speed = speedTwentyFour + 40;
+  return obj;
+}
+BalrogGreater.prototype = Object.create(Dragonkin.prototype);
+BalrogGreater.prototype.constructor = Dragonkin;
+
+function DemonHappy(y) {
+  var obj = new Dragonkin(y);
+  obj.sprite = 'img/demon_happy.png';
+  obj.speed = speedTwentyFour;
+  obj.direction = "left";
+  return obj;
+}
+DemonHappy.prototype = Object.create(Dragonkin.prototype);
+DemonHappy.prototype.constructor = Dragonkin;
+
+function DemonBlack(y) {
+  var obj = new Dragonkin(y);
+  obj.sprite = 'img/demon_black.png';
+  obj.speed = speedTwentyFour - 30;
+  return obj;
+}
+DemonBlack.prototype = Object.create(Dragonkin.prototype);
+DemonBlack.prototype.constructor = Dragonkin;
 
 ///////////////////////////////////////////////////////
 // Instantiate all objects
@@ -1399,13 +1478,12 @@ levelTwelve.push(nagaFighterRight);
 // Instantiate Naga lvl 13 enemies
 
 var squidmanLeft = new Squidman(row2, 10, "left", "img/squidman_left.png");
-var nagaSoothsayerLeft1 = new NagaSoothsayer(row3, -20, "left", "img/naga_soothsayer_left.png");
-var nagaSirenRight1 = new NagaSiren(row3, -5, "right", "img/naga_siren_right.png");
+var nagaSoothsayerLeft1 = new NagaSoothsayer(row3, 16, "left", "img/naga_soothsayer_left.png");
+var nagaSirenRight1 = new NagaSiren(row3, 40, "right", "img/naga_siren_right.png");
 var nagaSirenLeft1 = new NagaSiren(row4, 0, "left", "img/naga_siren_left.png");
-var nagaSoothsayerRight1 = new NagaSoothsayer(row4, -20, "right", "img/naga_soothsayer_right.png");
+var nagaSoothsayerRight1 = new NagaSoothsayer(row4, 20, "right", "img/naga_soothsayer_right.png");
 var squidmanRight = new Squidman(row5, 30, "right", "img/squidman_right.png");
 
-levelThirteen.push(nagaSoothsayerRight1);
 levelThirteen.push(nagaSoothsayerLeft1);
 levelThirteen.push(nagaSirenRight1);
 levelThirteen.push(nagaSirenLeft1);
@@ -1604,3 +1682,24 @@ levelTwentyThree.push(dragonkinGold);
 levelTwentyThree.push(dragonkinBlack);
 levelTwentyThree.push(dragonkinViolet);
 levelTwentyThree.push(dragonkinGreen);
+
+/////////////////////////////////////////
+// Instantiate lvl 24 enemies (Demons)
+
+var demonKnight = new DemonKnight(row2);
+var demonGreen = new DemonGreen(row2);
+var balrogLesser = new BalrogLesser(row3);
+var gazerRed = new GazerRed(row3);
+var gazerPurple = new GazerPurple(row4);
+var balrogGreater = new BalrogGreater(row4);
+var demonHappy = new DemonHappy(row5);
+var demonBlack = new DemonBlack(row5);
+
+levelTwentyFour.push(demonKnight);
+levelTwentyFour.push(demonGreen);
+levelTwentyFour.push(balrogLesser);
+levelTwentyFour.push(gazerRed);
+levelTwentyFour.push(gazerPurple);
+levelTwentyFour.push(balrogGreater);
+levelTwentyFour.push(demonHappy);
+levelTwentyFour.push(demonBlack);

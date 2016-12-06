@@ -798,3 +798,37 @@ obstaclesTwentyThree.push(twentyThreeRock9);
 obstaclesTwentyThree.push(twentyThreeRock10);
 obstaclesTwentyThree.push(twentyThreeRock11);
 obstaclesTwentyThree.push(twentyThreeRock12);
+
+///////////////////////////////////
+// Obstacles Level 24 (Demons)
+
+// row 1 Obstacles
+var twentyFourRock1 = new Obstacle(colOne, rowOne, rock);
+var twentyFourPile2 = new Obstacle(colSeven, rowOne, skullPile);
+
+// row 3 obstacles
+var twentyFourPile3 = new Obstacle(colTwo, rowThree, skullPile);
+var twentyFourStatue4 = new Obstacle(colThree, rowThree, statue);
+var twentyFourStatue5 = new Obstacle(colFive, rowThree, statue);
+var twentyFourChain6 = new Obstacle(colSix, rowThree, skeletonChain);
+
+// row 5 obstacles
+var twentyFourStatue7 = new Obstacle(colOne, rowFive, statue);
+var twentyFourChain8 = new Obstacle(colThree, rowFive, skeletonChain);
+var twentyFourChain9 = new Obstacle(colFour, rowFive, skeletonChain);
+var twentyFourChain10 = new Obstacle(colFive, rowFive, skeletonChain);
+var twentyFourRock11 = new Obstacle(colSeven, rowFive, rock);
+
+obstaclesTwentyFour.push(twentyFourRock1);
+obstaclesTwentyFour.push(twentyFourPile2);
+
+obstaclesTwentyFour.push(twentyFourPile3);
+obstaclesTwentyFour.push(twentyFourStatue4);
+obstaclesTwentyFour.push(twentyFourStatue5);
+obstaclesTwentyFour.push(twentyFourChain6);
+
+obstaclesTwentyFour.push(twentyFourStatue7);
+obstaclesTwentyFour.push(twentyFourChain8);
+obstaclesTwentyFour.push(twentyFourChain9);
+obstaclesTwentyFour.push(twentyFourChain10);
+obstaclesTwentyFour.push(twentyFourRock11);

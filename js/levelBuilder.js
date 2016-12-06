@@ -502,6 +502,24 @@ function renderWorld() {
             'img/blackrock.png',    // Row 2
             'img/badlands_red.png'   // Row 1 - Bottom Row
         ];
+      } else if (player.level === 24) {
+        rowImages = [
+            'img/hellscape.png',     // Row 6 - Top row
+            'img/blackrock.png',  // Row 5
+            'img/blackrock.png',     // Row 4
+            'img/blackrock.png',    // Row 3
+            'img/blackrock.png',    // Row 2
+            'img/hellscape.png'   // Row 1 - Bottom Row
+        ];
+      } else if (player.level === 25) {
+        rowImages = [
+            'img/brick_vine.png',     // Row 6 - Top row
+            'img/blackrock.png',  // Row 5
+            'img/blackrock.png',     // Row 4
+            'img/blackrock.png',    // Row 3
+            'img/hellscape.png',    // Row 2
+            'img/hellscape.png'   // Row 1 - Bottom Row
+        ];
       }
 
   var  numRows = 6,
