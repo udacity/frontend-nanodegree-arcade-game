@@ -68,7 +68,7 @@ var speedNineteen = 290;
 var speedTwenty = 300;
 var speedTwentyOne = 175;
 var speedTwentyTwo = 320;
-var speedTwentyThree = 330;
+var speedTwentyThree = 120;
 var speedTwentyFour = 340;
 var speedTwentyFive = 350;
 
@@ -107,6 +107,14 @@ function Undead(y) {
 }
 Undead.prototype = Object.create(Enemy.prototype);
 Undead.prototype.constructor = Enemy;
+
+function Dragonkin(y) {
+  var obj = new Enemy(y);
+  obj.sound = new Audio('sounds/magic.wav');
+  return obj;
+}
+Dragonkin.prototype = Object.create(Enemy.prototype);
+Dragonkin.prototype.constructor = Enemy;
 
 //////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////
@@ -1123,6 +1131,87 @@ function GargoyleIce(y, speed, direction) {
 GargoyleIce.prototype = Object.create(Undead.prototype);
 GargoyleIce.prototype.constructor = Undead;
 
+///////////////////////////////////////////////////
+// Define Dragonkin level 23 mobs
+//////////////////////////////////
+
+function DragonkinWhite(y) {
+  var obj = new Dragonkin(y);
+  obj.sprite = 'img/dragonkin_white.png';
+  obj.speed = speedTwentyThree - 20;
+  obj.direction = "left";
+  return obj;
+}
+DragonkinWhite.prototype = Object.create(Dragonkin.prototype);
+DragonkinWhite.prototype.constructor = Dragonkin;
+
+function DragonkinRed(y) {
+  var obj = new Dragonkin(y);
+  obj.sprite = 'img/dragonkin_red.png';
+  obj.speed = speedTwentyThree + 18;
+  return obj;
+}
+DragonkinRed.prototype = Object.create(Dragonkin.prototype);
+DragonkinRed.prototype.constructor = Dragonkin;
+
+function DragonkinOrange(y) {
+  var obj = new Dragonkin(y);
+  obj.sprite = 'img/dragonkin_orange.png';
+  obj.speed = speedTwentyThree + 10;
+  obj.direction = "left";
+  return obj;
+}
+DragonkinOrange.prototype = Object.create(Dragonkin.prototype);
+DragonkinOrange.prototype.constructor = Dragonkin;
+
+function DragonkinPurple(y) {
+  var obj = new Dragonkin(y);
+  obj.sprite = 'img/dragonkin_purple.png';
+  obj.speed = speedTwentyThree + 30;
+  return obj;
+}
+DragonkinPurple.prototype = Object.create(Dragonkin.prototype);
+DragonkinPurple.prototype.constructor = Dragonkin;
+
+function DragonkinGold(y) {
+  var obj = new Dragonkin(y);
+  obj.sprite = 'img/dragonkin_gold.png';
+  obj.speed = speedTwentyThree - 30;
+  obj.direction = "left";
+  return obj;
+}
+DragonkinGold.prototype = Object.create(Dragonkin.prototype);
+DragonkinGold.prototype.constructor = Dragonkin;
+
+function DragonkinBlack(y) {
+  var obj = new Dragonkin(y);
+  obj.sprite = 'img/dragonkin_black.png';
+  obj.speed = speedTwentyThree - 16;
+  return obj;
+}
+DragonkinBlack.prototype = Object.create(Dragonkin.prototype);
+DragonkinBlack.prototype.constructor = Dragonkin;
+
+function DragonkinViolet(y) {
+  var obj = new Dragonkin(y);
+  obj.sprite = 'img/dragonkin_violet.png';
+  obj.speed = speedTwentyThree + 32;
+  obj.direction = "left";
+  return obj;
+}
+DragonkinViolet.prototype = Object.create(Dragonkin.prototype);
+DragonkinViolet.prototype.constructor = Dragonkin;
+
+function DragonkinGreen(y) {
+  var obj = new Dragonkin(y);
+  obj.sprite = 'img/dragonkin_green.png';
+  obj.speed = speedTwentyThree + 22;
+  return obj;
+}
+DragonkinGreen.prototype = Object.create(Dragonkin.prototype);
+DragonkinGreen.prototype.constructor = Dragonkin;
+
+
 ///////////////////////////////////////////////////////
 // Instantiate all objects
 //////////////////////////
@@ -1494,3 +1583,24 @@ levelTwentyTwo.push(gargoyleBlack1);
 levelTwentyTwo.push(gargoyleBlack2);
 levelTwentyTwo.push(gargoyleIce1);
 levelTwentyTwo.push(gargoyleIce2);
+
+/////////////////////////////////////////
+// Instantiate lvl 23 enemies (Dragonkin)
+
+var dragonkinWhite = new DragonkinWhite(row2);
+var dragonkinRed = new DragonkinRed(row2);
+var dragonkinPurple = new DragonkinPurple(row3);
+var dragonkinOrange = new DragonkinOrange(row3);
+var dragonkinGold = new DragonkinGold(row4);
+var dragonkinBlack = new DragonkinBlack(row4);
+var dragonkinViolet = new DragonkinViolet(row5);
+var dragonkinGreen = new DragonkinGreen(row5);
+
+levelTwentyThree.push(dragonkinWhite);
+levelTwentyThree.push(dragonkinRed);
+levelTwentyThree.push(dragonkinPurple);
+levelTwentyThree.push(dragonkinOrange);
+levelTwentyThree.push(dragonkinGold);
+levelTwentyThree.push(dragonkinBlack);
+levelTwentyThree.push(dragonkinViolet);
+levelTwentyThree.push(dragonkinGreen);

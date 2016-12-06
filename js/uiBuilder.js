@@ -171,7 +171,7 @@ function renderStatistics() {
   // draw level background
   ctx.beginPath();
   ctx.fillStyle = "black";
-  ctx.fillRect(854, 14, 90, 38);
+  ctx.fillRect(854, 14, 96, 38);
   // draw level text
   ctx.font = '18pt Impact';
   ctx.strokeStyle = 'black';

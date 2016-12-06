@@ -765,3 +765,36 @@ obstaclesTwentyTwo.push(twentyTwoStatue9);
 obstaclesTwentyTwo.push(twentyTwoStatue10);
 obstaclesTwentyTwo.push(twentyTwoStatue11);
 obstaclesTwentyTwo.push(twentyTwoStatue12);
+
+///////////////////////////////////
+// Obstacles Level 23 (Dragonkin)
+
+// lower row of rocks
+var twentyThreeRock1 = new Obstacle(colTwo, rowTwo, rock);
+var twentyThreeRock2 = new Obstacle(colThree, rowTwo, rock);
+var twentyThreeRock3 = new Obstacle(colFour, rowTwo, rock);
+var twentyThreeRock4 = new Obstacle(colFive, rowTwo, rock);
+var twentyThreeRock5 = new Obstacle(colSix, rowTwo, rock);
+var twentyThreeRock6 = new Obstacle(colSeven, rowTwo, rock);
+//var twentyThreeRock7 = new Obstacle(colTwo, rowThree, rock);
+
+// upper row of rocks
+var twentyThreeRock8 = new Obstacle(colOne, rowFive, rock);
+var twentyThreeRock9 = new Obstacle(colTwo, rowFive, rock);
+var twentyThreeRock10 = new Obstacle(colThree, rowFive, rock);
+var twentyThreeRock11 = new Obstacle(colFour, rowFive, rock);
+var twentyThreeRock12 = new Obstacle(colFive, rowFive, rock);
+
+obstaclesTwentyThree.push(twentyThreeRock1);
+obstaclesTwentyThree.push(twentyThreeRock2);
+obstaclesTwentyThree.push(twentyThreeRock3);
+obstaclesTwentyThree.push(twentyThreeRock4);
+obstaclesTwentyThree.push(twentyThreeRock5);
+obstaclesTwentyThree.push(twentyThreeRock6);
+//obstaclesTwentyThree.push(twentyThreeRock7);
+
+obstaclesTwentyThree.push(twentyThreeRock8);
+obstaclesTwentyThree.push(twentyThreeRock9);
+obstaclesTwentyThree.push(twentyThreeRock10);
+obstaclesTwentyThree.push(twentyThreeRock11);
+obstaclesTwentyThree.push(twentyThreeRock12);

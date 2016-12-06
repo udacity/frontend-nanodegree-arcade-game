@@ -493,6 +493,15 @@ function renderWorld() {
             'img/blue_block_face.png',    // Row 2
             'img/blue_block_unmarked.png'   // Row 1 - Bottom Row
         ];
+      } else if (player.level === 23) {
+        rowImages = [
+            'img/hellscape.png',     // Row 6 - Top row
+            'img/blackrock.png',  // Row 5
+            'img/brick_vine.png',     // Row 4
+            'img/brick_vine.png',    // Row 3
+            'img/blackrock.png',    // Row 2
+            'img/badlands_red.png'   // Row 1 - Bottom Row
+        ];
       }
 
   var  numRows = 6,
