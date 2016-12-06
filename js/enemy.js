@@ -66,7 +66,7 @@ var speedSeventeen = 100;
 var speedEighteen = 270;
 var speedNineteen = 290;
 var speedTwenty = 300;
-var speedTwentyOne = 310;
+var speedTwentyOne = 175;
 var speedTwentyTwo = 320;
 var speedTwentyThree = 330;
 var speedTwentyFour = 340;
@@ -904,24 +904,24 @@ AbominationBrown.prototype.constructor = Undead;
 ///////////////////////////////////////////////////
 // Define Skeletons level 20 mobs
 //////////////////////////////////
+function SkeletonKing(y) {
+  var obj = new Undead(y);
+  obj.sprite = 'img/skeleton_king.png';
+  obj.speed = speedTwenty + 20;
+  return obj;
+}
+SkeletonKing.prototype = Object.create(Undead.prototype);
+SkeletonKing.prototype.constructor = Undead;
+
 function SkeletonDancing(y) {
   var obj = new Undead(y);
   obj.sprite = 'img/skeleton_dancing.png';
   obj.speed = speedTwenty - 20;
+  obj.direction = "left";
   return obj;
 }
 SkeletonDancing.prototype = Object.create(Undead.prototype);
 SkeletonDancing.prototype.constructor = Undead;
-
-function SkeletonCentaur(y) {
-  var obj = new Undead(y);
-  obj.sprite = 'img/skeleton_centaur.png';
-  obj.speed = speedTwenty + 20;
-  obj.direction = "left";
-  return obj;
-}
-SkeletonCentaur.prototype = Object.create(Undead.prototype);
-SkeletonCentaur.prototype.constructor = Undead;
 
 function SkeletonSoldier(y) {
   var obj = new Undead(y);
@@ -932,20 +932,21 @@ function SkeletonSoldier(y) {
 SkeletonSoldier.prototype = Object.create(Undead.prototype);
 SkeletonSoldier.prototype.constructor = Undead;
 
-function SkeletonBear(y) {
+function SkeletonCentaur(y) {
   var obj = new Undead(y);
-  obj.sprite = 'img/skeleton_bear.png';
+  obj.sprite = 'img/skeleton_centaur.png';
   obj.speed = speedTwenty - 15;
   obj.direction = "left";
   return obj;
 }
-SkeletonBear.prototype = Object.create(Undead.prototype);
-SkeletonBear.prototype.constructor = Undead;
+SkeletonCentaur.prototype = Object.create(Undead.prototype);
+SkeletonCentaur.prototype.constructor = Undead;
 
 function SkeletonPriest(y) {
   var obj = new Undead(y);
   obj.sprite = 'img/skeleton_priest.png';
   obj.speed = speedTwenty - 40;
+  obj.direction = "left";
   return obj;
 }
 SkeletonPriest.prototype = Object.create(Undead.prototype);
@@ -970,16 +971,6 @@ function SkeletonBird(y) {
 SkeletonBird.prototype = Object.create(Undead.prototype);
 SkeletonBird.prototype.constructor = Undead;
 
-function SkeletonHound(y) {
-  var obj = new Undead(y);
-  obj.sprite = 'img/skeleton_hound.png';
-  obj.speed = speedTwenty - 18;
-  obj.direction = "left";
-  return obj;
-}
-SkeletonHound.prototype = Object.create(Undead.prototype);
-SkeletonHound.prototype.constructor = Undead;
-
 function SkeletonHydra(y) {
   var obj = new Undead(y);
   obj.sprite = 'img/skeleton_hydra.png';
@@ -999,6 +990,94 @@ function SkeletonDragon(y) {
 SkeletonDragon.prototype = Object.create(Undead.prototype);
 SkeletonDragon.prototype.constructor = Undead;
 
+///////////////////////////////////////////////////
+// Define Ghosts level 21 mobs
+//////////////////////////////////
+
+function SpiritTransparent(y) {
+  var obj = new Undead(y);
+  obj.sprite = 'img/spirit_transparent.png';
+  obj.speed = speedTwentyOne - 150;
+  return obj;
+}
+SpiritTransparent.prototype = Object.create(Undead.prototype);
+SpiritTransparent.prototype.constructor = Undead;
+
+function SpiritBlue(y) {
+  var obj = new Undead(y);
+  obj.sprite = 'img/spirit_blue.png';
+  obj.speed = speedTwentyOne - 30;
+  obj.direction = "left";
+  return obj;
+}
+SpiritBlue.prototype = Object.create(Undead.prototype);
+SpiritBlue.prototype.constructor = Undead;
+
+function SpiritRed(y) {
+  var obj = new Undead(y);
+  obj.sprite = 'img/spirit_red.png';
+  obj.speed = speedTwentyOne - 50;
+  return obj;
+}
+SpiritRed.prototype = Object.create(Undead.prototype);
+SpiritRed.prototype.constructor = Undead;
+
+function Ghast(y) {
+  var obj = new Undead(y);
+  obj.sprite = 'img/ghast.png';
+  obj.speed = speedTwentyOne + 30;
+  obj.direction = "left";
+  return obj;
+}
+Ghast.prototype = Object.create(Undead.prototype);
+Ghast.prototype.constructor = Undead;
+
+function Ghost(y) {
+  var obj = new Undead(y);
+  obj.sprite = 'img/ghost.png';
+  obj.speed = speedTwentyOne - 10;
+  return obj;
+}
+Ghost.prototype = Object.create(Undead.prototype);
+Ghost.prototype.constructor = Undead;
+
+function BansheeOctopus(y) {
+  var obj = new Undead(y);
+  obj.sprite = 'img/banshee_octopus.png';
+  obj.speed = speedTwentyOne;
+  obj.direction = "left";
+  return obj;
+}
+BansheeOctopus.prototype = Object.create(Undead.prototype);
+BansheeOctopus.prototype.constructor = Undead;
+
+function BansheeGreen(y) {
+  var obj = new Undead(y);
+  obj.sprite = 'img/banshee_green.png';
+  obj.speed = speedTwentyOne - 20;
+  return obj;
+}
+BansheeGreen.prototype = Object.create(Undead.prototype);
+BansheeGreen.prototype.constructor = Undead;
+
+function BansheeBlue(y) {
+  var obj = new Undead(y);
+  obj.sprite = 'img/banshee_blue.png';
+  obj.speed = speedTwentyOne + 20;
+  obj.direction = "left";
+  return obj;
+}
+BansheeBlue.prototype = Object.create(Undead.prototype);
+BansheeBlue.prototype.constructor = Undead;
+
+function Banshee(y) {
+  var obj = new Undead(y);
+  obj.sprite = 'img/banshee.png';
+  obj.speed = speedTwentyOne + 30;
+  return obj;
+}
+Banshee.prototype = Object.create(Undead.prototype);
+Banshee.prototype.constructor = Undead;
 
 ///////////////////////////////////////////////////////
 // Instantiate all objects
@@ -1308,22 +1387,45 @@ levelNineteen.push(abominationPink);
 levelNineteen.push(abominationYellow);
 
 /////////////////////////////////////////
-// Instantiate lvl 19 enemies (Skeletons)
+// Instantiate lvl 20 enemies (Skeletons)
 
 var skeletonDancing = new SkeletonDancing(row2);
-var skeletonCentaur = new SkeletonCentaur(row2);
+var skeletonKing = new SkeletonKing(row2);
 var skeletonSoldier = new SkeletonSoldier(row3);
-var skeletonBear = new SkeletonBear(row3);
+var skeletonCentaur = new SkeletonCentaur(row3);
 var skeletonBird = new SkeletonBird(row4);
-var skeletonHound = new SkeletonHound(row4);
+var skeletonPriest = new SkeletonPriest(row4);
 var skeletonHydra = new SkeletonHydra(row5);
 var skeletonDragon = new SkeletonDragon(row5);
 
 levelTwenty.push(skeletonDancing);
-levelTwenty.push(skeletonCentaur);
+levelTwenty.push(skeletonKing);
 levelTwenty.push(skeletonSoldier);
-levelTwenty.push(skeletonBear);
+levelTwenty.push(skeletonCentaur);
 levelTwenty.push(skeletonBird);
-levelTwenty.push(skeletonHound);
+levelTwenty.push(skeletonPriest);
 levelTwenty.push(skeletonHydra);
 levelTwenty.push(skeletonDragon);
+
+/////////////////////////////////////////
+// Instantiate lvl 21 enemies (Ghosts)
+
+var spiritTransparent = new SpiritTransparent(row2);
+var spiritBlue = new SpiritBlue(row2);
+var spiritRed = new SpiritRed(row2);
+var ghost = new Ghost(row3);
+var ghast = new Ghast(row3);
+var bansheeGreen = new BansheeGreen(row4);
+var bansheeOctopus = new BansheeOctopus(row4);
+var bansheeBlue = new BansheeBlue(row5);
+var banshee = new Banshee(row5);
+
+levelTwentyOne.push(spiritTransparent);
+levelTwentyOne.push(spiritBlue);
+levelTwentyOne.push(spiritRed);
+levelTwentyOne.push(ghost);
+levelTwentyOne.push(ghast);
+levelTwentyOne.push(bansheeGreen);
+levelTwentyOne.push(bansheeOctopus);
+levelTwentyOne.push(bansheeBlue);
+levelTwentyOne.push(banshee);
