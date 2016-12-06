@@ -198,9 +198,13 @@ var Engine = (function(global) {
         'img/badlands_jungle.png',
         'img/badlands_black.png',
         'img/badlands_black_bloody.png',
+        'img/badlands_red.png',
         'img/brick_black.png',
         'img/brick_fine_black.png',
         'img/brick_fine_black_mossy.png',
+        'img/blue_block_unmarked.png',
+        'img/blue_block_cracked.png',
+        'img/blue_block_face.png',
         // enemy section
         'img/snail.png',
         'img/scorpion.png',
@@ -320,6 +324,10 @@ var Engine = (function(global) {
         'img/banshee_blue.png',
         'img/banshee.png',
         'img/spirit_transparent.png',
+        'img/gargoyle_white.png',
+        'img/gargoyle_red.png',
+        'img/gargoyle_black.png',
+        'img/gargoyle_ice.png',
         // obstacle section
         'img/tree_gold.png',
         'img/tree_red.png',
@@ -328,6 +336,7 @@ var Engine = (function(global) {
         'img/obstacle_severed_head.png',
         'img/obstacle_skull_pile.png',
         'img/obstacle_skeleton_chain.png',
+        'img/obstacle_statue.png',
         'img/skull.png',
         'img/skull_large.png',
         'img/explosion.png'

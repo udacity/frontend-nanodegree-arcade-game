@@ -1079,6 +1079,50 @@ function Banshee(y) {
 Banshee.prototype = Object.create(Undead.prototype);
 Banshee.prototype.constructor = Undead;
 
+///////////////////////////////////////////////////
+// Define Gargoyles level 22 mobs
+//////////////////////////////////
+
+function GargoyleWhite(y, speed, direction) {
+  var obj = new Undead(y);
+  obj.sprite = 'img/gargoyle_white.png';
+  obj.speed = speedTwentyTwo + speed;
+  obj.direction = direction;
+  return obj;
+}
+GargoyleWhite.prototype = Object.create(Undead.prototype);
+GargoyleWhite.prototype.constructor = Undead;
+
+function GargoyleRed(y, speed, direction) {
+  var obj = new Undead(y);
+  obj.sprite = 'img/gargoyle_red.png';
+  obj.speed = speedTwentyTwo + speed;
+  obj.direction = direction;
+  return obj;
+}
+GargoyleRed.prototype = Object.create(Undead.prototype);
+GargoyleRed.prototype.constructor = Undead;
+
+function GargoyleBlack(y, speed, direction) {
+  var obj = new Undead(y);
+  obj.sprite = 'img/gargoyle_black.png';
+  obj.speed = speedTwentyTwo + speed;
+  obj.direction = direction;
+  return obj;
+}
+GargoyleBlack.prototype = Object.create(Undead.prototype);
+GargoyleBlack.prototype.constructor = Undead;
+
+function GargoyleIce(y, speed, direction) {
+  var obj = new Undead(y);
+  obj.sprite = 'img/gargoyle_ice.png';
+  obj.speed = speedTwentyTwo + speed;
+  obj.direction = direction;
+  return obj;
+}
+GargoyleIce.prototype = Object.create(Undead.prototype);
+GargoyleIce.prototype.constructor = Undead;
+
 ///////////////////////////////////////////////////////
 // Instantiate all objects
 //////////////////////////
@@ -1429,3 +1473,24 @@ levelTwentyOne.push(bansheeGreen);
 levelTwentyOne.push(bansheeOctopus);
 levelTwentyOne.push(bansheeBlue);
 levelTwentyOne.push(banshee);
+
+/////////////////////////////////////////
+// Instantiate lvl 22 enemies (Gargoyles)
+
+var gargoyleWhite1 = new GargoyleWhite(row2, -30, "left");
+var gargoyleWhite2 = new GargoyleWhite(row2, 10, "right");
+var gargoyleRed1 = new GargoyleRed(row3, -50, "left");
+var gargoyleRed2 = new GargoyleRed(row3, -20, "right");
+var gargoyleBlack1 = new GargoyleBlack(row4, 40, "left");
+var gargoyleBlack2 = new GargoyleBlack(row4, 16, "right");
+var gargoyleIce1 = new GargoyleIce(row5, 0, "left");
+var gargoyleIce2 = new GargoyleIce(row5, -80, "right");
+
+levelTwentyTwo.push(gargoyleWhite1);
+levelTwentyTwo.push(gargoyleWhite2);
+levelTwentyTwo.push(gargoyleRed1);
+levelTwentyTwo.push(gargoyleRed2);
+levelTwentyTwo.push(gargoyleBlack1);
+levelTwentyTwo.push(gargoyleBlack2);
+levelTwentyTwo.push(gargoyleIce1);
+levelTwentyTwo.push(gargoyleIce2);

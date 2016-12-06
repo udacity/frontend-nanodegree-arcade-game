@@ -46,6 +46,7 @@ var bell = "img/bell.png";
 var severedHead = "img/obstacle_severed_head.png";
 var skullPile = "img/obstacle_skull_pile.png";
 var skeletonChain = "img/obstacle_skeleton_chain.png";
+var statue = "img/obstacle_statue.png";
 
 
 var obstaclesOne = [];
@@ -727,3 +728,40 @@ obstaclesTwentyOne.push(twentyOnePile7);
 
 ///////////////////////////////////
 // Obstacles Level 22 (Gargoyles)
+
+// lower left column of statues
+var twentyTwoStatue1 = new Obstacle(colTwo, rowTwo, statue);
+var twentyTwoStatue2 = new Obstacle(colTwo, rowThree, statue);
+
+// lower middle column of statues
+var twentyTwoStatue3 = new Obstacle(colFour, rowTwo, statue);
+var twentyTwoStatue4 = new Obstacle(colFour, rowThree, statue);
+
+// lower middle column of statues
+var twentyTwoStatue5 = new Obstacle(colSix, rowTwo, statue);
+var twentyTwoStatue6 = new Obstacle(colSix, rowThree, statue);
+
+// top left statues
+var twentyTwoStatue7 = new Obstacle(colOne, rowFive, statue);
+var twentyTwoStatue8 = new Obstacle(colOne, rowSix, statue);
+
+// top middle statues
+var twentyTwoStatue9 = new Obstacle(colThree, rowFive, statue);
+var twentyTwoStatue10 = new Obstacle(colFive, rowFive, statue);
+
+// top right statues
+var twentyTwoStatue11 = new Obstacle(colSeven, rowFive, statue);
+var twentyTwoStatue12 = new Obstacle(colSeven, rowSix, statue);
+
+obstaclesTwentyTwo.push(twentyTwoStatue1);
+obstaclesTwentyTwo.push(twentyTwoStatue2);
+obstaclesTwentyTwo.push(twentyTwoStatue3);
+obstaclesTwentyTwo.push(twentyTwoStatue4);
+obstaclesTwentyTwo.push(twentyTwoStatue5);
+obstaclesTwentyTwo.push(twentyTwoStatue6);
+obstaclesTwentyTwo.push(twentyTwoStatue7);
+obstaclesTwentyTwo.push(twentyTwoStatue8);
+obstaclesTwentyTwo.push(twentyTwoStatue9);
+obstaclesTwentyTwo.push(twentyTwoStatue10);
+obstaclesTwentyTwo.push(twentyTwoStatue11);
+obstaclesTwentyTwo.push(twentyTwoStatue12);
