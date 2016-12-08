@@ -19,29 +19,31 @@ body {
     text-align: center;
 }
 
-/* #music-btn {
-  font-family: "Arial Black", "Arial Bold", "Gadget", sans-serif;
-  width: 100px;
-  height: 40px;
-  border-radius: 10px;
-  background-color: #262228;
-  color: #efce00;
-  position: absolute;
-} */
-
-#game-canvas {
-  max-width: 100%;
+.loader {
+	position: fixed;
+	left: 0px;
+	top: 0px;
+	width: 100%;
+	height: 100%;
+	z-index: 9999;
+  /*
+  * Page Loader gif source = http://www.ajaxload.info/
+  * Super cool website that makes custom loading gifs for you
+  */
+	background: url('../img/page_loader.gif') 50% 50% no-repeat rgb(249,249,249);
 }
+
+
 
 @media screen and (max-height: 699px) {
   #game-canvas {
-    max-height: 600px;
+    height: 500px;
   }
 }
 
 @media screen and (max-height: 899px) {
   #game-canvas {
-    max-height: 800px;
+    height: 680px;
   }
 }
 

@@ -437,9 +437,9 @@ function renderVictoryScreen() {
   ctx.font = '56pt Impact';
   ctx.strokeStyle = 'black';
   ctx.lineWidth = 3;
-  ctx.strokeText('Victory is Yours!', 220, 200);
+  ctx.strokeText('Victory is Yours!', 230, 200);
   ctx.fillStyle = 'white';
-  ctx.fillText('Victory is Yours!', 220, 200);
+  ctx.fillText('Victory is Yours!', 230, 200);
   // Draw line underneath game name
   ctx.beginPath();
   ctx.moveTo(200, 212);
@@ -460,7 +460,7 @@ function renderVictoryScreen() {
   // line 2 of victory msg
   ctx.strokeText('But in a way, they are just beginning.', 200, 340);
   ctx.fillText('But in a way, they are just beginning.', 200, 340);
-  // line 3 of victory message
+  // line 4 of victory message
   ctx.strokeText('Young Adventurer, you must use what little power you have.', 100, 380);
   ctx.fillText('Young Adventurer, you must use what little power you have.', 100, 380);
   // line 4 of victory message
@@ -478,41 +478,46 @@ function renderVictoryScreen() {
 }
 
 function renderCredits() {
+  // draw credits background
+  ctx.beginPath();
+  ctx.fillStyle = "black";
+  ctx.fillRect(240, 604, 460, 224);
+
   // draw credits
   ctx.font = '36pt Impact';
   ctx.strokeStyle = 'black';
   ctx.lineWidth = 3;
-  ctx.strokeText('Credits:', 390, 692);
+  ctx.strokeText('Credits:', 390, 662);
   ctx.fillStyle = 'white';
-  ctx.fillText('Credits:', 390, 692);
+  ctx.fillText('Credits:', 390, 662);
   // Draw line underneath game name
   ctx.beginPath();
-  ctx.moveTo(386, 700);
-  ctx.lineTo(550, 700);
+  ctx.moveTo(386, 670);
+  ctx.lineTo(550, 670);
   ctx.strokeStyle = 'white';
   ctx.lineWidth = 5;
   ctx.stroke();
 
-  // draw credits background
-  ctx.beginPath();
-  ctx.fillStyle = "black";
-  ctx.fillRect(240, 705, 460, 125);
+
   // credits font
   ctx.font = '12pt Arial';
   ctx.strokeStyle = 'black';
   ctx.lineWidth = 3;
   ctx.fillStyle = 'cyan';
   // line 1 of credits
-  ctx.strokeText('Udacity Front-End Web Developer Nanodegree Program', 280, 730);
-  ctx.fillText('Udacity Front-End Web Developer Nanodegree Program', 280, 730);
+  ctx.strokeText('Made by Ty Sabs', 410, 700);
+  ctx.fillText('Made by Ty Sabs', 410, 700);
   // line 2 of credits
+  ctx.strokeText('Udacity Front-End Web Developer Nanodegree Program', 270, 730);
+  ctx.fillText('Udacity Front-End Web Developer Nanodegree Program', 270, 730);
+  // line 3 of credits
   ctx.strokeText('Graphics and sound effects supplied by OpenGameArt.org', 256, 760);
   ctx.fillText('Graphics and sound effects supplied by OpenGameArt.org', 256, 760);
-  // line 3 of credits
+  // line 4 of credits
   ctx.strokeText('Music provided by Edward Shallow at freemusicarchive.org', 254, 790);
   ctx.fillText('Music provided by Edward Shallow at freemusicarchive.org', 254, 790);
 
-  // line 4 of credits
+  // line 5 of credits
   ctx.strokeText('View readme for more info on credits', 340, 820);
   ctx.fillText('View readme for more info on credits', 340, 820);
 
