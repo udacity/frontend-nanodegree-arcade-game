@@ -10,7 +10,7 @@
 // Display the proper level of enemies
 function renderEntities() {
 
-    // renders the enemies and obstacles for each level
+    // renders the enemies, obstacles, and items for each level
     if (player.level === 1) {
       obstaclesOne.forEach(function(obstacle) {
         obstacle.render();
@@ -382,7 +382,7 @@ function renderWorld() {
             'img/grass_dark.png',   // Row 2
             'img/grass_light.png'   // Row 1 - Bottom Row
         ];
-      } else if (player.level === 9) {
+      } else if (player.level === 9) { // centaurs
         rowImages = [
             'img/sand_dark.png',     // Row 6 - Top row
             'img/grass_yellow.png',  // Row 5
@@ -391,7 +391,7 @@ function renderWorld() {
             'img/grass_dark.png',    // Row 2
             'img/grass_light.png'    // Row 1 - Bottom Row
         ];
-      } else if (player.level === 10) {
+      } else if (player.level === 10) { // ogres and cyclops
         rowImages = [
             'img/ocean.png',     // Row 6 - Top row
             'img/sand_light.png',  // Row 5
@@ -400,7 +400,7 @@ function renderWorld() {
             'img/sand_dark.png',    // Row 2
             'img/sand_dark.png'    // Row 1 - Bottom Row
         ];
-      } else if (player.level === 11) {
+      } else if (player.level === 11) { // sea creatures 1
         rowImages = [
             'img/ocean_deep_dark.png',     // Row 6 - Top row
             'img/ocean_deep.png',  // Row 5
@@ -409,7 +409,7 @@ function renderWorld() {
             'img/ocean_deep.png',    // Row 2
             'img/ocean_bubbles.png'    // Row 1 - Bottom Row
         ];
-      } else if (player.level === 12) {
+      } else if (player.level === 12) { // naga ocean 1
         rowImages = [
             'img/ocean_light.png',     // Row 6 - Top row
             'img/ocean_deep_dark.png',  // Row 5
@@ -418,7 +418,7 @@ function renderWorld() {
             'img/ocean_deep_dark.png',    // Row 2
             'img/ocean_deep.png'    // Row 1 - Bottom Row
         ];
-      } else if (player.level === 13) {
+      } else if (player.level === 13) { // naga city
         rowImages = [
             'img/ocean_light.png',     // Row 6 - Top row
             'img/aqua_brick.png',  // Row 5
@@ -427,7 +427,7 @@ function renderWorld() {
             'img/aqua_brick.png',    // Row 2
             'img/ocean_light.png'    // Row 1 - Bottom Row
         ];
-      } else if (player.level === 14) {
+      } else if (player.level === 14) { // sea creatures 2
         rowImages = [
             'img/ocean.png',     // Row 6 - Top row
             'img/ocean_deep_dark.png',  // Row 5
@@ -436,7 +436,7 @@ function renderWorld() {
             'img/ocean_deep_dark.png',    // Row 2
             'img/ocean_light.png'    // Row 1 - Bottom Row
         ];
-      } else if (player.level === 15) {
+      } else if (player.level === 15) { // lizards and snakes
         rowImages = [
             'img/grass_jungle.png',     // Row 6 - Top row
             'img/shore_jungle_top.png',  // Row 5
@@ -445,7 +445,7 @@ function renderWorld() {
             'img/sand_dark.png',    // Row 2
             'img/ocean.png'    // Row 1 - Bottom Row
         ];
-      } else if (player.level === 16) {
+      } else if (player.level === 16) { // trolls
         rowImages = [
             'img/badlands_gold.png',     // Row 6 - Top row
             'img/badlands_green.png',  // Row 5
@@ -454,7 +454,7 @@ function renderWorld() {
             'img/badlands_green.png',    // Row 2
             'img/grass_jungle.png'    // Row 1 - Bottom Row
         ];
-      } else if (player.level === 17) {
+      } else if (player.level === 17) { // imps
         rowImages = [
             'img/badlands_jungle.png',     // Row 6 - Top row
             'img/badlands_orange.png',  // Row 5
@@ -463,7 +463,7 @@ function renderWorld() {
             'img/badlands_orange.png',    // Row 2
             'img/badlands_gold.png'    // Row 1 - Bottom Row
         ];
-      } else if (player.level === 18) {
+      } else if (player.level === 18) { // elementals
         rowImages = [
             'img/grey_brick_cracked.png',     // Row 6 - Top row
             'img/badlands_jungle.png',  // Row 5
@@ -472,7 +472,7 @@ function renderWorld() {
             'img/badlands_jungle.png',    // Row 2
             'img/badlands_green.png'    // Row 1 - Bottom Row
         ];
-      } else if (player.level === 19) {
+      } else if (player.level === 19) { // abominations
         rowImages = [
             'img/rock_white.png',     // Row 6 - Top row
             'img/sand_white.png',  // Row 5
@@ -481,7 +481,7 @@ function renderWorld() {
             'img/rock_white.png',    // Row 2
             'img/grey_brick_cracked.png'    // Row 1 - Bottom Row
         ];
-      } else if (player.level === 20) {
+      } else if (player.level === 20) { // skeletons
         rowImages = [
             'img/brick_black.png',     // Row 6 - Top row
             'img/badlands_black.png',  // Row 5
@@ -490,7 +490,7 @@ function renderWorld() {
             'img/badlands_black.png',    // Row 2
             'img/rock_white.png'    // Row 1 - Bottom Row
         ];
-      } else if (player.level === 21) {
+      } else if (player.level === 21) { // ghosts
         rowImages = [
             'img/blue_block_unmarked.png',     // Row 6 - Top row
             'img/brick_fine_black.png',  // Row 5
@@ -499,7 +499,7 @@ function renderWorld() {
             'img/brick_fine_black.png',    // Row 2
             'img/brick_black.png'   // Row 1 - Bottom Row
         ];
-      } else if (player.level === 22) {
+      } else if (player.level === 22) { // gargoyles
         rowImages = [
             'img/badlands_red.png',     // Row 6 - Top row
             'img/blue_block_face.png',  // Row 5
@@ -508,7 +508,7 @@ function renderWorld() {
             'img/blue_block_face.png',    // Row 2
             'img/blue_block_unmarked.png'   // Row 1 - Bottom Row
         ];
-      } else if (player.level === 23) {
+      } else if (player.level === 23) { // dragonkin
         rowImages = [
             'img/hellscape.png',     // Row 6 - Top row
             'img/blackrock.png',  // Row 5
@@ -517,7 +517,7 @@ function renderWorld() {
             'img/blackrock.png',    // Row 2
             'img/badlands_red.png'   // Row 1 - Bottom Row
         ];
-      } else if (player.level === 24) {
+      } else if (player.level === 24) { // demons
         rowImages = [
             'img/hellscape.png',     // Row 6 - Top row
             'img/blackrock.png',  // Row 5
@@ -526,7 +526,7 @@ function renderWorld() {
             'img/blackrock.png',    // Row 2
             'img/hellscape.png'   // Row 1 - Bottom Row
         ];
-      } else if (player.level === 25) {
+      } else if (player.level === 25) { // dragons
         rowImages = [
             'img/end_stone.png',     // Row 6 - Top row
             'img/blackrock.png',  // Row 5

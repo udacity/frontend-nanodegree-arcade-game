@@ -6,10 +6,12 @@ var ExtraLife = function(x, y) {
   this.sprite = 'img/extra_life.png';
 };
 
+// render ExtraLife sprite
 ExtraLife.prototype.render = function() {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+// give the player one extra life
 ExtraLife.prototype.giveBonus = function() {
   this.sound.play();
   player.lives ++;
@@ -34,6 +36,7 @@ var rowFour = 320;
 var rowFive = 192;
 var rowSix = 64;
 
+// create extra life variables
 var extraLife7 = new ExtraLife(colSeven, rowThree);
 var extraLife9 = new ExtraLife(colSeven, rowFour);
 var extraLife17 = new ExtraLife(colOne, rowSix);

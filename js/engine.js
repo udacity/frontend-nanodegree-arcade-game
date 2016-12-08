@@ -94,7 +94,6 @@ var Engine = (function(global) {
      * game loop.
      */
     function init() {
-        //reset();
         player.startSound.play();
         lastTime = Date.now();
         main();
@@ -129,9 +128,11 @@ var Engine = (function(global) {
      */
     function render() {
       if (player.level === 0) {
+       // display Start screen
        renderStartScreen();
        renderGateBorder();
      } else if (player.level === 26) {
+       // display Victory Screen
        renderVictoryScreen();
        renderSolidBorder();
      } else {

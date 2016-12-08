@@ -249,7 +249,6 @@ function renderStatistics() {
   }
 
   // draw lives ///////////////////////////
-  // TODO maybe make this into a loop?
   ctx.font = '24pt Arial';
   ctx.strokeStyle = 'black';
   ctx.lineWidth = 3;

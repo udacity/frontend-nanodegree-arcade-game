@@ -143,13 +143,14 @@ var Player = function(x, y) {
 ///////////////////////////////////////////////////////////////////////
 // Define Player methods section
 
+// starts game on a random class
 Player.prototype.getRandomClass = function(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
+// If player and item's hitbox touch eachother,
+// make item's effect happen, and set item to consumed
 Player.prototype.checkItems = function(item) {
-  // If player and item's hitbox touch eachother,
-  // make item's effect happen, and set item to consumed
   if (this.y === item.y && this.x === item.x && item.consumed === false) {
     item.giveBonus();
     item.consumed = true;
@@ -182,7 +183,8 @@ Player.prototype.checkCollisions = function(enemiesList) {
 
 // Invoked by player.checkCollisions() if player touches enemy
 // Reduces life and sends player back to beginning of level
-// Resets game if player is out of lives
+// Sets game to gameOver if player is out of lives,
+// and plays an annoying evil laugh
 Player.prototype.collide = function() {
   this.lives--;
   if (this.lives < 1) {
@@ -193,6 +195,7 @@ Player.prototype.collide = function() {
   }
 };
 
+// this resets the player to the beginning of level after hitting an enemy
 Player.prototype.resetAfterCollision = function() {
   this.collided = false;
   if (this.level === 1) {
@@ -205,7 +208,9 @@ Player.prototype.resetAfterCollision = function() {
 };
 
 
-
+// this function handles player/obstacle collision
+// checkObstacles is passed 1 parameter:
+// an array of current level's obstacles
 Player.prototype.checkObstacles = function(obstaclesList) {
   // setup player hitbox
   var playerY = this.y;
@@ -214,21 +219,18 @@ Player.prototype.checkObstacles = function(obstaclesList) {
   var playerBottom = this.y + 128;
   var playerLeft = this.x - 128;
   var playerRight = this.x + 128;
+
+  // create array to hold all blocked directions
   var blockedDirections = [];
 
 
-
+  // loop through all obstacles on current level's array
   for (var i = 0; i < obstaclesList.length; i++) {
 
     // set each obstacles location
     var thisObstacle = obstaclesList[i];
     var obstacleX = obstaclesList[i].x;
     var obstacleY = obstaclesList[i].y;
-
-    var obstacleLeft = obstaclesList[i].left;
-    var obstacleRight = obstaclesList[i].right;
-    var obstacleTop = obstaclesList[i].top;
-    var obstacleBottom = obstaclesList[i].bottom;
 
     // prevents moving left
     if (playerLeft === obstacleX && playerY === obstacleY) {
@@ -254,12 +256,10 @@ Player.prototype.checkObstacles = function(obstaclesList) {
   return blockedDirections;
 };
 
-Player.prototype.blockMove = function() {
-
-};
-
 // Reset game to the beginning
-// Reset includes lives, score, level, original position
+// Reset includes lives, score, level, original position,
+// Sets gameOver, gameVictory, and allItems.consumed to false
+// And turns off the music
 Player.prototype.resetGame = function() {
   this.gameOver = false;
   this.gameVictory = false;
@@ -276,6 +276,7 @@ Player.prototype.resetGame = function() {
   this.startSound.play();
 };
 
+// this function allows
 Player.prototype.toggleMusic = function() {
   if (this.soundtrack.playing === false) {
     this.playMusic();
@@ -284,21 +285,26 @@ Player.prototype.toggleMusic = function() {
   }
 };
 
+// used by player.toggleMusic to turn music on
 Player.prototype.playMusic = function() {
   this.soundtrack.play();
   this.soundtrack.playing = true;
 };
 
+// used by player.toggleMusic to turn music off
 Player.prototype.pauseMusic = function() {
   this.soundtrack.pause();
   this.soundtrack.playing = false;
 };
 
-
+// Draw the player's image
 Player.prototype.render = function() {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+// Set the proper level of enemies and items for the player's
+// hitbox to check for
+// And controls level up/down/victory conditions
 Player.prototype.update = function(dt) {
   // Collision conditional for each level
   if (player.level === 1) {
@@ -363,10 +369,9 @@ Player.prototype.update = function(dt) {
     // only add to score if it is first time player made it up
     if (this.level === this.completedLevels) {
       this.level++;
-      // TODO add endgame scenario
-
       this.completedLevels++;
       this.score += 100;
+      // conditional for starting player above bottom trees on level one
       if (this.level === 1) {
         this.y = this.startY;
       } else {

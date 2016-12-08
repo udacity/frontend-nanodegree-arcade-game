@@ -18,6 +18,10 @@ if (player.level === 0) {
     this.classIndex ++;
     this.switchSound.play();
 
+    // Display proper player sprite
+    // conditional lets player cycle through player.classes in a loop
+    // when player tries to move past last class, they cycle to
+    // the first class in the array
     if (this.classIndex < this.classes.length) {
       this.sprite = this.classes[this.classIndex].spriteUrl;
     } else {
@@ -29,6 +33,8 @@ if (player.level === 0) {
     // decreasing class index moves class selection left
     this.classIndex --;
     this.switchSound.play();
+    // this conditional lets player cycle backwards through
+    // player.classes in a loop
     if (this.classIndex > -1) {
       this.sprite = this.classes[this.classIndex].spriteUrl;
     } else {
@@ -45,17 +51,26 @@ if (player.level === 0) {
   }
 }
 
-// game controls
+// Game controls section
+// check that player.gamePaused, player.collided, player.gameOVer,
+// and player.gameVictory are all false, disabling these controls
+// on those screens
 else if (player.level > 0 && this.gamePaused === false
   && this.collided === false
   && this.gameOver === false
   && this.gameVictory === false) {
+  // conditional plays a swimming sound on water levels
   if (this.level >= 11 && this.level <= 14) {
     var waterWalkSound = new Audio("sounds/bubbles.wav");
     this.moveSound = waterWalkSound;
+  // when not on water lvls, play regular classes moveSound
   } else {
     this.moveSound = new Audio(this.classes[this.classIndex].moveSound);
   }
+
+  // Set an array to hold current levels obstacles
+  // This will array will then be passed to game controls
+  // to prevent player from moving on tiles that hold obstacles
   var currentObstacles = [];
   if (this.level === 1) {
     currentObstacles = this.checkObstacles(obstaclesOne);
@@ -109,11 +124,13 @@ else if (player.level > 0 && this.gamePaused === false
     currentObstacles = this.checkObstacles(obstaclesTwentyFive);
   }
 
+  // move up controls
   if (key === 'up' && (currentObstacles.indexOf("Up is Blocked") == -1)
     && (this.y > 64 || (this.x >= 288 && this.x <= 544))) {
     this.y -= 128;
     this.moveSound.play();
 
+  // move down controls
   } else if (key === 'down' &&
     (currentObstacles.indexOf("Down is Blocked") == -1)
     && (this.y < 704 || (this.x >= 288 && this.x <= 544))) {
@@ -122,6 +139,7 @@ else if (player.level > 0 && this.gamePaused === false
   } else if (key === 'down' && this.y >= this.initialY && this.level <= 1) {
     console.log("Error! Can't go farther down.");
 
+  // move right controls
   } else if ((key === 'right' && this.x < 800)
     && (currentObstacles.indexOf("Right is Blocked") == -1)) {
     this.x += 128;
@@ -129,6 +147,7 @@ else if (player.level > 0 && this.gamePaused === false
   } else if (key === 'right' && this.x >= 800) {
     console.log("Error! Can't go farther right.");
 
+  // move left controls
   } else if ((key === 'left' && this.x > 33)
     && (currentObstacles.indexOf("Left is Blocked") == -1)) {
     this.x -= 128;
@@ -136,9 +155,15 @@ else if (player.level > 0 && this.gamePaused === false
   } else if (key === 'left' && this.x <= 33) {
     console.log("Error! Can't go farther left.");
 
+  // pause game controls
   } else if (key === 'space') {
     this.gamePaused = true;
   }
+// end regular game controls
+////////////////////////////////////////////////////////////
+// now check for other game state conditions
+
+// player.gamePaused controls
 } else if (this.gamePaused === true) {
   if (key === 'enter') {
     this.gamePaused = false;
@@ -146,14 +171,20 @@ else if (player.level > 0 && this.gamePaused === false
   } else if (key === 'space') {
     this.gamePaused = false;
   }
+
+// player.collided controls
 } else if (this.collided === true) {
   if (key === 'space') {
     this.resetAfterCollision();
   }
+
+// player.gameOver controls
 } else if (this.gameOver === true) {
   if (key === 'enter') {
     this.resetGame();
   }
+
+// player.gameVictory controls
 } else if (this.gameVictory === true) {
   if (key === 'enter') {
     this.resetGame();

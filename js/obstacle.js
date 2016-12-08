@@ -10,6 +10,7 @@ var Obstacle = function(x, y, image) {
   this.sprite = image;
 };
 
+// draw obstacle's sprite
 Obstacle.prototype.render = function() {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
@@ -32,6 +33,7 @@ var rowFour = 320;
 var rowFive = 192;
 var rowSix = 64;
 
+// create variables for setting obstacle images
 var goldTree = "img/tree_gold.png";
 var redTree = "img/tree_red.png";
 var rock = "img/rock.png";
@@ -41,7 +43,7 @@ var skullPile = "img/obstacle_skull_pile.png";
 var skeletonChain = "img/obstacle_skeleton_chain.png";
 var statue = "img/obstacle_statue.png";
 
-
+// create an array for each level
 var obstaclesOne = [];
 var obstaclesTwo = [];
 var obstaclesThree = [];
@@ -52,9 +54,10 @@ var obstaclesSeven = [];
 var obstaclesEight = [];
 var obstaclesNine = [];
 var obstaclesTen = [];
-//var obstaclesEleven = [];
+// no obstacles level 11
+// no obstacles level 12
 var obstaclesThirteen = [];
-var obstaclesFourteen = [];
+// no obstacles level 14
 var obstaclesFifteen = [];
 var obstaclesSixteen = [];
 var obstaclesSeventeen = [];
@@ -67,6 +70,7 @@ var obstaclesTwentyThree = [];
 var obstaclesTwentyFour = [];
 var obstaclesTwentyFive = [];
 
+// Instantiate all Objects and push them into their level's array
 // Obstacle parameters - x, y, level, image
 
 /////////////////////////////////////////////
