@@ -40,8 +40,8 @@ The goal of Dungeon Dash is to travel from the bottom of the screen to the top.
 ## Credits
 * Original Game Framework Supplied by [Udacity](https://github.com/udacity/frontend-nanodegree-arcade-game)
 * All graphics were modified by Ty Sabs using Photoshop
-* Original graphics come from a tileset at [OpenGameArt.org](http://opengameart.org/content/dungeon-crawl-32x32-tiles)
-* Sound Effects come from RPG Sound pack at [OpenGameArt.org](http://opengameart.org/content/rpg-sound-pack)
+* Original graphics come from a tileset at [OpenGameArt](http://opengameart.org/content/dungeon-crawl-32x32-tiles)
+* Sound Effects come from RPG Sound pack at [OpenGameArt](http://opengameart.org/content/rpg-sound-pack)
 * Music was made by [Edward Shallow](http://freemusicarchive.org/music/Edward_Shallow/)
 * Evil Game Over Laugh Sound Effect supplied by [SoundBible](http://soundbible.com/2052-Creepy-Laugh.html)
 * Ravi Prakash font supplied by [Google Web Fonts](https://fonts.google.com/?selection.family=Ravi+Prakash)
