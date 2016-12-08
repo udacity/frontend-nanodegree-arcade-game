@@ -14,13 +14,6 @@ Obstacle.prototype.render = function() {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-Obstacle.prototype.update = function() {
-
-};
-
-Obstacle.prototype.checkObstacles = function(obstaclesList) {
-
-};
 
 // columns (x-value)
 var colOne = 32;
@@ -832,3 +825,45 @@ obstaclesTwentyFour.push(twentyFourChain8);
 obstaclesTwentyFour.push(twentyFourChain9);
 obstaclesTwentyFour.push(twentyFourChain10);
 obstaclesTwentyFour.push(twentyFourRock11);
+
+///////////////////////////////////
+// Obstacles Level 25 (Dragons)
+
+// lower row of rocks
+var twentyFiveRock1 = new Obstacle(colTwo, rowTwo, rock);
+var twentyFiveRock2 = new Obstacle(colFour, rowTwo, rock);
+var twentyFiveRock3 = new Obstacle(colSix, rowTwo, rock);
+
+// middle row of rocks (on the outside of statues)
+var twentyFiveRock4 = new Obstacle(colOne, rowFour, rock);
+var twentyFiveRock5 = new Obstacle(colSeven, rowFour, rock);
+
+// middle statues
+var twentyFiveStatue1 = new Obstacle(colThree, rowFour, statue);
+var twentyFiveStatue2 = new Obstacle(colFour, rowFour, statue);
+var twentyFiveStatue3 = new Obstacle(colFive, rowFour, statue);
+
+// top left rocks
+var twentyFiveRock6 = new Obstacle(colOne, rowSix, rock);
+var twentyFiveRock7 = new Obstacle(colTwo, rowSix, rock);
+
+// top right rocks
+var twentyFiveRock8 = new Obstacle(colSix, rowSix, rock);
+var twentyFiveRock9 = new Obstacle(colSeven, rowSix, rock);
+
+obstaclesTwentyFive.push(twentyFiveRock1);
+obstaclesTwentyFive.push(twentyFiveRock2);
+obstaclesTwentyFive.push(twentyFiveRock3);
+
+obstaclesTwentyFive.push(twentyFiveRock4);
+obstaclesTwentyFive.push(twentyFiveRock5);
+
+obstaclesTwentyFive.push(twentyFiveStatue1);
+obstaclesTwentyFive.push(twentyFiveStatue2);
+obstaclesTwentyFive.push(twentyFiveStatue3);
+
+obstaclesTwentyFive.push(twentyFiveRock6);
+obstaclesTwentyFive.push(twentyFiveRock7);
+
+obstaclesTwentyFive.push(twentyFiveRock8);
+obstaclesTwentyFive.push(twentyFiveRock9);

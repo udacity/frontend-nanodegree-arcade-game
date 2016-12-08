@@ -9,7 +9,7 @@ if (key === 'music') {
   this.toggleMusic();
 }
 // start screen controls
-if (player.level === 0){
+if (player.level === 0) {
   // create sound for flipping between classes
   var newSwitchSound = new Audio("sounds/class_switch.wav");
   this.switchSound = newSwitchSound;
@@ -48,7 +48,8 @@ if (player.level === 0){
 // game controls
 else if (player.level > 0 && this.gamePaused === false
   && this.collided === false
-  && this.gameOver === false) {
+  && this.gameOver === false
+  && this.gameVictory === false) {
   if (this.level >= 11 && this.level <= 14) {
     var waterWalkSound = new Audio("sounds/bubbles.wav");
     this.moveSound = waterWalkSound;
@@ -150,6 +151,10 @@ else if (player.level > 0 && this.gamePaused === false
     this.resetAfterCollision();
   }
 } else if (this.gameOver === true) {
+  if (key === 'enter') {
+    this.resetGame();
+  }
+} else if (this.gameVictory === true) {
   if (key === 'enter') {
     this.resetGame();
   }

@@ -781,7 +781,7 @@ ImpBlack.prototype.constructor = Beast;
 function ImpMaster(y) {
   var obj = new Beast(y);
   obj.sprite = 'img/imp_master.png';
-  obj.speed = speedSeventeen + 140;
+  obj.speed = speedSeventeen - 70;
   return obj;
 }
 ImpMaster.prototype = Object.create(Beast.prototype);
@@ -1291,6 +1291,86 @@ function DemonBlack(y) {
 DemonBlack.prototype = Object.create(Dragonkin.prototype);
 DemonBlack.prototype.constructor = Dragonkin;
 
+///////////////////////////////////////////////////
+// Define Dragons level 25 mobs
+//////////////////////////////////
+
+function DragonBlue(y) {
+  var obj = new Dragonkin(y);
+  obj.sprite = 'img/dragon_blue.png';
+  obj.speed = speedTwentyFive - 20;
+  obj.direction = "left";
+  return obj;
+}
+DragonBlue.prototype = Object.create(Dragonkin.prototype);
+DragonBlue.prototype.constructor = Dragonkin;
+
+function DragonCamo(y) {
+  var obj = new Dragonkin(y);
+  obj.sprite = 'img/dragon_camo.png';
+  obj.speed = speedTwentyFive - 20;
+  return obj;
+}
+DragonCamo.prototype = Object.create(Dragonkin.prototype);
+DragonCamo.prototype.constructor = Dragonkin;
+
+function DragonBlack(y) {
+  var obj = new Dragonkin(y);
+  obj.sprite = 'img/dragon_black.png';
+  obj.speed = speedTwentyFive + 30;
+  obj.direction = "left";
+  return obj;
+}
+DragonBlack.prototype = Object.create(Dragonkin.prototype);
+DragonBlack.prototype.constructor = Dragonkin;
+
+function DragonGold(y) {
+  var obj = new Dragonkin(y);
+  obj.sprite = 'img/dragon_gold.png';
+  obj.speed = speedTwentyFive - 50;
+  return obj;
+}
+DragonGold.prototype = Object.create(Dragonkin.prototype);
+DragonGold.prototype.constructor = Dragonkin;
+
+function DragonPink(y) {
+  var obj = new Dragonkin(y);
+  obj.sprite = 'img/dragon_pink.png';
+  obj.speed = speedTwentyFive - 15;
+  obj.direction = "left";
+  return obj;
+}
+DragonPink.prototype = Object.create(Dragonkin.prototype);
+DragonPink.prototype.constructor = Dragonkin;
+
+function DragonWhite(y) {
+  var obj = new Dragonkin(y);
+  obj.sprite = 'img/dragon_white.png';
+  obj.speed = speedTwentyFive - 40;
+  return obj;
+}
+DragonWhite.prototype = Object.create(Dragonkin.prototype);
+DragonWhite.prototype.constructor = Dragonkin;
+
+function DragonGreen(y) {
+  var obj = new Dragonkin(y);
+  obj.sprite = 'img/dragon_green.png';
+  obj.speed = speedTwentyFive - 40;
+  obj.direction = "left";
+  return obj;
+}
+DragonGreen.prototype = Object.create(Dragonkin.prototype);
+DragonGreen.prototype.constructor = Dragonkin;
+
+function DragonFire(y) {
+  var obj = new Dragonkin(y);
+  obj.sprite = 'img/dragon_fire.png';
+  obj.speed = speedTwentyFive + 50;
+  return obj;
+}
+DragonFire.prototype = Object.create(Dragonkin.prototype);
+DragonFire.prototype.constructor = Dragonkin;
+
 ///////////////////////////////////////////////////////
 // Instantiate all objects
 //////////////////////////
@@ -1703,3 +1783,24 @@ levelTwentyFour.push(gazerPurple);
 levelTwentyFour.push(balrogGreater);
 levelTwentyFour.push(demonHappy);
 levelTwentyFour.push(demonBlack);
+
+/////////////////////////////////////////
+// Instantiate lvl 25 enemies (Dragons)
+
+var dragonBlue = new DragonBlue(row2);
+var dragonCamo = new DragonCamo(row2);
+var dragonBlack = new DragonBlack(row3);
+var dragonGold = new DragonGold(row3);
+var dragonPink = new DragonPink(row4);
+var dragonWhite = new DragonWhite(row4);
+var dragonGreen = new DragonGreen(row5);
+var dragonFire = new DragonFire(row5);
+
+levelTwentyFive.push(dragonBlue);
+levelTwentyFive.push(dragonCamo);
+levelTwentyFive.push(dragonBlack);
+levelTwentyFive.push(dragonGold);
+levelTwentyFive.push(dragonPink);
+levelTwentyFive.push(dragonWhite);
+levelTwentyFive.push(dragonGreen);
+levelTwentyFive.push(dragonFire);

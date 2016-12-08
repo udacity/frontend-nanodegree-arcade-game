@@ -130,15 +130,18 @@ var Engine = (function(global) {
     function render() {
       if (player.level === 0) {
        renderStartScreen();
-       renderBorder();
-      } else {
+       renderGateBorder();
+     } else if (player.level === 26) {
+       renderVictoryScreen();
+       renderSolidBorder();
+     } else {
        // displays the game tiles, definition is in levelBuilder.js
        renderWorld();
        // invoke renderEntities before ui so monsters display on top layer
        // renderEntities definition is in levelBuilder.js
        renderEntities();
        // render UI above world and entities
-       renderBorder();
+       renderGateBorder();
        // render statistics above the border
        renderStatistics();
       }
@@ -208,6 +211,7 @@ var Engine = (function(global) {
         'img/blackrock.png',
         'img/brick_vine.png',
         'img/hellscape.png',
+        'img/end_stone.png',
         // enemy section
         'img/snail.png',
         'img/scorpion.png',
@@ -347,6 +351,14 @@ var Engine = (function(global) {
         'img/gargoyle_red.png',
         'img/gargoyle_black.png',
         'img/gargoyle_ice.png',
+        'img/dragon_blue.png',
+        'img/dragon_camo.png',
+        'img/dragon_black.png',
+        'img/dragon_gold.png',
+        'img/dragon_pink.png',
+        'img/dragon_white.png',
+        'img/dragon_green.png',
+        'img/dragon_fire.png',
         // obstacle section
         'img/tree_gold.png',
         'img/tree_red.png',
@@ -359,7 +371,7 @@ var Engine = (function(global) {
         'img/skull.png',
         'img/skull_large.png',
         'img/blood_pool.png',
-        'img/explosion.png'
+        'img/extra_life.png'
 
     ]);
     Resources.onReady(init);

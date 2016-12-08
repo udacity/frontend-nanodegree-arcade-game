@@ -30,6 +30,7 @@ var Player = function(x, y) {
   this.collided = false;
   this.gamePaused = false;
   this.gameOver = false;
+  this.gameVictory = false;
 
   // instantiate each class as an object before pushing into array
   var knight = {
@@ -146,6 +147,15 @@ Player.prototype.getRandomClass = function(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
+Player.prototype.checkItems = function(item) {
+  // If player and item's hitbox touch eachother,
+  // make item's effect happen, and set item to consumed
+  if (this.y === item.y && this.x === item.x && item.consumed === false) {
+    item.giveBonus();
+    item.consumed = true;
+  }
+};
+
 // checkCollisions is invoked by player.update method
 // checkCollisions takes 1 parameter: array of current level's mobs
 Player.prototype.checkCollisions = function(enemiesList) {
@@ -252,6 +262,10 @@ Player.prototype.blockMove = function() {
 // Reset includes lives, score, level, original position
 Player.prototype.resetGame = function() {
   this.gameOver = false;
+  this.gameVictory = false;
+  allItems.forEach(function(item) {
+    item.consumed = false;
+  });
   this.lives = 3;
   this.score = 0;
   this.level = 0;
@@ -300,10 +314,12 @@ Player.prototype.update = function(dt) {
   } else if (player.level === 6) {
     this.checkCollisions(levelSix);
   } else if (player.level === 7) {
+    this.checkItems(extraLife7);
     this.checkCollisions(levelSeven);
   } else if (player.level === 8) {
     this.checkCollisions(levelEight);
   } else if (player.level === 9) {
+    this.checkItems(extraLife9);
     this.checkCollisions(levelNine);
   } else if (player.level === 10) {
     this.checkCollisions(levelTen);
@@ -320,18 +336,21 @@ Player.prototype.update = function(dt) {
   } else if (player.level === 16) {
     this.checkCollisions(levelSixteen);
   } else if (player.level === 17) {
+    this.checkItems(extraLife17);
     this.checkCollisions(levelSeventeen);
   } else if (player.level === 18) {
     this.checkCollisions(levelEighteen);
   } else if (player.level === 19) {
     this.checkCollisions(levelNineteen);
   } else if (player.level === 20) {
+    this.checkItems(extraLife20);
     this.checkCollisions(levelTwenty);
   } else if (player.level === 21) {
     this.checkCollisions(levelTwentyOne);
   } else if (player.level === 22) {
     this.checkCollisions(levelTwentyTwo);
   } else if (player.level === 23) {
+    this.checkItems(extraLife23);
     this.checkCollisions(levelTwentyThree);
   } else if (player.level === 24) {
     this.checkCollisions(levelTwentyFour);
@@ -348,10 +367,6 @@ Player.prototype.update = function(dt) {
 
       this.completedLevels++;
       this.score += 100;
-      if (this.score === 1000) {
-        this.itemSound.play();
-        this.lives ++;
-      }
       if (this.level === 1) {
         this.y = this.startY;
       } else {
@@ -366,6 +381,10 @@ Player.prototype.update = function(dt) {
   } else if (this.y > this.initialY) {
     this.level--;
     this.y = 64;
+  }
+  // victory game conditions
+  if (this.level === 26) {
+    this.gameVictory = true;
   }
 };
 

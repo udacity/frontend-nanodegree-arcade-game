@@ -57,6 +57,9 @@ function renderEntities() {
       obstaclesSeven.forEach(function(obstacle) {
         obstacle.render();
       });
+      if (extraLife7.consumed === false) {
+        extraLife7.render();
+      }
       levelSeven.forEach(function(enemy) {
         enemy.render();
       });
@@ -71,6 +74,9 @@ function renderEntities() {
       obstaclesNine.forEach(function(obstacle) {
         obstacle.render();
       });
+      if (extraLife9.consumed === false) {
+        extraLife9.render();
+      }
       levelNine.forEach(function(enemy) {
         enemy.render();
       });
@@ -118,6 +124,9 @@ function renderEntities() {
       obstaclesSeventeen.forEach(function(obstacle) {
         obstacle.render();
       });
+      if (extraLife17.consumed === false) {
+        extraLife17.render();
+      }
       levelSeventeen.forEach(function(enemy) {
         enemy.render();
       });
@@ -139,6 +148,9 @@ function renderEntities() {
       obstaclesTwenty.forEach(function(obstacle) {
         obstacle.render();
       });
+      if (extraLife20.consumed === false) {
+        extraLife20.render();
+      }
       levelTwenty.forEach(function(enemy) {
         enemy.render();
       });
@@ -160,6 +172,9 @@ function renderEntities() {
       obstaclesTwentyThree.forEach(function(obstacle) {
         obstacle.render();
       });
+      if (extraLife23.consumed === false) {
+        extraLife23.render();
+      }
       levelTwentyThree.forEach(function(enemy) {
         enemy.render();
       });
@@ -513,7 +528,7 @@ function renderWorld() {
         ];
       } else if (player.level === 25) {
         rowImages = [
-            'img/brick_vine.png',     // Row 6 - Top row
+            'img/end_stone.png',     // Row 6 - Top row
             'img/blackrock.png',  // Row 5
             'img/blackrock.png',     // Row 4
             'img/blackrock.png',    // Row 3
