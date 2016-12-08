@@ -35,19 +35,11 @@ var Engine = (function(global) {
     // add game display elements to html document
     doc.body.appendChild(gameArea);
     gameArea.appendChild(canvas);
-//    $(gameArea).append(canvas);
+
 
     gameArea.setAttribute("id", "game-area");
     canvas.setAttribute("id", "game-canvas");
 
-    /*
-    // display music button
-    $(gameArea).append(musicButton);
-    musicButton.setAttribute("id", "music-btn");
-    $(musicButton).text("Music On/Off");
-    // add functionality to music button
-    window.addEventListener("load", initAudioPlayer);
-    */
 
 
     /* This function serves as the kickoff point for the game loop itself
