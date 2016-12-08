@@ -2,7 +2,8 @@
 ### By Ty Sabs
 
 ## Getting Started
-To start the game with downloaded version, open up index.html in a web browser
+To start the game with downloaded version, open up index.html in a web browser.
+
 Play the game online here: [Dungeon Dash](http://tysabs.github.io/Dungeon-Dash/)
 ***Note***: Game size is about 35MB and it may take a minute for the page to load
 
