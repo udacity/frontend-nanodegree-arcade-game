@@ -1,4 +1,4 @@
-# Dungeon Dash README
+# Dungeon Dash
 ### By Ty Sabs
 
 ## Getting Started
