@@ -51,3 +51,4 @@ The goal of Dungeon Dash is to travel from the bottom of the screen to the top.
 * Ravi Prakash font supplied by [Google Web Fonts](https://fonts.google.com/?selection.family=Ravi+Prakash)
 * Background Image supplied by [Susan Ibach](https://blogs.msdn.microsoft.com/cdnstudents/2013/07/22/free-fantasy-art-assets-to-help-you-build-your-games/)
 * Loading Screen Gif supplied by [Ajaxload](http://www.ajaxload.info/)
+* Victory Message was inspired by Knife Party
