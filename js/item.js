@@ -1,7 +1,7 @@
 var ExtraLife = function(x, y) {
   this.x = x;
   this.y = y;
-  this.sound = new Audio('sounds/item.wav');
+  this.sound = new Audio('sounds/extra_life.wav');
   this.consumed = false;
   this.sprite = 'img/extra_life.png';
 };
