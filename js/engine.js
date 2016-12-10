@@ -24,15 +24,35 @@ var Engine = (function(global) {
         canvas = doc.createElement('canvas'),
         ctx = canvas.getContext('2d'),
         lastTime;
+    
 
     canvas.width = 505;
-    canvas.height = 606;
+    canvas.height = 616;
     doc.body.appendChild(canvas);
+
+    var STATE = {
+        ALIVE: "alive",
+        DEAD: "dead",
+        WIN : "win"
+    };
+
+    var paused = false;
 
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
      */
     function main() {
+
+        if(paused) {
+            ctx.fillStyle = 'white';
+            ctx.strokeStyle = 'blue';
+            ctx.textAlign = "center";
+            ctx.font ="48px impact";
+            ctx.fillText("Paused", canvas.width/2, canvas.height/2);
+            ctx.strokeText("Paused", canvas.width/2, canvas.height/2);
+
+            return;
+        }
         /* Get our time delta information which is required if your game
          * requires smooth animation. Because everyone's computer processes
          * instructions at different speeds we need a constant value that
@@ -45,6 +65,7 @@ var Engine = (function(global) {
         /* Call our update/render functions, pass along the time delta to
          * our update function since it may be used for smooth animation.
          */
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
         update(dt);
         render();
 
@@ -80,7 +101,7 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        // checkCollisions();
+        checkCollisions();
     }
 
     /* This is called by the update function and loops through all of the
@@ -95,6 +116,7 @@ var Engine = (function(global) {
             enemy.update(dt);
         });
         player.update();
+
     }
 
     /* This function initially draws the "game level", it will then call
@@ -112,7 +134,7 @@ var Engine = (function(global) {
                 'images/stone-block.png',   // Row 1 of 3 of stone
                 'images/stone-block.png',   // Row 2 of 3 of stone
                 'images/stone-block.png',   // Row 3 of 3 of stone
-                'images/grass-block.png',   // Row 1 of 2 of grass
+                'images/grass-block.png',   // Row 1 of 2 of gr
                 'images/grass-block.png'    // Row 2 of 2 of grass
             ],
             numRows = 6,
@@ -136,7 +158,42 @@ var Engine = (function(global) {
             }
         }
 
+        var numLife = player.getNumLeft();
+
+        for(var i = 0; i < numLife; i++) {
+            ctx.drawImage(Resources.get('images/char-boy.png'), 30 * i, 568, 32, 50);    
+        }
+
         renderEntities();
+
+        var playerState = player.getState();
+
+        if(playerState != STATE.ALIVE) {
+            ctx.fillStyle = 'orange';
+            ctx.strokeStyle = 'blue';
+            ctx.textAlign = "center";
+            var text;
+            var height = canvas.height/2;
+            
+            ctx.font ="48px impact";
+
+            if(playerState === STATE.DEAD) {
+                console.log("player.getNumLeft(): ", player.getNumLeft());
+                if(player.getNumLeft() <= 0) {
+                    text = "Game Over!"
+                } else {
+                    text = "Dead!!";   
+                    height = 100; 
+                }
+            } else if (playerState === STATE.WIN) {
+                text = "You WIN!!";
+            }
+
+            ctx.fillText(text, canvas.width/2, height);
+            ctx.strokeText(text, canvas.width/2, height);
+        } else {
+            console.log("here?");
+        }
     }
 
     /* This function is called by the render function and is called on each game
@@ -147,6 +204,7 @@ var Engine = (function(global) {
         /* Loop through all of the objects within the allEnemies array and call
          * the render function you have defined.
          */
+
         allEnemies.forEach(function(enemy) {
             enemy.render();
         });
@@ -159,7 +217,36 @@ var Engine = (function(global) {
      * those sorts of things. It's only called once by the init() method.
      */
     function reset() {
+        player.reset(); 
+
         // noop
+    }
+
+    function checkCollisions() {
+        var playerPosition = player.getPosition();
+        var enemyPosition;
+        var collide = false;
+
+        if(playerPosition.y < 0) {
+            player.setState("win");
+        }
+
+        allEnemies.forEach( function(enemy) {
+            enemyPosition = enemy.getPosition();
+
+            if(enemyPosition.y > playerPosition.y - 30 &&
+               enemyPosition.y < playerPosition.y + 30 &&
+               enemyPosition.x > playerPosition.x - 20 && 
+               enemyPosition.x < playerPosition.x + 20 ) {
+                    
+                    collide = true;
+
+                }
+        });
+    
+        if(collide) {
+            player.setState(STATE.DEAD);
+        }
     }
 
     /* Go ahead and load all of the images we know we're going to need to
@@ -180,4 +267,24 @@ var Engine = (function(global) {
      * from within their app.js files.
      */
     global.ctx = ctx;
+
+    /**
+     * Listen for key events.
+     * <Space> for paused
+     *  <Escape> for settings (choose the player image, etc)
+     */
+    document.addEventListener('keyup', function(e){
+        var keyCode = {
+            ESCAPE: 27,
+            SPACE : 32
+        };
+
+        if(e.keyCode === keyCode.SPACE) {
+            paused = !paused;
+
+            if(!paused) {
+                main();
+            }
+        }
+    });
 })(this);
