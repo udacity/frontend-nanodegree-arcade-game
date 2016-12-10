@@ -159,11 +159,14 @@ var threeRock5 = new Obstacle(colSix, rowFive, rock);
 
 obstaclesThree.push(threeTree1);
 obstaclesThree.push(threeTree2);
+
 obstaclesThree.push(threeTree3);
 obstaclesThree.push(threeTree4);
+
 obstaclesThree.push(threeRock1);
 obstaclesThree.push(threeRock2);
 obstaclesThree.push(threeRock3);
+
 obstaclesThree.push(threeRock4);
 obstaclesThree.push(threeRock5);
 

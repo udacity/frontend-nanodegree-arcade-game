@@ -47,8 +47,4 @@ var extraLife23 = new ExtraLife(colSeven, rowFive);
 // add all items to an array that can be used to reset consumed statues
 var allItems = [];
 
-allItems.push(extraLife7);
-allItems.push(extraLife9);
-allItems.push(extraLife17);
-allItems.push(extraLife20);
-allItems.push(extraLife23);
+allItems.push(extraLife7, extraLife9, extraLife17, extraLife20, extraLife23);

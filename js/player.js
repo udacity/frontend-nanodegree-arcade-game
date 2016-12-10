@@ -118,20 +118,8 @@ var Player = function(x, y) {
   };
 
   // now push each class into this.classes array
-  this.classes.push(knight);
-  this.classes.push(sorceress);
-  this.classes.push(mage);
-  this.classes.push(scribe);
-  this.classes.push(templar);
-  this.classes.push(oracle);
-  this.classes.push(priest);
-  this.classes.push(monk);
-  this.classes.push(rogue);
-  this.classes.push(enchantress);
-  this.classes.push(paladin);
-  this.classes.push(berserker);
-  this.classes.push(ninja);
-  this.classes.push(engineer);
+  this.classes.push(knight, sorceress, mage, scribe, templar, oracle, priest,
+                    monk, rogue, enchantress, paladin, berserker, ninja, engineer);
 
   // starts game on a random class
   var randomClass = this.getRandomClass(0, (this.classes.length - 1));

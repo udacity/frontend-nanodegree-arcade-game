@@ -65,7 +65,7 @@ var speedSixteen = 250;
 var speedSeventeen = 100;
 var speedEighteen = 270;
 var speedNineteen = 290;
-var speedTwenty = 300;
+var speedTwenty = 280;
 var speedTwentyOne = 175;
 var speedTwentyTwo = 320;
 var speedTwentyThree = 120;
@@ -1386,13 +1386,12 @@ var row6 = 64;
 
 
 // Instantiate arrays for each level
-// var allEnemies = [];
 var levelOne = [];
-var levelTwo = []; // level 1
-var levelThree = []; // level 2
-var levelFour = [];      // level 3
-var levelFive = [];    // level 4
-var levelSix = [];    // level 5
+var levelTwo = [];
+var levelThree = [];
+var levelFour = [];
+var levelFive = [];
+var levelSix = [];
 var levelSeven = [];
 var levelEight = [];
 var levelNine = [];
@@ -1419,57 +1418,42 @@ var snail = new Snail(row3);
 var scorpion = new Scorpion(row4);
 var beetle = new Beetle(row5);
 
-levelOne.push(snail);
-levelOne.push(scorpion);
-levelOne.push(beetle);
-
+levelOne.push(snail, scorpion, beetle);
 
 // Instantiate bugs lvl 2 enemies
 var spider = new Spider(row3);
 var roach = new Roach(row4);
 var centipede = new Centipede(row5);
 
-levelTwo.push(spider);
-levelTwo.push(roach);
-levelTwo.push(centipede);
+levelTwo.push(spider, roach, centipede);
 
 // Instantiate bugs lvl 3 enemies
 var antWorker = new AntWorker(row3);
 var antSoldier = new AntSoldier(row4);
 var mosquito = new Mosquito(row5);
 
-levelThree.push(antWorker);
-levelThree.push(antSoldier);
-levelThree.push(mosquito);
+levelThree.push(antWorker, antSoldier, mosquito);
 
 // Instantiate bugs lvl 4 enemies
 var larvaGrey = new LarvaGrey(row3);
 var larvaOrange = new LarvaOrange(row4);
 var brainBug = new BrainBug(row5);
 
-levelFour.push(larvaGrey);
-levelFour.push(larvaOrange);
-levelFour.push(brainBug);
-
+levelFour.push(larvaGrey, larvaOrange, brainBug);
 
 // Instantiate bugs lvl 5 enemies
 var hornet = new Hornet(row3);
 var firefly = new Firefly(row4);
 var moth = new Moth(row5);
 
-levelFive.push(hornet);
-levelFive.push(firefly);
-levelFive.push(moth);
-
+levelFive.push(hornet, firefly, moth);
 
 // Instantiate worgs lvl 6 enemies
 var worgWarrior = new WorgWarrior(row3);
 var worgMage = new WorgMage(row4);
 var worgRogue = new WorgRogue(row5);
 
-levelSix.push(worgWarrior);
-levelSix.push(worgMage);
-levelSix.push(worgRogue);
+levelSix.push(worgWarrior, worgMage, worgRogue);
 
 // Instantiate Goblins lvl 7 enemies
 var gobFighter = new GobFighter(row2);
@@ -1477,11 +1461,7 @@ var gobWarrior = new GobWarrior(row3);
 var gobMage = new GobMage(row4);
 var gobSorc = new GobSorc(row5);
 
-levelSeven.push(gobFighter);
-levelSeven.push(gobWarrior);
-levelSeven.push(gobMage);
-levelSeven.push(gobSorc);
-
+levelSeven.push(gobFighter, gobWarrior, gobMage, gobSorc);
 
 // Instantiate Elves lvl 8 enemies
 var elfWarrior = new ElfWarrior(row2);
@@ -1489,10 +1469,7 @@ var elfMage = new ElfMage(row3);
 var elfPriest = new ElfPriest(row4);
 var elfNecromancer = new ElfNecromancer(row5);
 
-levelEight.push(elfWarrior);
-levelEight.push(elfMage);
-levelEight.push(elfPriest);
-levelEight.push(elfNecromancer);
+levelEight.push(elfWarrior, elfMage, elfPriest, elfNecromancer);
 
 // Instantiate Centaurs lvl 9 enemies
 var centaurArcherOrange = new CentaurArcherOrange(row2);
@@ -1500,10 +1477,8 @@ var centaurArcherRed = new CentaurArcherRed(row3);
 var centaurXbowBrown = new CentaurXbowBrown(row4);
 var centaurXbowGrey = new CentaurXbowGrey(row5);
 
-levelNine.push(centaurArcherOrange);
-levelNine.push(centaurArcherRed);
-levelNine.push(centaurXbowBrown);
-levelNine.push(centaurXbowGrey);
+levelNine.push(centaurArcherOrange, centaurArcherRed, centaurXbowBrown, centaurXbowGrey);
+
 
 // Instantiate Cyclops lvl 10 enemies
 var ogreTwoHead = new OgreTwoHead(row2);
@@ -1511,10 +1486,7 @@ var ogreWitch = new OgreWitch(row3);
 var cyclopsWarrior = new CyclopsWarrior(row4);
 var cyclopsOfficer = new CyclopsOfficer(row5);
 
-levelTen.push(ogreTwoHead);
-levelTen.push(ogreWitch);
-levelTen.push(cyclopsWarrior);
-levelTen.push(cyclopsOfficer);
+levelTen.push(ogreTwoHead, ogreWitch, cyclopsWarrior, cyclopsOfficer);
 
 /////////////////////////////////////////
 // Instantiate Sea Beasts lvl 11 enemies
@@ -1526,12 +1498,7 @@ var jellyfish3 = new Jellyfish(row4, 40, "left");
 var jellyfish4 = new Jellyfish(row4, 1, "right");
 var dolphin = new Dolphin(row5);
 
-levelEleven.push(octopus);
-levelEleven.push(jellyfish1);
-levelEleven.push(jellyfish2);
-levelEleven.push(jellyfish3);
-levelEleven.push(jellyfish4);
-levelEleven.push(dolphin);
+levelEleven.push(octopus, jellyfish1, jellyfish2, jellyfish3, jellyfish4, dolphin);
 
 /////////////////////////////////////////
 // Instantiate Naga lvl 12 enemies
@@ -1545,31 +1512,21 @@ var nagaMageRight = new NagaMage(row3, -5, "right", "img/naga_mage_right.png");
 var nagaFighterLeft = new NagaFighter(row5, 20, "left", "img/naga_fighter_left.png");
 var nagaFighterRight = new NagaFighter(row5, -10, "right", "img/naga_fighter_right.png");
 
-levelTwelve.push(nagaWarriorLeft);
-levelTwelve.push(nagaWarriorRight);
-levelTwelve.push(nagaRogueLeft);
-levelTwelve.push(nagaRogueRight);
-levelTwelve.push(nagaMageLeft);
-levelTwelve.push(nagaMageRight);
-levelTwelve.push(nagaFighterLeft);
-levelTwelve.push(nagaFighterRight);
+levelTwelve.push(nagaWarriorLeft, nagaWarriorRight, nagaRogueLeft, nagaRogueRight,
+                nagaMageLeft, nagaMageRight, nagaFighterLeft, nagaFighterRight);
 
 /////////////////////////////////////////
 // Instantiate Naga lvl 13 enemies
 
 var squidmanLeft = new Squidman(row2, 10, "left", "img/squidman_left.png");
-var nagaSoothsayerLeft1 = new NagaSoothsayer(row3, 16, "left", "img/naga_soothsayer_left.png");
-var nagaSirenRight1 = new NagaSiren(row3, 40, "right", "img/naga_siren_right.png");
-var nagaSirenLeft1 = new NagaSiren(row4, 0, "left", "img/naga_siren_left.png");
-var nagaSoothsayerRight1 = new NagaSoothsayer(row4, 20, "right", "img/naga_soothsayer_right.png");
+var nagaSoothsayerLeft = new NagaSoothsayer(row3, 16, "left", "img/naga_soothsayer_left.png");
+var nagaSirenRight = new NagaSiren(row3, 40, "right", "img/naga_siren_right.png");
+var nagaSirenLeft = new NagaSiren(row4, 0, "left", "img/naga_siren_left.png");
+var nagaSoothsayerRight = new NagaSoothsayer(row4, 20, "right", "img/naga_soothsayer_right.png");
 var squidmanRight = new Squidman(row5, 30, "right", "img/squidman_right.png");
 
-levelThirteen.push(nagaSoothsayerLeft1);
-levelThirteen.push(nagaSirenRight1);
-levelThirteen.push(nagaSirenLeft1);
-levelThirteen.push(nagaSoothsayerRight1);
-levelThirteen.push(squidmanLeft);
-levelThirteen.push(squidmanRight);
+levelThirteen.push(nagaSoothsayerLeft, nagaSirenRight, nagaSirenLeft,
+                  nagaSoothsayerRight, squidmanLeft, squidmanRight);
 
 /////////////////////////////////////////
 // Instantiate Water Beasts lvl 14 enemies
@@ -1584,15 +1541,7 @@ var eel4 = new Eel(row4, -10, "left", "img/eel_left.png");
 var eel5 = new Eel(row4, 40, "left", "img/eel_left.png");
 var eel6 = new Eel(row4, 20, "right", "img/eel_right.png");
 
-levelFourteen.push(anemone);
-levelFourteen.push(turtle);
-levelFourteen.push(spikedTurtle);
-levelFourteen.push(eel1);
-levelFourteen.push(eel2);
-levelFourteen.push(eel3);
-levelFourteen.push(eel4);
-levelFourteen.push(eel5);
-levelFourteen.push(eel6);
+levelFourteen.push(anemone, turtle, spikedTurtle, eel1, eel2, eel3, eel4, eel5, eel6);
 
 /////////////////////////////////////////
 // Instantiate Land Beasts lvl 15 enemies
@@ -1604,11 +1553,7 @@ var gecko = new Gecko(row5);
 var giantSerpent = new GiantSerpent(row6);
 
 
-levelFifteen.push(crocodile);
-levelFifteen.push(stripedSnake);
-levelFifteen.push(lizard);
-levelFifteen.push(gecko);
-levelFifteen.push(giantSerpent);
+levelFifteen.push(crocodile, stripedSnake, lizard, gecko, giantSerpent);
 
 /////////////////////////////////////////
 // Instantiate Land Beasts lvl 16 enemies
@@ -1620,12 +1565,7 @@ var trollRed = new TrollRed(row3);
 var trollBlack = new TrollBlack(row4);
 var trollWhite = new TrollWhite(row5);
 
-levelSixteen.push(trollBlue);
-levelSixteen.push(trollGrey);
-levelSixteen.push(trollGreen);
-levelSixteen.push(trollRed);
-levelSixteen.push(trollBlack);
-levelSixteen.push(trollWhite);
+levelSixteen.push(trollBlue, trollGrey, trollGreen, trollRed, trollBlack, trollWhite);
 
 /////////////////////////////////////////
 // Instantiate Imps lvl 17 enemies
@@ -1636,11 +1576,7 @@ var impEnchanted = new ImpEnchanted(row4);
 var impBlack = new ImpBlack(row4);
 var impMaster = new ImpMaster(row6);
 
-levelSeventeen.push(impPurple);
-levelSeventeen.push(impRed);
-levelSeventeen.push(impEnchanted);
-levelSeventeen.push(impBlack);
-levelSeventeen.push(impMaster);
+levelSeventeen.push(impPurple, impRed, impEnchanted, impBlack, impMaster);
 
 /////////////////////////////////////////
 // Instantiate Elementals lvl 18 enemies
@@ -1653,12 +1589,8 @@ var elementalRock = new ElementalRock(row4);
 var elementalFire = new ElementalFire(row5);
 
 
-levelEighteen.push(elementalSteel);
-levelEighteen.push(elementalFlesh);
-levelEighteen.push(elementalLightning);
-levelEighteen.push(elementalIce);
-levelEighteen.push(elementalRock);
-levelEighteen.push(elementalFire);
+levelEighteen.push(elementalSteel, elementalFlesh, elementalLightning,
+                   elementalIce, elementalRock, elementalFire);
 
 /////////////////////////////////////////
 // Instantiate lvl 19 enemies (Abominations)
@@ -1670,12 +1602,8 @@ var abominationBrown = new AbominationBrown(row4);
 var abominationPink = new AbominationPink(row5);
 var abominationYellow = new AbominationYellow(row5);
 
-levelNineteen.push(abominationRed);
-levelNineteen.push(abominationGreen);
-levelNineteen.push(abominationOrange);
-levelNineteen.push(abominationBrown);
-levelNineteen.push(abominationPink);
-levelNineteen.push(abominationYellow);
+levelNineteen.push(abominationRed, abominationGreen, abominationOrange,
+                   abominationBrown, abominationPink, abominationYellow);
 
 /////////////////////////////////////////
 // Instantiate lvl 20 enemies (Skeletons)
@@ -1689,14 +1617,8 @@ var skeletonPriest = new SkeletonPriest(row4);
 var skeletonHydra = new SkeletonHydra(row5);
 var skeletonDragon = new SkeletonDragon(row5);
 
-levelTwenty.push(skeletonDancing);
-levelTwenty.push(skeletonKing);
-levelTwenty.push(skeletonSoldier);
-levelTwenty.push(skeletonCentaur);
-levelTwenty.push(skeletonBird);
-levelTwenty.push(skeletonPriest);
-levelTwenty.push(skeletonHydra);
-levelTwenty.push(skeletonDragon);
+levelTwenty.push(skeletonDancing, skeletonKing, skeletonSoldier, skeletonCentaur,
+                 skeletonBird, skeletonPriest, skeletonHydra, skeletonDragon);
 
 /////////////////////////////////////////
 // Instantiate lvl 21 enemies (Ghosts)
@@ -1711,15 +1633,9 @@ var bansheeOctopus = new BansheeOctopus(row4);
 var bansheeBlue = new BansheeBlue(row5);
 var banshee = new Banshee(row5);
 
-levelTwentyOne.push(spiritTransparent);
-levelTwentyOne.push(spiritBlue);
-levelTwentyOne.push(spiritRed);
-levelTwentyOne.push(ghost);
-levelTwentyOne.push(ghast);
-levelTwentyOne.push(bansheeGreen);
-levelTwentyOne.push(bansheeOctopus);
-levelTwentyOne.push(bansheeBlue);
-levelTwentyOne.push(banshee);
+levelTwentyOne.push(spiritTransparent, spiritBlue, spiritRed,
+                    ghost, ghast,
+                    bansheeGreen, bansheeOctopus, bansheeBlue, banshee);
 
 /////////////////////////////////////////
 // Instantiate lvl 22 enemies (Gargoyles)
@@ -1733,14 +1649,8 @@ var gargoyleBlack2 = new GargoyleBlack(row4, 16, "right");
 var gargoyleIce1 = new GargoyleIce(row5, 0, "left");
 var gargoyleIce2 = new GargoyleIce(row5, -80, "right");
 
-levelTwentyTwo.push(gargoyleWhite1);
-levelTwentyTwo.push(gargoyleWhite2);
-levelTwentyTwo.push(gargoyleRed1);
-levelTwentyTwo.push(gargoyleRed2);
-levelTwentyTwo.push(gargoyleBlack1);
-levelTwentyTwo.push(gargoyleBlack2);
-levelTwentyTwo.push(gargoyleIce1);
-levelTwentyTwo.push(gargoyleIce2);
+levelTwentyTwo.push(gargoyleWhite1, gargoyleWhite2, gargoyleRed1, gargoyleRed2,
+                    gargoyleBlack1, gargoyleBlack2, gargoyleIce1, gargoyleIce2);
 
 /////////////////////////////////////////
 // Instantiate lvl 23 enemies (Dragonkin)
@@ -1754,14 +1664,8 @@ var dragonkinBlack = new DragonkinBlack(row4);
 var dragonkinViolet = new DragonkinViolet(row5);
 var dragonkinGreen = new DragonkinGreen(row5);
 
-levelTwentyThree.push(dragonkinWhite);
-levelTwentyThree.push(dragonkinRed);
-levelTwentyThree.push(dragonkinPurple);
-levelTwentyThree.push(dragonkinOrange);
-levelTwentyThree.push(dragonkinGold);
-levelTwentyThree.push(dragonkinBlack);
-levelTwentyThree.push(dragonkinViolet);
-levelTwentyThree.push(dragonkinGreen);
+levelTwentyThree.push(dragonkinWhite, dragonkinRed, dragonkinPurple, dragonkinOrange,
+                      dragonkinGold, dragonkinBlack, dragonkinViolet, dragonkinGreen);
 
 /////////////////////////////////////////
 // Instantiate lvl 24 enemies (Demons)
@@ -1775,14 +1679,8 @@ var balrogGreater = new BalrogGreater(row4);
 var demonHappy = new DemonHappy(row5);
 var demonBlack = new DemonBlack(row5);
 
-levelTwentyFour.push(demonKnight);
-levelTwentyFour.push(demonGreen);
-levelTwentyFour.push(balrogLesser);
-levelTwentyFour.push(gazerRed);
-levelTwentyFour.push(gazerPurple);
-levelTwentyFour.push(balrogGreater);
-levelTwentyFour.push(demonHappy);
-levelTwentyFour.push(demonBlack);
+levelTwentyFour.push(demonKnight, demonGreen, balrogLesser, gazerRed, gazerPurple,
+                     balrogGreater, demonHappy, demonBlack);
 
 /////////////////////////////////////////
 // Instantiate lvl 25 enemies (Dragons)
@@ -1796,11 +1694,5 @@ var dragonWhite = new DragonWhite(row4);
 var dragonGreen = new DragonGreen(row5);
 var dragonFire = new DragonFire(row5);
 
-levelTwentyFive.push(dragonBlue);
-levelTwentyFive.push(dragonCamo);
-levelTwentyFive.push(dragonBlack);
-levelTwentyFive.push(dragonGold);
-levelTwentyFive.push(dragonPink);
-levelTwentyFive.push(dragonWhite);
-levelTwentyFive.push(dragonGreen);
-levelTwentyFive.push(dragonFire);
+levelTwentyFive.push(dragonBlue, dragonCamo, dragonBlack, dragonGold, dragonPink,
+                     dragonWhite, dragonGreen, dragonFire);
