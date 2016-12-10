@@ -43,7 +43,6 @@ if (player.level === 0) {
     }
   // pressing enter selects class and begins game
   } else if (key === 'enter'){
-    this.startSound.play();
     this.level ++;
     this.completedLevels ++;
     this.y = this.startY;
