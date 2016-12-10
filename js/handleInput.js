@@ -13,7 +13,7 @@ if (player.level === 0) {
   // create sound for flipping between classes
   var newSwitchSound = new Audio("sounds/class_switch.wav");
   this.switchSound = newSwitchSound;
-  if (key === 'right') {
+  if (key === 'right' || key === 'rightAlternate') {
     // increasing class index moves class selection right
     this.classIndex ++;
     this.switchSound.play();
@@ -29,7 +29,7 @@ if (player.level === 0) {
       this.sprite = this.classes[this.classIndex].spriteUrl;
     }
 
-  } else if (key === 'left') {
+  } else if (key === 'left' || key === 'leftAlternate') {
     // decreasing class index moves class selection left
     this.classIndex --;
     this.switchSound.play();
@@ -125,35 +125,33 @@ else if (player.level > 0 && this.gamePaused === false
   }
 
   // move up controls
-  if (key === 'up' && (currentObstacles.indexOf("Up is Blocked") == -1)
+  if (key === 'up' || key === 'upAlternate'
+    && (currentObstacles.indexOf("Up is Blocked") == -1)
     && (this.y > 64 || (this.x >= 288 && this.x <= 544))) {
     this.y -= 128;
     this.moveSound.play();
 
   // move down controls
-  } else if (key === 'down' &&
-    (currentObstacles.indexOf("Down is Blocked") == -1)
+  } else if (key === 'down' || key === 'downAlternate'
+    && (currentObstacles.indexOf("Down is Blocked") == -1)
     && (this.y < 704 || (this.x >= 288 && this.x <= 544))) {
     this.y += 128;
     this.moveSound.play();
-  } else if (key === 'down' && this.y >= this.initialY && this.level <= 1) {
-    console.log("Error! Can't go farther down.");
+
 
   // move right controls
-  } else if ((key === 'right' && this.x < 800)
+  } else if ((key === 'right' || key === 'rightAlternate'&& this.x < 800)
     && (currentObstacles.indexOf("Right is Blocked") == -1)) {
     this.x += 128;
     this.moveSound.play();
-  } else if (key === 'right' && this.x >= 800) {
-    console.log("Error! Can't go farther right.");
+
 
   // move left controls
-  } else if ((key === 'left' && this.x > 33)
+  } else if ((key === 'left' || key === 'leftAlternate' && this.x > 33)
     && (currentObstacles.indexOf("Left is Blocked") == -1)) {
     this.x -= 128;
     this.moveSound.play();
-  } else if (key === 'left' && this.x <= 33) {
-    console.log("Error! Can't go farther left.");
+
 
   // pause game controls
   } else if (key === 'space') {
@@ -199,13 +197,17 @@ var player = new Player(); // <- very important! instantiates player
 // Player.handleInput() method
 document.addEventListener('keyup', function(e) {
     var allowedKeys = {
-        37: 'left',
-        38: 'up',
-        39: 'right',
-        40: 'down',
-        32: 'space',
-        13: 'enter',
-        77: 'music'
+        37: 'left',           // left arrow
+        65: 'leftAlternate',  // a
+        38: 'up',             // up arrow
+        87: 'upAlternate',    // w
+        39: 'right',          // right arrow
+        68: 'rightAlternate', // d
+        40: 'down',           // down arrow
+        83: 'downAlternate',  // a
+        32: 'space',          // spacebar
+        13: 'enter',          // enter
+        77: 'music'           // m
     };
 
   player.handleInput(allowedKeys[e.keyCode]);

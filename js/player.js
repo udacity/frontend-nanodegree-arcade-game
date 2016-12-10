@@ -308,60 +308,60 @@ Player.prototype.render = function() {
 // And controls level up/down/victory conditions
 Player.prototype.update = function(dt) {
   // Collision conditional for each level
-  if (player.level === 1) {
+  if (this.level === 1) {
     this.checkCollisions(levelOne);
-  } else if (player.level === 2) {
+  } else if (this.level === 2) {
     this.checkCollisions(levelTwo);
-  } else if (player.level === 3) {
+  } else if (this.level === 3) {
     this.checkCollisions(levelThree);
-  } else if (player.level === 4) {
+  } else if (this.level === 4) {
     this.checkCollisions(levelFour);
-  } else if (player.level === 5) {
+  } else if (this.level === 5) {
     this.checkCollisions(levelFive);
-  } else if (player.level === 6) {
+  } else if (this.level === 6) {
     this.checkCollisions(levelSix);
-  } else if (player.level === 7) {
+  } else if (this.level === 7) {
     this.checkItems(extraLife7);
     this.checkCollisions(levelSeven);
-  } else if (player.level === 8) {
+  } else if (this.level === 8) {
     this.checkCollisions(levelEight);
-  } else if (player.level === 9) {
+  } else if (this.level === 9) {
     this.checkItems(extraLife9);
     this.checkCollisions(levelNine);
-  } else if (player.level === 10) {
+  } else if (this.level === 10) {
     this.checkCollisions(levelTen);
-  } else if (player.level === 11) {
+  } else if (this.level === 11) {
     this.checkCollisions(levelEleven);
-  } else if (player.level === 12) {
+  } else if (this.level === 12) {
     this.checkCollisions(levelTwelve);
-  } else if (player.level === 13) {
+  } else if (this.level === 13) {
     this.checkCollisions(levelThirteen);
-  } else if (player.level === 14) {
+  } else if (this.level === 14) {
     this.checkCollisions(levelFourteen);
-  } else if (player.level === 15) {
+  } else if (this.level === 15) {
     this.checkCollisions(levelFifteen);
-  } else if (player.level === 16) {
+  } else if (this.level === 16) {
     this.checkCollisions(levelSixteen);
-  } else if (player.level === 17) {
+  } else if (this.level === 17) {
     this.checkItems(extraLife17);
     this.checkCollisions(levelSeventeen);
-  } else if (player.level === 18) {
+  } else if (this.level === 18) {
     this.checkCollisions(levelEighteen);
-  } else if (player.level === 19) {
+  } else if (this.level === 19) {
     this.checkCollisions(levelNineteen);
-  } else if (player.level === 20) {
+  } else if (this.level === 20) {
     this.checkItems(extraLife20);
     this.checkCollisions(levelTwenty);
-  } else if (player.level === 21) {
+  } else if (this.level === 21) {
     this.checkCollisions(levelTwentyOne);
-  } else if (player.level === 22) {
+  } else if (this.level === 22) {
     this.checkCollisions(levelTwentyTwo);
-  } else if (player.level === 23) {
+  } else if (this.level === 23) {
     this.checkItems(extraLife23);
     this.checkCollisions(levelTwentyThree);
-  } else if (player.level === 24) {
+  } else if (this.level === 24) {
     this.checkCollisions(levelTwentyFour);
-  } else if (player.level === 25) {
+  } else if (this.level === 25) {
     this.checkCollisions(levelTwentyFive);
   }
 

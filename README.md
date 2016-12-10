@@ -13,6 +13,22 @@ The goal of Dungeon Dash is to travel from the bottom of the screen to the top.
 * Heroes must dodge enemies as they navigate from North to South.
 * Heroes must navigate around impassable obstacles
 * Heroes get three lives and have a chance to gain five extra lives
+* Hero classes are mostly superficial, classes do not have any unique bonuses
+
+### Dungeon Dash Controls
+* Press 'm' to turn on or off music
+
+#### Game Controls
+* Use 'Up', 'Down', 'Left', and 'Right' arrow keys or alternatively 'a', 'w', 's', 'd' to move your hero around the map
+* If an enemy kills your hero, use 'space' to reset current level
+* Press 'space' to pause the game
+
+#### Start Screen Controls
+* 'Left' and 'Right' or 'a' and 'd' will switch between classes on start screen
+* Press 'enter' on start screen to choose a hero and begin game
+
+#### Reset Game Controls
+* Press 'enter' on pause, game over, and game victory screens to reset game
 
 ### Game Levels
 1. Lesser Bugs
