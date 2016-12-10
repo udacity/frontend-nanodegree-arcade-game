@@ -32,24 +32,6 @@
         }
     }
 
-    function loadSounds(urlOrArr) {
-        if(urlOrArr instanceof Array) {
-            /* If the developer passed in an array of images
-             * loop through each value and call our image
-             * loader on that image file
-             */
-            urlOrArr.forEach(function(url) {
-                _loadSounds(url);
-            });
-        } else {
-            /* The developer did not pass an array to this function,
-             * assume the value is a string and call our image loader
-             * directly.
-             */
-            _loadSounds(urlOrArr);
-        }
-    }
-
     /* This is our private image loader function, it is
      * called by the public image loader function.
      */
@@ -75,7 +57,7 @@
                 /* Once the image is actually loaded and properly cached,
                  * call all of the onReady() callbacks we have defined.
                  */
-                if(isReady()) {
+                if(isImageReady()) {
                     readyCallbacks.forEach(function(func) { func(); });
                 }
             };
@@ -86,6 +68,32 @@
              */
             resourceCache[url] = false;
             img.src = url;
+        }
+    }
+
+    /* This is used by developers to grab references to images they know
+     * have been previously loaded. If an image is cached, this functions
+     * the same as calling load() on that URL.
+     */
+    function get(url) {
+        return resourceCache[url];
+    }
+
+    function loadSounds(urlOrArr) {
+        if(urlOrArr instanceof Array) {
+            /* If the developer passed in an array of images
+             * loop through each value and call our image
+             * loader on that image file
+             */
+            urlOrArr.forEach(function(url) {
+                _loadSounds(url);
+            });
+        } else {
+            /* The developer did not pass an array to this function,
+             * assume the value is a string and call our image loader
+             * directly.
+             */
+            _loadSounds(urlOrArr);
         }
     }
 
@@ -111,7 +119,7 @@
                 /* Once the image is actually loaded and properly cached,
                  * call all of the onReady() callbacks we have defined.
                  */
-                if(isReady()) {
+                if(isSoundReady()) {
                     readyCallbacks.forEach(function(func) { func(); });
                 }
             };
@@ -125,26 +133,33 @@
         }
     }
 
-    /* This is used by developers to grab references to images they know
-     * have been previously loaded. If an image is cached, this functions
-     * the same as calling load() on that URL.
-     */
-    function get(url) {
-        return resourceCache[url];
+    function getSounds(url) {
+        return soundCache[url];
     }
 
     /* This function determines if all of the images that have been requested
      * for loading have in fact been properly loaded.
      */
-    function isReady() {
-        var ready = true;
-        for(var k in resourceCache) {
-            if(resourceCache.hasOwnProperty(k) &&
+    function isImageReady() {
+        var imageReady = true;
+        for(var k in resourceCache ) {
+            if (resourceCache.hasOwnProperty(k) &&
                !resourceCache[k]) {
-                ready = false;
+                imageReady = false;
             }
         }
-        return ready;
+        return imageReady;
+    }
+
+    function isSoundReady() {
+        var soundReady = true;
+        for(var k in soundCache ) {
+            if (soundCache.hasOwnProperty(k) &&
+               !soundCache[k]) {
+                soundReady = false;
+            }
+        }
+        return soundReady;
     }
 
     /* This function will add a function to the callback stack that is called
@@ -161,7 +176,9 @@
         load: load,
         loadSounds: loadSounds,
         get: get,
+        getSounds: getSounds,
         onReady: onReady,
-        isReady: isReady
+        isImageReady: isImageReady,
+        isSoundReady: isSoundReady
     };
 })();
