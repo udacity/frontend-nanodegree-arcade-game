@@ -86,7 +86,6 @@ var Engine = (function(global) {
      * game loop.
      */
     function init() {
-        player.startSound.play();
         lastTime = Date.now();
         main();
     }

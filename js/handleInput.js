@@ -42,7 +42,7 @@ if (player.level === 0) {
       this.sprite = this.classes[this.classIndex].spriteUrl;
     }
   // pressing enter selects class and begins game
-  } else if (key === 'enter'){
+  } else if (key === 'enter') {
     this.level ++;
     this.completedLevels ++;
     this.y = this.startY;
@@ -124,33 +124,31 @@ else if (player.level > 0 && this.gamePaused === false
   }
 
   // move up controls
-  if (key === 'up' || key === 'upAlternate'
+  if ((key === 'up' || key === 'upAlternate')
     && (currentObstacles.indexOf("Up is Blocked") == -1)
     && (this.y > 64 || (this.x >= 288 && this.x <= 544))) {
     this.y -= 128;
     this.moveSound.play();
 
   // move down controls
-  } else if (key === 'down' || key === 'downAlternate'
+} else if ((key === 'down' || key === 'downAlternate')
     && (currentObstacles.indexOf("Down is Blocked") == -1)
     && (this.y < 704 || (this.x >= 288 && this.x <= 544))) {
     this.y += 128;
     this.moveSound.play();
 
-
   // move right controls
-  } else if ((key === 'right' || key === 'rightAlternate'&& this.x < 800)
+} else if (((key === 'right' || key === 'rightAlternate')
+    && this.x < 800)
     && (currentObstacles.indexOf("Right is Blocked") == -1)) {
     this.x += 128;
     this.moveSound.play();
 
-
   // move left controls
-  } else if ((key === 'left' || key === 'leftAlternate' && this.x > 33)
+} else if (((key === 'left'  || key === 'leftAlternate') && this.x > 33)
     && (currentObstacles.indexOf("Left is Blocked") == -1)) {
     this.x -= 128;
     this.moveSound.play();
-
 
   // pause game controls
   } else if (key === 'space') {

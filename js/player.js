@@ -8,7 +8,6 @@
 var Player = function(x, y) {
   this.x = x;
   this.y = y;
-  this.startSound = new Audio("sounds/spell.wav");
   this.itemSound = new Audio("sounds/item.wav");
   this.gameOverSound = new Audio("sounds/game_over.wav");
   // game over source: http://soundbible.com/2052-Creepy-Laugh.html
@@ -274,7 +273,6 @@ Player.prototype.resetGame = function() {
   this.x = this.initialX;
   this.y = this.startY;
   this.pauseMusic();
-  this.startSound.play();
 };
 
 // this function allows
