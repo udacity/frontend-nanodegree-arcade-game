@@ -361,6 +361,23 @@ var Engine = (function(global) {
         'img/extra_life.png'
 
     ]);
+    Resources.loadSounds([
+      // move sounds
+      'sounds/chainmail.wav',
+      'sounds/cloth.wav',
+      'sounds/bubbles.wav',
+      // enemy sounds
+      'sounds/beast.wav',
+      'sounds/bite.wav',
+      'sounds/ogre.wav',
+      'sounds/magic.wav',
+      'sounds/undead.wav',
+      // misc sound effects
+      'sounds/class_switch.wav',
+      'sounds/extra_life.wav',
+      'sounds/game_over.wav',
+      'sounds/spell.wav'
+    ]);
     Resources.onReady(init);
 
     /* Assign the canvas' context object to the global variable (the window
