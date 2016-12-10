@@ -24,7 +24,7 @@ The goal of Dungeon Dash is to travel from the bottom of the screen to the top.
 * Press 'space' to pause the game
 
 #### Start Screen Controls
-* 'Left' and 'Right' or 'a' and 'd' will switch between classes on start screen
+* Use 'Left' and 'Right' or 'a' and 'd' to switch between classes on start screen
 * Press 'enter' on start screen to choose a hero and begin game
 
 #### Reset Game Controls
