@@ -86,6 +86,8 @@ var Engine = (function(global) {
      * game loop.
      */
     function init() {
+        var startSound = new Audio('sounds/spell.wav');
+        startSound.play();
         lastTime = Date.now();
         main();
     }
