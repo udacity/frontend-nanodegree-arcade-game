@@ -359,6 +359,7 @@ var Engine = (function(global) {
         'img/extra_life.png'
 
     ]);
+
     Resources.onReady(init);
 
     /* Assign the canvas' context object to the global variable (the window

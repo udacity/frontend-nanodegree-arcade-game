@@ -1,14 +1,14 @@
 function renderGateBorder() {
   // draw ui background top left side
  var  numTopLeftCols = 5,
-       topLeftCol;
+      topLeftCol;
        for (topLeftCol = 0; topLeftCol < numTopLeftCols; topLeftCol++) {
          ctx.drawImage(Resources.get('img/grey_border_block.png'), (topLeftCol * 64), 0);
        }
 
   // draw ui background top right side
  var  numTopRightCols = 5,
-       topRightCol;
+      topRightCol;
        for (topRightCol = 0; topRightCol < numTopRightCols; topRightCol++) {
          ctx.drawImage(Resources.get('img/grey_border_block.png'), (topRightCol * 64) + 640, 0);
        }
@@ -26,7 +26,7 @@ function renderGateBorder() {
      }
 
  // draw ui right
- var  numRightRows = 24,
+ var numRightRows = 24,
      rightRow;
      for (rightRow = 0; rightRow < numRightRows; rightRow++) {
        ctx.drawImage(Resources.get('img/grey_border_block_small.png'), 928, (rightRow * 32) + 64);
@@ -40,22 +40,22 @@ function renderGateBorder() {
 
       // draw ui background bottom left side
      var  numTopLeftCols = 5,
-           topLeftCol;
+          topLeftCol;
            for (topLeftCol = 0; topLeftCol < numTopLeftCols; topLeftCol++) {
              ctx.drawImage(Resources.get('img/grey_border_block.png'), (topLeftCol * 64), 832);
            }
 
       // draw ui background bottom right side
-     var  numTopRightCols = 5,
-           topRightCol;
+    var numTopRightCols = 5,
+        topRightCol;
            for (topRightCol = 0; topRightCol < numTopRightCols; topRightCol++) {
              ctx.drawImage(Resources.get('img/grey_border_block.png'), (topRightCol * 64) + 640, 832);
            }
 
     } else if (player.level <= 1) {
       // draw solid border at bottom if player is below level 2
-      var  numBotCols = 15,
-            botCol;
+      var numBotCols = 15,
+          botCol;
             for (botCol = 0; botCol < numBotCols; botCol++) {
               ctx.drawImage(Resources.get('img/grey_border_block.png'), (botCol * 64) + 0, 832);
             }
@@ -64,26 +64,26 @@ function renderGateBorder() {
 
 function renderSolidBorder() {
 
-  var  numBotCols = 15,
-    botCol;
+  var numBotCols = 15,
+      botCol;
     for (botCol = 0; botCol < numBotCols; botCol++) {
       ctx.drawImage(Resources.get('img/grey_border_block.png'), (botCol * 64) + 0, 832);
     }
   // draw top border
-  var  numTopCols = 15,
-    topCol;
+  var numTopCols = 15,
+      topCol;
       for (topCol = 0; topCol < numTopCols; topCol++) {
         ctx.drawImage(Resources.get('img/grey_border_block.png'), (topCol * 64) + 0, 0);
       }
     // draw ui left
-  var  numLeftRows = 24,
-        leftRow;
+  var numLeftRows = 24,
+      leftRow;
       for (leftRow = 0; leftRow < numLeftRows; leftRow++) {
         ctx.drawImage(Resources.get('img/grey_border_block_small.png'), 0, (leftRow * 32) + 64);
       }
 
     // draw ui right
-  var  numRightRows = 24,
+  var numRightRows = 24,
       rightRow;
       for (rightRow = 0; rightRow < numRightRows; rightRow++) {
         ctx.drawImage(Resources.get('img/grey_border_block_small.png'), 928, (rightRow * 32) + 64);

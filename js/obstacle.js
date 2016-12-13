@@ -97,21 +97,7 @@ var oneTree13 = new Obstacle(colOne, rowFour, goldTree);
 
 
 
-obstaclesOne.push(oneTree1);
-obstaclesOne.push(oneTree2);
-obstaclesOne.push(oneTree3);
-obstaclesOne.push(oneTree4);
-obstaclesOne.push(oneTree5);
-obstaclesOne.push(oneTree6);
-obstaclesOne.push(oneTree7);
-obstaclesOne.push(oneTree8);
-obstaclesOne.push(oneTree9);
-obstaclesOne.push(oneTree10);
-
-obstaclesOne.push(oneTree11);
-obstaclesOne.push(oneTree12);
-obstaclesOne.push(oneTree13);
-
+obstaclesOne.push(oneTree1, oneTree2, oneTree3, oneTree4, oneTree5, oneTree6, oneTree7, oneTree8, oneTree9, oneTree10, oneTree11, oneTree12, oneTree13);
 
 /////////////////////////////////////////
 // obstacles level 2
@@ -128,14 +114,7 @@ var twoTree6 = new Obstacle(colSeven, rowFive, redTree);
 var twoTree7 = new Obstacle(colSix, rowFive, redTree);
 var twoTree8 = new Obstacle(colFive, rowFive, redTree);
 
-obstaclesTwo.push(twoTree1);
-obstaclesTwo.push(twoTree2);
-obstaclesTwo.push(twoTree3);
-obstaclesTwo.push(twoTree4);
-obstaclesTwo.push(twoTree5);
-obstaclesTwo.push(twoTree6);
-obstaclesTwo.push(twoTree7);
-obstaclesTwo.push(twoTree8);
+obstaclesTwo.push(twoTree1, twoTree2, twoTree3, twoTree4, twoTree5, twoTree6, twoTree7, twoTree8);
 
 /////////////////////////////////////////
 // obstacles level 3 (ants)
@@ -157,18 +136,7 @@ var threeRock3 = new Obstacle(colFive, rowThree, rock);
 var threeRock4 = new Obstacle(colTwo, rowFive, rock);
 var threeRock5 = new Obstacle(colSix, rowFive, rock);
 
-obstaclesThree.push(threeTree1);
-obstaclesThree.push(threeTree2);
-
-obstaclesThree.push(threeTree3);
-obstaclesThree.push(threeTree4);
-
-obstaclesThree.push(threeRock1);
-obstaclesThree.push(threeRock2);
-obstaclesThree.push(threeRock3);
-
-obstaclesThree.push(threeRock4);
-obstaclesThree.push(threeRock5);
+obstaclesThree.push(threeTree1, threeTree2, threeTree3, threeTree4, threeRock1, threeRock2, threeRock3, threeRock4, threeRock5);
 
 /////////////////////////////////////////
 // obstacles level 4 (larva)
@@ -188,15 +156,7 @@ var fourTree7 = new Obstacle(colFour, rowFive, redTree);
 var fourTree8 = new Obstacle(colFive, rowFive, redTree);
 var fourTree9 = new Obstacle(colSix, rowFive, redTree);
 
-obstaclesFour.push(fourTree1);
-obstaclesFour.push(fourTree2);
-obstaclesFour.push(fourTree3);
-obstaclesFour.push(fourTree4);
-obstaclesFour.push(fourTree5);
-obstaclesFour.push(fourTree6);
-obstaclesFour.push(fourTree7);
-obstaclesFour.push(fourTree8);
-obstaclesFour.push(fourTree9);
+obstaclesFour.push(fourTree1, fourTree2, fourTree3, fourTree4, fourTree5, fourTree6, fourTree7, fourTree8, fourTree9);
 
 /////////////////////////////////////////
 // obstacles level 5 (flying bugs)
@@ -214,17 +174,7 @@ var fiveRock7 = new Obstacle(colFive, rowFive, rock);
 var fiveRock8 = new Obstacle(colFour, rowFive, rock);
 var fiveRock9 = new Obstacle(colThree, rowFive, rock);
 
-obstaclesFive.push(fiveRock1);
-obstaclesFive.push(fiveRock2);
-obstaclesFive.push(fiveRock3);
-obstaclesFive.push(fiveRock4);
-
-obstaclesFive.push(fiveRock5);
-obstaclesFive.push(fiveRock6);
-obstaclesFive.push(fiveRock7);
-obstaclesFive.push(fiveRock8);
-obstaclesFive.push(fiveRock9);
-
+obstaclesFive.push(fiveRock1, fiveRock2, fiveRock3, fiveRock4, fiveRock5, fiveRock6, fiveRock7, fiveRock8, fiveRock9);
 
 /////////////////////////////////////////
 // obstacles level 6 (worgs)
@@ -251,23 +201,7 @@ var sixTree6 = new Obstacle(colOne, rowSix, goldTree);
 var sixTree7 = new Obstacle(colSeven, rowSix, goldTree);
 
 // add obstacles to level six obstacle array
-obstaclesSix.push(sixTree1);
-obstaclesSix.push(sixTree2);
-obstaclesSix.push(sixTree3);
-obstaclesSix.push(sixTree4);
-obstaclesSix.push(sixTree5);
-
-obstaclesSix.push(sixRock1);
-obstaclesSix.push(sixRock2);
-obstaclesSix.push(sixRock3);
-
-obstaclesSix.push(sixRock4);
-obstaclesSix.push(sixRock5);
-obstaclesSix.push(sixRock6);
-
-obstaclesSix.push(sixTree6);
-obstaclesSix.push(sixTree7);
-
+obstaclesSix.push(sixTree1, sixTree2, sixTree3, sixTree4, sixTree5, sixRock1, sixRock2, sixRock3, sixRock4, sixRock5, sixRock6, sixTree6, sixTree7);
 
 /////////////////////////////////////////
 // obstacles level 7 (goblins)
@@ -296,25 +230,7 @@ var sevenTree3 = new Obstacle(colSix, rowSix, goldTree);
 var sevenTree4 = new Obstacle(colSeven, rowSix, goldTree);
 
 // add obstacles to level seven obstacle array
-obstaclesSeven.push(sevenRock1);
-obstaclesSeven.push(sevenRock2);
-obstaclesSeven.push(sevenRock3);
-
-obstaclesSeven.push(sevenRock4);
-obstaclesSeven.push(sevenRock5);
-obstaclesSeven.push(sevenRock6);
-obstaclesSeven.push(sevenRock7);
-obstaclesSeven.push(sevenRock8);
-obstaclesSeven.push(sevenRock9);
-
-obstaclesSeven.push(sevenRock10);
-obstaclesSeven.push(sevenRock11);
-
-obstaclesSeven.push(sevenTree1);
-obstaclesSeven.push(sevenTree2);
-obstaclesSeven.push(sevenTree3);
-obstaclesSeven.push(sevenTree4);
-
+obstaclesSeven.push(sevenRock1, sevenRock2, sevenRock3, sevenRock4, sevenRock5, sevenRock6, sevenRock7, sevenRock8, sevenRock9, sevenRock10, sevenRock11, sevenTree1, sevenTree2, sevenTree3, sevenTree4);
 
 /////////////////////////////////////////
 // obstacles level 8 (elves)
@@ -336,21 +252,7 @@ var eightTree11 = new Obstacle(colFive, rowFive, redTree);
 var eightTree12 = new Obstacle(colSix, rowFive, redTree);
 var eightTree13 = new Obstacle(colSeven, rowFive, redTree);
 
-obstaclesEight.push(eightTree1);
-obstaclesEight.push(eightTree2);
-obstaclesEight.push(eightTree3);
-obstaclesEight.push(eightTree4);
-obstaclesEight.push(eightTree5);
-
-obstaclesEight.push(eightTree6);
-obstaclesEight.push(eightTree7);
-obstaclesEight.push(eightTree8);
-obstaclesEight.push(eightTree9);
-obstaclesEight.push(eightTree10);
-obstaclesEight.push(eightTree11);
-obstaclesEight.push(eightTree12);
-obstaclesEight.push(eightTree13);
-
+obstaclesEight.push(eightTree1, eightTree2, eightTree3, eightTree4, eightTree5, eightTree6, eightTree7, eightTree8, eightTree9, eightTree10, eightTree11, eightTree12, eightTree13);
 
 /////////////////////////////////////////
 // obstacles level 9 (centaurs)
@@ -372,20 +274,7 @@ var nineTree11 = new Obstacle(colThree, rowFive, goldTree);
 var nineTree12 = new Obstacle(colFour, rowFive, goldTree);
 var nineTree13 = new Obstacle(colFive, rowFive, goldTree);
 
-obstaclesNine.push(nineTree1);
-obstaclesNine.push(nineTree2);
-obstaclesNine.push(nineTree3);
-obstaclesNine.push(nineTree4);
-obstaclesNine.push(nineTree5);
-obstaclesNine.push(nineTree6);
-obstaclesNine.push(nineTree7);
-
-obstaclesNine.push(nineTree8);
-obstaclesNine.push(nineTree9);
-obstaclesNine.push(nineTree10);
-obstaclesNine.push(nineTree11);
-obstaclesNine.push(nineTree12);
-obstaclesNine.push(nineTree13);
+obstaclesNine.push(nineTree1, nineTree2, nineTree3, nineTree4, nineTree5, nineTree6, nineTree7, nineTree8, nineTree9, nineTree10, nineTree11, nineTree12, nineTree13);
 
 /////////////////////////////////////////
 // obstacles level 10 (ogres)
@@ -408,33 +297,18 @@ var tenRock12 = new Obstacle(colSix, rowFour, rock);
 var tenRock13 = new Obstacle(colOne, rowSix, rock);
 var tenRock14 = new Obstacle(colSeven, rowSix, rock);
 
-obstaclesTen.push(tenRock1);
-obstaclesTen.push(tenRock2);
-obstaclesTen.push(tenRock3);
-obstaclesTen.push(tenRock4);
-
-obstaclesTen.push(tenRock5);
-obstaclesTen.push(tenRock6);
-obstaclesTen.push(tenRock7);
-obstaclesTen.push(tenRock8);
-obstaclesTen.push(tenRock9);
-obstaclesTen.push(tenRock10);
-obstaclesTen.push(tenRock11);
-obstaclesTen.push(tenRock12);
-obstaclesTen.push(tenRock13);
-obstaclesTen.push(tenRock14);
+obstaclesTen.push(tenRock1, tenRock2, tenRock3, tenRock4, tenRock5, tenRock6, tenRock7, tenRock8, tenRock9, tenRock10, tenRock11, tenRock12, tenRock13, tenRock14);
 
 /////////////////////////////////////////
 // No obstacles level 11 (Sea Beasts 1)
 //////////////////////////////////////////
 
-
 /////////////////////////////////////////
-// No obstacles level 12 Sea (Naga)
+// No obstacles level 12 Sea (Naga 1)
 ////////////////////////////////////////////
 
 /////////////////////////////////////////
-// obstacles level 13 (Naga)
+// obstacles level 13 (Naga 2)
 
 var thirteenBell1 = new Obstacle(colThree, rowThree, bell);
 var thirteenBell2 = new Obstacle(colFive, rowThree, bell);
@@ -443,11 +317,7 @@ var thirteenBell3 = new Obstacle(colTwo, rowFive, bell);
 var thirteenBell4 = new Obstacle(colFour, rowFive, bell);
 var thirteenBell5 = new Obstacle(colSix, rowFive, bell);
 
-obstaclesThirteen.push(thirteenBell1);
-obstaclesThirteen.push(thirteenBell2);
-obstaclesThirteen.push(thirteenBell3);
-obstaclesThirteen.push(thirteenBell4);
-obstaclesThirteen.push(thirteenBell5);
+obstaclesThirteen.push(thirteenBell1, thirteenBell2, thirteenBell3, thirteenBell4, thirteenBell5);
 
 /////////////////////////////////////////
 // No obstacles level 14 Deep Sea Mobs
@@ -477,19 +347,7 @@ var fifteenTree2 = new Obstacle(colTwo, rowSix, redTree);
 var fifteenTree3 = new Obstacle(colSix, rowSix, redTree);
 var fifteenTree4 = new Obstacle(colSeven, rowSix, redTree);
 
-obstaclesFifteen.push(fifteenRock1);
-obstaclesFifteen.push(fifteenRock2);
-obstaclesFifteen.push(fifteenRock3);
-obstaclesFifteen.push(fifteenRock4);
-obstaclesFifteen.push(fifteenRock5);
-obstaclesFifteen.push(fifteenRock6);
-obstaclesFifteen.push(fifteenRock7);
-obstaclesFifteen.push(fifteenRock8);
-obstaclesFifteen.push(fifteenRock9);
-obstaclesFifteen.push(fifteenTree1);
-obstaclesFifteen.push(fifteenTree2);
-obstaclesFifteen.push(fifteenTree3);
-obstaclesFifteen.push(fifteenTree4);
+obstaclesFifteen.push(fifteenRock1, fifteenRock2, fifteenRock3, fifteenRock4, fifteenRock5, fifteenRock6, fifteenRock7, fifteenRock8, fifteenRock9, fifteenTree1, fifteenTree2, fifteenTree3, fifteenTree4);
 
 /////////////////////////////////////////
 // obstacles level 16 (Land Beasts)
@@ -520,24 +378,7 @@ var sixteenRock6 = new Obstacle(colTwo, rowSix, rock);
 var sixteenRock7 = new Obstacle(colSix, rowSix, rock);
 var sixteenRock8 = new Obstacle(colSeven, rowSix, rock);
 
-obstaclesSixteen.push(sixteenTree1);
-obstaclesSixteen.push(sixteenTree2);
-obstaclesSixteen.push(sixteenTree3);
-obstaclesSixteen.push(sixteenTree4);
-
-obstaclesSixteen.push(sixteenTree5);
-obstaclesSixteen.push(sixteenTree6);
-obstaclesSixteen.push(sixteenTree7);
-
-obstaclesSixteen.push(sixteenRock1);
-obstaclesSixteen.push(sixteenRock2);
-obstaclesSixteen.push(sixteenRock3);
-obstaclesSixteen.push(sixteenRock4);
-
-obstaclesSixteen.push(sixteenRock5);
-obstaclesSixteen.push(sixteenRock6);
-obstaclesSixteen.push(sixteenRock7);
-obstaclesSixteen.push(sixteenRock8);
+obstaclesSixteen.push(sixteenTree1, sixteenTree2, sixteenTree3, sixteenTree4, sixteenTree5, sixteenTree6, sixteenTree7, sixteenRock1, sixteenRock2, sixteenRock3, sixteenRock4, sixteenRock5, sixteenRock6, sixteenRock7, sixteenRock8);
 
 /////////////////////////////////////////
 // obstacles level 17 (Imps)
@@ -558,19 +399,7 @@ var seventeenRock10 = new Obstacle(colFour, rowFive, rock);
 var seventeenRock11 = new Obstacle(colFive, rowFive, rock);
 var seventeenRock12 = new Obstacle(colSeven, rowFive, rock);
 
-obstaclesSeventeen.push(seventeenRock1);
-obstaclesSeventeen.push(seventeenRock2);
-obstaclesSeventeen.push(seventeenRock3);
-obstaclesSeventeen.push(seventeenRock4);
-obstaclesSeventeen.push(seventeenRock5);
-obstaclesSeventeen.push(seventeenRock6);
-
-obstaclesSeventeen.push(seventeenRock7);
-obstaclesSeventeen.push(seventeenRock8);
-obstaclesSeventeen.push(seventeenRock9);
-obstaclesSeventeen.push(seventeenRock10);
-obstaclesSeventeen.push(seventeenRock11);
-obstaclesSeventeen.push(seventeenRock12);
+obstaclesSeventeen.push(seventeenRock1, seventeenRock2, seventeenRock3, seventeenRock4, seventeenRock5, seventeenRock6, seventeenRock7, seventeenRock8, seventeenRock9, seventeenRock10, seventeenRock11, seventeenRock12);
 
 /////////////////////////////////////////
 // obstacles level 18 (Elementals)
@@ -591,17 +420,7 @@ var eighteenBell9 = new Obstacle(colSix, rowFour, bell);
 var eighteenBell10 = new Obstacle(colOne, rowSix, bell);
 var eighteenBell11 = new Obstacle(colSeven, rowSix, bell);
 
-obstaclesEighteen.push(eighteenBell1);
-obstaclesEighteen.push(eighteenBell2);
-obstaclesEighteen.push(eighteenBell3);
-obstaclesEighteen.push(eighteenBell4);
-obstaclesEighteen.push(eighteenBell5);
-obstaclesEighteen.push(eighteenBell6);
-obstaclesEighteen.push(eighteenBell7);
-obstaclesEighteen.push(eighteenBell8);
-obstaclesEighteen.push(eighteenBell9);
-obstaclesEighteen.push(eighteenBell10);
-obstaclesEighteen.push(eighteenBell11);
+obstaclesEighteen.push(eighteenBell1, eighteenBell2, eighteenBell3, eighteenBell4, eighteenBell5, eighteenBell6, eighteenBell7, eighteenBell8, eighteenBell9, eighteenBell10, eighteenBell11);
 
 ///////////////////////////////////
 // Obstacles Level 19 (Abominations)
@@ -627,20 +446,7 @@ var nineteenHead7 = new Obstacle(colFour, rowFive, severedHead);
 var nineteenHead8 = new Obstacle(colSix, rowFive, severedHead);
 
 
-obstaclesNineteen.push(nineteenRock1);
-obstaclesNineteen.push(nineteenRock2);
-obstaclesNineteen.push(nineteenRock3);
-obstaclesNineteen.push(nineteenRock4);
-
-obstaclesNineteen.push(nineteenHead1);
-obstaclesNineteen.push(nineteenHead2);
-obstaclesNineteen.push(nineteenHead3);
-obstaclesNineteen.push(nineteenHead4);
-obstaclesNineteen.push(nineteenHead5);
-
-obstaclesNineteen.push(nineteenHead6);
-obstaclesNineteen.push(nineteenHead7);
-obstaclesNineteen.push(nineteenHead8);
+obstaclesNineteen.push(nineteenRock1, nineteenRock2, nineteenRock3, nineteenRock4, nineteenHead1, nineteenHead2, nineteenHead3, nineteenHead4, nineteenHead5, nineteenHead6, nineteenHead7, nineteenHead8);
 
 ///////////////////////////////////
 // Obstacles Level 20 (Skeletons)
@@ -670,26 +476,7 @@ var twentyChain7 = new Obstacle(colFour, rowFive, skeletonChain);
 var twentyChain8 = new Obstacle(colFive, rowFive, skeletonChain);
 var twentyChain9 = new Obstacle(colSix, rowFive, skeletonChain);
 
-obstaclesTwenty.push(twentyPile1);
-obstaclesTwenty.push(twentyPile2);
-obstaclesTwenty.push(twentyPile3);
-obstaclesTwenty.push(twentyPile4);
-obstaclesTwenty.push(twentyPile5);
-obstaclesTwenty.push(twentyPile6);
-
-obstaclesTwenty.push(twentyPile7);
-obstaclesTwenty.push(twentyPile8);
-
-obstaclesTwenty.push(twentyChain1);
-obstaclesTwenty.push(twentyChain2);
-
-obstaclesTwenty.push(twentyChain3);
-obstaclesTwenty.push(twentyChain4);
-obstaclesTwenty.push(twentyChain5);
-obstaclesTwenty.push(twentyChain6);
-obstaclesTwenty.push(twentyChain7);
-obstaclesTwenty.push(twentyChain8);
-obstaclesTwenty.push(twentyChain9);
+obstaclesTwenty.push(twentyPile1, twentyPile2, twentyPile3, twentyPile4, twentyPile5, twentyPile6, twentyPile7, twentyPile8, twentyChain1, twentyChain2, twentyChain3, twentyChain4, twentyChain5, twentyChain6, twentyChain7, twentyChain8, twentyChain9);
 
 ///////////////////////////////////
 // Obstacles Level 21 (Ghosts)
@@ -712,19 +499,7 @@ var twentyOnePile5 = new Obstacle(colFour, rowFive, skullPile);
 var twentyOnePile6 = new Obstacle(colFive, rowFive, skullPile);
 var twentyOnePile7 = new Obstacle(colSix, rowFive, skullPile);
 
-obstaclesTwentyOne.push(twentyOnePile1);
-obstaclesTwentyOne.push(twentyOnePile2);
-obstaclesTwentyOne.push(twentyOneHead1);
-obstaclesTwentyOne.push(twentyOneHead2);
-
-obstaclesTwentyOne.push(twentyOneChain1);
-obstaclesTwentyOne.push(twentyOneChain2);
-
-obstaclesTwentyOne.push(twentyOnePile3);
-obstaclesTwentyOne.push(twentyOnePile4);
-obstaclesTwentyOne.push(twentyOnePile5);
-obstaclesTwentyOne.push(twentyOnePile6);
-obstaclesTwentyOne.push(twentyOnePile7);
+obstaclesTwentyOne.push(twentyOnePile1, twentyOnePile2, twentyOneHead1, twentyOneHead2, twentyOneChain1, twentyOneChain2, twentyOnePile3, twentyOnePile4, twentyOnePile5, twentyOnePile6, twentyOnePile7);
 
 ///////////////////////////////////
 // Obstacles Level 22 (Gargoyles)
@@ -753,18 +528,7 @@ var twentyTwoStatue10 = new Obstacle(colFive, rowFive, statue);
 var twentyTwoStatue11 = new Obstacle(colSeven, rowFive, statue);
 var twentyTwoStatue12 = new Obstacle(colSeven, rowSix, statue);
 
-obstaclesTwentyTwo.push(twentyTwoStatue1);
-obstaclesTwentyTwo.push(twentyTwoStatue2);
-obstaclesTwentyTwo.push(twentyTwoStatue3);
-obstaclesTwentyTwo.push(twentyTwoStatue4);
-obstaclesTwentyTwo.push(twentyTwoStatue5);
-obstaclesTwentyTwo.push(twentyTwoStatue6);
-obstaclesTwentyTwo.push(twentyTwoStatue7);
-obstaclesTwentyTwo.push(twentyTwoStatue8);
-obstaclesTwentyTwo.push(twentyTwoStatue9);
-obstaclesTwentyTwo.push(twentyTwoStatue10);
-obstaclesTwentyTwo.push(twentyTwoStatue11);
-obstaclesTwentyTwo.push(twentyTwoStatue12);
+obstaclesTwentyTwo.push(twentyTwoStatue1, twentyTwoStatue2, twentyTwoStatue3, twentyTwoStatue4, twentyTwoStatue5, twentyTwoStatue6, twentyTwoStatue7, twentyTwoStatue8, twentyTwoStatue9, twentyTwoStatue10, twentyTwoStatue11, twentyTwoStatue12);
 
 ///////////////////////////////////
 // Obstacles Level 23 (Dragonkin)
@@ -779,25 +543,13 @@ var twentyThreeRock6 = new Obstacle(colSeven, rowTwo, rock);
 //var twentyThreeRock7 = new Obstacle(colTwo, rowThree, rock);
 
 // upper row of rocks
-var twentyThreeRock8 = new Obstacle(colOne, rowFive, rock);
-var twentyThreeRock9 = new Obstacle(colTwo, rowFive, rock);
-var twentyThreeRock10 = new Obstacle(colThree, rowFive, rock);
-var twentyThreeRock11 = new Obstacle(colFour, rowFive, rock);
-var twentyThreeRock12 = new Obstacle(colFive, rowFive, rock);
+var twentyThreeRock7 = new Obstacle(colOne, rowFive, rock);
+var twentyThreeRock8 = new Obstacle(colTwo, rowFive, rock);
+var twentyThreeRock9 = new Obstacle(colThree, rowFive, rock);
+var twentyThreeRock10 = new Obstacle(colFour, rowFive, rock);
+var twentyThreeRock11 = new Obstacle(colFive, rowFive, rock);
 
-obstaclesTwentyThree.push(twentyThreeRock1);
-obstaclesTwentyThree.push(twentyThreeRock2);
-obstaclesTwentyThree.push(twentyThreeRock3);
-obstaclesTwentyThree.push(twentyThreeRock4);
-obstaclesTwentyThree.push(twentyThreeRock5);
-obstaclesTwentyThree.push(twentyThreeRock6);
-//obstaclesTwentyThree.push(twentyThreeRock7);
-
-obstaclesTwentyThree.push(twentyThreeRock8);
-obstaclesTwentyThree.push(twentyThreeRock9);
-obstaclesTwentyThree.push(twentyThreeRock10);
-obstaclesTwentyThree.push(twentyThreeRock11);
-obstaclesTwentyThree.push(twentyThreeRock12);
+obstaclesTwentyThree.push(twentyThreeRock1, twentyThreeRock2, twentyThreeRock3, twentyThreeRock4, twentyThreeRock5, twentyThreeRock6, twentyThreeRock7, twentyThreeRock8, twentyThreeRock9, twentyThreeRock10, twentyThreeRock11);
 
 ///////////////////////////////////
 // Obstacles Level 24 (Demons)
@@ -819,19 +571,7 @@ var twentyFourChain9 = new Obstacle(colFour, rowFive, skeletonChain);
 var twentyFourChain10 = new Obstacle(colFive, rowFive, skeletonChain);
 var twentyFourRock11 = new Obstacle(colSeven, rowFive, rock);
 
-obstaclesTwentyFour.push(twentyFourRock1);
-obstaclesTwentyFour.push(twentyFourPile2);
-
-obstaclesTwentyFour.push(twentyFourPile3);
-obstaclesTwentyFour.push(twentyFourStatue4);
-obstaclesTwentyFour.push(twentyFourStatue5);
-obstaclesTwentyFour.push(twentyFourChain6);
-
-obstaclesTwentyFour.push(twentyFourStatue7);
-obstaclesTwentyFour.push(twentyFourChain8);
-obstaclesTwentyFour.push(twentyFourChain9);
-obstaclesTwentyFour.push(twentyFourChain10);
-obstaclesTwentyFour.push(twentyFourRock11);
+obstaclesTwentyFour.push(twentyFourRock1, twentyFourPile2, twentyFourPile3, twentyFourStatue4, twentyFourStatue5, twentyFourChain6, twentyFourStatue7, twentyFourChain8, twentyFourChain9, twentyFourChain10, twentyFourRock11);
 
 ///////////////////////////////////
 // Obstacles Level 25 (Dragons)
@@ -858,19 +598,4 @@ var twentyFiveRock7 = new Obstacle(colTwo, rowSix, rock);
 var twentyFiveRock8 = new Obstacle(colSix, rowSix, rock);
 var twentyFiveRock9 = new Obstacle(colSeven, rowSix, rock);
 
-obstaclesTwentyFive.push(twentyFiveRock1);
-obstaclesTwentyFive.push(twentyFiveRock2);
-obstaclesTwentyFive.push(twentyFiveRock3);
-
-obstaclesTwentyFive.push(twentyFiveRock4);
-obstaclesTwentyFive.push(twentyFiveRock5);
-
-obstaclesTwentyFive.push(twentyFiveStatue1);
-obstaclesTwentyFive.push(twentyFiveStatue2);
-obstaclesTwentyFive.push(twentyFiveStatue3);
-
-obstaclesTwentyFive.push(twentyFiveRock6);
-obstaclesTwentyFive.push(twentyFiveRock7);
-
-obstaclesTwentyFive.push(twentyFiveRock8);
-obstaclesTwentyFive.push(twentyFiveRock9);
+obstaclesTwentyFive.push(twentyFiveRock1, twentyFiveRock2, twentyFiveRock3, twentyFiveRock4, twentyFiveRock5, twentyFiveStatue1, twentyFiveStatue2, twentyFiveStatue3, twentyFiveRock6, twentyFiveRock7, twentyFiveRock8, twentyFiveRock9);

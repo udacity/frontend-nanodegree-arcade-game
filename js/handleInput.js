@@ -1,5 +1,4 @@
 // handleInput.js defines all the game controls
-// that the user can use
 
 
 // handleInput is passed 1 parameter: (key pressed)
@@ -68,7 +67,7 @@ else if (player.level > 0 && this.gamePaused === false
   }
 
   // Set an array to hold current levels obstacles
-  // This will array will then be passed to game controls
+  // This array will then be passed to game controls
   // to prevent player from moving on tiles that hold obstacles
   var currentObstacles = [];
   if (this.level === 1) {
@@ -131,21 +130,21 @@ else if (player.level > 0 && this.gamePaused === false
     this.moveSound.play();
 
   // move down controls
-} else if ((key === 'down' || key === 'downAlternate')
+  } else if ((key === 'down' || key === 'downAlternate')
     && (currentObstacles.indexOf("Down is Blocked") == -1)
     && (this.y < 704 || (this.x >= 288 && this.x <= 544))) {
     this.y += 128;
     this.moveSound.play();
 
   // move right controls
-} else if (((key === 'right' || key === 'rightAlternate')
+  } else if (((key === 'right' || key === 'rightAlternate')
     && this.x < 800)
     && (currentObstacles.indexOf("Right is Blocked") == -1)) {
     this.x += 128;
     this.moveSound.play();
 
   // move left controls
-} else if (((key === 'left'  || key === 'leftAlternate') && this.x > 33)
+  } else if (((key === 'left'  || key === 'leftAlternate') && this.x > 33)
     && (currentObstacles.indexOf("Left is Blocked") == -1)) {
     this.x -= 128;
     this.moveSound.play();
