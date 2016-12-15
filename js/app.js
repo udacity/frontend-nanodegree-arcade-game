@@ -6,29 +6,42 @@ var Enemy = function() {
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
-    this.x = 0;
+    this.x = Math.floor(Math.random()*50)*(-100);
     this.y = Math.floor(Math.random()*3)*90+50;
     this.speed = 2;
 };
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
+
 Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
    this.x += dt*100;
+   if (this.x > 500) {
+       this.x = Math.floor(Math.random()*50)*(-100);
+   }
+   newEnemy(Resources.get(this.sprite),this.x,this.y);
 };
 
 //?????
 // allEnemies.update = function(dt){
-//     allEnemies.push(new Enemy);
+//     newEnemy();
 // }
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
+
+//push a new enemy in the Arrey
+function newEnemy () {
+    var enemy = new Enemy
+    if (allEnemies.length < 29) {
+       allEnemies.push(enemy);
+    }
+}
 
 
 // Now write your own player class
@@ -81,7 +94,7 @@ Player.prototype.handleInput = function(key) {
 // Place the player object in a variable called player
 //var allEnemies = [new Enemy, new Enemy, new Enemy];
 var player = new Player;
-var allEnemies = [new Enemy, new Enemy, new Enemy, new Enemy];
+var allEnemies = [new Enemy, new Enemy];
 
 
 // This listens for key presses and sends the keys to your
