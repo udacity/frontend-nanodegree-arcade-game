@@ -20,6 +20,11 @@ Enemy.prototype.update = function(dt) {
    this.x += dt*100;
 };
 
+//?????
+// allEnemies.update = function(dt){
+//     allEnemies.push(new Enemy);
+// }
+
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
@@ -74,8 +79,9 @@ Player.prototype.handleInput = function(key) {
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-var allEnemies = [new Enemy, new Enemy, new Enemy];
+//var allEnemies = [new Enemy, new Enemy, new Enemy];
 var player = new Player;
+var allEnemies = [new Enemy, new Enemy, new Enemy, new Enemy];
 
 
 // This listens for key presses and sends the keys to your
