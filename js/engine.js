@@ -19,7 +19,9 @@ var Engine = (function(global) {
      * create the canvas element, grab the 2D context for that canvas
      * set the canvas elements height/width and add it to the DOM.
      */
-    var doc = global.document,
+    var counter = 0,
+        dtAll = 0,
+        doc = global.document,
         win = global.window,
         canvas = doc.createElement('canvas'),
         ctx = canvas.getContext('2d'),
@@ -47,6 +49,14 @@ var Engine = (function(global) {
          */
         update(dt);
         render();
+        counter++;
+        dtAll += dt;
+        if (counter === 100) {
+            console.log(dtAll);
+            dtAll = 0;
+            counter = 0;
+
+        }
 
         /* Set our lastTime variable which is used to determine the time delta
          * for the next time this function is called.

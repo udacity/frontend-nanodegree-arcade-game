@@ -1,23 +1,219 @@
-update = [];
-update.forEach(function(item){
-    item();
-});
-render = [];
-render.forEach(function(item){
-    item();
-});
-
-function addToUpdate(entity) {
-    update.push(entity);
+/*---------------------Entety---------------------*/
+var Entety = function(x, y, sprite) {
+    this.x = x || 0;
+    this.y = y || 0;
+    if (sprite) {
+        this.sprite = sprite;
+    }
+}
+Entety.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+}
+Entety.prototype.move = function(x, y){
+    this.x += x || 0;
+    this.y += y || 0;
+    return this;
+}
+Entety.prototype.update = function(fn, calback) {
+    if(this.active) {
+        fn();
+        if (callback) {
+            callback();
+        }
+    }
 }
 
-function removeFromUpdate(entity) {
+/*-----------------------Map------------------------*/
 
+var Map = function(numRows, numColumns, rowImages ,startX, startY, cellWidth, cellHeight) {
+    this.numRows = numRows || 0;
+    this.numColumns = numColumns || 0;
+    this.rowImages = rowImages || [];
+    this.startX = startX || 0;
+    this.startY = startY || 0;
+    this.cellWidth = cellWidth || 0;
+    this.cellHeight = cellHeight || 0;
+};
+
+
+Map.prototype.render = function() {
+    for (var row = 0; row < this.numRows; row++) {
+        for (var column = 0; column < this.numColumns; column++) {
+            ctx.drawImage(
+                Resources.get(this.rowImages[row]),
+                column * this.cellWidth + startX,
+                row * this.cellHeight + startY
+            );
+        }
+    }
 }
+Map.prototype.load = (function(rowimages, dt){
+    this.numRows++;
+    var originalY = this.startY;
+    this.startY -= this.cellHeight;
+    return function(rowimages, dt) {
+        if (rowImages.length) {
+            if (this.y >= originalY){
+                this.rowImages.unshift(rowImages.pop());
+                this.y = originalY;
+            } else {
+                this.y += this.cellHeight *dt
+            }
+        } else {
+            this.numRows--;
+            this.startY = originalY;
+        }
+    }
+}(rowimages, dt))
+
+
+Map.prototype.move = function(rowImages, callback){
+        this.numRows++;     //insert an extra row
+        this.y -= game.rowHeight;
+        rowImages.reverse();    //the array of rows will inserted backward
+        this.rowImages.unshift(rowImages[0]);
+        Map.prototype.update = (function(rowImages, callback){
+            var allowedKeys = allStages[currentStage].allowedKeys;
+            allStages[currentStage].allowedKeys = {};
+            var row = 1;    //1 row has already loaded
+            var rowImages = rowImages;
+            var rowLeft = rowImages.length;
+            var y = this.y;
+            var callback = callback || function(){};
+            player.y -= game.rowHeight;
+            return function(dt){
+                if (this.y < -50) {
+                    this.y += game.rowHeight * dt;
+                    allPlayers.forEach(function(player){
+                        player.y += game.rowHeight * dt;
+                    });
+                    //pl += game.rowHeight * dt;
+                } else {
+                    this.y -= game.rowHeight;
+                    player.y = game.rowHeight * 3;
+                    this.rowImages.pop();
+                    rowLeft--;
+                    if (rowLeft){
+                        this.rowImages.unshift(rowImages[row]);
+                        row++;
+                    } else {
+                        this.numRows--;
+                        this.y = -50;
+                        Map.prototype.update = function() {};
+                        allStages[currentStage].allowedKeys = allowedKeys;
+                        callback();
+                    }
+                }
+            };
+        })(rowImages, callback)
+    };
+
+
+/*---------------------Player---------------------*/
+
+var Player = function(column, row, sprite) {
+    Entety.call(this, map.cellWidth * column, map.cellHeight * row, sprite);
+};
+Player.prototype = Object.create(Entety.prototype);
+Player.prototype.constructor = Player;
+Player.prototype.reset = function() {
+    this.y = map.cellHeight * 4;
+};
+
+
+Player.prototype.allSprites = [
+    'images/char-boy.png',
+    'images/char-cat-girl.png',
+    'images/char-horn-girl.png',
+    'images/char-pink-girl.png',
+    'images/char-princess-girl.png'
+];
+/*Player.prototype.moveLeft = function() {
+    if (this.x > 0) { //not at first coll
+                this.x -= game.colWidth;
+            }
+};
+Player.prototype.moveUp = function() {
+    if (this.y > 0) { //under the water
+                this.y -= game.rowHeight;
+            }
+};
+Player.prototype.moveRight = function(){
+    if (this.x < game.colWidth * 4) { //not beyond last col
+                this.x += game.colWidth;
+            }
+};
+Player.prototype.moveDown = function() {
+    if (this.y < game.rowHeight * 4) { //not beyond last row
+                this.y += game.rowHeight;
+            }
+};*/
+
+/*---------------------Enemy---------------------*/
+
+var Enemy = function() {
+    this.init();
+}
+Enemy.prototype = Object.create(Entety.prototype);
+Enemy.prototype.constructor = Enemy;
+Enemy.prototype.init = function() {
+        this.setStartCol(); //set this.x
+        this.generateRow(1, 3); //set this.y
+        this.generateSpeed(); //set this.speed
+    }
+
+Enemy.prototype.sprite = 'images/enemy-bug.png';
+/*this generates a */
+Enemy.prototype.generateRow = function(min, max) {
+    this.y = getRandomInt(min - 1, max - 1) * game.rowHeight;
+};
+Enemy.prototype.setStartCol = function() {
+    this.x = 0 - map.cellWidth; //put before game
+};
+Enemy.prototype.generateSpeed = function() {
+    this.speed = getRandomInt(1, 3); //slow 1x, normal 2x, fast 3x
+};
+Enemy.prototype.isAhead = function(enemy) {
+    var result = enemy.x < this.x ? true : false;
+    return result;
+};
+
+Enemy.prototype.checkCollision = function(index) {
+    var current = this;
+    for (var i = index + 1; i < allEnemies.length; i++){
+        var enemy = allEnemies[i];
+        if (current.y === enemy.y && //same row
+            Math.abs(current.x - enemy.x) < map.cellWidth) {
+            this.optimaseDistance(enemy);
+            this.switchSpeed(enemy);
+        }
+    };
+}
+Enemy.prototype.switchSpeed = function(enemy) {
+    var currentSpeed = this.speed;
+    this.speed = enemy.speed;
+    enemy.speed = currentSpeed;
+}
+Enemy.prototype.optimaseDistance = function(enemy) {
+        this.x = this.isAhead(enemy) ? enemy.x + map.cellWidth : enemy.x - map.cellWidth;
+    }
+    // Update the enemy's position, required method for game
+    // Parameter: dt, a time delta between ticks
+Enemy.prototype.update = function(dt) {
+    // You should multiply any movement by the dt parameter
+    // which will ensure the game runs at the same speed for
+    // all computers.
+    if (this.x >= map.cellWidth * 5) { //bug left the screen
+        this.init();
+    } else {
+        this.x += map.cellWidth * dt * this.speed;
+    }
+};
+
+// Draw the enemy on the screen, required method for game
 
 
 
-Object.keys(a).forEach(function(item){a[item] *= 2;});
 
 
 
@@ -32,10 +228,10 @@ Object.keys(a).forEach(function(item){a[item] *= 2;});
         render: function() {
             allStages[currentStage].render()
         },
-        rowHeight: 83, //hight of cell
+        rowHeight: 79, //hight of cell
         colWidth: 101, //width of cell
-        cellPaddingTop: 50, //top, transparent part of cell
-        cellPaddingBottom: 38 //bottom, extra texture of cell
+        cellPaddingTop: 51, //top, transparent part of cell
+        cellPaddingBottom: 41 //bottom, extra texture of cell
     };
     var Map = function(y, rowImages, numRows, numCols){
         this.y = y;
@@ -119,7 +315,7 @@ Object.keys(a).forEach(function(item){a[item] *= 2;});
     };
     Gem.prototype.render = function() {
         if (this.color < this.colors.length) {
-            ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+            ctx.drawImage(Resources.get(this.sprite), this.x+25, this.y+64  , 50, 85);
         }
 
     };
@@ -147,113 +343,8 @@ Object.keys(a).forEach(function(item){a[item] *= 2;});
         this.init()
     };
 
-    Enemy.prototype.init = function() {
-        this.setStartCol(); //set this.x
-        this.generateRow(1, 3); //set this.y
-        this.generateSpeed(); //set this.speed
-    }
 
-    Enemy.prototype.sprite = 'images/enemy-bug.png';
-    /*this generates a */
-    Enemy.prototype.generateRow = function(min, max) {
-        this.y = getRandomInt(min - 1, max - 1) * game.rowHeight;
-    };
-    Enemy.prototype.setStartCol = function() {
-        this.x = 0 - game.colWidth; //put before game
-    };
-    Enemy.prototype.generateSpeed = function() {
-        this.speed = getRandomInt(1, 3); //slow 1x, normal 2x, fast 3x
-    };
-    Enemy.prototype.isBefore = function(enemy) {
-        var result = enemy.x < this.x ? true : false;
-        return result;
-    };
 
-    Enemy.prototype.checkCollision = function(index) {
-        var current = this;
-        allEnemies.forEach(function(enemy, index2) {
-            if (index2 >= index && //uncheck enemy
-                current !== enemy && //different enemy
-                current.y === enemy.y && //same row
-                Math.abs(current.x - enemy.x) < game.colWidth //has contact
-            ) {
-                if (current.isBefore(enemy)) {
-                    current.optimaseDistance(enemy);
-                    current.switchSpeed(enemy);
-                } else {
-                    enemy.optimaseDistance(current);
-                    enemy.switchSpeed(current);
-                }
-            }
-        });
-    }
-    Enemy.prototype.switchSpeed = function(enemy) {
-        var currentSpeed = this.speed;
-        this.speed = enemy.speed;
-        enemy.speed = currentSpeed;
-    }
-    Enemy.prototype.optimaseDistance = function(folower) {
-            folower.x = this.x - game.colWidth;
-        }
-        // Update the enemy's position, required method for game
-        // Parameter: dt, a time delta between ticks
-    Enemy.prototype.update = function(dt, index) {
-        // You should multiply any movement by the dt parameter
-        // which will ensure the game runs at the same speed for
-        // all computers.
-        if (this.x >= game.colWidth * 5) { //bug left the screen
-            this.init();
-        } else {
-            this.x += game.colWidth * dt * this.speed;
-        }
-        this.checkCollision(index);
-    };
-
-    // Draw the enemy on the screen, required method for game
-    Enemy.prototype.render = function() {
-        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-    };
-
-    var Player = function(sprite, column, row) {
-        this.sprite = sprite;
-        this.x = game.colWidth * column; //zero based
-        this.y = game.rowHeight * row; //zero based
-    };
-    Player.prototype.reset = function() {
-        this.y = game.rowHeight * 4;
-    };
-    Player.prototype.render = function() {
-        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-    };
-    Player.prototype.update = function() {};
-
-    Player.allSprites = [
-        'images/char-boy.png',
-        'images/char-cat-girl.png',
-        'images/char-horn-girl.png',
-        'images/char-pink-girl.png',
-        'images/char-princess-girl.png'
-    ];
-    Player.prototype.moveLeft = function() {
-        if (this.x > 0) { //not at first coll
-                    this.x -= game.colWidth;
-                }
-    };
-    Player.prototype.moveUp = function() {
-        if (this.y > 0) { //under the water
-                    this.y -= game.rowHeight;
-                }
-    };
-    Player.prototype.moveRight = function(){
-        if (this.x < game.colWidth * 4) { //not beyond last col
-                    this.x += game.colWidth;
-                }
-    };
-    Player.prototype.moveDown = function() {
-        if (this.y < game.rowHeight * 4) { //not beyond last row
-                    this.y += game.rowHeight;
-                }
-    };
 
     // Now instantiate your objects.
     // Place all enemy objects in an array called allEnemies
@@ -482,13 +573,13 @@ Object.keys(a).forEach(function(item){a[item] *= 2;});
         },
         render : function(){
             background.render();
+            gem.render();
             allPlayers.forEach(function(player) {
                 player.render();
             });
             allEnemies.forEach(function(enemy) {
                 enemy.render();
             });
-            gem.render();
         },
         allowedKeys : {
             37 : function() {player.moveLeft()},
