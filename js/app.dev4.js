@@ -2476,8 +2476,6 @@ var Player = function(x, y) {
   this.gameOverSound = new Audio("sounds/game_over.wav");
   // game over source: http://soundbible.com/2052-Creepy-Laugh.html
   this.soundtrack = new Audio("sounds/Edward_Shallow_The_Infinite_Railroad.mp3");
-  this.waterWalkSound = new Audio("sounds/bubbles.wav");
-  this.classSwitchSound = new Audio("sounds/class_switch.wav");
   this.soundtrack.volume = 0.3;
   // soundtrack source: Edward Shallow
   // url= http://freemusicarchive.org/music/Edward_Shallow/
@@ -2861,11 +2859,13 @@ if (key === 'music') {
 }
 // start screen controls
 if (player.level === 0) {
-
+  // create sound for flipping between classes
+  var newSwitchSound = new Audio("sounds/class_switch.wav");
+  this.switchSound = newSwitchSound;
   if (key === 'right' || key === 'rightAlternate') {
     // increasing class index moves class selection right
     this.classIndex ++;
-    this.classSwitchSound.play();
+    this.switchSound.play();
 
     // Display proper player sprite
     // conditional lets player cycle through player.classes in a loop
@@ -2881,7 +2881,7 @@ if (player.level === 0) {
   } else if (key === 'left' || key === 'leftAlternate') {
     // decreasing class index moves class selection left
     this.classIndex --;
-    this.classSwitchSound.play();
+    this.switchSound.play();
     // this conditional lets player cycle backwards through
     // player.classes in a loop
     if (this.classIndex > -1) {
@@ -2892,7 +2892,6 @@ if (player.level === 0) {
     }
   // pressing enter selects class and begins game
   } else if (key === 'enter') {
-    this.moveLandSound = new Audio(this.classes[this.classIndex].moveSound);
     this.level ++;
     this.completedLevels ++;
     this.y = this.startY;
@@ -2910,10 +2909,11 @@ else if (player.level > 0 && this.gamePaused === false
   && this.gameVictory === false) {
   // conditional plays a swimming sound on water levels
   if (this.level >= 11 && this.level <= 14) {
-    this.moveSound = this.waterWalkSound;
+    var waterWalkSound = new Audio("sounds/bubbles.wav");
+    this.moveSound = waterWalkSound;
   // when not on water lvls, play regular classes moveSound
   } else {
-    this.moveSound = this.moveLandSound;
+    this.moveSound = new Audio(this.classes[this.classIndex].moveSound);
   }
 
   // Set an array to hold current levels obstacles

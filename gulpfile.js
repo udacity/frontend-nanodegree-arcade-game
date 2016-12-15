@@ -17,13 +17,13 @@ var jsSources = [
 
 gulp.task('devJs', function() {
   gulp.src(jsSources)
-    .pipe(concat('script.dev3.js'))
+    .pipe(concat('app.dev4.js'))
     .pipe(gulp.dest('js/'))
 });
 
 gulp.task('liveJs', function() {
   gulp.src(jsSources)
-    .pipe(concat('script.min3.js'))
+    .pipe(concat('app.min4.js'))
     .pipe(uglify())
     .pipe(gulp.dest('js/'))
 });
