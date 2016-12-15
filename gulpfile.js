@@ -2,7 +2,7 @@ var gulp = require('gulp'),
     gutil = require('gulp-util'),
     concat = require('gulp-concat'),
     uglify = require('gulp-uglify');
-    
+
 var jsSources = [
   'scripts/resources.js',
   'scripts/enemy.js',
@@ -15,9 +15,17 @@ var jsSources = [
   'scripts/engine.js'
 ];
 
-gulp.task('default', function() {
+gulp.task('devJs', function() {
   gulp.src(jsSources)
-    .pipe(concat('script.min1.js'))
+    .pipe(concat('script.dev3.js'))
+    .pipe(gulp.dest('js/'))
+});
+
+gulp.task('liveJs', function() {
+  gulp.src(jsSources)
+    .pipe(concat('script.min3.js'))
     .pipe(uglify())
     .pipe(gulp.dest('js/'))
 });
+
+gulp.task('default', ['devJs', 'liveJs']);

@@ -12,6 +12,8 @@ var Player = function(x, y) {
   this.gameOverSound = new Audio("sounds/game_over.wav");
   // game over source: http://soundbible.com/2052-Creepy-Laugh.html
   this.soundtrack = new Audio("sounds/Edward_Shallow_The_Infinite_Railroad.mp3");
+  this.waterWalkSound = new Audio("sounds/bubbles.wav");
+  this.classSwitchSound = new Audio("sounds/class_switch.wav");
   this.soundtrack.volume = 0.3;
   // soundtrack source: Edward Shallow
   // url= http://freemusicarchive.org/music/Edward_Shallow/
