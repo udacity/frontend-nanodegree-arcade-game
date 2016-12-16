@@ -18,13 +18,13 @@ var jsSources = [
 
 gulp.task('devJs', function() {
   gulp.src(jsSources)
-    .pipe(concat('app.dev5.js'))
+    .pipe(concat('app.dev6.js'))
     .pipe(gulp.dest('js/'))
 });
 
 gulp.task('liveJs', function() {
   gulp.src(jsSources)
-    .pipe(concat('app.min5.js'))
+    .pipe(concat('app.min6.js'))
     .pipe(uglify())
     .pipe(gulp.dest('js/'))
 });

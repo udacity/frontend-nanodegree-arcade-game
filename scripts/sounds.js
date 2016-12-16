@@ -4,11 +4,17 @@
  * http://stackoverflow.com/questions/31060642/preload-multiple-audio-files
  */
 var audioFiles = [
+    "sounds/class_switch.wav",
     "sounds/cloth.wav",
     "sounds/chainmail.wav",
-    "sounds/class_switch.wav",
-    "sounds/spell.wav",
-    "sounds/extra_life.wav"
+    "sounds/bubbles.wav",
+    "sounds/bite.wav",
+    "sounds/beast.wav",
+    "sounds/ogre.wav",
+    "sounds/undead.wav",
+    "sounds/magic.wav",
+    "sounds/extra_life.wav",
+    "sounds/game_over.wav"
 ];
 
 function preloadAudio(url) {
