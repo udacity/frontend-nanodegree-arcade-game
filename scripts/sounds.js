@@ -1,3 +1,8 @@
+// sounds.js preloads all critical sound files to prevent
+// sound delays. For more info check out this stack overflow site:
+/*
+ * http://stackoverflow.com/questions/31060642/preload-multiple-audio-files
+ */
 var audioFiles = [
     "sounds/cloth.wav",
     "sounds/chainmail.wav",
