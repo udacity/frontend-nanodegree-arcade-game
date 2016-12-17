@@ -6,7 +6,7 @@ To start the game with downloaded version, open up index.html in a web browser.
 
 Play the game online here: [Dungeon Dash](https://tysabs.github.io/Dungeon-Dash/)
 
-***Note***: Game size is about 35MB and it may take a minute for the page to load
+***Note***: Game size is about 15MB and it may take a minute for the page to load
 
 ## How to play
 The goal of Dungeon Dash is to travel from the bottom of the screen to the top.
