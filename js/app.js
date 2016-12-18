@@ -47,67 +47,24 @@ Map.prototype.render = function() {
         }
     }
 }
-Map.prototype.load = (function(rowimages, dt){
-    this.numRows++;
+
+Map.prototype.load = function(rowImages) {
+    this.rowImages = rowImages.concat(this.rowImages);
+    this.startY -= (this.rowImages.length - this.numRows) * this.cellHeight;
+}
+Map.prototype.update = (function(dt){
     var originalY = this.startY;
-    this.startY -= this.cellHeight;
-    return function(rowimages, dt) {
-        if (rowImages.length) {
-            if (this.y >= originalY){
-                this.rowImages.unshift(rowImages.pop());
-                this.y = originalY;
+    return function(dt) {
+        if (this.rowImages.length > this.numRows) {
+            if (this.startY >= originalY) {
+                this.startY = originalY;
+                this.rowImages.slice(0,this.numRows);
             } else {
-                this.y += this.cellHeight *dt
+                this.startY += this.cellHeight * dt;
             }
-        } else {
-            this.numRows--;
-            this.startY = originalY;
         }
     }
-}(rowimages, dt))
-
-
-Map.prototype.move = function(rowImages, callback){
-        this.numRows++;     //insert an extra row
-        this.y -= game.rowHeight;
-        rowImages.reverse();    //the array of rows will inserted backward
-        this.rowImages.unshift(rowImages[0]);
-        Map.prototype.update = (function(rowImages, callback){
-            var allowedKeys = allStages[currentStage].allowedKeys;
-            allStages[currentStage].allowedKeys = {};
-            var row = 1;    //1 row has already loaded
-            var rowImages = rowImages;
-            var rowLeft = rowImages.length;
-            var y = this.y;
-            var callback = callback || function(){};
-            player.y -= game.rowHeight;
-            return function(dt){
-                if (this.y < -50) {
-                    this.y += game.rowHeight * dt;
-                    allPlayers.forEach(function(player){
-                        player.y += game.rowHeight * dt;
-                    });
-                    //pl += game.rowHeight * dt;
-                } else {
-                    this.y -= game.rowHeight;
-                    player.y = game.rowHeight * 3;
-                    this.rowImages.pop();
-                    rowLeft--;
-                    if (rowLeft){
-                        this.rowImages.unshift(rowImages[row]);
-                        row++;
-                    } else {
-                        this.numRows--;
-                        this.y = -50;
-                        Map.prototype.update = function() {};
-                        allStages[currentStage].allowedKeys = allowedKeys;
-                        callback();
-                    }
-                }
-            };
-        })(rowImages, callback)
-    };
-
+}(dt));
 
 /*---------------------Player---------------------*/
 
@@ -120,7 +77,6 @@ Player.prototype.reset = function() {
     this.y = map.cellHeight * 4;
 };
 
-
 Player.prototype.allSprites = [
     'images/char-boy.png',
     'images/char-cat-girl.png',
@@ -128,7 +84,7 @@ Player.prototype.allSprites = [
     'images/char-pink-girl.png',
     'images/char-princess-girl.png'
 ];
-/*Player.prototype.moveLeft = function() {
+Player.prototype.moveLeft = function() {
     if (this.x > 0) { //not at first coll
                 this.x -= game.colWidth;
             }
@@ -147,7 +103,26 @@ Player.prototype.moveDown = function() {
     if (this.y < game.rowHeight * 4) { //not beyond last row
                 this.y += game.rowHeight;
             }
-};*/
+};
+Player.prototype.checkGem = function(){
+    if (this.y === gem.y && this.x === gem.y) {
+        if (gem.colors.length < gem.color - 1) {
+            gem.color++;
+            gem.init();
+        } else {
+            //stop rendering + next stage
+        }
+    }
+};
+Player.checkCollision = function() {
+    var player = this;
+    allEnemies.forEach(function(enemy){
+        if (enemy.y === player.y && Math.abs(enemy.x - player.x) < map.cellWidth) {
+            player.reset();
+            //player.life--;
+        }
+    });
+}
 
 /*---------------------Enemy---------------------*/
 
@@ -179,38 +154,69 @@ Enemy.prototype.isAhead = function(enemy) {
 };
 
 Enemy.prototype.checkCollision = function(index) {
-    var current = this;
-    for (var i = index + 1; i < allEnemies.length; i++){
-        var enemy = allEnemies[i];
-        if (current.y === enemy.y && //same row
-            Math.abs(current.x - enemy.x) < map.cellWidth) {
-            this.optimaseDistance(enemy);
-            this.switchSpeed(enemy);
+    var current = this;         //saving current enemy
+    for (var i = index + 1; i < allEnemies.length; i++){    //checking every unchekded enemy
+        var enemy = allEnemies[i];      //saving actual enemy
+        if (current.y === enemy.y && //cheking does it have a same row
+            Math.abs(current.x - enemy.x) < map.cellWidth) { //ckeking does someone cover the other
+            this.optimaseDistance(enemy); // abolish covering
+            this.switchSpeed(enemy);    //switch speed after collision
         }
     };
 }
+
+// this function switch the speed with an enemy
 Enemy.prototype.switchSpeed = function(enemy) {
     var currentSpeed = this.speed;
     this.speed = enemy.speed;
     enemy.speed = currentSpeed;
 }
+
+// this function abolis covering by setting the distance from negativ value to zero
 Enemy.prototype.optimaseDistance = function(enemy) {
         this.x = this.isAhead(enemy) ? enemy.x + map.cellWidth : enemy.x - map.cellWidth;
     }
-    // Update the enemy's position, required method for game
-    // Parameter: dt, a time delta between ticks
+
 Enemy.prototype.update = function(dt) {
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
-    if (this.x >= map.cellWidth * 5) { //bug left the screen
-        this.init();
+    if (this.x >= map.cellWidth * 5) { //if the enemy left the screen
+        this.init();    //than reset it's position and generate a new speed value
     } else {
-        this.x += map.cellWidth * dt * this.speed;
+        this.x + = map.cellWidth * dt * this.speed; // othervise it moves from left to right
     }
 };
 
-// Draw the enemy on the screen, required method for game
+
+/*---------------------Gem---------------------*/
+
+var Gem = function(x, y, color) {
+    Entety.call(x, y);
+    this.color1 = color;
+    this.init();
+};
+
+Object.defineProperty(Gem.prototype, color, {
+    get: function() {return this.color1 ;},
+    set: function(c) {this.color1 = c; this.sprite = this.colors[c]; }
+});
+
+Gem.prototype.nextGem = function(){
+    this.color++;
+}
+
+Gem.prototype.colors = [
+    'images/Gem Blue.png',
+    'images/Gem Green.png',
+    'images/Gem Orange.png',
+    'images/Key.png'
+];
+Gem.prototype.init = function () {
+    this.y = getRandomInt(0,2) * game.rowHeight;
+    this.x = getRandomInt(0,4) * game.colWidth;
+}
+Gem.prototype.update = function() {
+    //use it for any effect
+}
+
 
 
 
@@ -233,112 +239,8 @@ Enemy.prototype.update = function(dt) {
         cellPaddingTop: 51, //top, transparent part of cell
         cellPaddingBottom: 41 //bottom, extra texture of cell
     };
-    var Map = function(y, rowImages, numRows, numCols){
-        this.y = y;
-        this.rowImages = rowImages;
-        this.numRows = numRows;
-        this.numCols = numCols;
-    };
-    Map.prototype.render = function(){
-        var numRows = this.numRows,
-            numCols = this.numCols,
-            row, col;
 
-            /* Loop through the number of rows and columns we've defined above
-             * and, using the rowImages array, draw the correct image for that
-             * portion of the "grid"
-             */
-            for (row = 0; row < numRows; row++) {
-                for (col = 0; col < numCols; col++) {
-                    /* The drawImage function of the canvas' context element
-                     * requires 3 parameters: the image to draw, the x coordinate
-                     * to start drawing and the y coordinate to start drawing.
-                     * We're using our Resources helpers to refer to our images
-                     * so that we get the benefits of caching these images, since
-                     * we're using them over and over.
-                     */
-                    ctx.drawImage(Resources.get(this.rowImages[row]), col * game.colWidth, this.y + row * game.rowHeight);
-                }
-            }
-    };
-    Map.prototype.update = function(){};
 
-    Map.prototype.move = function(rowImages, callback){
-        this.numRows++;     //insert an extra row
-        this.y -= game.rowHeight;
-        rowImages.reverse();    //the array of rows will inserted backward
-        this.rowImages.unshift(rowImages[0]);
-        Map.prototype.update = (function(rowImages, callback){
-            var allowedKeys = allStages[currentStage].allowedKeys;
-            allStages[currentStage].allowedKeys = {};
-            var row = 1;    //1 row has already loaded
-            var rowImages = rowImages;
-            var rowLeft = rowImages.length;
-            var y = this.y;
-            var callback = callback || function(){};
-            player.y -= game.rowHeight;
-            return function(dt){
-                if (this.y < -50) {
-                    this.y += game.rowHeight * dt;
-                    allPlayers.forEach(function(player){
-                        player.y += game.rowHeight * dt;
-                    });
-                    //pl += game.rowHeight * dt;
-                } else {
-                    this.y -= game.rowHeight;
-                    player.y = game.rowHeight * 3;
-                    this.rowImages.pop();
-                    rowLeft--;
-                    if (rowLeft){
-                        this.rowImages.unshift(rowImages[row]);
-                        row++;
-                    } else {
-                        this.numRows--;
-                        this.y = -50;
-                        Map.prototype.update = function() {};
-                        allStages[currentStage].allowedKeys = allowedKeys;
-                        callback();
-                    }
-                }
-            };
-        })(rowImages, callback)
-    };
-
-    function getRandomInt(min, max) {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
-    var Gem = function() {
-        this.install();
-        this.color = 0;
-        this.sprite = this.colors[0];
-        this.collectedAll = false;
-    };
-    Gem.prototype.render = function() {
-        if (this.color < this.colors.length) {
-            ctx.drawImage(Resources.get(this.sprite), this.x+25, this.y+64  , 50, 85);
-        }
-
-    };
-    Gem.prototype.colors = [
-        'images/Gem Blue.png',
-        'images/Gem Green.png',
-        'images/Gem Orange.png',
-        'images/Key.png'
-    ];
-    Gem.prototype.install = function () {
-        this.y = getRandomInt(0,2) * game.rowHeight;
-        this.x = getRandomInt(0,4) * game.colWidth;
-    }
-    Gem.prototype.update = function() {
-        if (!this.collectedAll && this.x === player.x && this.y === player.y){
-            if (this.color === this.colors.length - 1) {
-                this.collectedAll = true;
-            }
-            this.sprite = this.colors[++this.color];
-            this.install();
-            allEnemies.push(new Enemy);
-        }
-    }
     var Enemy = function() {
         this.init()
     };
