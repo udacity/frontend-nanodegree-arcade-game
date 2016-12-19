@@ -36,9 +36,10 @@ function loadedAudio() {
     }
 }
 
-var audioPlayer = document.getElementById('player');
+var audioPlayer = document.getElementById('audioPlayer');
 function play(index) {
     audioPlayer.src = audioFiles[index];
+    audioPlayer.volume = 0;
     audioPlayer.play();
 }
 
