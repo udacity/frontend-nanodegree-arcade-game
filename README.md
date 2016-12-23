@@ -5,7 +5,7 @@ This is the coolest minigame all the time! Seriously ;).
 
 ## How to Play
 
-To run the game, please open index.html
+To run the game, please open index.html or visit
 
 ## Goal
 
