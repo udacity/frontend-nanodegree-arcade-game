@@ -161,6 +161,7 @@
     };
 
     // This method check collision with enemys
+    // and resets everything back after collision
     Player.prototype.checkCollision = function() {
         var player = this;
         allEnemies.forEach(function(enemy){
@@ -174,6 +175,10 @@
                     stage.update = stageUpdate;
                     stage.allowedKeys = stageKeys;
                     player.reset();
+                    gem.color = 0;
+                    currentStage = 3;
+                    allEnemies = [];
+                    createEnemies(2);
                 },500);
                 //player.life--;
             }
