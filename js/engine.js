@@ -26,7 +26,6 @@ var Engine = (function(global) {
         canvas = doc.createElement('canvas'),
         ctx = canvas.getContext('2d'),
         lastTime;
-
     canvas.width = game.colWidth * 5;
     canvas.height = game.rowHeight * 6 + game.cellPaddingBottom;
     doc.body.appendChild(canvas);
@@ -49,7 +48,8 @@ var Engine = (function(global) {
          */
         update(dt);
         render();
-        counter++;
+        //these are speed tester codelines
+        /*counter++;
         dtAll += dt;
         if (counter === 100) {
             console.log(dtAll);
@@ -74,7 +74,6 @@ var Engine = (function(global) {
      * game loop.
      */
     function init() {
-        reset();
         lastTime = Date.now();
         main();
     }
@@ -90,21 +89,6 @@ var Engine = (function(global) {
      */
     function update(dt) {
         game.update(dt);
-        // checkCollisions();
-    }
-
-    /* This is called by the update function and loops through all of the
-     * objects within your allEnemies array as defined in app.js and calls
-     * their update() methods. It will then call the update function for your
-     * player object. These update methods should focus purely on updating
-     * the data/properties related to the object. Do your drawing in your
-     * render methods.
-     */
-    function updateEntities(dt) {
-        allEnemies.forEach(function(enemy,index) {
-            enemy.update(dt,index);
-        });
-        player.update();
     }
 
     /* This function initially draws the "game level", it will then call
@@ -114,33 +98,7 @@ var Engine = (function(global) {
      * they are just drawing the entire screen over and over.
      */
     function render() {
-        /* This array holds the relative URL to the image used
-         * for that particular row of the game level.
-         */
         game.render();
-    }
-
-    /* This function is called by the render function and is called on each game
-     * tick. Its purpose is to then call the render functions you have defined
-     * on your enemy and player entities within app.js
-     */
-    function renderEntities() {
-        /* Loop through all of the objects within the allEnemies array and call
-         * the render function you have defined.
-         */
-        allEnemies.forEach(function(enemy) {
-            enemy.render();
-        });
-
-        player.render();
-    }
-
-    /* This function does nothing but it could have been a good place to
-     * handle game reset states - maybe a new game menu or a game over screen
-     * those sorts of things. It's only called once by the init() method.
-     */
-    function reset() {
-        // noop
     }
 
     /* Go ahead and load all of the images we know we're going to need to
