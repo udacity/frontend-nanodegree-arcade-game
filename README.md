@@ -1,7 +1,11 @@
-# Frogger game v2.0
+# FROGGER GAME v2.0
 
 This is the coolest minigame all the time! Seriously ;).
 
+
+## How to Play
+
+To run the game, please open index.html
 
 ## Goal
 
