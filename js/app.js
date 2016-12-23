@@ -237,7 +237,7 @@
     // This function prevents the event when two bug take the same place on map.
     Enemy.prototype.checkCollision = function(index) {
         var current = this; //saving current enemy
-        for (var i = index + 1; i < allEnemies.length; i++) { //checking every unchekded enemy
+        for (var i = index + 1 , numEnemies = allEnemies.length; i < numEnemies; i++) { //checking every unchekded enemy
             var enemy = allEnemies[i]; //saving actual enemy
             if (current.y === enemy.y && //cheking does it have a same row
                 Math.abs(current.x - enemy.x) < map.cellWidth) { //ckeking does someone cover the other
