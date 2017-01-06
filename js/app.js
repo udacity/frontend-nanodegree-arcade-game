@@ -1,11 +1,12 @@
 /*       ENEMY       */
 
 // Enemies our player must avoid
-var Enemy = function(x,y) {
+var Enemy = function(x, y, speed) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
     this.x = x;
     this.y = y;
+    this.speed = speed;
 
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
@@ -18,6 +19,8 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
+    
+    this.x += this.speed * dt;
 };
 
 // Draw the enemy on the screen, required method for game
@@ -28,10 +31,9 @@ Enemy.prototype.render = function() {
 /*         PLAYER         */
 
 // Now write your own player class
-var Player = function(x,y) {
+var Player = function(x, y) {
     this.x = x;
     this.y = y;
-    
     this.sprite = "images/char-boy.png"
 };
 
@@ -47,26 +49,60 @@ Player.prototype.render = function() {
 
 Player.prototype.handleInput = function(inputKey) {
     if (inputKey == 'up') {
-        player.y = player.y - 50;
+        player.y -= 50;
     }
     if (inputKey == 'right') {
-        player.x = player.x + 50;
+        if (player.x < 400) {
+            player.x += 50;
+        }
     }
     if (inputKey == 'down') {
-        player.y = player.y + 50;
+        if (player.y < 400) {
+            player.y += 50;   
+        }
     }
     if (inputKey == 'left') {
-        player.x = player.x - 50;
+        if (0 < player.x) {
+            player.x -= 50;
+        }
     }
+};
+
+/*         GEM         */
+
+var Gem = function(x, y) {
+    this.x = x;
+    this.y = y;
+    this.sprite = "images/Gem-Green.png"
+};
+
+Gem.prototype.update = function(dt) {
+    
+};
+
+Gem.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 
-var player = new Player(200,400);
+var player = new Player(200, 400);
 
 var allEnemies = [];
+
+for (x=0; x < 4; x++) {
+    var enemy = new Enemy(-150, 60 * (Math.floor((Math.random() * 6) + 1)), 10 * (Math.floor((Math.random() * 10) + 1)));
+    allEnemies.push(enemy);
+};
+
+var allGems = [];
+
+for (x=0; x < 2; x++) {
+    var gem = new Gem(30 * Math.floor((Math.random() * 10) + 1), 30 * Math.floor((Math.random() * 10) + 1));
+    allGems.push(gem);
+};
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
