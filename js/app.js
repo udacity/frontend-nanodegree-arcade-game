@@ -6,6 +6,8 @@ var Enemy = function(x, y, speed) {
     // we've provided one for you to get started
     this.x = x;
     this.y = y;
+    this.width = 60;
+    this.height = 50;
     this.speed = speed;
 
     // The image/sprite for our enemies, this uses
@@ -34,19 +36,47 @@ Enemy.prototype.render = function() {
 var Player = function(x, y) {
     this.x = x;
     this.y = y;
+    this.width = 50;
+    this.height = 50;
     this.sprite = "images/char-boy.png"
 };
 
-// This class requires an update(), render() and
-// a handleInput() method.
-Player.prototype.update = function(dt) {
-    
+// player position relocating point
+Player.prototype.reset = function() {
+    this.x = 200;
+    this.y = 400;
 };
 
+// collision checking function
+Player.prototype.checkCollision = function() {
+    for (var i = 0; i < allEnemies.length; i++) {
+        if (player.x >= allEnemies[i].x - 40 && player.x <= allEnemies[i].x + 40) {
+            if (player.y >= allEnemies[i].y - 35 && player.y <= allEnemies[i].y + 35) {
+                alert("You hit a bug!! Your character will be relocated to the starting point!! Good luck!!");
+                player.reset();
+            }
+        }
+    }
+    for (var i = 0; i < allGems.length; i++) {
+        if (player.x >= allGems[i].x - 50 && player.x <= allGems[i].x + 50) {
+            if (player.y >= allGems[i].y - 50 && player.y <= allGems[i].y + 50) {
+                allGems.splice(i,1);
+            }
+        }
+    }
+};
+
+// update player's position
+Player.prototype.update = function(dt) {
+    player.checkCollision();
+};
+
+// draw player's character image on the board
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+// handling character
 Player.prototype.handleInput = function(inputKey) {
     if (inputKey == 'up') {
         player.y -= 50;
@@ -73,6 +103,8 @@ Player.prototype.handleInput = function(inputKey) {
 var Gem = function(x, y) {
     this.x = x;
     this.y = y;
+    this.width = 100;
+    this.height = 100;
     this.sprite = "images/Gem-Green.png"
 };
 
@@ -84,21 +116,20 @@ Gem.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
-
+// variables, objects
 var player = new Player(200, 400);
 
 var allEnemies = [];
 
+var allGems = [];
+
+// random enemy placing
 for (x=0; x < 4; x++) {
     var enemy = new Enemy(-150, 60 * (Math.floor((Math.random() * 6) + 1)), 10 * (Math.floor((Math.random() * 10) + 1)));
     allEnemies.push(enemy);
 };
 
-var allGems = [];
-
+// random gem placing
 for (x=0; x < 2; x++) {
     var gem = new Gem(30 * Math.floor((Math.random() * 10) + 1), 30 * Math.floor((Math.random() * 10) + 1));
     allGems.push(gem);
