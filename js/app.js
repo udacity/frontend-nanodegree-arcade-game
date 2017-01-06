@@ -135,6 +135,19 @@ for (x=0; x < 2; x++) {
     allGems.push(gem);
 };
 
+$("canvas").on("swipeup",function(){
+  player.y += 10;
+});
+$("canvas").on("swiperight",function(){
+  player.x += 10;
+});
+$("canvas").on("swipedown",function(){
+  player.y -= 10;
+});
+$("canvas").on("swipeleft",function(){
+  player.x -= 10;
+});
+
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function(e) {
