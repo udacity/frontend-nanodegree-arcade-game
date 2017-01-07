@@ -23,6 +23,7 @@ Enemy.prototype.update = function(dt) {
     // all computers.
     
     this.x += this.speed * dt;
+    enemyPosition();
 };
 
 // Draw the enemy on the screen, required method for game
@@ -53,10 +54,19 @@ Player.prototype.checkCollision = function() {
         if (player.x >= allEnemies[i].x - 40 && player.x <= allEnemies[i].x + 40) {
             if (player.y >= allEnemies[i].y - 35 && player.y <= allEnemies[i].y + 35) {
                 alert("You hit a bug!! Your character will be relocated to the starting point!! Good luck!!");
+                for (i=0; i < 4; i++) {
+                    allEnemies[i].x = -150;
+                }
                 player.reset();
             }
         }
     }
+    
+    if (player.y <= 0) {
+        alert("You won! Go to next round!");
+        player.reset();
+    }
+    
     for (var i = 0; i < allGems.length; i++) {
         if (player.x >= allGems[i].x - 50 && player.x <= allGems[i].x + 50) {
             if (player.y >= allGems[i].y - 50 && player.y <= allGems[i].y + 50) {
@@ -123,30 +133,45 @@ var allEnemies = [];
 
 var allGems = [];
 
+// enemy coordination for x
+var enemyCoordX = -150;
+
+// enemy coordination for y
+// var enemyCoordY = 60 * (Math.floor((Math.random() * 6) + 1))
+
+// enemy random speed
+// var enemySpeed = 30 * allGems.length + 10 * (Math.floor((Math.random() * 10) + 1))
+
 // random enemy placing
-for (x=0; x < 4; x++) {
-    var enemy = new Enemy(-150, 60 * (Math.floor((Math.random() * 6) + 1)), 10 * (Math.floor((Math.random() * 10) + 1)));
-    allEnemies.push(enemy);
+var enemyPlace = function() {
+    for (i=0; i < 4; i++) {
+        var enemy = new Enemy(enemyCoordX, 60 * (Math.floor((Math.random() * 6) + 1)), 30 * allGems.length + 10 * (Math.floor((Math.random() * 10) + 1)));
+        allEnemies.push(enemy);
+    }
 };
 
+enemyPlace();
+
+// check enemy positions
+var enemyPosition = function() {
+    for (i=0; i < allEnemies.length; i++) {
+        if (allEnemies[i].x > 650) {
+            allEnemies[i].x = enemyCoordX;
+            allEnemies[i].y = 60 * (Math.floor((Math.random() * 6) + 1));
+            allEnemies[i].speed = 30 * allGems.length + 10 * (Math.floor((Math.random() * 10) + 1));
+        }
+    }
+}
+/*
+for (i=0; i < 4; i++) {
+    enemyPlace();
+}
+*/
 // random gem placing
 for (x=0; x < 2; x++) {
     var gem = new Gem(30 * Math.floor((Math.random() * 10) + 1), 30 * Math.floor((Math.random() * 10) + 1));
     allGems.push(gem);
 };
-
-$("canvas").on("swipeup",function(){
-  player.y += 10;
-});
-$("canvas").on("swiperight",function(){
-  player.x += 10;
-});
-$("canvas").on("swipedown",function(){
-  player.y -= 10;
-});
-$("canvas").on("swipeleft",function(){
-  player.x -= 10;
-});
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
