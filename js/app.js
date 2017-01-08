@@ -31,20 +31,47 @@ Enemy.prototype.render = function() {
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
-// var Player = function(x,y,speed) {
-//     this.x = x;
-//     this.y = y;
-//     this.speed = speed;
-//     this.sprite = 'images/char-princess-girl.png'
-// };
+var Player = function(x,y, speed) {
+    this.x = x;
+    this.y = y;
+    this.speed = speed;
+    this.sprite = 'images/char-boy.png';
+};
 
-// Player.prototype.render = function {
-//     ctx.drawImage(Resources.get(this.sprite), this.x, this.y;
-// };
+Player.prototype.update = function() {
+
+};
+
+Player.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+
+//moves the player on the screen
+
+Player.prototype.handleInput = function(keyPress) {
+    if (keyPress == 'left') {
+        player.x -= player.speed;
+    }
+
+    if (keyPress == 'up') {
+        player.y -= player.speed - 20;
+    }
+
+    if (keyPress == 'right') {
+        player.x += player.speed;
+    }
+
+    if (keyPress == 'down') {
+        player.y += player.speed - 20;
+    }
+
+    console.log('keyPress is: ' + keyPress);
+};
 
 // Now instantiate your objects.
 var allEnemies = [];// Place all enemy objects in an array called allEnemies
-// var player = new Player(202.5, 383, 50);// Place the player object in a variable called player
+var player = new Player(202.5, 383, 50);// Place the player object in a variable called player
 var enemy = new Enemy(0, Math.random() * 184 + 50, Math.random() * 256); //randomized enemies occur
 
 allEnemies.push(enemy);
@@ -59,5 +86,5 @@ document.addEventListener('keyup', function(e) {
         40: 'down'
     };
 
-//    player.handleInput(allowedKeys[e.keyCode]);
+    player.handleInput(allowedKeys[e.keyCode]);
 });
