@@ -79,7 +79,7 @@ var displayLevel = function(aScore, aLevel) {
     var canvas = document.getElementsByTagName('canvas');
     var firstCanvasTag = canvas[0];
 
-    scoreLevelDiv.innerHTML = 'Score: ' + aScore + '/' + 'Level: ' + aLevel;
+    scoreLevelDiv.innerHTML = 'Score: ' + aScore + ' / ' + 'Level: ' + aLevel;
     document.body.insertBefore(scoreLevelDiv, firstCanvasTag[0]);
 };
 
