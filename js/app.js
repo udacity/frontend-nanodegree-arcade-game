@@ -31,7 +31,7 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-/*         PLAYER         */
+        /*         PLAYER         */
 
 // Now write your own player class
 var Player = function(x, y) {
@@ -58,6 +58,8 @@ Player.prototype.checkCollision = function() {
                     allEnemies[i].x = -150;
                 }
                 player.reset();
+                lifePoint.splice(0,1);
+                $(".lifePoint").replaceWith("<li class=\"flex-item lifePoint\">Life Point: " + lifePoint.length + "</li>");
             }
         }
     }
@@ -67,12 +69,41 @@ Player.prototype.checkCollision = function() {
         player.reset();
     }
     
-    for (var i = 0; i < allGems.length; i++) {
-        if (player.x >= allGems[i].x - 50 && player.x <= allGems[i].x + 50) {
-            if (player.y >= allGems[i].y - 50 && player.y <= allGems[i].y + 50) {
-                allGems.splice(i,1);
+    for (i=0; i < greenGems.length; i++) {
+        if (player.x >= greenGems[i].x - 50 && player.x <= greenGems[i].x + 50) {
+            if (player.y >= greenGems[i].y - 50 && player.y <= greenGems[i].y + 50) {
+                greenGems.splice(i,1);
+                gemsCollected.push("*");
             }
         }
+    }
+    
+    for (i=0; i < orangeGems.length; i++) {
+        if (player.x >= orangeGems[i].x - 50 && player.x <= orangeGems[i].x + 50) {
+            if (player.y >= orangeGems[i].y - 50 && player.y <= orangeGems[i].y + 50) {
+                orangeGems.splice(i,1);
+                gemsCollected.push("*", "*");
+            }
+        }
+    }
+    
+    for (i=0; i < blueGems.length; i++) {
+        if (player.x >= blueGems[i].x - 50 && player.x <= blueGems[i].x + 50) {
+            if (player.y >= blueGems[i].y - 50 && player.y <= blueGems[i].y + 50) {
+                blueGems.splice(i,1);
+                gemsCollected.push("*", "*", "*");
+            }
+        }
+    }
+    
+    if (gemsCollected.length > 0) {
+        $(".gems").replaceWith("<li class=\"flex-item gems\">Gems: " + gemsCollected.length + "</li>");
+        var score = gemsCollected.length * 2;
+        $(".score").replaceWith("<li class=\"flex-item score\">Score: " + score + "</li>");
+    }
+    
+    if (lifePoint.length = 0) {
+        alert("GAME OVER :(")
     }
 };
 
@@ -108,9 +139,10 @@ Player.prototype.handleInput = function(inputKey) {
     }
 };
 
-/*         GEM         */
+        /*         GEMS         */
 
-var Gem = function(x, y) {
+// green gem
+var GreenGem = function(x, y) {
     this.x = x;
     this.y = y;
     this.width = 100;
@@ -118,11 +150,64 @@ var Gem = function(x, y) {
     this.sprite = "images/Gem-Green.png"
 };
 
-Gem.prototype.update = function(dt) {
+GreenGem.prototype.update = function(dt) {
     
 };
 
-Gem.prototype.render = function() {
+// draw gem
+GreenGem.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+// orange gem
+var OrangeGem = function(x, y) {
+    this.x = x;
+    this.y = y;
+    this.width = 100;
+    this.height = 100;
+    this.sprite = "images/Gem-Orange.png"
+};
+
+OrangeGem.prototype.update = function(dt) {
+    
+};
+
+// draw gem
+OrangeGem.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+// blue gem
+var BlueGem = function(x, y) {
+    this.x = x;
+    this.y = y;
+    this.width = 100;
+    this.height = 100;
+    this.sprite = "images/Gem-Blue.png"
+};
+
+BlueGem.prototype.update = function(dt) {
+    
+};
+
+// draw gem
+BlueGem.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+
+        /*         KEY         */
+
+var Key = function(x,y) {
+    this.x = x;
+    this.y = y;
+    this.width = 80;
+    this.height = 80;
+    this.sprite = "images/Key.png"
+};
+
+// draw key
+Key.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
@@ -131,7 +216,17 @@ var player = new Player(200, 400);
 
 var allEnemies = [];
 
-var allGems = [];
+var greenGems = [];
+
+var orangeGems = [];
+
+var blueGems = [];
+
+var allKeys = [];
+
+var gemsCollected = [];
+
+var lifePoint = ["*", "*", "*"];
 
 // enemy coordination for x
 var enemyCoordX = -150;
@@ -142,36 +237,45 @@ var enemyCoordX = -150;
 // enemy random speed
 // var enemySpeed = 30 * allGems.length + 10 * (Math.floor((Math.random() * 10) + 1))
 
-// random enemy placing
+// speed increase
+spdInc = 1
+
+        // random enemy placing
 var enemyPlace = function() {
     for (i=0; i < 4; i++) {
-        var enemy = new Enemy(enemyCoordX, 60 * (Math.floor((Math.random() * 6) + 1)), 30 * allGems.length + 10 * (Math.floor((Math.random() * 10) + 1)));
+        var enemy = new Enemy(enemyCoordX, 60 * (Math.floor((Math.random() * 6) + 1)), spdInc * 30 * greenGems.length + 10 * (Math.floor((Math.random() * 10) + 1)));
         allEnemies.push(enemy);
     }
 };
 
 enemyPlace();
 
-// check enemy positions
+        // check enemy positions
 var enemyPosition = function() {
     for (i=0; i < allEnemies.length; i++) {
         if (allEnemies[i].x > 650) {
             allEnemies[i].x = enemyCoordX;
             allEnemies[i].y = 60 * (Math.floor((Math.random() * 6) + 1));
-            allEnemies[i].speed = 30 * allGems.length + 10 * (Math.floor((Math.random() * 10) + 1));
+            allEnemies[i].speed = 30 * greenGems.length + 10 * (Math.floor((Math.random() * 10) + 1));
         }
     }
 }
-/*
-for (i=0; i < 4; i++) {
-    enemyPlace();
-}
-*/
-// random gem placing
+
+        // random gem placing
+
+// green gem
 for (x=0; x < 2; x++) {
-    var gem = new Gem(30 * Math.floor((Math.random() * 10) + 1), 30 * Math.floor((Math.random() * 10) + 1));
-    allGems.push(gem);
+    var Grngem = new GreenGem(30 * Math.floor((Math.random() * 10) + 1), 30 * Math.floor((Math.random() * 10) + 1));
+    greenGems.push(Grngem);
 };
+
+// orange gem
+var Ornggem = new OrangeGem(30 * Math.floor((Math.random() * 10) + 1), 30 * Math.floor((Math.random() * 10) + 1));
+    orangeGems.push(Ornggem);
+
+// blue gem
+var Bgem = new BlueGem(30 * Math.floor((Math.random() * 10) + 1), 30 * Math.floor((Math.random() * 10) + 1));
+    blueGems.push(Bgem);
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.

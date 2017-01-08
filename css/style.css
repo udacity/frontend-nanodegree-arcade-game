@@ -2,6 +2,18 @@ body {
     text-align: center;
 }
 
-h1 {
-    float: right;
+.flex-column {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding: 10px;
+}
+
+li {
+    display: inline;
+    margin: 20px;
+}
+
+ul {
+    list-style-type: circle;
 }
