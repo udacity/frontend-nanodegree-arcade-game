@@ -1,13 +1,58 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Effective JavaScript: Frogger</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <main>
+        <div id="scoreboard-container">
+            <header>
+                <h3>Frontend Nanodegree Arcade Game</h3>
+            </header>
+            <ul id="scoreboard">
+                <li id="sb-score"><span></span> Score: 0</li>
+                <li id="sb-level"><span></span> Level: 0</li>
+                <li id="sb-life"><span></span> Life: 0</li>
+                <li id="sb-record"><span></span> Record: 0</li>
+            </ul>
+        </div>
+
+        <!-- canvas -->
+        <div id="canvas-container"></div>
+
+        <footer>
+	    	<p>
+                Paulo Freitas Nobrega - Brazil<br />
+                &copy; Udacity - Frontend Nanodegree Arcade Game
+            </p>
+	    </footer>
+    </main>
+
+    <script src="js/config.js"></script>
+    <script src="js/module.js"></script>
+    <script src="js/timer.js"></script>
+    <script src="js/canvas.js"></script>
+    <script src="js/resourcesLoader.js"></script>
     <script src="js/resources.js"></script>
-    <script src="js/app.js"></script>
+    <script src="js/scenario.js"></script>
+    <script src="js/routes.js"></script>
+    <script src="js/traffic.js"></script>
+    <script src="js/entity.js"></script>
+    <script src="js/entityFactory.js"></script>
+    <script src="js/enemy.js"></script>
+    <script src="js/bug.js"></script>
+    <script src="js/bonus.js"></script>
+    <script src="js/bonusFactory.js"></script>
+    <script src="js/gem.js"></script>
+    <script src="js/heart.js"></script>
+    <script src="js/player.js"></script>
+    <script src="js/scoreboardWebInterface.js"></script>
+    <script src="js/scoreboard.js"></script>
+    <script src="js/collision.js"></script>
     <script src="js/engine.js"></script>
+    <script src="js/gameControl.js"></script>
+    <script src="js/app.js"></script>
 </body>
 </html>

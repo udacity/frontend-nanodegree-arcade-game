@@ -1,46 +1,84 @@
-// Enemies our player must avoid
-var Enemy = function() {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
+var config          = new Config,
+    timer           = new Timer,
+    resources       = new Resources,
+    resourcesLoader = new ResourcesLoader,
+    scenario        = new Scenario,
+    canvas          = new Canvas,
+    routes          = new Routes,
+    traffic         = new Traffic,
+    scoreboardWI    = new ScoreboardWebInterface,
+    scoreboard      = new Scoreboard,
+    entityFactory   = new EntityFactory,
+    bonusFactory    = new BonusFactory,
+    engine          = new Engine,
+    gameControl     = new GameControl,
+    collision       = new Collision;
 
-    // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
-    this.sprite = 'images/enemy-bug.png';
-};
+// Resources
+resources.setConfig(config.select('resources'));
 
-// Update the enemy's position, required method for game
-// Parameter: dt, a time delta between ticks
-Enemy.prototype.update = function(dt) {
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
-};
+// Resources Loader
+resourcesLoader.multipleLoad(resources.urlsAllImages());
 
-// Draw the enemy on the screen, required method for game
-Enemy.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
+// Scenario
+scenario.setConfig(config.select('scenario'));
+scenario.addDependencies([canvas, resources, resourcesLoader]);
+scenario.setDefaultConfig();
 
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
+// Canvas
+canvas.setConfig(config.select('canvas'));
+canvas.size(scenario.width(), scenario.height());
+canvas.create();
 
+// Routes
+routes.addDependencies([scenario, resources]);
+routes.create();
 
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
+// Traffic
+traffic.addDependencies(routes);
+traffic.setConfig(config.select('traffic'));
 
+// Scoreboard
+scoreboardWI.setConfig(config.select('scoreboard'));
+// And Scoreboard Web Interface
+scoreboard.setConfig(config.select('scoreboard'));
+scoreboard.addDependencies(scoreboardWI);
 
+// Entity Factory
+entityFactory.addDefaultDependencies([
+    scenario, resources, canvas, resourcesLoader, timer, scoreboard, traffic
+]);
 
-// This listens for key presses and sends the keys to your
-// Player.handleInput() method. You don't need to modify this.
-document.addEventListener('keyup', function(e) {
-    var allowedKeys = {
-        37: 'left',
-        38: 'up',
-        39: 'right',
-        40: 'down'
-    };
+// Bonus Factory
+bonusFactory.addDependencies(entityFactory);
 
-    player.handleInput(allowedKeys[e.keyCode]);
-});
+// Player
+var player = entityFactory.create(Player, [routes, scoreboard]);
+
+// Collision
+collision.setPlayer(player);
+
+// Engine
+engine.addDependencies([scenario, traffic, scoreboard, collision]);
+engine.addEntities([
+    entityFactory.create(Bug),
+    entityFactory.create(Bug),
+    entityFactory.create(Bug),
+    bonusFactory.create(Gem, config.select('bonus','gemBlue')),
+    bonusFactory.create(Gem, config.select('bonus','gemGreen')),
+    bonusFactory.create(Gem, config.select('bonus','gemOrange')),
+    bonusFactory.create(Heart, config.select('bonus','heart'))
+]);
+engine.setPlayer(player);
+
+// Game Control
+gameControl.setConfig(config.select('gameControl'));
+gameControl.addCallbacks('keyup', [
+    engine.pauseGame.bind(engine),
+    player.move.bind(player),
+    player.selectSprite.bind(player)
+]);
+gameControl.init();
+
+// Run
+resourcesLoader.addCallbacks('onReady', engine.run.bind(engine));
