@@ -49,6 +49,7 @@ Player.prototype.update = function() {
 //draws the Player to the screen
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    displayLevel(score, gameLevel)
 };
 
 
@@ -74,6 +75,15 @@ Player.prototype.handleInput = function(keyPress) {
     console.log('keyPress is: ' + keyPress);
 };
 
+var displayLevel = function(aScore, aLevel) {
+    var canvas = document.getElementsByTagName('canvas');
+    var firstCanvasTag = canvas[0];
+
+    scoreLevelDiv.innerHTML = 'Score: ' + aScore + '/' + 'Level: ' + aLevel;
+    document.body.insertBefore(scoreLevelDiv, firstCanvasTag[0]);
+};
+
+
 // checks whether player was crashed by an enemy
 var checkCrash = function(oneEnemy) {
     if (
@@ -93,6 +103,15 @@ var checkCrash = function(oneEnemy) {
         player.x = 202.5;
         player.y = 383;
         console.log('wow crazy!');
+
+        ctx.fillStyle = 'white';
+        ctx.fillRect(0, 0, 505, 171);
+
+        score +=1;
+        gameLevel += 1;
+
+        console.log('score: ' + score + 'current level: ' + gameLevel);
+        inscreaseLevel(score);
     }
 
     
@@ -112,10 +131,27 @@ var checkCrash = function(oneEnemy) {
 
 };
 
+// increases the number of enemies as the game progresses
+
+var inscreaseLevel = function(numEnemies) {
+    // removes existing enemies from the screen
+    allEnemies.length = 0;
+
+    //loads new enemies
+    for (var i = 0; i <= numEnemies; i++) {
+        var enemy = new Enemy(0, Math.random() * 184 + 50, Math.random() * 256);
+
+        allEnemies.push(enemy);
+    }
+};
+
 // Now instantiate your objects.
 var allEnemies = [];// Place all enemy objects in an array called allEnemies
 var player = new Player(202.5, 383, 50);// Place the player object in a variable called player
 var enemy = new Enemy(0, Math.random() * 184 + 50, Math.random() * 256); //randomized enemies occur
+var score = 0;
+var gameLevel = 1;
+var scoreLevelDiv = document.createElement('div');
 
 allEnemies.push(enemy);
 
