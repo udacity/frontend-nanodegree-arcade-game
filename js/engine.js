@@ -152,7 +152,15 @@ var Engine = (function(global) {
             enemy.render();
         });
         
-        allGems.forEach(function(gem) {
+        greenGems.forEach(function(gem) {
+            gem.render();
+        });
+        
+        orangeGems.forEach(function(gem) {
+            gem.render();
+        });
+        
+        blueGems.forEach(function(gem) {
             gem.render();
         });
         
@@ -177,7 +185,7 @@ var Engine = (function(global) {
         'images/water-block.png',
         'images/grass-block.png',
         'images/enemy-bug.png',
-        'images/char-boy.png', 'images/Gem-Green.png', 'images/Key.png'
+        'images/char-boy.png', 'images/Gem-Green.png', 'images/Key.png', 'images/Gem-Orange.png', 'images/Gem-Blue.png'
     ]);
     Resources.onReady(init);
 
