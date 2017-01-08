@@ -21,6 +21,9 @@ Enemy.prototype.update = function(dt) {
     if (this.x >= 505) {
         this.x = 0;
     }
+
+    //checks interaction between enemy and player
+    checkCrash(this);
 };
 
 // Draw the enemy on the screen, required method for game
@@ -42,6 +45,8 @@ Player.prototype.update = function() {
 
 };
 
+
+//draws the Player to the screen
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
@@ -67,6 +72,44 @@ Player.prototype.handleInput = function(keyPress) {
     }
 
     console.log('keyPress is: ' + keyPress);
+};
+
+// checks whether player was crashed by an enemy
+var checkCrash = function(oneEnemy) {
+    if (
+        player.y + 131 >= oneEnemy.y + 90
+        && player.x + 25 <= oneEnemy.x + 88
+        && player.y + 73 <= oneEnemy.y + 135
+        && player.x + 76 >= oneEnemy.x + 11) {
+        console.log('crashed')
+        player.x = 202.5;
+        player.y = 383;
+    }
+
+    //check if player reached the top of the canvas
+    //increase difficutly when player reaches the top of the canvas
+
+    if (player.y + 10 <= 0) {
+        player.x = 202.5;
+        player.y = 383;
+        console.log('wow crazy!');
+    }
+
+    
+    //makes sure that player stays on the canvas
+
+    if (player.y > 383) {
+        player.y = 383;
+    }
+
+    if (player.x > 402.5) {
+        player.x = 402.5;
+    }
+
+    if (player.x < 2.5) {
+        player.x = 2.5;
+    }
+
 };
 
 // Now instantiate your objects.
