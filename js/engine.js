@@ -164,6 +164,14 @@ var Engine = (function(global) {
             gem.render();
         });
         
+        allKeys.forEach(function(key) {
+            key.render();
+        });
+        
+        allHearts.forEach(function(heart) {
+            heart.render();
+        });
+        
         player.render();
     
     }
@@ -185,7 +193,7 @@ var Engine = (function(global) {
         'images/water-block.png',
         'images/grass-block.png',
         'images/enemy-bug.png',
-        'images/char-boy.png', 'images/Gem-Green.png', 'images/Key.png', 'images/Gem-Orange.png', 'images/Gem-Blue.png'
+        'images/char-boy.png', 'images/Gem-Green.png', 'images/Key.png', 'images/Gem-Orange.png', 'images/Gem-Blue.png', 'images/Heart.png'
     ]);
     Resources.onReady(init);
 

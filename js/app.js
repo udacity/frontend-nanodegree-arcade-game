@@ -96,14 +96,36 @@ Player.prototype.checkCollision = function() {
         }
     }
     
+    for (i=0; i < allKeys.length; i++) {
+        if (player.x >= allKeys[i].x - 50 && player.x <= allKeys[i].x + 50) {
+            if (player.y >= allKeys[i].y - 50 && player.y <= allKeys[i].y + 50) {
+                allKeys.splice(i,1);
+                $(".items").replaceWith("<li class=\"flex-item items\">Items: You have the key!</li>");
+            }
+        }
+    }
+    
+    for (i=0; i < allHearts.length; i++) {
+        if (player.x >= allHearts[i].x - 50 && player.x <= allHearts[i].x + 50) {
+            if (player.y >= allHearts[i].y - 50 && player.y <= allHearts[i].y + 50) {
+                allHearts.splice(i,1);
+                lifePoint.push("*");
+                $(".lifePoint").replaceWith("<li class=\"flex-item lifePoint\">Life Point: " + lifePoint.length + "</li>");
+            }
+        }
+    }
+    
     if (gemsCollected.length > 0) {
         $(".gems").replaceWith("<li class=\"flex-item gems\">Gems: " + gemsCollected.length + "</li>");
         var score = gemsCollected.length * 2;
         $(".score").replaceWith("<li class=\"flex-item score\">Score: " + score + "</li>");
     }
     
-    if (lifePoint.length = 0) {
-        alert("GAME OVER :(")
+    
+    
+    if (lifePoint.length == 0) {
+        alert("GAME OVER :(");
+        lifePoint = ["collect the heart!"];
     }
 };
 
@@ -206,8 +228,26 @@ var Key = function(x,y) {
     this.sprite = "images/Key.png"
 };
 
+Key.prototype.update = function() {
+    
+};
+
 // draw key
 Key.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+        /*         HEART         */
+
+var Heart = function(x,y) {
+    this.x = x;
+    this.y = y;
+    this.width = 80;
+    this.height = 80;
+    this.sprite = "images/Heart.png";
+}
+
+Heart.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
@@ -225,6 +265,8 @@ var blueGems = [];
 var allKeys = [];
 
 var gemsCollected = [];
+
+var allHearts = [];
 
 var lifePoint = ["*", "*", "*"];
 
@@ -271,11 +313,21 @@ for (x=0; x < 2; x++) {
 
 // orange gem
 var Ornggem = new OrangeGem(30 * Math.floor((Math.random() * 10) + 1), 30 * Math.floor((Math.random() * 10) + 1));
-    orangeGems.push(Ornggem);
+orangeGems.push(Ornggem);
 
 // blue gem
 var Bgem = new BlueGem(30 * Math.floor((Math.random() * 10) + 1), 30 * Math.floor((Math.random() * 10) + 1));
-    blueGems.push(Bgem);
+blueGems.push(Bgem);
+
+        // random item placing
+
+// heart
+var heart = new Heart(30 * Math.floor((Math.random() * 10) + 1), 30 * Math.floor((Math.random() * 10) + 1));
+allHearts.push(heart);
+
+// key
+var key = new Key(30 * Math.floor((Math.random() * 10) + 1), 30 * Math.floor((Math.random() * 10) + 1));
+allKeys.push(key);
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
