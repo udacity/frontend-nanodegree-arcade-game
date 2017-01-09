@@ -48,7 +48,7 @@ gameInfo.display = function() {
 gameInfo.display();
 
 // game controller for smaller devices
-
+/*
 $(document).ready(function() {
     $("canvas").after(HTMLcontrollerMobile);
     $("#controller-mobile").append(HTMLcontrolUpButton);
@@ -56,3 +56,4 @@ $(document).ready(function() {
     $("#controller-mobile").append(HTMLcontrolDownButton);
     $("#controller-mobile").append(HTMLcontrolRightButton);
 });
+*/

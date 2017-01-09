@@ -168,24 +168,26 @@ Player.prototype.handleInput = function(inputKey) {
     }
 };
 
-$("#up-button").on("tap", function() {
-    player.y -= 50;
-});
+$(document).ready(function() {
+    $("#up").click(function() {
+        player.y -= 50;
+    });
+    
+    $("#right").click(function() {
+        if (player.x < 400) {
+            player.x += 50;
+        }
+    });
+    
+    $("#down").click(function() {
+        if (player.y < 400) {
+            player.y += 50;
+        }
+    });
 
-$("#right-button").on("tap", function() {
-    if (plyaer.x < 400) {
-        player.x += 50;
-    }
-});
-
-$("#down-button").on("tap", function() {
-    if (plyaer.x < 400) {
-        player.x += 50;
-    }
-});
-
-$("#left-button").on("tap", function() {
-    player.x -= 50;
+    $("#left").click(function() {
+        player.x -= 50;
+    });
 });
 
         /*         GEMS         */
