@@ -50,11 +50,9 @@ gameInfo.display();
 // game controller for smaller devices
 
 $(document).ready(function() {
-    if ($(window).width() < 650) {
-        $("canvas").after(HTMLcontrollerMobile);
-        $("#controller-mobile").append(HTMLcontrolUpButton);
-        $("#controller-mobile").append(HTMLcontrolLeftButton);
-        $("#controller-mobile").append(HTMLcontrolDownButton);
-        $("#controller-mobile").append(HTMLcontrolRightButton);
-    }
+    $("canvas").after(HTMLcontrollerMobile);
+    $("#controller-mobile").append(HTMLcontrolUpButton);
+    $("#controller-mobile").append(HTMLcontrolLeftButton);
+    $("#controller-mobile").append(HTMLcontrolDownButton);
+    $("#controller-mobile").append(HTMLcontrolRightButton);
 });
