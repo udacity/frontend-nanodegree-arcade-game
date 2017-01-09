@@ -65,8 +65,14 @@ Player.prototype.checkCollision = function() {
     }
     
     if (player.y <= 0) {
-        alert("You won! Go to next round!");
-        player.reset();
+        if (keyCollected.length > 0) {
+            alert("You won! Go to next round!");
+            player.reset();
+        }
+        else {
+            alert("You need to bring the key to go to the next round!");
+            player.reset();
+        }
     }
     
     for (i=0; i < greenGems.length; i++) {
@@ -100,6 +106,7 @@ Player.prototype.checkCollision = function() {
         if (player.x >= allKeys[i].x - 50 && player.x <= allKeys[i].x + 50) {
             if (player.y >= allKeys[i].y - 50 && player.y <= allKeys[i].y + 50) {
                 allKeys.splice(i,1);
+                keyCollected.push("*");
                 $(".items").replaceWith("<li class=\"flex-item items\">Items: You have the key!</li>");
             }
         }
@@ -121,11 +128,11 @@ Player.prototype.checkCollision = function() {
         $(".score").replaceWith("<li class=\"flex-item score\">Score: " + score + "</li>");
     }
     
-    
-    
     if (lifePoint.length == 0) {
         alert("GAME OVER :(");
-        lifePoint = ["collect the heart!"];
+        // FOR FIXING BUGS
+        lifePoint.push("DO SOMETHING");
+        NewHeart();
     }
 };
 
@@ -266,6 +273,8 @@ var allKeys = [];
 
 var gemsCollected = [];
 
+var keyCollected = [];
+
 var allHearts = [];
 
 var lifePoint = ["*", "*", "*"];
@@ -320,10 +329,13 @@ var Bgem = new BlueGem(30 * Math.floor((Math.random() * 10) + 1), 30 * Math.floo
 blueGems.push(Bgem);
 
         // random item placing
-
 // heart
-var heart = new Heart(30 * Math.floor((Math.random() * 10) + 1), 30 * Math.floor((Math.random() * 10) + 1));
-allHearts.push(heart);
+var NewHeart = function() {
+    var heart = new Heart(30 * Math.floor((Math.random() * 10) + 1), 30 * Math.floor((Math.random() * 10) + 1));
+    allHearts.push(heart);
+}
+
+NewHeart();
 
 // key
 var key = new Key(30 * Math.floor((Math.random() * 10) + 1), 30 * Math.floor((Math.random() * 10) + 1));
