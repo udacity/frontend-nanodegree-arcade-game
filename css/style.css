@@ -29,8 +29,8 @@ ul {
     border: 3px solid black;
     width: 110px;
     height: 110px;
-    margin-left: 40%;
-    margin-right: 40%;
+    margin-left: 42%;
+    margin-right: 42%;
 }
 
 #left-button, #down-button, #right-button {
@@ -38,4 +38,7 @@ ul {
     border: 3px solid black;
     width: 110px;
     height: 110px;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 20px;
 }
