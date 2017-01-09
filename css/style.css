@@ -17,3 +17,25 @@ li {
 ul {
     list-style-type: circle;
 }
+
+#cotronller-mobile {
+    padding: auto;
+    margin: auto;
+    width: 500px;
+}
+
+#up-button {
+    border-radius: 50%;
+    border: 3px solid black;
+    width: 110px;
+    height: 110px;
+    margin-left: 40%;
+    margin-right: 40%;
+}
+
+#left-button, #down-button, #right-button {
+    border-radius: 50%;
+    border: 3px solid black;
+    width: 110px;
+    height: 110px;
+}

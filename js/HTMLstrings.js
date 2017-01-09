@@ -7,6 +7,12 @@ var HTMLheaderStageGems = '<li class="flex-item gems">Gems: %data%</li>';
 var HTMLheaderStageItems = '<li class="flex-item items">Items: %data%</li>';
 var HTMLheaderStageLifePoint = '<li class="flex-item lifePoint">Life Point: %data%</li>';
 
+var HTMLcontrollerMobile = "<div id=\"controller-mobile\"></div>";
+var HTMLcontrolUpButton = '<button id="up-button">UP</button>'
+var HTMLcontrolLeftButton = "<button id=\"left-button\">LEFT</button>";
+var HTMLcontrolDownButton = "<button id=\"down-button\">DOWN</button>";
+var HTMLcontrolRightButton = "<button id=\"right-button\">RIGHT</button>";
+
 var gameInfo = {
     "stageInformation": {
         "level": 1,
@@ -17,6 +23,7 @@ var gameInfo = {
     }
 };
 
+// game information
 gameInfo.display = function() {
     $("#header").append(HTMLheaderDiv);
     $(".board").append(HTMLheaderTitle.replace("%data%", "The Frogger"));
@@ -35,7 +42,19 @@ gameInfo.display = function() {
     $("#list").append(formattedItems);
     
     var formattedLifePoints = HTMLheaderStageLifePoint.replace("%data%", gameInfo.stageInformation.lifePoint);
-    $("#list:last").append(formattedLifePoints).addClass("hi");
+    $("#list:last").append(formattedLifePoints);
 };
 
 gameInfo.display();
+
+// game controller for smaller devices
+
+$(document).ready(function() {
+    if ($(window).width() < 650) {
+        $("canvas").after(HTMLcontrollerMobile);
+        $("#controller-mobile").append(HTMLcontrolUpButton);
+        $("#controller-mobile").append(HTMLcontrolLeftButton);
+        $("#controller-mobile").append(HTMLcontrolDownButton);
+        $("#controller-mobile").append(HTMLcontrolRightButton);
+    }
+});
