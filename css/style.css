@@ -42,3 +42,15 @@ ul {
     margin-right: 20px;
     margin-top: 20px;
 }
+
+button {
+    margin: auto;
+    height: 120px;
+    width: 120px;
+}
+
+.buttons {
+    position: absolute;
+    top: 900px;
+    right: 300px
+}
