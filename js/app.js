@@ -168,6 +168,26 @@ Player.prototype.handleInput = function(inputKey) {
     }
 };
 
+$("#up-button").on("tap", function() {
+    player.y -= 50;
+});
+
+$("#right-button").on("tap", function() {
+    if (plyaer.x < 400) {
+        player.x += 50;
+    }
+});
+
+$("#down-button").on("tap", function() {
+    if (plyaer.x < 400) {
+        player.x += 50;
+    }
+});
+
+$("#left-button").on("tap", function() {
+    player.x -= 50;
+});
+
         /*         GEMS         */
 
 // green gem
