@@ -39,7 +39,7 @@ var Player = function(x, y) {
     this.y = y;
     this.width = 50;
     this.height = 50;
-    this.sprite = "images/char-boy.png"
+    this.sprite = "images/char-boy.png";
 };
 
 // player position relocating point
@@ -198,7 +198,7 @@ var GreenGem = function(x, y) {
     this.y = y;
     this.width = 100;
     this.height = 100;
-    this.sprite = "images/Gem-Green.png"
+    this.sprite = "images/Gem-Green.png";
 };
 
 GreenGem.prototype.update = function(dt) {
@@ -216,7 +216,7 @@ var OrangeGem = function(x, y) {
     this.y = y;
     this.width = 100;
     this.height = 100;
-    this.sprite = "images/Gem-Orange.png"
+    this.sprite = "images/Gem-Orange.png";
 };
 
 OrangeGem.prototype.update = function(dt) {
@@ -234,7 +234,7 @@ var BlueGem = function(x, y) {
     this.y = y;
     this.width = 100;
     this.height = 100;
-    this.sprite = "images/Gem-Blue.png"
+    this.sprite = "images/Gem-Blue.png";
 };
 
 BlueGem.prototype.update = function(dt) {
@@ -254,7 +254,7 @@ var Key = function(x,y) {
     this.y = y;
     this.width = 80;
     this.height = 80;
-    this.sprite = "images/Key.png"
+    this.sprite = "images/Key.png";
 };
 
 Key.prototype.update = function() {
@@ -274,7 +274,7 @@ var Heart = function(x,y) {
     this.width = 80;
     this.height = 80;
     this.sprite = "images/Heart.png";
-}
+};
 
 Heart.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
@@ -311,7 +311,7 @@ var enemyCoordX = -150;
 // var enemySpeed = 30 * allGems.length + 10 * (Math.floor((Math.random() * 10) + 1))
 
 // speed increase
-spdInc = 1
+spdInc = 1;
 
         // random enemy placing
 var enemyPlace = function() {
@@ -332,7 +332,7 @@ var enemyPosition = function() {
             allEnemies[i].speed = 30 * greenGems.length + 10 * (Math.floor((Math.random() * 10) + 1));
         }
     }
-}
+};
 
         // random gem placing
 
@@ -340,7 +340,7 @@ var enemyPosition = function() {
 for (x=0; x < 2; x++) {
     var Grngem = new GreenGem(30 * Math.floor((Math.random() * 10) + 1), 30 * Math.floor((Math.random() * 10) + 1));
     greenGems.push(Grngem);
-};
+}
 
 // orange gem
 var Ornggem = new OrangeGem(30 * Math.floor((Math.random() * 10) + 1), 30 * Math.floor((Math.random() * 10) + 1));
@@ -355,7 +355,7 @@ blueGems.push(Bgem);
 var NewHeart = function() {
     var heart = new Heart(30 * Math.floor((Math.random() * 10) + 1), 30 * Math.floor((Math.random() * 10) + 1));
     allHearts.push(heart);
-}
+};
 
 NewHeart();
 

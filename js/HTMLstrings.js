@@ -8,7 +8,7 @@ var HTMLheaderStageItems = '<li class="flex-item items">Items: %data%</li>';
 var HTMLheaderStageLifePoint = '<li class="flex-item lifePoint">Life Point: %data%</li>';
 
 var HTMLcontrollerMobile = "<div id=\"controller-mobile\"></div>";
-var HTMLcontrolUpButton = '<button id="up-button">UP</button>'
+var HTMLcontrolUpButton = '<button id="up-button">UP</button>';
 var HTMLcontrolLeftButton = "<button id=\"left-button\">LEFT</button>";
 var HTMLcontrolDownButton = "<button id=\"down-button\">DOWN</button>";
 var HTMLcontrolRightButton = "<button id=\"right-button\">RIGHT</button>";
