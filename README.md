@@ -1,6 +1,15 @@
-frontend-nanodegree-arcade-game
-===============================
+# The Frogger
+### Classic Arcade Game
 
-Students should use this [rubric](https://review.udacity.com/#!/projects/2696458597/rubric) for self-checking their submission. Make sure the functions you write are **object-oriented** - either class functions (like Player and Enemy) or class prototype functions such as Enemy.prototype.checkCollisions, and that the keyword 'this' is used appropriately within your class and class prototype functions to refer to the object the function is called upon. Also be sure that the **readme.md** file is updated with your instructions on both how to 1. Run and 2. Play your arcade game.
 
-For detailed instructions on how to get started, check out this [guide](https://docs.google.com/document/d/1v01aScPjSWCCWQLIpFqvg3-vXLH2e8_SZQKC8jNO0Dc/pub?embedded=true).
+1. Introduction
+    * This is one my projects I built for Udacity Nanodegree program
+    
+2. How to play
+    * Rules
+    1. Use the arrow keys on the keyboard to move your character
+    2. Avoid the bugs! - you have 3 lives
+    3. Reach the river to go to the next round
+    4. Get the heart to get more lives
+    5. You don't have to collect all the gems, but if you do, your score will be higher
+    6. You **must** have the key to go to the next round
