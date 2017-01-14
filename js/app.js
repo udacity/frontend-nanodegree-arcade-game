@@ -22,8 +22,18 @@ Enemy.prototype.update = function(dt) {
         this.x = 0;
     }
 
-    //checks interaction between enemy and player
-    checkCrash(this);
+    // checks whether player was crashed by an enemy
+
+    if (
+        player.y + 131 >= this.y + 90
+        && player.x + 25 <= this.x + 88
+        && player.y + 73 <= this.y + 135
+        && player.x + 76 >= this.x + 11) {
+        console.log('crashed')
+        player.x = 202.5;
+        player.y = 383;
+    }
+
 };
 
 // Draw the enemy on the screen, required method for game
@@ -31,13 +41,14 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
-var Player = function(x,y, speed) {
+var Player = function(x,y, step) {
     this.x = x;
     this.y = y;
-    this.speed = speed;
+    this.step = step;
     this.sprite = 'images/char-boy.png';
 };
 
@@ -57,47 +68,22 @@ Player.prototype.render = function() {
 
 Player.prototype.handleInput = function(keyPress) {
     if (keyPress == 'left') {
-        player.x -= player.speed;
+        player.x -= player.step;
     }
 
     if (keyPress == 'up') {
-        player.y -= player.speed - 20;
+        player.y -= player.step - 20;
     }
 
     if (keyPress == 'right') {
-        player.x += player.speed;
+        player.x += player.step;
     }
 
     if (keyPress == 'down') {
-        player.y += player.speed - 20;
+        player.y += player.step - 20;
     }
 
     console.log('keyPress is: ' + keyPress);
-};
-
-var displayLevel = function(aScore, aLevel) {
-    var canvas = document.getElementsByTagName('canvas');
-    var firstCanvasTag = canvas[0];
-
-    scoreLevelDiv.innerHTML = 'Score: ' + aScore + ' / ' + 'Level: ' + aLevel;
-    document.body.insertBefore(scoreLevelDiv, firstCanvasTag[0]);
-};
-
-
-// checks whether player was crashed by an enemy
-var checkCrash = function(oneEnemy) {
-    if (
-        player.y + 131 >= oneEnemy.y + 90
-        && player.x + 25 <= oneEnemy.x + 88
-        && player.y + 73 <= oneEnemy.y + 135
-        && player.x + 76 >= oneEnemy.x + 11) {
-        console.log('crashed')
-        player.x = 202.5;
-        player.y = 383;
-    }
-
-    //check if player reached the top of the canvas
-    //increase difficutly when player reaches the top of the canvas
 
     if (player.y + 10 <= 0) {
         player.x = 202.5;
@@ -129,6 +115,14 @@ var checkCrash = function(oneEnemy) {
         player.x = 2.5;
     }
 
+};
+
+var displayLevel = function(aScore, aLevel) {
+    var canvas = document.getElementsByTagName('canvas');
+    var firstCanvasTag = canvas[0];
+
+    scoreLevelDiv.innerHTML = 'Score: ' + aScore + ' / ' + 'Level: ' + aLevel;
+    document.body.insertBefore(scoreLevelDiv, firstCanvasTag[0]);
 };
 
 // increases the number of enemies as the game progresses
