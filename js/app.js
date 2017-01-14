@@ -53,41 +53,9 @@ var Player = function(x,y, step) {
 };
 
 Player.prototype.update = function() {
-
-};
-
-
-//draws the Player to the screen
-Player.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-    displayLevel(score, gameLevel)
-};
-
-
-//moves the player on the screen
-
-Player.prototype.handleInput = function(keyPress) {
-    if (keyPress == 'left') {
-        player.x -= player.step;
-    }
-
-    if (keyPress == 'up') {
-        player.y -= player.step - 20;
-    }
-
-    if (keyPress == 'right') {
-        player.x += player.step;
-    }
-
-    if (keyPress == 'down') {
-        player.y += player.step - 20;
-    }
-
-    console.log('keyPress is: ' + keyPress);
-
-    if (player.y + 10 <= 0) {
-        player.x = 202.5;
-        player.y = 383;
+    if (this.y + 10 <= 0) {
+        this.x = 202.5;
+        this.y = 383;
         console.log('wow crazy!');
 
         ctx.fillStyle = 'white';
@@ -103,17 +71,48 @@ Player.prototype.handleInput = function(keyPress) {
     
     //makes sure that player stays on the canvas
 
-    if (player.y > 383) {
-        player.y = 383;
+    if (this.y > 383) {
+        this.y = 383;
     }
 
-    if (player.x > 402.5) {
-        player.x = 402.5;
+    if (this.x > 402.5) {
+        this.x = 402.5;
     }
 
-    if (player.x < 2.5) {
-        player.x = 2.5;
+    if (this.x < 2.5) {
+        this.x = 2.5;
     }
+
+};
+
+
+//draws the Player to the screen
+Player.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    displayLevel(score, gameLevel)
+};
+
+
+//moves the player on the screen
+
+Player.prototype.handleInput = function(keyPress) {
+    if (keyPress == 'left') {
+        this.x -= this.step;
+    }
+
+    if (keyPress == 'up') {
+        this.y -= this.step - 20;
+    }
+
+    if (keyPress == 'right') {
+        this.x += this.step;
+    }
+
+    if (keyPress == 'down') {
+        this.y += this.step - 20;
+    }
+
+    console.log('keyPress is: ' + keyPress);
 
 };
 
