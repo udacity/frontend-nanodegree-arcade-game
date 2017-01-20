@@ -1,3 +1,5 @@
+'use strict';
+
 /*       ENEMY       */
 
 // Enemies our player must avoid
@@ -51,13 +53,13 @@ Player.prototype.reset = function() {
 // collision checking function
 Player.prototype.checkCollision = function() {
     for (var i = 0; i < allEnemies.length; i++) {
-        if (player.x >= allEnemies[i].x - 40 && player.x <= allEnemies[i].x + 40) {
-            if (player.y >= allEnemies[i].y - 35 && player.y <= allEnemies[i].y + 35) {
+        if (this.x >= allEnemies[i].x - 40 && this.x <= allEnemies[i].x + 40) {
+            if (this.y >= allEnemies[i].y - 35 && this.y <= allEnemies[i].y + 35) {
                 alert("You hit a bug!! Your character will be relocated to the starting point!! Good luck!!");
                 for (i=0; i < 4; i++) {
                     allEnemies[i].x = -150;
                 }
-                player.reset();
+                this.reset();
                 lifePoint.splice(0,1);
                 $(".lifePoint").replaceWith("<li class=\"flex-item lifePoint\">Life Point: " + lifePoint.length + "</li>");
             }
@@ -67,7 +69,7 @@ Player.prototype.checkCollision = function() {
     if (player.y <= 0) {
         if (keyCollected.length > 0) {
             alert("You won! Go to next round!");
-            player.reset();
+            this.reset();
         }
         else {
             alert("You need to bring the key to go to the next round!");
@@ -138,7 +140,7 @@ Player.prototype.checkCollision = function() {
 
 // update player's position
 Player.prototype.update = function(dt) {
-    player.checkCollision();
+    this.checkCollision();
 };
 
 // draw player's character image on the board
@@ -149,21 +151,21 @@ Player.prototype.render = function() {
 // handling character
 Player.prototype.handleInput = function(inputKey) {
     if (inputKey == 'up') {
-        player.y -= 50;
+        this.y -= 50;
     }
     if (inputKey == 'right') {
-        if (player.x < 400) {
-            player.x += 50;
+        if (this.x < 400) {
+            this.x += 50;
         }
     }
     if (inputKey == 'down') {
-        if (player.y < 400) {
-            player.y += 50;   
+        if (this.y < 400) {
+            this.y += 50;   
         }
     }
     if (inputKey == 'left') {
         if (0 < player.x) {
-            player.x -= 50;
+            this.x -= 50;
         }
     }
 };
@@ -311,11 +313,11 @@ var enemyCoordX = -150;
 // var enemySpeed = 30 * allGems.length + 10 * (Math.floor((Math.random() * 10) + 1))
 
 // speed increase
-spdInc = 1;
+var spdInc = 1;
 
         // random enemy placing
 var enemyPlace = function() {
-    for (i=0; i < 4; i++) {
+    for (var i=0; i < 4; i++) {
         var enemy = new Enemy(enemyCoordX, 60 * (Math.floor((Math.random() * 6) + 1)), spdInc * 30 * greenGems.length + 10 * (Math.floor((Math.random() * 10) + 1)));
         allEnemies.push(enemy);
     }
@@ -325,7 +327,7 @@ enemyPlace();
 
         // check enemy positions
 var enemyPosition = function() {
-    for (i=0; i < allEnemies.length; i++) {
+    for (var i=0; i < allEnemies.length; i++) {
         if (allEnemies[i].x > 650) {
             allEnemies[i].x = enemyCoordX;
             allEnemies[i].y = 60 * (Math.floor((Math.random() * 6) + 1));
@@ -337,7 +339,7 @@ var enemyPosition = function() {
         // random gem placing
 
 // green gem
-for (x=0; x < 2; x++) {
+for (var x=0; x < 2; x++) {
     var Grngem = new GreenGem(30 * Math.floor((Math.random() * 10) + 1), 30 * Math.floor((Math.random() * 10) + 1));
     greenGems.push(Grngem);
 }
