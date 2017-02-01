@@ -1,10 +1,14 @@
 //////////////////////////////////////////////
 // Most of the work needed to add levels is located within
 // this file
-///
+//////////////////////////
 // Beyond this file, player level up methods must be updated in player.js
 // And new enemies (or atleast a new array for level) must be defined
 // within the enemy.js file
+//
+///////////////////////////////////////////////
+// Grid layout for each level's tiles is also contained within this file
+// in renderWorld() near the bottom
 /////////////////////////////////////////////////////////
 
 // Display the proper level of enemies
