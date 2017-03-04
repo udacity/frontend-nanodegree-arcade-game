@@ -25,8 +25,8 @@ var Engine = (function(global) {
         ctx = canvas.getContext('2d'),
         lastTime;
 
-    canvas.width = 505;
-    canvas.height = 606;
+    canvas.width = CONSTANTS.CANVAS_WIDTH;
+    canvas.height = CONSTANTS.CANVAS_HEIGHT;
     doc.body.appendChild(canvas);
 
     /* This function serves as the kickoff point for the game loop itself
@@ -80,7 +80,7 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        // checkCollisions();
+        checkCollisions();
     }
 
     /* This is called by the update function and loops through all of the
@@ -94,7 +94,20 @@ var Engine = (function(global) {
         allEnemies.forEach(function(enemy) {
             enemy.update(dt);
         });
-        player.update();
+        player.update(dt);
+    }
+
+    /* This is called after update entities and to check collision 
+     */
+    function checkCollisions(){
+        var enemyArea,
+            playerArea = player.getBoundingRectangle();
+        allEnemies.forEach(function(enemy) {
+            enemyArea = enemy.getBoundingRectangle();
+            if(enemyArea.doesOverlap(playerArea)){
+                player.reset();
+            }
+        });
     }
 
     /* This function initially draws the "game level", it will then call
@@ -132,7 +145,7 @@ var Engine = (function(global) {
                  * so that we get the benefits of caching these images, since
                  * we're using them over and over.
                  */
-                ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
+                ctx.drawImage(Resources.get(rowImages[row]), col * CONSTANTS.BLOCK_WIDTH, row * CONSTANTS.BLOCK_HEIGHT);
             }
         }
 
