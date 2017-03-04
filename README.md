@@ -13,3 +13,7 @@ For detailed instructions on how to get started, check out this [guide](https://
 - Handled collision detection using logic of whether or not bounding rectangle of `player` overlaps with any of `enemy` objects.
 - Handled scenario of winning.
 
+## How to Run
+- Just open the index.html in chrome web browser.
+  OR
+- Play the game at [http://fend-game.surge.sh](http://fend-game.surge.sh)
