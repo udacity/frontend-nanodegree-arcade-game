@@ -32,7 +32,7 @@ Rectangle.prototype.doesOverlap = function(rectangle2){
     }
 
     return true;
-}
+};
 
 /**
  * GameCharacter class
@@ -198,7 +198,7 @@ Player.prototype.handleInput = function(moveDirection) {
             if(prevPositionY > minPositionY){
                 this.position.y = prevPositionY - CONSTANTS.BLOCK_HEIGHT;
             }else{
-                player.reset();
+                this.reset();
             }
             break;
         case 'down':
@@ -210,7 +210,7 @@ Player.prototype.handleInput = function(moveDirection) {
             // do nothing on other events
             break;
     }
-}
+};
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
