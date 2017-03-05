@@ -13,6 +13,10 @@ For detailed instructions on how to get started, check out this [guide](https://
 - Handled collision detection using logic of whether or not bounding rectangle of `player` overlaps with any of `enemy` objects.
 - Handled scenario of winning.
 
+## Changes as per review comments
+- Added missing semicolons
+- `player.reset()` changed to `this.reset()`
+
 ## How to Run
 - Just open the index.html in chrome web browser.
   OR
