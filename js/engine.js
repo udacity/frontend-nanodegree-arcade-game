@@ -56,7 +56,10 @@ var Engine = (function(global) {
         /* Use the browser's requestAnimationFrame function to call this
          * function again as soon as the browser is able to draw another frame.
          */
-        win.requestAnimationFrame(main);
+        // Stops the game loop, if there are no remaining lives
+        if (!game.over) {
+            win.requestAnimationFrame(main);
+        }
     }
 
     /* This function does some initial setup that should only occur once,
@@ -152,6 +155,7 @@ var Engine = (function(global) {
         });
 
         player.render();
+        game.render();
     }
 
     /* This function does nothing but it could have been a good place to
@@ -171,7 +175,8 @@ var Engine = (function(global) {
         'images/water-block.png',
         'images/grass-block.png',
         'images/enemy-bug.png',
-        'images/char-boy.png'
+        'images/char-boy.png',
+        'images/Heart.png'
     ]);
     Resources.onReady(init);
 
