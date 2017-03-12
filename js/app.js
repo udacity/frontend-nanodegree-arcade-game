@@ -1,7 +1,17 @@
-// Enemies our player must avoid
-var Enemy = function() {
+/**
+ * @description Represents the enemy
+ * @constructor
+ * @param x
+ * @param y
+ * @param speed
+ * @constructor
+ */
+var Enemy = function(x, y, speed) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
+    this.x = x;
+    this.y = y;
+    this.speed = speed;
 
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
@@ -14,6 +24,15 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
+    this.x += this.speed * dt;
+
+    // make enemies loop to left side of canvas after reaching canvas.width @todo comment fix
+    if (this.x >= 505) {
+        this.x = 0;
+    }
+
+    // Check for collision with enemies or barrier-walls
+    // checkCollision(this);
 };
 
 // Draw the enemy on the screen, required method for game
@@ -21,16 +40,118 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
+/**
+ * @description Represents the player
+ * @constructor
+ * @param {number} x
+ * @param {number} y
+ * @param {number} speed
+ */
+var Player = function(x, y, speed) {
+    this.x = x;
+    this.y = y;
+    this.speed = speed;
+    this.sprite = 'images/char-boy.png';
+};
 
+// Update the player's position, required method for game
+// Parameter: dt, a time delta between ticks
+Player.prototype.update = function(dt) {
+    // You should multiply any movement by the dt parameter
+    // which will ensure the game runs at the same speed for
+    // all computers.
+    player.isCollided(enemy);
+};
+
+// Draw our player on the screen, required method for game
+Player.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+// Draw our player on the screen, required method for game
+Player.prototype.handleInput = function(keyPressed) {
+    switch(keyPressed) {
+        case 'left':
+            player.x -= player.speed;
+            break;
+        case 'up':
+            player.y -= player.speed;
+            break;
+        case 'right':
+            player.x += player.speed;
+            break;
+        case 'down':
+            player.y += player.speed;
+            break;
+        default:
+            // do nothing
+    }
+};
+
+Player.prototype.isCollided = function (enemy) {
+    // check for collision between enemy and player
+    if (
+        player.y + 131 >= enemy.y + 90
+        && player.x + 25 <= enemy.x + 88
+        && player.y + 73 <= enemy.y + 135
+        && player.x + 76 >= enemy.x + 11) {
+
+        player.x = 202.5;
+        player.y = 383;
+
+        console.log('collided');
+        return true;
+    }
+
+    // check for player reaching top of canvas and winning the game
+    // if player wins, add 1 to the score and level
+    // pass score as an argument to the increaseDifficulty function
+    if (player.y + 63 <= 0) {
+        player.x = 202.5;
+        player.y = 383;
+        console.log('you made it!');
+
+        ctx.fillStyle = 'white';
+        ctx.fillRect(0, 0, 505, 171);
+
+        // score += 1;
+        // gameLevel += 1;
+        // console.log('current score: ' + score + ', current level: ' + gameLevel);
+        // increaseDifficulty(score);
+
+    }
+
+    // check if player runs into left, bottom, or right canvas walls
+    // prevent player from moving beyond canvas wall boundaries
+    // @todo make constants or other solution
+    if (player.y > 383) {
+        player.y = 383;
+
+        return true;
+    }
+    if (player.x > 402.5) {
+        player.x = 402.5;
+
+        return true;
+    }
+    if (player.x < 2.5) {
+        player.x = 2.5;
+
+        return true;
+    }
+
+    return false;
+};
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
+var allEnemies = [];
+
 // Place the player object in a variable called player
+var player = new Player(0, 50, 100);
+var enemy = new Enemy(0, Math.random() * 184 + 50, Math.random() * 256);
 
-
+allEnemies.push(enemy);
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
@@ -43,4 +164,5 @@ document.addEventListener('keyup', function(e) {
     };
 
     player.handleInput(allowedKeys[e.keyCode]);
+    console.log(allowedKeys[e.keyCode]);
 });
