@@ -1,3 +1,27 @@
 body {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 40px;
     text-align: center;
+}
+
+.wrapper {
+    margin: 0 auto;
+    width: 500px;
+    overflow: hidden;
+}
+
+.scoreboard {
+    display: flex;
+    float: left;
+    height: 50px;
+    text-align: center;
+    width: 50%;
+}
+
+#high-score {
+
+}
+
+#level {
+
 }
