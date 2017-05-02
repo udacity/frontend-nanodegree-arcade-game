@@ -71,10 +71,15 @@ var Engine = (function(global) {
         main();
     }
 
-    function gameOver(){
-        var gameOver = lives.update();
+    function mainMenu () {
+        menu.render();
+    }
+
+    function gameOver() {
+        var gameOver = lives.lose();
         if (gameOver){
-            score.update();
+            score.reset();
+            menu.lose();
             init();
         }
     }
@@ -143,8 +148,19 @@ var Engine = (function(global) {
                 ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
             }
         }
-        renderEntities();
-        renderExtas();
+        //render bottom instructions
+        ctx.font = "10pt Arial";
+        ctx.fillText("Use the arrow keys to move. Avoid the Enemy bugs and reach the water!",0,600);
+
+
+        if(menu.selected === true){
+            renderEntities();
+            renderExtras();
+        }
+        else{
+            mainMenu();
+        }
+        //instantiate remaining renders
     }
 
     /* This function is called by the render function and is called on each game
@@ -164,7 +180,7 @@ var Engine = (function(global) {
     /* This function is called in order to render the lives and score values
      * Add any extra rendering in this section.
      */
-    function renderExtas() {
+    function renderExtras() {
         score.render();
         lives.render();
     }
@@ -187,8 +203,10 @@ var Engine = (function(global) {
         'images/stone-block.png',
         'images/water-block.png',
         'images/grass-block.png',
+        'images/Selector.png',
         'images/enemy-bug.png',
         'images/char-boy.png',
+        'images/char-pink-girl.png',
         'images/Heart.png'
     ]);
     Resources.onReady(init);
