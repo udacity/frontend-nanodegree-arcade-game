@@ -10,9 +10,7 @@ var playerStartYPos = 392;
  * At the moment, the player has no way to obtain extra lives.
  */
 var Lives = function(){
-
     this.sprite = 'images/Heart.png';
-    this.numLives = 5;
 }
 //render lives
 Lives.prototype.render = function () {
@@ -26,19 +24,42 @@ Lives.prototype.remove = function () {
     ctx.clearRect(0,0,300,50);
     this.numLives -= 1;
 };
-//TODO: Make an update for lives load on each engine. if loose, reset.
+Lives.prototype.update = function () {
+    if(this.numLives === 0){
+        return true;
+    }
+    else{
+        return false;
+    }
+};
+Lives.prototype.reset = function (){
+     this.numLives = 5;
+};
 
 var Score = function () {
     this.score = 0;
+    this.topScore = 0;
 };
 Score.prototype.render = function(){
-    ctx.font = "25px Arial";
-    ctx.fillText("SCORE: " + this.score, 325,35);
+    ctx.font = "18px Arial";
+    ctx.fillText("TOP SCORE: " + this.topScore, 320,20);
+    ctx.fillText("SCORE: " + this.score, 320,45);
+
 };
 Score.prototype.win = function(){
-    ctx.clearRect(325,0,606,50);
+    this.clear();
     this.score += 500
+};
+Score.prototype.update = function () {
+    if(this.score > this.topScore){
+        this.topScore = this.score;
+        this.score = 0;
+        this.clear();
+    }
 }
+Score.prototype.clear = function (){
+    ctx.clearRect(320,0,606,50);
+};
 
 /* This section is used to define the Enemy object with all
  * its prototype functions. The speed of the enemy is defined upon
@@ -69,12 +90,20 @@ Enemy.prototype.update = function(dt) {
         this.x += Math.round(100 * this.speed * dt);
     }
 
-    if (this.y === player.y && (player.x >= this.x && player.x < (this.x + 75) )) {
+    if (this.collision()){
         lives.remove();
-        console.log("you lose");
         player.reset();
     }
 };
+//Collision detection using bounding box algorithm
+Enemy.prototype.collision = function(){
+
+    if(player.x <= this.x + 101 && player.x >= this.x -70 &&
+    player.y === this.y ){
+        return true;
+    }
+
+}
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
@@ -107,9 +136,6 @@ Enemy.prototype.setXPos = function(x) {
  */
 var Player = function(){
     this.sprite = 'images/char-boy.png';
-    this.x = playerStartXPos;
-    this.y = playerStartYPos;
-
 };
 //render player on canvas
 Player.prototype.render = function() {
@@ -136,16 +162,8 @@ Player.prototype.update = function(x,y) {
               //check if he's on the blue to win
               if (this.y === -23) {
                   score.win();
-                  console.log("you win");
                   this.reset();
               }
-              allEnemies.forEach(function (enemy) {
-                  if (enemy.y === player.y && (player.x >= enemy.x - 45 && player.x < (enemy.x + 75) )) {
-                      lives.remove();
-                      console.log("you lose");
-                      player.reset();
-                  }
-              });
           }
       }
 };
@@ -176,12 +194,11 @@ Player.prototype.handleInput = function (keyCode){
         this.update(xTile, 0);
     }
 };
-
 // Instantiating player, and allEnemeis for rendering.
 var lives = new Lives();
 var score = new Score();
 var player = new Player();
-var allEnemies = [new Enemy(1)];
+var allEnemies = [new Enemy(1),new Enemy(2),new Enemy(3)];
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method.
