@@ -17,6 +17,7 @@ var Menu = function(){
     this.x = 130;
     this.y = 200
 };
+//Render the player select menu
 Menu.prototype.render = function (){
 
     ctx.fillStyle = "#f5f5dc";
@@ -33,16 +34,18 @@ Menu.prototype.render = function (){
     ctx.drawImage(Resources.get("images/char-pink-girl.png"), 280, 200);
 };
 
+//update the value of the selector
 Menu.prototype.update = function (x){
     if(x !== undefined){
         this.x = x;
     }
 };
+//change message and set selected to false once player loses all lives
 Menu.prototype.lose = function(){
    this.message[0] =" You Lose, Try Again!";
    this.selected = false;
-}
-
+};
+//handles the left and right between selection (including staying in bounds)
 Menu.prototype.handleInput = function (keyCode) {
 
     if(keyCode === "left" && this.x === 280){
@@ -62,7 +65,7 @@ Menu.prototype.handleInput = function (keyCode) {
         this.selected = true;
     }
 };
-
+//clear the menu to play the game
 Menu.prototype.clear = function (){
     ctx.clearRect(0,0,600,600);
 };
