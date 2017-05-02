@@ -1,6 +1,12 @@
-// Enemies our player must avoid
+//Define global variables
 var row = 1;
+var xTile  =  101;
+var yTile = 83;
+var playerStartXPos = 202;
+var playerStartYPos = 392;
 
+
+// Enemies our player must avoid
 var Enemy = function(speed) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
@@ -8,21 +14,10 @@ var Enemy = function(speed) {
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
-    this.x = -202;
-
-    //Assign row randomly.
-    if(row === 1){
-        this.y = 60;
-    }
-    else if(row === 2){
-        this.y = 143;
-    }
-    else if(row === 3){
-        this.y = 226;
-        row = 1;
-    }
-    row++;
+    this.x =  this.setXPos(-101);
+    this.y =  this.setYPos();
     this.speed = speed;
+    //Assign row randomly.
 };
 
 // Update the enemy's position, required method for game
@@ -32,7 +27,7 @@ Enemy.prototype.update = function(dt) {
     // which will ensure the game runs at the same speed for
     // all computers.
     if(this.x >505){
-        this.x = -202;
+       this.x = this.setXPos(this.x);
     }
     else {
         this.x += Math.round(100 * this.speed * dt);
@@ -40,6 +35,7 @@ Enemy.prototype.update = function(dt) {
 
     if (this.y === player.y && (player.x >= this.x && player.x < (this.x + 75) )) {
         console.log("you lose");
+        player.reset();
     }
 };
 
@@ -48,72 +44,113 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
+// instantiate default row to Enemy (round robbin)
+Enemy.prototype.setYPos = function () {
 
-var Player = function(){
-    this.sprite = 'images/char-boy.png';
-    this.x = 202;
-    this.y = 392;
+    if(row === 1){
+        row++;
+        return 60;
+    }
+    else if(row === 2){
+        row++;
+        return 143;
+    }
+    else if(row === 3){
+        row = 1;
+        return 226;
+    }
+
 
 };
 
+//used for setting x initial position, and resetting x pos every time enemy goes off canvas
+Enemy.prototype.setXPos = function(x) {
+    return Math.floor(Math.random() * (-303)) -101;
+};
+
+
+// Define Player class and all prototype functions
+var Player = function(){
+    this.sprite = 'images/char-boy.png';
+    this.x = playerStartXPos;
+    this.y = playerStartYPos;
+
+};
+
+//render player on canvas
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+//set values of x/y to reset players position upon winning/losing
 Player.prototype.reset = function () {
-    this.x = 202;
-    this.y = 392;
-}
-
-Player.prototype.update = function(x,y) {
-
-    if (x != undefined && y != undefined){
-        if(this.x + x >= 0 && this.x +x < 505 && this.y+y >= -23 && this.y+y <= 392 ) {
-            this.x += x;
-            this.y += y;
-
-            //check if he's on the blue to win
-            if( this.y === -23 ){
-                console.log("you win");
-                this.reset();
-            }
-
-            allEnemies.forEach(function(enemy) {
-                if (enemy.y === player.y && (player.x >= enemy.x && player.x < (enemy.x + 75) )) {
-                    console.log("you lose");
-                }
-            });
-        }
-    }
+    this.x = playerStartXPos;
+    this.y = playerStartYPos;
 };
 
+//update players position
+Player.prototype.update = function(x,y) {
+
+    //check if x,y has a value (key has been pressed)
+    if (x !== undefined && y !== undefined){
+
+          //Check that the value is in bounds
+          if (this.checkBounds(x,y) === true) {
+
+              //assign new position
+              this.x += x;
+              this.y += y;
+
+              //check if he's on the blue to win
+              if (this.y === -23) {
+                  console.log("you win");
+                  this.reset();
+              }
+              allEnemies.forEach(function (enemy) {
+                  if (enemy.y === player.y && (player.x >= enemy.x - 45 && player.x < (enemy.x + 75) )) {
+                      console.log("you lose");
+                      player.reset();
+                  }
+              });
+          }
+      }
+};
+
+//Check if key pressed will cause player to go offscreen
+Player.prototype.checkBounds = function (x,y) {
+
+        //return value if user is in/out of bounds
+        if(this.x + x >= 0 && this.x +x < 505 && this.y+y >= -23 && this.y+y <= 392 ) {
+            return true;
+        }
+        else{
+            return false;
+        }
+};
+
+//Translate key pressed to tile movement and pass the value to update method before rendering
 Player.prototype.handleInput = function (keyCode){
 
     if(keyCode === "left"){
-        this.update(-101, 0);
+        this.update(-xTile, 0);
     }
     else if(keyCode === "up"){
-        this.update(0, -83);
+        this.update(0, -yTile);
     }
     else if(keyCode === "down"){
-        this.update(0, 83);
+        this.update(0, yTile);
     }
     else if(keyCode === "right"){
-        this.update(101, 0);
+        this.update(xTile, 0);
     }
 };
 
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
+// Instantiating player, and allEnemeis for rendering.
 var player = new Player();
-var allEnemies = [new Enemy(1),new Enemy(2), new Enemy(3)];
+var allEnemies = [new Enemy(1),new Enemy(2), new Enemy(3), new Enemy(3)];
 
 // This listens for key presses and sends the keys to your
-// Player.handleInput() method. You don't need to modify this.
+// Player.handleInput() method.
 document.addEventListener('keyup', function(e) {
     var allowedKeys = {
         37: 'left',
