@@ -13,7 +13,7 @@
  * the canvas' context (ctx) object globally available to make writing app.js
  * a little simpler to work with.
  */
-
+var test = 0;
 var Engine = (function(global) {
     /* Predefine the variables we'll be using within this scope,
      * create the canvas element, grab the 2D context for that canvas
@@ -56,6 +56,8 @@ var Engine = (function(global) {
         /* Use the browser's requestAnimationFrame function to call this
          * function again as soon as the browser is able to draw another frame.
          */
+        gameOver();
+
         win.requestAnimationFrame(main);
     }
 
@@ -69,6 +71,18 @@ var Engine = (function(global) {
         main();
     }
 
+    function mainMenu () {
+        menu.render();
+    }
+
+    function gameOver() {
+        var gameOver = lives.lose();
+        if (gameOver){
+            score.reset();
+            menu.lose();
+            init();
+        }
+    }
     /* This function is called by main (our game loop) and itself calls all
      * of the functions which may need to update entity's data. Based on how
      * you implement your collision detection (when two entities occupy the
@@ -80,7 +94,6 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        // checkCollisions();
     }
 
     /* This is called by the update function and loops through all of the
@@ -135,8 +148,19 @@ var Engine = (function(global) {
                 ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
             }
         }
+        //render bottom instructions
+        ctx.font = '10pt Arial';
+        ctx.fillText('Use the arrow keys to move. Avoid the Enemy bugs and reach the water!',0,600);
 
-        renderEntities();
+
+        if(menu.selected === true){
+            renderEntities();
+            renderExtras();
+        }
+        else{
+            mainMenu();
+        }
+        //instantiate remaining renders
     }
 
     /* This function is called by the render function and is called on each game
@@ -150,8 +174,15 @@ var Engine = (function(global) {
         allEnemies.forEach(function(enemy) {
             enemy.render();
         });
-
         player.render();
+    }
+
+    /* This function is called in order to render the lives and score values
+     * Add any extra rendering in this section.
+     */
+    function renderExtras() {
+        score.render();
+        lives.render();
     }
 
     /* This function does nothing but it could have been a good place to
@@ -159,7 +190,9 @@ var Engine = (function(global) {
      * those sorts of things. It's only called once by the init() method.
      */
     function reset() {
-        // noop
+        player.reset();
+        lives.reset();
+
     }
 
     /* Go ahead and load all of the images we know we're going to need to
@@ -170,8 +203,11 @@ var Engine = (function(global) {
         'images/stone-block.png',
         'images/water-block.png',
         'images/grass-block.png',
+        'images/Selector.png',
         'images/enemy-bug.png',
-        'images/char-boy.png'
+        'images/char-boy.png',
+        'images/char-pink-girl.png',
+        'images/Heart.png'
     ]);
     Resources.onReady(init);
 
@@ -179,5 +215,8 @@ var Engine = (function(global) {
      * object when run in a browser) so that developers can use it more easily
      * from within their app.js files.
      */
+
     global.ctx = ctx;
+    //Make init global in order to reset
+    global.init = init;
 })(this);
