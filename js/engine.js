@@ -149,8 +149,8 @@ var Engine = (function(global) {
             }
         }
         //render bottom instructions
-        ctx.font = "10pt Arial";
-        ctx.fillText("Use the arrow keys to move. Avoid the Enemy bugs and reach the water!",0,600);
+        ctx.font = '10pt Arial';
+        ctx.fillText('Use the arrow keys to move. Avoid the Enemy bugs and reach the water!',0,600);
 
 
         if(menu.selected === true){
