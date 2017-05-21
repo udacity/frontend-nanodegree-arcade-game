@@ -1,22 +1,20 @@
 @font-face {
-  /*
-  * google web font: https://fonts.google.com/?selection.family=Ravi+Prakash */
   font-family: 'Ravi Prakash';
   src: url('RaviPrakash-Regular.ttf');
 }
 
 html {
-  /* Background Image Source: https://blogs.msdn.microsoft.com/cdnstudents/2013/07/22/free-fantasy-art-assets-to-help-you-build-your-games/
-  */
   background-image: url('../img/fantasy_2.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  height: 100%;
+  height: 100vh;
 }
 
 body {
-    text-align: center;
+  display: flex;
+  justify-content: center;
+  align-content: center;
 }
 
 .loader {
@@ -25,31 +23,10 @@ body {
 	top: 0px;
 	width: 100%;
 	height: 100%;
-	z-index: 9999;
-  /*
-  * Page Loader gif source = http://www.ajaxload.info/
-  * Super cool website that makes custom loading gifs for you
-  */
+	z-index: 10;
 	background: url('../img/page_loader.gif') 50% 50% no-repeat rgb(249,249,249);
 }
 
-
-
-@media screen and (max-height: 699px) {
-  #game-canvas {
-    height: 500px;
-  }
-}
-
-@media screen and (max-height: 899px) {
-  #game-canvas {
-    height: 680px;
-  }
-}
-
-
-@media screen and (min-height: 900px) {
-  #game-canvas {
-    max-height: 900px;
-  }
+#game-canvas {
+  height: calc(100vh - 20px);
 }

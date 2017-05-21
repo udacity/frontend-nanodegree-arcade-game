@@ -1,7 +1,6 @@
 
 
 //////////////////////////////////////////////////////////
-// Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
 //////////////////////////////////////////////////////////
@@ -117,7 +116,6 @@ var Player = function(x, y) {
     "spriteUrl": "img/hero_engineer.png"
   };
 
-  // now push each class into this.classes array
   this.classes.push(knight, sorceress, mage, scribe, templar, oracle, priest,
                     monk, rogue, enchantress, paladin, berserker, ninja, engineer);
 
@@ -125,7 +123,6 @@ var Player = function(x, y) {
   var randomClass = this.getRandomClass(0, (this.classes.length - 1));
   this.classIndex = randomClass; // this.classIndex = current class
 
-  // draw correct class sprite
   this.sprite = this.classes[this.classIndex].spriteUrl;
 }; // end Player constructor definition
 ///////////////////////////////////////////////////////////////////////

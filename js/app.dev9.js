@@ -2532,7 +2532,6 @@ obstaclesTwentyFive.push(twentyFiveRock1, twentyFiveRock2, twentyFiveRock3, twen
 
 
 //////////////////////////////////////////////////////////
-// Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
 //////////////////////////////////////////////////////////
@@ -2648,7 +2647,6 @@ var Player = function(x, y) {
     "spriteUrl": "img/hero_engineer.png"
   };
 
-  // now push each class into this.classes array
   this.classes.push(knight, sorceress, mage, scribe, templar, oracle, priest,
                     monk, rogue, enchantress, paladin, berserker, ninja, engineer);
 
@@ -2656,7 +2654,6 @@ var Player = function(x, y) {
   var randomClass = this.getRandomClass(0, (this.classes.length - 1));
   this.classIndex = randomClass; // this.classIndex = current class
 
-  // draw correct class sprite
   this.sprite = this.classes[this.classIndex].spriteUrl;
 }; // end Player constructor definition
 ///////////////////////////////////////////////////////////////////////
@@ -3129,10 +3126,14 @@ document.addEventListener('keyup', function(e) {
 //////////////////////////////////////////////
 // Most of the work needed to add levels is located within
 // this file
-///
+//////////////////////////
 // Beyond this file, player level up methods must be updated in player.js
 // And new enemies (or atleast a new array for level) must be defined
 // within the enemy.js file
+//
+///////////////////////////////////////////////
+// Grid layout for each level's tiles is also contained within this file
+// in renderWorld() near the bottom
 /////////////////////////////////////////////////////////
 
 // Display the proper level of enemies
@@ -3689,95 +3690,85 @@ function renderWorld() {
 
 function renderGateBorder() {
   // draw ui background top left side
- var  numTopLeftCols = 5,
-      topLeftCol;
-       for (topLeftCol = 0; topLeftCol < numTopLeftCols; topLeftCol++) {
-         ctx.drawImage(Resources.get('img/grey_border_block.png'), (topLeftCol * 64), 0);
-       }
+  var numTopLeftCols = 5;
+  for (var topLeftCol = 0; topLeftCol < numTopLeftCols; topLeftCol++) {
+    ctx.drawImage(Resources.get('img/grey_border_block.png'), (topLeftCol * 64), 0);
+  }
 
   // draw ui background top right side
- var  numTopRightCols = 5,
-      topRightCol;
-       for (topRightCol = 0; topRightCol < numTopRightCols; topRightCol++) {
-         ctx.drawImage(Resources.get('img/grey_border_block.png'), (topRightCol * 64) + 640, 0);
-       }
+  var numTopRightCols = 5;
+  for (var topRightCol = 0; topRightCol < numTopRightCols; topRightCol++) {
+    ctx.drawImage(Resources.get('img/grey_border_block.png'), (topRightCol * 64) + 640, 0);
+  }
 
- // draw ui background bottom side (black coloring within the gate)
-    ctx.beginPath();
-    ctx.fillStyle = "black";
-    ctx.fillRect(0, 830, 906, 896);
+  // draw ui background bottom side (black coloring within the gate)
+  ctx.beginPath();
+  ctx.fillStyle = "black";
+  ctx.fillRect(0, 830, 906, 896);
 
- // draw ui left
-  var  numLeftRows = 24,
-       leftRow;
-       for (leftRow = 0; leftRow < numLeftRows; leftRow++) {
-       ctx.drawImage(Resources.get('img/grey_border_block_small.png'), 0, (leftRow * 32) + 64);
-     }
+  // draw ui left
+  var numLeftRows = 24;
+  for (var leftRow = 0; leftRow < numLeftRows; leftRow++) {
+    ctx.drawImage(Resources.get('img/grey_border_block_small.png'), 0, (leftRow * 32) + 64);
+  }
 
- // draw ui right
- var numRightRows = 24,
-     rightRow;
-     for (rightRow = 0; rightRow < numRightRows; rightRow++) {
-       ctx.drawImage(Resources.get('img/grey_border_block_small.png'), 928, (rightRow * 32) + 64);
-     }
+  // draw ui right
+  var numRightRows = 24;
+  for (var rightRow = 0; rightRow < numRightRows; rightRow++) {
+    ctx.drawImage(Resources.get('img/grey_border_block_small.png'), 928, (rightRow * 32) + 64);
+  }
 
-     // draw gate at top middle of screen
-     ctx.drawImage(Resources.get('img/gate_three_blocks.png'), 320, 0);
-     if (player.level > 1) {
-      // draw gate at bottom middle of screen is player is above level 1
-      ctx.drawImage(Resources.get('img/gate_three_blocks.png'), 320, 832);
+  // draw gate at top middle of screen
+  ctx.drawImage(Resources.get('img/gate_three_blocks.png'), 320, 0);
+  if (player.level > 1) {
+    // draw gate at bottom middle of screen is player is above level 1
+    ctx.drawImage(Resources.get('img/gate_three_blocks.png'), 320, 832);
 
-      // draw ui background bottom left side
-     var  numTopLeftCols = 5,
-          topLeftCol;
-           for (topLeftCol = 0; topLeftCol < numTopLeftCols; topLeftCol++) {
-             ctx.drawImage(Resources.get('img/grey_border_block.png'), (topLeftCol * 64), 832);
-           }
-
-      // draw ui background bottom right side
-    var numTopRightCols = 5,
-        topRightCol;
-           for (topRightCol = 0; topRightCol < numTopRightCols; topRightCol++) {
-             ctx.drawImage(Resources.get('img/grey_border_block.png'), (topRightCol * 64) + 640, 832);
-           }
-
-    } else if (player.level <= 1) {
-      // draw solid border at bottom if player is below level 2
-      var numBotCols = 15,
-          botCol;
-            for (botCol = 0; botCol < numBotCols; botCol++) {
-              ctx.drawImage(Resources.get('img/grey_border_block.png'), (botCol * 64) + 0, 832);
-            }
+    // draw ui background bottom left side
+    var numBotLeftCols = 5;
+    for (var botLeftCol = 0; botLeftCol < numBotLeftCols; botLeftCol++) {
+      ctx.drawImage(Resources.get('img/grey_border_block.png'), (botLeftCol * 64), 832);
     }
+
+    // draw ui background bottom right side
+    var numBotRightCols = 5;
+    for (var botRightCol = 0; botRightCol < numBotRightCols; botRightCol++) {
+      ctx.drawImage(Resources.get('img/grey_border_block.png'), (botRightCol * 64) + 640, 832);
+    }
+
+  } else if (player.level <= 1) {
+    // draw solid border at bottom if player is below level 2
+    var numBotCols = 15;
+    for (var botCol = 0; botCol < numBotCols; botCol++) {
+      ctx.drawImage(Resources.get('img/grey_border_block.png'), (botCol * 64) + 0, 832);
+    }
+  }
 }
 
 function renderSolidBorder() {
+  // draw bottom border
+  var numBotCols = 15;
+  for (var botCol = 0; botCol < numBotCols; botCol++) {
+    ctx.drawImage(Resources.get('img/grey_border_block.png'), (botCol * 64) + 0, 832);
+  }
 
-  var numBotCols = 15,
-      botCol;
-    for (botCol = 0; botCol < numBotCols; botCol++) {
-      ctx.drawImage(Resources.get('img/grey_border_block.png'), (botCol * 64) + 0, 832);
-    }
   // draw top border
-  var numTopCols = 15,
-      topCol;
-      for (topCol = 0; topCol < numTopCols; topCol++) {
-        ctx.drawImage(Resources.get('img/grey_border_block.png'), (topCol * 64) + 0, 0);
-      }
-    // draw ui left
-  var numLeftRows = 24,
-      leftRow;
-      for (leftRow = 0; leftRow < numLeftRows; leftRow++) {
-        ctx.drawImage(Resources.get('img/grey_border_block_small.png'), 0, (leftRow * 32) + 64);
-      }
+  var numTopCols = 15;
+  for (var topCol = 0; topCol < numTopCols; topCol++) {
+    ctx.drawImage(Resources.get('img/grey_border_block.png'), (topCol * 64) + 0, 0);
+  }
 
-    // draw ui right
-  var numRightRows = 24,
-      rightRow;
-      for (rightRow = 0; rightRow < numRightRows; rightRow++) {
-        ctx.drawImage(Resources.get('img/grey_border_block_small.png'), 928, (rightRow * 32) + 64);
-      }
+  // draw left border
+  var numLeftRows = 24;
+  for (var leftRow = 0; leftRow < numLeftRows; leftRow++) {
+    ctx.drawImage(Resources.get('img/grey_border_block_small.png'), 0, (leftRow * 32) + 64);
+  }
 
+  // draw right border
+  var numRightRows = 24;
+  for (var rightRow = 0; rightRow < numRightRows; rightRow++) {
+    ctx.drawImage(Resources.get('img/grey_border_block_small.png'), 928, (rightRow * 32) + 64);
+  }
 }
 
 function renderStartScreen() {
@@ -3820,7 +3811,7 @@ function renderStartScreen() {
   ctx.stroke();
 
 
-    // select class message
+  // select class message
   ctx.font = '36pt Ravi Prakash';
   ctx.strokeStyle = 'black';
   ctx.lineWidth = 3;
@@ -3868,17 +3859,17 @@ function renderStartScreen() {
     ctx.strokeText(player.classes[player.classIndex].className, 412, 476);
     ctx.fillText(player.classes[player.classIndex].className, 412, 476);
 
-      // conditional to align class names characters 7 characters long
+  // conditional to align class names characters 7 characters long
   } else if (player.classes[player.classIndex].className.length === 7) {
     ctx.strokeText(player.classes[player.classIndex].className, 422, 476);
     ctx.fillText(player.classes[player.classIndex].className, 422, 476);
 
-      // conditional to align class names characters 5-6 long
+  // conditional to align class names characters 5-6 long
   } else if (player.classes[player.classIndex].className.length >= 5) {
     ctx.strokeText(player.classes[player.classIndex].className, 432, 476);
     ctx.fillText(player.classes[player.classIndex].className, 432, 476);
 
-      // conditional to align class names characters 4- short
+  // conditional to align class names characters 4- short
   } else {
     ctx.strokeText(player.classes[player.classIndex].className, 440, 476);
     ctx.fillText(player.classes[player.classIndex].className, 440, 476);
@@ -3937,7 +3928,7 @@ function renderStatistics() {
     ctx.fillRect(12, 844, 304, 40);
   }
 
-  // draw lives ///////////////////////////
+  // draw lives
   ctx.font = '24pt Arial';
   ctx.strokeStyle = 'black';
   ctx.lineWidth = 3;
@@ -3954,25 +3945,25 @@ function renderStatistics() {
    ctx.drawImage(Resources.get('img/heart.png'), 90, 832);
    ctx.drawImage(Resources.get('img/heart.png'), 115, 832);
    ctx.drawImage(Resources.get('img/heart.png'), 140, 832);
- } else if (player.lives === 4) {
+  } else if (player.lives === 4) {
    ctx.drawImage(Resources.get('img/heart.png'), 90, 832);
    ctx.drawImage(Resources.get('img/heart.png'), 115, 832);
    ctx.drawImage(Resources.get('img/heart.png'), 140, 832);
    ctx.drawImage(Resources.get('img/heart.png'), 165, 832);
- } else if (player.lives === 5) {
+  } else if (player.lives === 5) {
    ctx.drawImage(Resources.get('img/heart.png'), 90, 832);
    ctx.drawImage(Resources.get('img/heart.png'), 115, 832);
    ctx.drawImage(Resources.get('img/heart.png'), 140, 832);
    ctx.drawImage(Resources.get('img/heart.png'), 165, 832);
    ctx.drawImage(Resources.get('img/heart.png'), 190, 832);
- } else if (player.lives === 6) {
+  } else if (player.lives === 6) {
    ctx.drawImage(Resources.get('img/heart.png'), 90, 832);
    ctx.drawImage(Resources.get('img/heart.png'), 115, 832);
    ctx.drawImage(Resources.get('img/heart.png'), 140, 832);
    ctx.drawImage(Resources.get('img/heart.png'), 165, 832);
    ctx.drawImage(Resources.get('img/heart.png'), 190, 832);
    ctx.drawImage(Resources.get('img/heart.png'), 215, 832);
- } else if (player.lives === 7) {
+  } else if (player.lives === 7) {
    ctx.drawImage(Resources.get('img/heart.png'), 90, 832);
    ctx.drawImage(Resources.get('img/heart.png'), 115, 832);
    ctx.drawImage(Resources.get('img/heart.png'), 140, 832);
@@ -3980,7 +3971,7 @@ function renderStatistics() {
    ctx.drawImage(Resources.get('img/heart.png'), 190, 832);
    ctx.drawImage(Resources.get('img/heart.png'), 215, 832);
    ctx.drawImage(Resources.get('img/heart.png'), 240, 832);
- } else if (player.lives === 8) {
+  } else if (player.lives === 8) {
    ctx.drawImage(Resources.get('img/heart.png'), 90, 832);
    ctx.drawImage(Resources.get('img/heart.png'), 115, 832);
    ctx.drawImage(Resources.get('img/heart.png'), 140, 832);
@@ -4047,7 +4038,6 @@ function renderCollideScreen() {
   ctx.fillText('You have been killed!', 260, 360);
 
   ctx.drawImage(Resources.get("img/skull.png"), 400, 404);
-
 
   // draw restart level instructions
   ctx.font = '24pt Arial';
@@ -4186,7 +4176,6 @@ function renderCredits() {
   ctx.lineWidth = 5;
   ctx.stroke();
 
-
   // credits font
   ctx.font = '12pt Arial';
   ctx.strokeStyle = 'black';
@@ -4317,6 +4306,7 @@ var Engine = (function(global) {
      * game loop.
      */
     function init() {
+        player.soundtrack.play();
         lastTime = Date.now();
         main();
     }

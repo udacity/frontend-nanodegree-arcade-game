@@ -25,13 +25,13 @@ gulp.task('images', function() {
 
 gulp.task('devJs', function() {
   gulp.src(jsSources)
-    .pipe(concat('app.dev8.js'))
+    .pipe(concat('app.dev9.js'))
     .pipe(gulp.dest('js/'))
 });
 
 gulp.task('liveJs', function() {
   gulp.src(jsSources)
-    .pipe(concat('app.min8.js'))
+    .pipe(concat('app.min9.js'))
     .pipe(uglify())
     .pipe(gulp.dest('js/'))
 });
