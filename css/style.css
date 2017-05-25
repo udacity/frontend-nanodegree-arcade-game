@@ -1,3 +1,16 @@
 body {
-    text-align: center;
+  margin: 0;
+  text-align: center;
+}
+
+body {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  background-image: url("../images/bog.png");
+  background-size: 100vw 100vh;
+}
+
+canvas {
+  margin: auto;
 }
