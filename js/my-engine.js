@@ -8,7 +8,10 @@
  * chooses random columns to replace their top blocks with water and updates
  * the water pattern according to the value of waterLife
  */
-
+ /*
+  * EN: TODO algorithm for defining the level
+  */
+var lev = 5;
 var Engine = (function(global) {
   /* Predefine the variables we'll be using within this scope,
    * create the canvas element, grab the 2D context for that canvas
@@ -29,10 +32,7 @@ var Engine = (function(global) {
     waterNum, //EN: number of water blocks (depends on level)
     waterBlocks, //EN: array with indexes of columns containing water
     waterLife, //EN: how long (in seconds) water blocks stay in one place
-    /*
-     * EN: TODO algorithm for defining the level
-     */
-    level = 4;
+    level = lev;
 
   /*
    * EN: Based on the level, we define the number of water blocks, their
@@ -158,9 +158,18 @@ var Engine = (function(global) {
    * render methods.
    */
   function updateEntities(dt) {
-    allEnemies.forEach(function(enemy) {
-      enemy.update(dt, canvas);
-    });
+    for (var row = 0; row < 3; row++) {
+      for (var num1 = 0; num1 < allEnemies[row].length; num1++) {
+        for (var num2 = 0; num2 < allEnemies[row].length; num2++) {
+          if (num1 !== num2) {
+            allEnemies[row][num1].checkCollisions(allEnemies[row][num2]);
+          }
+        }
+      }
+      allEnemies[row].forEach(function(enemy) {
+        enemy.update(dt, canvas);
+      });
+    }
     player.update();
   }
 
@@ -176,6 +185,11 @@ var Engine = (function(global) {
    * background dynamic.
    */
   function render(dt) {
+    /*
+     * EN: Have to redraw the background at every tick, otherwise it is
+     * impossible to maintain transparency, since pixels are drawn on top
+     * of each other and the background soon becomes opaque.
+     */
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = 'rgba(205, 255, 255, 0.7)';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -249,9 +263,11 @@ var Engine = (function(global) {
     /* Loop through all of the objects within the allEnemies array and call
      * the render function you have defined.
      */
-    allEnemies.forEach(function(enemy) {
-      enemy.render(ratio);
-    });
+    allEnemies.forEach(function(row) {
+      row.forEach(function(enemy) {
+        enemy.render(ratio);
+      });
+    })
 
     player.render();
   }
