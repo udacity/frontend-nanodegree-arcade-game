@@ -8,7 +8,7 @@ var Enemy = function(row, startX) {
   // a helper we've provided to easily load images
   this.sprite = 'images/enemy-bug.png';
   this.x = -1 * startX; //EN: starting point outside the canvas
-  this.y = row; //EN: one of three rows, 0 to 2
+  this.y = row; //EN: one of three rows of stone blocks, 0 to 2
   this.defaultSpeed = 200 * (Math.random() + 1);
   this.speed = this.defaultSpeed;
   /*
@@ -40,7 +40,7 @@ Enemy.prototype.update = function(dt, canvas) {
 };
 
 // Draw the enemy on the screen, required method for game
-Enemy.prototype.render = function(ratio) {
+Enemy.prototype.render = function() {
   ctx.scale(ratio, ratio);
   ctx.drawImage(Resources.get(this.sprite), 72 + this.x, 212 + this.y * 83);
   ctx.scale(1 / ratio, 1 / ratio);
@@ -50,7 +50,6 @@ var BrownBug = function(row, startX) {
   Enemy.call(this, row, startX);
   this.sprite = 'images/brown-bug.png';
   this.defaultSpeed = 80 * (Math.random() + 1);
-  this.speed = this.defaultSpeed;
 };
 BrownBug.prototype = Object.create(Enemy.prototype);
 BrownBug.prototype.constructor = BrownBug;
@@ -59,7 +58,6 @@ var BlueBug = function(row, startX) {
   Enemy.call(this, row, startX);
   this.sprite = 'images/blue-bug.png';
   this.defaultSpeed = 150 * (Math.random() + 1);
-  this.speed = this.defaultSpeed;
 };
 BlueBug.prototype = Object.create(Enemy.prototype);
 BlueBug.prototype.constructor = BlueBug;
@@ -68,7 +66,6 @@ var RedBug = function(row, startX) {
   Enemy.call(this, row, startX);
   this.sprite = 'images/red-bug.png';
   this.defaultSpeed = 200 * (Math.random() + 1);
-  this.speed = this.defaultSpeed;
 };
 RedBug.prototype = Object.create(Enemy.prototype);
 RedBug.prototype.constructor = RedBug;
@@ -77,7 +74,6 @@ var RainbowBug = function(row, startX) {
   Enemy.call(this, row, startX);
   this.sprite = 'images/rainbow-bug.png';
   this.defaultSpeed = 300 * (Math.random() + 1);
-  this.speed = this.defaultSpeed;
 };
 RainbowBug.prototype = Object.create(Enemy.prototype);
 RainbowBug.prototype.constructor = RainbowBug;
@@ -91,9 +87,9 @@ RainbowBug.prototype.constructor = RainbowBug;
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 
-function addEnemies(level) {
+function addEnemies(lvl) {
   var enemies = [];
-  switch (level) {
+  switch (lvl) {
     case 2:
       enemies.push(
         [new BrownBug(0, 150),
@@ -155,30 +151,87 @@ function addEnemies(level) {
   return enemies;
 };
 
-var allEnemies = addEnemies(lev);
-// allEnemies.push(new BrownBug(0, 202));
-// allEnemies.push(new BlueBug(2, 500));
-// allEnemies.push(new Enemy(2, 404));
-// allEnemies.push(new RedBug(1, 101));
-// allEnemies.push(new RainbowBug(0, 803));
+var allEnemies = addEnemies(level);
+
 var player = {
   avatar: 'images/char-boy.png',
+  x: 3, //EN: initial position; 0 to 6
+  y: 4, //EN: initial position - grass row (for player rows are 0 to 4)
   health: 100, //EN: initial value
   lives: 3, //EN: initial value
-  update: function() {},
-  render: function() {},
-  handleInput: function() {}
+  update: function() {
+    /*
+     * EN: What happens when the player hits the top row
+     */
+    if (this.y === 0) {
+      if (waterBlocks.includes(this.x)) {
+        console.log('Blob-blob...');
+        this.y = 4;
+        this.x = 3;
+        this.lives--;
+      } else {
+        console.log('Yeepee!');
+        this.y = 4;
+      }
+    }
+  },
+  render: function(rto) {
+    ctx.scale(rto, rto);
+    ctx.drawImage(Resources.get(this.avatar), 72 + this.x * 101, 212 + (this.y - 1) * 83);
+    ctx.scale(1 / rto, 1 / rto);
+  },
+  handleInput: function(code) {
+    switch (code) {
+      case 'left':
+        if (this.x > 0) this.x--;
+        break;
+      case 'up':
+        if (this.y > 0) this.y--;
+        break;
+      case 'right':
+        if (this.x < 6) this.x++;
+        break;
+      case 'down':
+        if (this.y < 4) this.y++;
+        break;
+      default:
+        console.log(code);
+    }
+  }
 };
+
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function(e) {
-    var allowedKeys = {
-        37: 'left',
-        38: 'up',
-        39: 'right',
-        40: 'down'
-    };
+  var allowedKeys = {
+    37: 'left',
+    38: 'up',
+    39: 'right',
+    40: 'down'
+  };
 
-    player.handleInput(allowedKeys[e.keyCode]);
+  player.handleInput(allowedKeys[e.keyCode]);
 });
+
+var Splash = function(player, reason, duration) {
+  switch (reason) {
+    case 'drowned':
+    this.content = player.lives;
+    break;
+    default:
+    this.content = level;
+  }
+  this.render = function() {
+    ctx.scale(ratio, ratio);
+    ctx.font = '300px sans-serif';
+    ctx.fillStyle = 'rgba(95, 193, 72, 0.5)';
+    ctx.strokeStyle = 'rgba(0, 128, 0, 1)';
+    ctx.textAlign = 'center';
+    ctx.fillText(this.content, canvas.width / 2, canvas.height / 2 + 150);
+    ctx.scale(1 / ratio, 1 / ratio);
+  };
+};
+
+var spl = new Splash(player, 'drowned', 50);
+spl.render();

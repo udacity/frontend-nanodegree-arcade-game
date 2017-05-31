@@ -7,11 +7,9 @@
  * - background is rendered using the renderBackground() function that
  * chooses random columns to replace their top blocks with water and updates
  * the water pattern according to the value of waterLife
+ * - added global vars to be used in app.js (ratio, level, dt, waterBlocks)
  */
- /*
-  * EN: TODO algorithm for defining the level
-  */
-var lev = 5;
+
 var Engine = (function(global) {
   /* Predefine the variables we'll be using within this scope,
    * create the canvas element, grab the 2D context for that canvas
@@ -32,7 +30,10 @@ var Engine = (function(global) {
     waterNum, //EN: number of water blocks (depends on level)
     waterBlocks, //EN: array with indexes of columns containing water
     waterLife, //EN: how long (in seconds) water blocks stay in one place
-    level = lev;
+    /*
+     * EN: TODO algorithm for defining the level
+     */
+    level = 5;
 
   /*
    * EN: Based on the level, we define the number of water blocks, their
@@ -108,6 +109,7 @@ var Engine = (function(global) {
      */
     var now = Date.now(),
       dt = (now - lastTime) / 1000.0;
+      global.dt = dt; //EN: to be used for animations in app.js
 
     /* Call our update/render functions, pass along the time delta to
      * our update function since it may be used for smooth animation.
@@ -223,6 +225,7 @@ var Engine = (function(global) {
         }
         updateBgTime = 0;
       }
+      global.waterBlocks = waterBlocks; //EN: to be used in app.js to detect when the character 'dies'
         for (row = 0; row < numRows; row++) {
           for (col = 0; col < numCols; col++) {
             /* The drawImage function of the canvas' context element
@@ -249,7 +252,6 @@ var Engine = (function(global) {
         }
 
       updateBgTime += dt;
-      //console.log(updateBgTime); //EN: uncomment to see timer in console
     };
     renderBackground();
     renderEntities();
@@ -269,37 +271,41 @@ var Engine = (function(global) {
       });
     })
 
-    player.render();
+    player.render(ratio);
   }
 
-    /* This function does nothing but it could have been a good place to
-     * handle game reset states - maybe a new game menu or a game over screen
-     * those sorts of things. It's only called once by the init() method.
-     */
-    function reset() {
-    }
+  /* This function does nothing but it could have been a good place to
+   * handle game reset states - maybe a new game menu or a game over screen
+   * those sorts of things. It's only called once by the init() method.
+   */
+  function reset() {
+  }
 
-    /* Go ahead and load all of the images we know we're going to need to
-     * draw our game level. Then set init as the callback method, so that when
-     * all of these images are properly loaded our game will start.
-     */
-    Resources.load([
-        'images/stone-block-green.png',
-        'images/stone-block.png',
-        'images/water-block.png',
-        'images/grass-block.png',
-        'images/enemy-bug.png',
-        'images/brown-bug.png',
-        'images/blue-bug.png',
-        'images/red-bug.png',
-        'images/rainbow-bug.png',
-        'images/char-boy.png'
-    ]);
-    Resources.onReady(init);
+  /* Go ahead and load all of the images we know we're going to need to
+   * draw our game level. Then set init as the callback method, so that when
+   * all of these images are properly loaded our game will start.
+   */
+  Resources.load([
+    'images/stone-block-green.png',
+    'images/stone-block.png',
+    'images/water-block.png',
+    'images/grass-block.png',
+    'images/enemy-bug.png',
+    'images/brown-bug.png',
+    'images/blue-bug.png',
+    'images/red-bug.png',
+    'images/rainbow-bug.png',
+    'images/char-boy.png',
+    'images/char-horn-girl.png'
+  ]);
+  Resources.onReady(init);
 
-    /* Assign the canvas' context object to the global variable (the window
-     * object when run in a browser) so that developers can use it more easily
-     * from within their app.js files.
-     */
-    global.ctx = ctx;
+  /* Assign the canvas' context object to the global variable (the window
+   * object when run in a browser) so that developers can use it more easily
+   * from within their app.js files.
+   */
+  global.ctx = ctx;
+  global.ratio = ratio;
+  global.level = level;
+  global.canvas = canvas;
 })(this);
