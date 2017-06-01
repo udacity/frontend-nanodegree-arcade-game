@@ -8,6 +8,9 @@
  * chooses random columns to replace their top blocks with water and updates
  * the water pattern according to the value of waterLife
  * - added global vars to be used in app.js (ratio, level, dt, waterBlocks)
+ * - canvasSplash is added to display levels, score, remaining lives etc.
+ * on top of the game screen
+ * - levelUpdate() function is added to track the current level and level-ups
  */
 
 var Engine = (function(global) {
@@ -22,6 +25,9 @@ var Engine = (function(global) {
     ratio, //EN: scale ratio for canvas and entities (depends on viewport)
     lastTime;
 
+  var canvasSplash = doc.createElement('canvas'),
+    ctxSplash = canvasSplash.getContext('2d');
+
     /*
     * EN: The number of water blocks (waterNum) and how long (waterLife,
     * in seconds) they remain in one place, depends on the level.
@@ -31,9 +37,11 @@ var Engine = (function(global) {
     waterBlocks, //EN: array with indexes of columns containing water
     waterLife, //EN: how long (in seconds) water blocks stay in one place
     /*
-     * EN: TODO algorithm for defining the level
+     * EN: TODO make 'level' an Object
      */
-    level = 5;
+    level = 1,
+    hops, //EN: how many times the top must be reached to move to another level
+    hopsLeft = {value: Infinity};
 
   /*
    * EN: Based on the level, we define the number of water blocks, their
@@ -45,27 +53,34 @@ var Engine = (function(global) {
     waterNum = 4;
     waterBlocks = [0, 2, 4, 6];
     waterLife = 8;
+    hops = 10;
     break;
     case 3:
     waterNum = 5;
     waterBlocks = [0, 2, 3, 4, 6];
     waterLife = 5;
+    hops = 15;
     break;
     case 4:
     waterNum = 5;
     waterBlocks = [1, 2, 3, 4, 5];
     waterLife = 4;
+    hops = 20;
     break;
     case 5:
     waterNum = 6;
     waterBlocks = [0, 1, 2, 4, 5, 6];
     waterLife = 3;
+    hops = 25;
     break;
     default: //EN: Level 1
     waterNum = 2;
     waterBlocks = [1, 5];
     waterLife = 10;
+    hops = 5;
   };
+
+  hopsLeft.value = hops;
 
   /*
    * EN: The initial canvas dimensions are 851 by 730 px, it looks best in the
@@ -94,8 +109,17 @@ var Engine = (function(global) {
   }
 
   ratio = drawCanvas(canvas, ctx);
+  drawCanvas(canvasSplash, ctxSplash);
+  canvas.id = 'background';
+  canvasSplash.id = 'splash';
 
-  doc.body.appendChild(canvas);
+  var node = doc.getElementById('drawing-area');
+  node.style.width = canvas.width + 'px';
+  node.style.height = canvas.height + 'px';
+  node.appendChild(canvas);
+  node.appendChild(canvasSplash);
+  // doc.body.appendChild(canvas);
+  // doc.body.appendChild(canvasSplash);
 
   /* This function serves as the kickoff point for the game loop itself
    * and handles properly calling the update and render methods.
@@ -279,6 +303,10 @@ var Engine = (function(global) {
    * those sorts of things. It's only called once by the init() method.
    */
   function reset() {
+    level = 1;
+    lives = 3;
+    player.health.value = 100;
+    player.score.value = 0;
   }
 
   /* Go ahead and load all of the images we know we're going to need to
@@ -305,7 +333,11 @@ var Engine = (function(global) {
    * from within their app.js files.
    */
   global.ctx = ctx;
+  global.ctxSplash = ctxSplash;
   global.ratio = ratio;
   global.level = level;
   global.canvas = canvas;
+  global.canvasSplash = canvasSplash;
+  global.hops = hops;
+  global.hopsLeft = hopsLeft;
 })(this);

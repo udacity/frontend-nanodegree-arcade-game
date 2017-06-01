@@ -1,6 +1,5 @@
 body {
   margin: 0;
-  text-align: center;
 }
 
 body {
@@ -11,6 +10,19 @@ body {
   background-size: 100vw 100vh;
 }
 
-canvas {
+#drawing-area {
+  position: relative;
   margin: auto;
+}
+
+canvas {
+  position: absolute;
+}
+
+#background {
+  z-index: 0;
+}
+
+#splash {
+  z-index: 1;
 }

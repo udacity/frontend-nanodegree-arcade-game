@@ -29,14 +29,14 @@ var Enemy = function(row, startX) {
 // Parameter: dt, a time delta between ticks
 //EN: Parameter: canvas, to track when the bugs reach the edge of the canvas
 Enemy.prototype.update = function(dt, canvas) {
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
-    this.x += this.speed * dt;
-    if (this.x > (canvas.width + 303)) {
-      this.x = -150 * (Math.random() + 1);
-      this.speed = this.defaultSpeed;
-    }
+  // You should multiply any movement by the dt parameter
+  // which will ensure the game runs at the same speed for
+  // all computers.
+  this.x += this.speed * dt;
+  if (this.x > (canvas.width + 505)) {
+    this.x = -150 * (Math.random() + 1);
+    this.speed = this.defaultSpeed;
+  }
 };
 
 // Draw the enemy on the screen, required method for game
@@ -157,21 +157,28 @@ var player = {
   avatar: 'images/char-boy.png',
   x: 3, //EN: initial position; 0 to 6
   y: 4, //EN: initial position - grass row (for player rows are 0 to 4)
-  health: 100, //EN: initial value
-  lives: 3, //EN: initial value
+  health: {value: 100}, //EN: initial value
+  score: {value: 0},
+  /*
+   *EN: 'lives' is an object, so it can be passed to the Splash.render()
+   * function by reference
+   */
+  lives: {value: 3}, //EN: initial value
   update: function() {
     /*
      * EN: What happens when the player hits the top row
      */
     if (this.y === 0) {
       if (waterBlocks.includes(this.x)) {
-        console.log('Blob-blob...');
+        splashDrown.render();
         this.y = 4;
         this.x = 3;
-        this.lives--;
+        this.lives.value--;
       } else {
-        console.log('Yeepee!');
+        splashCrossed.render();
         this.y = 4;
+        this.x = 3;
+        hopsLeft.value--;
       }
     }
   },
@@ -214,24 +221,46 @@ document.addEventListener('keyup', function(e) {
   player.handleInput(allowedKeys[e.keyCode]);
 });
 
-var Splash = function(player, reason, duration) {
+var Splash = function(reason) {
   switch (reason) {
     case 'drowned':
-    this.content = player.lives;
+      this.content = player.lives;
+      this.fillColor = 'rgba(193, 95, 72, 0.5)';
+      this.strokeColor = 'rgba(128, 0, 0, 1)';
+    break;
+    case 'crossed':
+      this.content = hopsLeft;
+      this.fillColor = 'rgba(95, 193, 72, 0.5)';
+      this.strokeColor = 'rgba(0, 128, 0, 1)';
     break;
     default:
-    this.content = level;
+      this.content = level;
+      this.fillColor = 'rgba(72, 95, 193, 0.5)';
+      this.strokeColor = 'rgba(0, 0, 128, 1)';
   }
-  this.render = function() {
-    ctx.scale(ratio, ratio);
-    ctx.font = '300px sans-serif';
-    ctx.fillStyle = 'rgba(95, 193, 72, 0.5)';
-    ctx.strokeStyle = 'rgba(0, 128, 0, 1)';
-    ctx.textAlign = 'center';
-    ctx.fillText(this.content, canvas.width / 2, canvas.height / 2 + 150);
-    ctx.scale(1 / ratio, 1 / ratio);
-  };
 };
 
-var spl = new Splash(player, 'drowned', 50);
-spl.render();
+Splash.prototype.render = function() {
+  var size = 0;
+  var interval = setInterval(zoom, 3);
+  var self = this;
+  function zoom() {
+    if (size === 300) {
+      ctxSplash.clearRect(0, 0, canvasSplash.width, canvasSplash.height);
+      clearInterval(interval);
+    } else {
+      ctxSplash.clearRect(0, 0, canvasSplash.width, canvasSplash.height);
+      ctxSplash.font = size + 'px sans-serif';
+      ctxSplash.fillStyle = self.fillColor;
+      ctxSplash.strokeStyle = self.strokeColor;
+      ctxSplash.textAlign = 'center';
+      ctxSplash.textBaseline = 'middle';
+      ctxSplash.fillText(self.content.value, canvasSplash.width / 2, canvasSplash.height / 2);
+      ctxSplash.strokeText(self.content.value, canvasSplash.width / 2, canvasSplash.height / 2);
+      size++;
+    }
+  }
+};
+
+var splashDrown = new Splash('drowned');
+var splashCrossed = new Splash('crossed');
