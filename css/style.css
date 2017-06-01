@@ -1,3 +1,28 @@
 body {
-    text-align: center;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  background-image: url("../images/bog.png");
+  background-size: 100vw 100vh;
+}
+
+#drawing-area {
+  position: relative;
+  margin: auto;
+}
+
+canvas {
+  position: absolute;
+}
+
+#background {
+  z-index: 0;
+}
+
+#splash {
+  z-index: 1;
 }
