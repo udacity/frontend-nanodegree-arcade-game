@@ -28,59 +28,59 @@ var Engine = (function(global) {
   var canvasSplash = doc.createElement('canvas'),
     ctxSplash = canvasSplash.getContext('2d');
 
+  var Level = function(lvl) {
+    level: lvl;
     /*
-    * EN: The number of water blocks (waterNum) and how long (waterLife,
-    * in seconds) they remain in one place, depends on the level.
+    * EN: Based on the level, we define:
+    * the number of water blocks (waterNum),
+    * their initial pattern (waterBlocks),
+    * how often the pattern changes (waterLive) and
+    * how many times the top must be reached before level-up (hops).
     */
-  var updateBgTime = 0, //EN: timer for changing background pattern
-    waterNum, //EN: number of water blocks (depends on level)
-    waterBlocks, //EN: array with indexes of columns containing water
-    waterLife, //EN: how long (in seconds) water blocks stay in one place
-    /*
-     * EN: TODO make 'level' an Object
-     */
-    level = 1,
-    hops, //EN: how many times the top must be reached to move to another level
-    hopsLeft = {value: Infinity};
+    switch (lvl) {
+      case 2:
+        this.level = lvl;
+        this.waterNum = 4;
+        this.waterBlocks = [0, 2, 4, 6];
+        this.waterLife = 8;
+        this.hops = {value: 10}; //EN: have to make it an object to be passed by reference to Splash.render()
+        this.hopsLeft = {value: this.hops.value}; //EN: initial value
+        break;
+      case 3:
+        this.level = lvl;
+        this.waterNum = 5;
+        this.waterBlocks = [0, 2, 3, 4, 6];
+        this.waterLife = 5;
+        this.hops = {value: 15};
+        this.hopsLeft = {value: this.hops.value};
+        break;
+      case 4:
+        this.level = lvl;
+        this.waterNum = 5;
+        this.waterBlocks = [1, 2, 3, 4, 5];
+        this.waterLife = 4;
+        this.hops = {value: 20};
+        this.hopsLeft = {value: this.hops.value};
+        break;
+      case 5:
+        this.level = lvl;
+        this.waterNum = 6;
+        this.waterBlocks = [0, 1, 2, 4, 5, 6];
+        this.waterLife = 3;
+        this.hops = {value: 25};
+        this.hopsLeft = {value: this.hops.value};
+        break;
+      default: //EN: Level 1
+        this.level = lvl;
+        this.waterNum = 2;
+        this.waterBlocks = [1, 5];
+        this.waterLife = 10;
+        this.hops = {value: 5};
+        this.hopsLeft = {value: this.hops.value};
+    };
+  }
 
-  /*
-   * EN: Based on the level, we define the number of water blocks, their
-   * initial pattern and how often the pattern changes.
-   */
-
-  switch (level) {
-    case 2:
-    waterNum = 4;
-    waterBlocks = [0, 2, 4, 6];
-    waterLife = 8;
-    hops = 10;
-    break;
-    case 3:
-    waterNum = 5;
-    waterBlocks = [0, 2, 3, 4, 6];
-    waterLife = 5;
-    hops = 15;
-    break;
-    case 4:
-    waterNum = 5;
-    waterBlocks = [1, 2, 3, 4, 5];
-    waterLife = 4;
-    hops = 20;
-    break;
-    case 5:
-    waterNum = 6;
-    waterBlocks = [0, 1, 2, 4, 5, 6];
-    waterLife = 3;
-    hops = 25;
-    break;
-    default: //EN: Level 1
-    waterNum = 2;
-    waterBlocks = [1, 5];
-    waterLife = 10;
-    hops = 5;
-  };
-
-  hopsLeft.value = hops;
+  global.currentLevel = new Level(2);
 
   /*
    * EN: The initial canvas dimensions are 851 by 730 px, it looks best in the
@@ -106,7 +106,7 @@ var Engine = (function(global) {
     c.width *= ratio;
     c.height *= ratio;
     return ratio;
-  }
+  };
 
   ratio = drawCanvas(canvas, ctx);
   drawCanvas(canvasSplash, ctxSplash);
@@ -118,8 +118,6 @@ var Engine = (function(global) {
   node.style.height = canvas.height + 'px';
   node.appendChild(canvas);
   node.appendChild(canvasSplash);
-  // doc.body.appendChild(canvas);
-  // doc.body.appendChild(canvasSplash);
 
   /* This function serves as the kickoff point for the game loop itself
    * and handles properly calling the update and render methods.
@@ -199,6 +197,8 @@ var Engine = (function(global) {
     player.update();
   }
 
+  var updateBgTime = 0; //EN: timer for changing background pattern in renderBackground()
+
   /* This function initially draws the "game level", it will then call
    * the renderEntities function. Remember, this function is called every
    * game tick (or loop of the game engine) because that's how games work -
@@ -239,42 +239,41 @@ var Engine = (function(global) {
       * with a water-block. This happens when updateBgTime reaches waterLife
       * limit.
       */
-      if (updateBgTime > waterLife) {
-        waterBlocks = [];
-        while (waterBlocks.length < waterNum) {
+      if (updateBgTime > currentLevel.waterLife) {
+        currentLevel.waterBlocks = [];
+        while (currentLevel.waterBlocks.length < currentLevel.waterNum) {
           var rnd = parseInt((Math.random() * 6).toFixed());
-          if (!waterBlocks.includes(rnd)) {
-            waterBlocks.push(rnd);
+          if (!currentLevel.waterBlocks.includes(rnd)) {
+            currentLevel.waterBlocks.push(rnd);
           }
         }
         updateBgTime = 0;
       }
-      global.waterBlocks = waterBlocks; //EN: to be used in app.js to detect when the character 'dies'
-        for (row = 0; row < numRows; row++) {
-          for (col = 0; col < numCols; col++) {
-            /* The drawImage function of the canvas' context element
-             * requires 3 parameters: the image to draw, the x coordinate
-             * to start drawing and the y coordinate to start drawing.
-             * We're using our Resources helpers to refer to our images
-             * so that we get the benefits of caching these images, since
-             * we're using them over and over.
-             */
-            ctx.scale(ratio, ratio);
-            /*
-             * EN: To place the background in the center of the canvas, we
-             * start drawing from the (72, 162) point. The actual coordinates
-             * will be calculated using the ratio. In the end of each cycle,
-             * the scale is reset.
-             */
-            var block = Resources.get(rowImages[row]);
-            if (row === 0 && waterBlocks.includes(col)) {
-              block = Resources.get('images/water-block.png');
-            }
-            ctx.drawImage(block, 72 + col * 101, 162 + row * 83);
-            ctx.scale(1 / ratio, 1 / ratio);
+      global.waterBlocks = currentLevel.waterBlocks; //EN: to be used in app.js to detect when the character 'dies'
+      for (row = 0; row < numRows; row++) {
+        for (col = 0; col < numCols; col++) {
+          /* The drawImage function of the canvas' context element
+           * requires 3 parameters: the image to draw, the x coordinate
+           * to start drawing and the y coordinate to start drawing.
+           * We're using our Resources helpers to refer to our images
+           * so that we get the benefits of caching these images, since
+           * we're using them over and over.
+           */
+          ctx.scale(ratio, ratio);
+          /*
+           * EN: To place the background in the center of the canvas, we
+           * start drawing from the (72, 162) point. The actual coordinates
+           * will be calculated using the ratio. In the end of each cycle,
+           * the scale is reset.
+           */
+          var block = Resources.get(rowImages[row]);
+          if (row === 0 && currentLevel.waterBlocks.includes(col)) {
+            block = Resources.get('images/water-block.png');
           }
+          ctx.drawImage(block, 72 + col * 101, 162 + row * 83);
+          ctx.scale(1 / ratio, 1 / ratio);
         }
-
+      }
       updateBgTime += dt;
     };
     renderBackground();
@@ -335,9 +334,9 @@ var Engine = (function(global) {
   global.ctx = ctx;
   global.ctxSplash = ctxSplash;
   global.ratio = ratio;
-  global.level = level;
+//  global.level = level;
   global.canvas = canvas;
   global.canvasSplash = canvasSplash;
-  global.hops = hops;
-  global.hopsLeft = hopsLeft;
+//  global.hops = hops;
+//  global.hopsLeft = hopsLeft;
 })(this);

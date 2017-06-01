@@ -151,7 +151,7 @@ function addEnemies(lvl) {
   return enemies;
 };
 
-var allEnemies = addEnemies(level);
+var allEnemies = addEnemies(currentLevel.level);
 
 var player = {
   avatar: 'images/char-boy.png',
@@ -178,7 +178,7 @@ var player = {
         splashCrossed.render();
         this.y = 4;
         this.x = 3;
-        hopsLeft.value--;
+        currentLevel.hopsLeft.value--;
       }
     }
   },
@@ -229,12 +229,12 @@ var Splash = function(reason) {
       this.strokeColor = 'rgba(128, 0, 0, 1)';
     break;
     case 'crossed':
-      this.content = hopsLeft;
+      this.content = currentLevel.hopsLeft;
       this.fillColor = 'rgba(95, 193, 72, 0.5)';
       this.strokeColor = 'rgba(0, 128, 0, 1)';
     break;
     default:
-      this.content = level;
+      this.content = currentLevel.level;
       this.fillColor = 'rgba(72, 95, 193, 0.5)';
       this.strokeColor = 'rgba(0, 0, 128, 1)';
   }
