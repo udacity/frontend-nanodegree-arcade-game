@@ -1,4 +1,4 @@
-var tileLength = 83;
+var tileLength = 90;
 var tileWidth = 101;
 var canvas = document.getElementsByTagName("canvas");
 
@@ -45,17 +45,20 @@ Player.prototype.render = function(){
 };
 
 Player.prototype.handleInput = function(keyCode){
-    console.log("(x,y) = " + this.x + " " + this.y);
-    console.log("canvas " + canvas[0].height + " " + canvas[0].width);
+    var maxHeight = canvas[0].height - tileLength;
+    var maxWidth = canvas[0].width - tileWidth;
     if(keyCode == 'left'){
         this.x = Math.max(0, this.x - tileWidth);
     }else if(keyCode == 'up'){
-        this.y = this.y - tileLength;
+        this.y = Math.max(this.y - tileLength, 0);
     }else if(keyCode == 'right'){
-        //this.x = Math.min(this.x + tileWidth, ctx.width);
-        this.x = this.x + tileWidth;
+        this.x = Math.min(this.x + tileWidth, maxWidth);
     }else if(keyCode == 'down'){
-        this.y = this.y + tileLength;
+        if(this.y == 0){
+            this.y = 40;
+        }else{
+            this.y = Math.min(this.y + tileLength, 400);
+        }
     }else{
 
     }
