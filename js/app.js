@@ -1,7 +1,13 @@
+var tileLength = 83;
+var tileWidth = 101;
+var canvas = document.getElementsByTagName("canvas");
+
 // Enemies our player must avoid
-var Enemy = function() {
+var Enemy = function(x, y) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
+    this.x = x;
+    this.y = y;
 
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
@@ -25,7 +31,9 @@ Enemy.prototype.render = function() {
 // This class requires an update(), render() and
 // a handleInput() method.
 
-var Player = function(){
+var Player = function(x, y){
+    this.x = x;
+    this.y = y;
     this.sprite = 'images/char-cat-girl.png';
 };
 
@@ -36,17 +44,34 @@ Player.prototype.render = function(){
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+Player.prototype.handleInput = function(keyCode){
+    console.log("(x,y) = " + this.x + " " + this.y);
+    console.log("canvas " + canvas[0].height + " " + canvas[0].width);
+    if(keyCode == 'left'){
+        this.x = Math.max(0, this.x - tileWidth);
+    }else if(keyCode == 'up'){
+        this.y = this.y - tileLength;
+    }else if(keyCode == 'right'){
+        //this.x = Math.min(this.x + tileWidth, ctx.width);
+        this.x = this.x + tileWidth;
+    }else if(keyCode == 'down'){
+        this.y = this.y + tileLength;
+    }else{
+
+    }
+}
+
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 
-var enemy1 = new Enemy();
-var enemy2 = new Enemy();
+var enemy1 = new Enemy(0,50);
+var enemy2 = new Enemy(0,150);
 var enemy3 = new Enemy();
 var allEnemies = [enemy1, enemy2, enemy3];
 
-var player = new Player();
+var player = new Player(0,400);
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
@@ -57,6 +82,5 @@ document.addEventListener('keyup', function(e) {
         39: 'right',
         40: 'down'
     };
-
     player.handleInput(allowedKeys[e.keyCode]);
 });
