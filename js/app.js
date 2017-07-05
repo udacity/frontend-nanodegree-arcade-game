@@ -3,6 +3,7 @@ var tileWidth = 101;
 var canvas = document.getElementsByTagName("canvas");
 var gScoreHTML = document.querySelector("#score");
 var playerScore = 0;
+var ENEMY_LENGTH = 100
 
 // Enemies our player must avoid
 var Enemy = function(x, y) {
@@ -10,10 +11,11 @@ var Enemy = function(x, y) {
     // we've provided one for you to get started
     this.x = x;
     this.y = y;
+    this.collision = false;
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
-    this.length = 100;
+    this.length = ENEMY_LENGTH;
 };
 
 // Update the enemy's position, required method for game
@@ -70,6 +72,8 @@ Player.prototype.handleInput = function(keyCode){
 
     }
     if(this.y == 0){
+        playerScore +=1;
+        gScoreHTML.innerHTML = playerScore;
         this.resetPlayer();
     }
     //console.log("Final " + this.x + " " + this.y);
@@ -79,8 +83,9 @@ Player.prototype.handleInput = function(keyCode){
 Player.prototype.resetPlayer = function(){
     this.x = 0;
     this.y = 400;
-    playerScore +=1;
-    gScoreHTML.innerHTML = playerScore;
+    if(this.collision == true){
+        this.collision = false;
+    }
 }
 
 // Now instantiate your objects.

@@ -28,6 +28,7 @@ var Engine = (function(global) {
     var collissionCount = 0;
     var playerLife = 3;
     var gLifeHTML = document.querySelector("#life");
+    gLifeHTML.innerHTML = playerLife;
 
     canvas.width = 505;
     canvas.height = 606;
@@ -110,16 +111,14 @@ var Engine = (function(global) {
         var endX = enemy.x + enemy.length/2;
         var playerRow = Math.ceil(player.y/tileHeight);
         var enemyRow = Math.ceil(enemy.y/tileHeight);
-        // console.log("Player = (" + player.x  + ", " + player.y + ") "+ 
-        //     " Enemy = (" + enemy.x + ", " + enemy.y + ")");
-        // console.log("Player row = " + playerRow + " Enemy row = " + enemyRow);
         if(playerRow == enemyRow){
             if((player.x >= startX) &&(player.x <= endX)){
                 console.log("Player = " + player.x + " Enemy = " + enemy.x);
                 console.log("Collission occured");
-                if(startCollission == true){
-
-                }
+                this.collision = true
+                playerLife -=1;
+                gLifeHTML.innerHTML = playerLife;
+                player.resetPlayer(); 
             }
         }
     }
