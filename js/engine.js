@@ -25,7 +25,6 @@ var Engine = (function(global) {
         ctx = canvas.getContext('2d'),
         lastTime;   
 
-    var collissionCount = 0;
     var playerLife = 3;
     var gLifeHTML = document.querySelector("#life");
     gLifeHTML.innerHTML = playerLife;
@@ -38,7 +37,6 @@ var Engine = (function(global) {
     var tileHeight = 83;   //y
     var rowCount = 6;
     var columnCount = 5;
-    var startCollission = false;
 
     var Cell = function(row, column){
         this.row = row;
@@ -116,8 +114,12 @@ var Engine = (function(global) {
                 console.log("Player = " + player.x + " Enemy = " + enemy.x);
                 console.log("Collission occured");
                 this.collision = true
-                playerLife -=1;
+                playerLife -= 1;
                 gLifeHTML.innerHTML = playerLife;
+                if(playerLife <= 0){
+                    reset();
+                }
+                
                 player.resetPlayer(); 
             }
         }
@@ -200,6 +202,8 @@ var Engine = (function(global) {
      */
     function reset() {
         // noop
+        // lastTime = Date.now();
+        // main();
     }
 
     /* Go ahead and load all of the images we know we're going to need to
