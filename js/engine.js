@@ -23,12 +23,26 @@ var Engine = (function(global) {
         win = global.window,
         canvas = doc.createElement('canvas'),
         ctx = canvas.getContext('2d'),
-        lastTime;
+        lastTime;   
+
+    var collissionCount = 0;
+    var playerLife = 3;
+    var gLifeHTML = document.querySelector("#life");
 
     canvas.width = 505;
     canvas.height = 606;
     doc.body.appendChild(canvas);
 
+    var tileWidth = 101; //x
+    var tileHeight = 83;   //y
+    var rowCount = 6;
+    var columnCount = 5;
+    var startCollission = false;
+
+    var Cell = function(row, column){
+        this.row = row;
+        this.column = column;
+    }
 
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
@@ -81,7 +95,33 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        // checkCollisions();
+        checkCollisions();
+    }
+
+    function checkCollisions(){
+        allEnemies.forEach(function(enemy) {
+            findEnemyBlock(enemy, player);
+
+        });
+    }
+
+    function findEnemyBlock(enemy, player){
+        var startX = enemy.x - enemy.length/2;
+        var endX = enemy.x + enemy.length/2;
+        var playerRow = Math.ceil(player.y/tileHeight);
+        var enemyRow = Math.ceil(enemy.y/tileHeight);
+        // console.log("Player = (" + player.x  + ", " + player.y + ") "+ 
+        //     " Enemy = (" + enemy.x + ", " + enemy.y + ")");
+        // console.log("Player row = " + playerRow + " Enemy row = " + enemyRow);
+        if(playerRow == enemyRow){
+            if((player.x >= startX) &&(player.x <= endX)){
+                console.log("Player = " + player.x + " Enemy = " + enemy.x);
+                console.log("Collission occured");
+                if(startCollission == true){
+
+                }
+            }
+        }
     }
 
     /* This is called by the update function and loops through all of the
