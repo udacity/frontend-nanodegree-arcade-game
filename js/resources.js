@@ -6,7 +6,7 @@
  */
 (function() {
     var resourceCache = {};
-    var loading = [];
+    var loadsInProgress = 0;
     var readyCallbacks = [];
 
     /* This is the publicly accessible image loading function. It accepts
@@ -53,6 +53,10 @@
                  */
                 resourceCache[url] = img;
 
+                /* Also decrement the number of current loads.
+                 */
+                loadsInProgress--;
+
                 /* Once the image is actually loaded and properly cached,
                  * call all of the onReady() callbacks we have defined.
                  */
@@ -60,6 +64,10 @@
                     readyCallbacks.forEach(function(func) { func(); });
                 }
             };
+
+            /* Increment the number of current loads.
+             */
+            loadsInProgress++;
 
             /* Set the initial cache value to false, this will change when
              * the image's onload event handler is called. Finally, point
@@ -82,14 +90,7 @@
      * for loading have in fact been properly loaded.
      */
     function isReady() {
-        var ready = true;
-        for(var k in resourceCache) {
-            if(resourceCache.hasOwnProperty(k) &&
-               !resourceCache[k]) {
-                ready = false;
-            }
-        }
-        return ready;
+        return loadsInProgress == 0;
     }
 
     /* This function will add a function to the callback stack that is called
