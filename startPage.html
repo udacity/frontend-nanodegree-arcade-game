@@ -4,13 +4,15 @@
     <meta charset="UTF-8">
     <title>Effective JavaScript: Frogger</title>
     <link rel="stylesheet" href="css/style.css">
-    <!-- <script src="js/start.js"></script> -->
 </head>
 <body>
     <script src="js/resources.js"></script>
+    <!-- <script src="js/engine.js"></script> -->
     <script src="js/start.js"></script>
     <script type="text/javascript">
-        document.onkeypress = function() {loadPlayers()};    
+        document.onkeypress = function(e) {
+            console.log("Keycode " + e.keyCode);
+            handleKeyboardEvent(e)};    
     </script>
 </body>
 </html>
