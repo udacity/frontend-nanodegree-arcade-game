@@ -1,9 +1,13 @@
 var tileLength = 90;
 var tileWidth = 101;
 var canvas = document.getElementsByTagName("canvas");
-var gScoreHTML = document.querySelector("#score");
 var playerScore = 0;
-var ENEMY_LENGTH = 100
+var ENEMY_LENGTH = 100;
+
+var gameLoaded = false;
+
+var canvas_width = 505,
+    canvas_height = 606;
 
 // Enemies our player must avoid
 var Enemy = function(x, y) {
@@ -24,9 +28,9 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-    this.x = this.x + dt*50;
-    if(this.x > canvas[0].width){
-        this.x -= canvas[0].width;
+    this.x = this.x + dt*100;
+    if(this.x > canvas_width){
+        this.x -= canvas_width;
     }
 };
 
@@ -42,11 +46,17 @@ Enemy.prototype.render = function() {
 var Player = function(x, y){
     this.x = x;
     this.y = y;
-    this.sprite = 'images/char-cat-girl.png';
+    this.sprite = 'images/char-boy.png';
+    this.score = 0;
 };
 
 Player.prototype.update = function(dt){
 };
+
+Player.prototype.setSprite = function(sprite){
+    this.sprite = sprite
+};
+
 
 Player.prototype.render = function(){
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
@@ -54,8 +64,8 @@ Player.prototype.render = function(){
 
 Player.prototype.handleInput = function(keyCode){
     //console.log("Initial " + this.x + " " + this.y);
-    var maxHeight = canvas[0].height - tileLength;
-    var maxWidth = canvas[0].width - tileWidth;
+    var maxHeight = canvas_height - tileLength;
+    var maxWidth = canvas_width - tileWidth;
     if(keyCode == 'left'){
         this.x = Math.max(0, this.x - tileWidth);
     }else if(keyCode == 'up'){
@@ -72,8 +82,10 @@ Player.prototype.handleInput = function(keyCode){
 
     }
     if(this.y == 0){
-        playerScore +=1;
-        gScoreHTML.innerHTML = playerScore;
+        this.score += 1;
+        console.log("Updating player score " + this.score);
+        //gScoreHTML.innerHTML = playerScore;
+        //document.body.appendChild(gScoreHTML);
         this.resetPlayer();
     }
     //console.log("Final " + this.x + " " + this.y);
@@ -92,14 +104,7 @@ Player.prototype.resetPlayer = function(){
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 
-var enemy1 = new Enemy(0,60);
-var enemy2 = new Enemy(-50,140);
-var enemy3 = new Enemy(-400,220);
-var enemy4 = new Enemy(-550,140);
-var allEnemies = [enemy1, enemy2, enemy3, enemy4];
-//var allEnemies = [enemy1];
 
-var player = new Player(0,400);
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
