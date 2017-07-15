@@ -1,5 +1,5 @@
 var canvas = document.createElement('canvas'),
-        ctx = canvas.getContext('2d');
+    ctx = canvas.getContext('2d');
 
 
     canvas.width = 505;
@@ -18,6 +18,7 @@ var canvas = document.createElement('canvas'),
     var playerLife = 3;
     var gLifeHTML;
     var gScoreHTML;
+    var requestId = 0;
 
 
 var enemy1 = new Enemy(0,60);
@@ -121,10 +122,6 @@ var player = new Player(0,400);
         writeText(topLine, bottomLine);
     }
 
-    function gamestartAnimation(){
-        drawScreen();
-    }
-
     function loadChosenPlayer(i, count){
         drawScreen();
         var rowImages = [
@@ -148,12 +145,18 @@ var player = new Player(0,400);
             }, 1000);
         }else{
             player.setSprite(rowImages[i]);
+            var h1 = document.createElement("h1");
+            var t = document.createTextNode("ARCADE GAME");     // Create a text node
+            h1.appendChild(t); 
             gLifeHTML = document.createElement("p");
             gLifeHTML.innerHTML = "Life : " + playerLife;
             gScoreHTML = document.createElement("p");
             gScoreHTML.innerHTML = "Score : " + player.score;
-            document.body.appendChild(gLifeHTML);
-            document.body.appendChild(gScoreHTML);
+            // document.body.prepend(gLifeHTML);
+            // document.body.prepend(gScoreHTML);
+            //document.body.prepend(h1);
+            document.getElementById("result").appendChild(gLifeHTML);
+            document.getElementById("result").appendChild(gScoreHTML);
             main();
         }
     }
@@ -185,7 +188,38 @@ var player = new Player(0,400);
             return true;
         }
 
+    function startGame() {
+        if (requestId != undefined) {
+            requestId = window.requestAnimationFrame(main);
+        }else{
+             gameOver();
+        }
+    }
 
+    function stopGame() {
+        console.log("Cancelling animation frame for " + requestId);
+        if (requestId  > 0) {
+            window.cancelAnimationFrame(requestId);
+            requestId = undefined;
+        }
+    }   
+
+    function gameOver(){
+        loadedPlayers = false;
+        choosePlayer = false;
+        playerLife = 3;
+        requestId = 0;
+        player.score = 0;
+        var divNode = document.getElementById("result")
+        while (divNode.firstChild) {
+            divNode.removeChild(divNode.firstChild);
+        }
+        endGameScreen();
+        initScreen();
+    }
+
+    function endGameScreen(){
+    }
 
     function main() {
         /* Get our time delta information which is required if your game
@@ -211,7 +245,7 @@ var player = new Player(0,400);
         /* Use the browser's requestAnimationFrame function to call this
          * function again as soon as the browser is able to draw another frame.
          */
-        window.requestAnimationFrame(main);
+        startGame();
     }
 
 
@@ -249,7 +283,7 @@ var player = new Player(0,400);
     }
 
     function reset(){
-
+        stopGame();
     }
 
     /* This is called by the update function and loops through all of the
