@@ -29,7 +29,7 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-    this.x = this.x + dt*100;
+    this.x = this.x + dt*140;
     if(this.x > canvas_width){
         this.x -= canvas_width;
     }
@@ -107,10 +107,12 @@ Player.prototype.resetPlayer = function(){
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 var enemy1 = new Enemy(0,60);
-var enemy2 = new Enemy(50,140);
+var enemy2 = new Enemy(51,140);
 var enemy3 = new Enemy(400,220);
-var enemy4 = new Enemy(550,140);
-var allEnemies = [enemy1, enemy2, enemy3, enemy4];
+var enemy4 = new Enemy(230,140);
+var enemy5 = new Enemy(-200,60);
+// var enemy6 = new Enemy(-50,220);
+var allEnemies = [enemy1, enemy2, enemy3, enemy4, enemy5];
 //var allEnemies = [enemy1];
 
 var player = new Player(0,400);

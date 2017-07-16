@@ -2,16 +2,20 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Effective JavaScript: Frogger</title>
+    <title>Arcade game</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-	<div>
-	<p id ="playerScore"> Score : <span id="score">0</span></p>
-	<p id ="playerLife"> Life : <span id="life">0</span></p>
-	</div>
+    <div id="result">
+        
+    </div>
     <script src="js/resources.js"></script>
     <script src="js/app.js"></script>
-    <script src="js/engine.js"></script>
+    <script src="js/start.js"></script>
+    <script type="text/javascript">
+        document.onkeypress = function(e) {
+            console.log("Keycode " + e.keyCode);
+            handleKeyboardEvent(e)};    
+    </script>
 </body>
 </html>
