@@ -5,6 +5,7 @@ var playerScore = 0;
 var ENEMY_LENGTH = 100;
 
 var gameLoaded = false;
+var gameOverVariable =false;
 
 var canvas_width = 505,
     canvas_height = 606;
@@ -63,7 +64,9 @@ Player.prototype.render = function(){
 };
 
 Player.prototype.handleInput = function(keyCode){
-    //console.log("Initial " + this.x + " " + this.y);
+    if(gameOverVariable == true){
+            return;
+    }
     var maxHeight = canvas_height - tileLength;
     var maxWidth = canvas_width - tileWidth;
     if(keyCode == 'left'){
@@ -103,7 +106,14 @@ Player.prototype.resetPlayer = function(){
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
+var enemy1 = new Enemy(0,60);
+var enemy2 = new Enemy(50,140);
+var enemy3 = new Enemy(400,220);
+var enemy4 = new Enemy(550,140);
+var allEnemies = [enemy1, enemy2, enemy3, enemy4];
+//var allEnemies = [enemy1];
 
+var player = new Player(0,400);
 
 
 // This listens for key presses and sends the keys to your

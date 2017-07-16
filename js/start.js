@@ -20,15 +20,6 @@ var canvas = document.createElement('canvas'),
     var gScoreHTML;
     var requestId = 0;
 
-
-var enemy1 = new Enemy(0,60);
-var enemy2 = new Enemy(50,140);
-var enemy3 = new Enemy(400,220);
-var enemy4 = new Enemy(550,140);
-var allEnemies = [enemy1, enemy2, enemy3, enemy4];
-//var allEnemies = [enemy1];
-
-var player = new Player(0,400);
     /* Go ahead and load all of the images we know we're going to need to
      * draw our game level. Then set init as the callback method, so that when
      * all of these images are properly loaded our game will start.
@@ -47,12 +38,21 @@ var player = new Player(0,400);
     Resources.onReady(initScreen);
 
     function initScreen(){
+        resetVariables();
         drawScreen();
         var topLine = "ARCADE GAME";
         var bottomLine = "Press any key to start";
         writeText(topLine, bottomLine);
     }
 
+    function resetVariables(){
+        loadedPlayers = false;
+        choosePlayer = false;
+        playerLife = 3;
+        requestId = 0;
+        player.score = 0;
+        gameOverVariable =false;
+    }
 
     function writeText(topLine, bottomLine){
       ctx.font = "36pt Impact";
@@ -136,11 +136,8 @@ var player = new Player(0,400);
         var bottomLine = "GAME STARTING... " + count;
         writeText(topLine, bottomLine);
         count -= 1;
-        if(supportsLocalStorage){
-            saveValue("arcade.player.sprite", rowImages[i]);
-        }
         if(count >= 0){
-             setTimeout(function(){
+                setTimeout(function(){
                  loadChosenPlayer(i, count);
             }, 1000);
         }else{
@@ -162,6 +159,9 @@ var player = new Player(0,400);
     }
  
     function handleKeyboardEvent(event){
+        if(gameOverVariable == true){
+            return;
+        }
         if(loadedPlayers == false){
             loadedPlayers = true;
             loadPlayers();
@@ -181,12 +181,18 @@ var player = new Player(0,400);
             return (('localStorage' in window) && (window.localStorage != null)) 
         }
 
-    function saveValue(key, value) {
+    function saveValueinLocalStore(key, value) {
             if(!supportsLocalStorage)
                 return false;
             localStorage.setItem(key,value);
             return true;
         }
+
+     function getValueFromLocalStore(key) {
+            if(!supportsLocalStorage)
+                return false;
+            return localStorage.getItem(key);
+        }   
 
     function startGame() {
         if (requestId != undefined) {
@@ -205,20 +211,47 @@ var player = new Player(0,400);
     }   
 
     function gameOver(){
-        loadedPlayers = false;
-        choosePlayer = false;
-        playerLife = 3;
-        requestId = 0;
-        player.score = 0;
+        gameOverVariable = true;
         var divNode = document.getElementById("result")
         while (divNode.firstChild) {
             divNode.removeChild(divNode.firstChild);
         }
+        console.log("Before end game screen");
         endGameScreen();
-        initScreen();
+        console.log("After end game screen");
+        
     }
 
     function endGameScreen(){
+        var maxScore = player.score;
+        if(supportsLocalStorage){
+            var storedScore = getValueFromLocalStore("arcade_game.maxscore");
+            if(storedScore > maxScore){
+                maxScore = storedScore; 
+            }else{
+                saveValueinLocalStore("arcade_game.maxscore", maxScore);
+            }   
+        }
+        console.log("In end game screen");
+        drawScreen();
+        writeText("ARCADE GAME", "GAME OVER");   
+        ctx.font = "36pt Impact";
+        ctx.textAlign = "center";
+        ctx.fillStyle = "white";
+        ctx.strokeStyle = "black";
+        ctx.lineWidth = 3;
+        ctx.fillText("Score: " + player.score ,canvas.width/2,250);
+        ctx.strokeText("Score: " + player.score  ,canvas.width/2,250);
+        ctx.fillText("Max Score: " + maxScore ,canvas.width/2,320);
+        ctx.strokeText("Max Score: " + maxScore ,canvas.width/2,320);
+        
+        resetVariables();
+        gameOverVariable = true;
+        setTimeout(function(){
+                 console.log("Waiting....");
+                 initScreen();
+            }, 5000);
+
     }
 
     function main() {
