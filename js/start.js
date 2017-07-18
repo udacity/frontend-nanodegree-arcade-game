@@ -20,6 +20,9 @@ var canvas = document.createElement('canvas'),
     var gScoreHTML;
     var requestId = 0;
 
+    var GEMCOUNT = 4;
+    var allGems = new Array(GEMCOUNT);
+
     /* Go ahead and load all of the images we know we're going to need to
      * draw our game level. Then set init as the callback method, so that when
      * all of these images are properly loaded our game will start.
@@ -33,12 +36,53 @@ var canvas = document.createElement('canvas'),
         'images/char-cat-girl.png',
         'images/char-horn-girl.png',
         'images/char-pink-girl.png',
-        'images/char-princess-girl.png'
+        'images/char-princess-girl.png',
+        'images/Gem Blue.png',
+        'images/Gem Green.png',
+        'images/Gem Orange.png'
     ]);
+
+
+    function initGems(){
+        var minRow = 1;
+        var maxRow = 3;
+        var minCol = 0;
+        var maxCol = 4;
+        var gemSprite = ['images/Gem Blue.png',
+        'images/Gem Green.png',
+        'images/Gem Orange.png'];
+        var gemPoint = [10,20,15];
+        var row, col;
+        var gemOverlap;
+        allGems.splice(0, allGems.length);
+        for(var i = 0;i<GEMCOUNT;){
+            gemOverlap = false;
+            row = getRandomNumber(minRow, maxRow+1);
+            col = getRandomNumber(minCol, maxCol+1);
+            console.log("Gem is in " + row + " " + col);
+            var gem = new Gem(row, col);
+            allGems.forEach(function(gem) {
+                if ((gem.row == row) && (gem.column == col)){
+                    gemOverlap = true;
+                }
+            });
+            if(gemOverlap == false){
+                i++;
+                var index = getRandomNumber(0, gemSprite.length);
+                gem.setSpriteAndPoint(gemSprite[index], gemPoint[index]);
+                allGems.push(gem);
+            }
+        }
+        
+        var x = document.getElementById('result');
+        x.style.display = 'none';
+    }
+
     Resources.onReady(initScreen);
 
     function initScreen(){
         resetVariables();
+        initGems();
         drawScreen();
         var topLine = "ARCADE GAME";
         var bottomLine = "Press any key to start";
@@ -87,7 +131,6 @@ var canvas = document.createElement('canvas'),
                 ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
             }
         }
-
     }
 
     function drawPlayers(){
@@ -145,15 +188,13 @@ var canvas = document.createElement('canvas'),
             var h1 = document.createElement("h1");
             var t = document.createTextNode("ARCADE GAME");     // Create a text node
             h1.appendChild(t); 
+            document.getElementById("result").style.display = 'inline-block';
             gLifeHTML = document.createElement("p");
             gLifeHTML.innerHTML = "Life : " + playerLife;
             gScoreHTML = document.createElement("p");
             gScoreHTML.innerHTML = "Score : " + player.score;
-            // document.body.prepend(gLifeHTML);
-            // document.body.prepend(gScoreHTML);
-            //document.body.prepend(h1);
-            document.getElementById("result").appendChild(gLifeHTML);
-            document.getElementById("result").appendChild(gScoreHTML);
+            document.getElementById("result").prepend(gLifeHTML);
+            document.getElementById("result").prepend(gScoreHTML);
             main();
         }
     }
@@ -212,10 +253,11 @@ var canvas = document.createElement('canvas'),
 
     function gameOver(){
         gameOverVariable = true;
-        var divNode = document.getElementById("result")
-        while (divNode.firstChild) {
+        var divNode = document.getElementById("result");
+        for(var i=0;i<2;i++){
             divNode.removeChild(divNode.firstChild);
         }
+        document.getElementById("result").style.display = "none";
         console.log("Before end game screen");
         endGameScreen();
         console.log("After end game screen");
@@ -251,7 +293,6 @@ var canvas = document.createElement('canvas'),
                  console.log("Waiting....");
                  initScreen();
             }, 5000);
-
     }
 
     function main() {
@@ -288,10 +329,27 @@ var canvas = document.createElement('canvas'),
     }
 
     function checkCollisions(){
+        var gemIndex = 0;
+        allGems.forEach(function(gem){
+            checkGemTaken(gem, player, gemIndex);
+            gemIndex++;
+        });
         allEnemies.forEach(function(enemy) {
             findEnemyBlock(enemy, player);
-
         });
+    }
+
+    function checkGemTaken(gem, player, gemIndex){
+        var playerRow = Math.ceil(player.y/tileHeight);
+        var playerColumn = Math.ceil(player.x/tileWidth);
+        if ((playerColumn == gem.column)&&(playerRow == gem.row) && gem.active == true){
+           console.log("Player :: " + playerRow + " " + playerColumn);
+            console.log("Gem :: " + gem.row + " " + gem.column);
+            player.score = player.score + gem.point;
+            console.log("Player score = " + player.score);
+            gem.setInactive();
+            allGems.splice(gemIndex,1);
+        }
     }
 
     function findEnemyBlock(enemy, player){
@@ -389,5 +447,12 @@ var canvas = document.createElement('canvas'),
         });
 
         player.render();
+        allGems.forEach(function(gem){
+            gem.render();
+        });
     }
 
+
+    function getRandomNumber(min, max) {
+        return Math.floor(Math.random() * (max - min) + min);
+    }

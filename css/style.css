@@ -29,7 +29,17 @@ canvas {
 p{
 	margin: 10px;
 	padding: 10px;
-	background-color: red;
+	background-color: #ff4000;
 	border: 1px solid black;
 }
 
+table, th, td{
+	padding: 0.5em;
+	border: 1px solid black;
+	border-collapse: collapse;
+	background-color: #ff4000;
+}
+
+table{
+	margin-top: 2.5em;
+}
