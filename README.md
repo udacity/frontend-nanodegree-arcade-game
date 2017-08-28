@@ -1,6 +1,37 @@
-frontend-nanodegree-arcade-game
-===============================
+# Front-End Nanodegree Arcade Game
 
-Students should use this [rubric](https://review.udacity.com/#!/projects/2696458597/rubric) for self-checking their submission. Make sure the functions you write are **object-oriented** - either class functions (like Player and Enemy) or class prototype functions such as Enemy.prototype.checkCollisions, and that the keyword 'this' is used appropriately within your class and class prototype functions to refer to the object the function is called upon. Also be sure that the **readme.md** file is updated with your instructions on both how to 1. Run and 2. Play your arcade game.
 
-For detailed instructions on how to get started, check out this [guide](https://docs.google.com/document/d/1v01aScPjSWCCWQLIpFqvg3-vXLH2e8_SZQKC8jNO0Dc/pub?embedded=true).
+## Developer Setup
+### Prerequisites
+
+To get started, you will need the following:
+
+* A Windows/Mac/Unix machine with a text editor or IDE
+* Google Chrome or equivalent browser
+* Personal github account with access to my [repository](https://github.com/apt00100100/frontend-nanodegree-arcade-game)
+
+### Install
+
+To clone the repository locally, simply run the following command in the directory where you'd like to place the files:
+
+```
+    $ git clone https://github.com/apt00100100/frontend-nanodegree-arcade-game.git
+```
+
+## Let's Play
+
+To play the game locally, open the index.html file in a browser (Preferably Chrome)
+
+The goal of this game is to avoid the bugs and reach the water safely.
+
+### Start Playing
+
+To start the game, click the 'New Game' button at the top of the screen.
+
+### How To Play
+
+Use the arrow keys to move the player around the screen.
+
+If the hero is hit by a bug the game will end and you'll have to restart.
+
+If the hero reaches the water safely, the game will end and you can choose to play again if you wish.
