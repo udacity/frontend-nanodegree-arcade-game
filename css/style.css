@@ -1,3 +1,59 @@
 body {
     text-align: center;
 }
+
+canvas {
+    border-top: 1px solid rgba(0, 0, 0, 0.35);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+#NewGameInput {
+    display: block;
+    border: none;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    color: white;
+    padding: 20px 120px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 28px;
+    margin: 30px auto;
+    outline: none;
+    background-color: rgba(0, 70, 230, 0.8);
+    font-family: 'Archivo Black', sans-serif;
+    user-select: none;
+}
+#NewGameInput:hover {
+    text-shadow: -4px -4px rgba(0, 0, 0, 0.45);
+}
+#NewGameInput:active {
+    text-shadow: 4px 4px rgba(0, 0, 0, 0.50);
+}
+#NewGameInput.hidden {
+    visibility: hidden;
+}
+
+
+#GameStatus {
+    display: block;
+    width: 100%;
+    height: 100px;
+    font-size: 80px;
+    font-family: 'Gloria Hallelujah', cursive;
+    padding-bottom: 30px;
+    color: white;
+    -webkit-text-stroke: 1px black;
+    text-shadow: 3px 3px 0 #000,
+                 -1px -1px 0 #000,
+                 1px -1px 0 #000,
+                 -1px 1px 0 #000,
+                 1px 1px 0 #000;
+    user-select: none;
+}
+#GameStatus.win {
+    color: greenyellow;
+}
+#GameStatus.lose {
+    color: red;
+}
