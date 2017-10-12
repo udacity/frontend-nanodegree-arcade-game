@@ -3,7 +3,7 @@
 A classic Arcade game. 
 
 ### Where to Play ###
-Play the game [here!](link) 
+Play the game [here!](https://sushmita01.github.io/Arcade-game/) 
 
 ### Main Objective ### 
 
