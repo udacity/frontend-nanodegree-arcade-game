@@ -1,3 +1,36 @@
 body {
     text-align: center;
 }
+
+header {
+  margin-bottom: 0px;
+}
+
+h1 {
+  background-color: #ccc;
+  color: #1e909c;
+  font-family: 'Fascinate Inline', cursive;
+  padding: 20px;
+  margin: 0px;
+}
+
+h3 {
+  color: #947b7b;
+  font:italic 1.3em 'Open Sans', serif;
+  margin: 10px;
+
+
+}
+
+.lives {
+  font-size: 25px;
+  color: #fff;
+  background-color: #000;
+  /*font-family:;*/
+  padding: 10px;
+}
+
+.gameStatus {
+  font-size: 20px;
+  padding-top:10px;
+}
