@@ -1,10 +1,5 @@
 // Enemies our player must avoid
 var Enemy = function(x, y) {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
-
-    // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
     this.x = x;
     this.y = y;
     this.speed = Math.floor(Math.random() * (200 - 50) + 100);
@@ -35,32 +30,26 @@ Enemy.prototype.drawBox = function(x, y, width, height, color) {
 };
 
 Enemy.prototype.makeEnemyHitbox = function() {
-    for (var i = 0; i < allEnemies.length; i++) {
-        allEnemies[i].EnemyHitBox = {
+    this.EnemyHitBox = {
             x: this.x,
             y: this.y,
             width: 100,
             height: 67
         };
-    }
 };
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-    //this.drawBox(this.x, this.y + 77, 100, 67, "red");
+    this.drawBox(this.x, this.y + 77, 100, 67, "red");
 };
 
-// Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
 var score = 0;
+var playerInit_x=200;
+var playerInit_y=410;
 var Player = function(x, y) {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
-
-    // The image/sprite for our player, this uses
-    // a helper we've provided to easily load images
     this.x = x;
     this.y = y;
     this.lives = 3;
@@ -129,19 +118,19 @@ Player.prototype.handleInput = function(direction) {
             this.updateHitBoxXvalue();
             break;
         case "up":
-            this.y -= 60;
+            this.y -= 40;
             this.updateHitBoxYvalue();
             break;
         case "down":
-            this.y += 60;
+            this.y += 40;
             this.updateHitBoxYvalue();
             break;
     }
 };
 var flag = 0;
 Player.prototype.reset = function() {
-    this.y = 410;
-    this.x = 200;
+    this.x = playerInit_x;
+    this.y = playerInit_y;
     //end condition
     if (this.lives === 0 || flag === 1) {
         if (this.lives === 0) {
@@ -180,14 +169,14 @@ Player.prototype.update = function(dt) {
         }
     }
     //detect y bounds and make sure player stays in bounds:
-    if (this.y < 0 || this.y > 410) {
+    if (this.y < 0 || this.y > playerInit_y) {
         if (this.y < 0) {
             console.log("winner");
             score += 200;
             flag = 1;
             this.reset();
         } else {
-            this.y = 410;
+            this.y =  playerInit_y;
 
             this.updateHitBoxYvalue();
         }
@@ -200,7 +189,7 @@ Player.prototype.update = function(dt) {
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     //Draw a hitbox on the sprite:
-    //this.drawBox(this.boxXvalue, this.boxYvalue, this.boxWidth, this.boxHeight, "purple");
+    this.drawBox(this.boxXvalue, this.boxYvalue, this.boxWidth, this.boxHeight, "purple");
 };
 
 var Gems = function(x, y) {
@@ -301,17 +290,18 @@ Gems.prototype.makeRandomGem = function() {
 
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player - home square is 200, 410
-var player = new Player(200, 410);
+var player = new Player(playerInit_x, playerInit_y);
 var allEnemies = [];
 
 
 
 // enemy start positions
-var enemyTop = new Enemy(200, 60);
-var enemyMiddle = new Enemy(50, 145);
-var enemyMiddle2 = new Enemy(100, 225);
-var enemyBottom = new Enemy(0, 310);
-allEnemies.push(enemyTop, enemyMiddle, enemyMiddle2, enemyBottom);
+var enemyRow1 = new Enemy(200, 60);
+var enemyRow2 = new Enemy(50, 145);
+var enemyRow3_1 = new Enemy(100, 225);
+// var enemyRow3_2 = new Enemy(300, 225);
+var enemyRow4 = new Enemy(0, 310);
+allEnemies.push(enemyRow1, enemyRow2, enemyRow3_1, enemyRow4);
 
 var allGems = [new Gems(175, 140), new Gems(10, 75), new Gems(420, 220)];
 
@@ -326,6 +316,8 @@ document.addEventListener('keyup', function(e) {
     };
     player.handleInput(allowedKeys[e.keyCode]);
 });
+
+
 
 // Attributions:
 // https://github.com/vickyvishal/Classic-Arcade/tree/master#classic-arcade
