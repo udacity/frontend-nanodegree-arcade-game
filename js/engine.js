@@ -146,10 +146,16 @@ var Engine = (function(global) {
         /* Loop through all of the objects within the allEnemies array and call
          * the render function you have defined.
          */
-        allEnemies.forEach(function(enemy) {
-            enemy.render();
-        });
+        const length = allEnemies.length;
+        for (let i = 0; i < length; ++i) {
+          let enemy = allEnemies.shift();
 
+          if (enemy.x < canvas.width) {
+            enemy.render();
+            allEnemies.push(enemy);
+          }
+        }
+        
         player.render();
     }
 
