@@ -22,11 +22,25 @@ var Engine = (function(global) {
         win = global.window,
         canvas = doc.createElement('canvas'),
         ctx = canvas.getContext('2d'),
-        lastTime;
+        lastTime;   
+
+    var playerLife = 3;
+    var gLifeHTML = document.querySelector("#life");
+    gLifeHTML.innerHTML = playerLife;
 
     canvas.width = 505;
     canvas.height = 606;
     doc.body.appendChild(canvas);
+
+    var tileWidth = 101; //x
+    var tileHeight = 83;   //y
+    var rowCount = 6;
+    var columnCount = 5;
+
+    var Cell = function(row, column){
+        this.row = row;
+        this.column = column;
+    }
 
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
@@ -79,7 +93,35 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        // checkCollisions();
+        checkCollisions();
+    }
+
+    function checkCollisions(){
+        allEnemies.forEach(function(enemy) {
+            findEnemyBlock(enemy, player);
+
+        });
+    }
+
+    function findEnemyBlock(enemy, player){
+        var startX = enemy.x - enemy.length/2;
+        var endX = enemy.x + enemy.length/2;
+        var playerRow = Math.ceil(player.y/tileHeight);
+        var enemyRow = Math.ceil(enemy.y/tileHeight);
+        if(playerRow == enemyRow){
+            if((player.x >= startX) &&(player.x <= endX)){
+                console.log("Player = " + player.x + " Enemy = " + enemy.x);
+                console.log("Collission occured");
+                this.collision = true
+                playerLife -= 1;
+                gLifeHTML.innerHTML = playerLife;
+                if(playerLife <= 0){
+                    reset();
+                }
+                
+                player.resetPlayer(); 
+            }
+        }
     }
 
     /* This is called by the update function and loops through all of the
@@ -162,6 +204,8 @@ var Engine = (function(global) {
      */
     function reset() {
         // noop
+        // lastTime = Date.now();
+        // main();
     }
 
     /* Go ahead and load all of the images we know we're going to need to
@@ -173,7 +217,9 @@ var Engine = (function(global) {
         'images/water-block.png',
         'images/grass-block.png',
         'images/enemy-bug.png',
-        'images/char-boy.png'
+        'images/char-boy.png',
+        'images/char-cat-girl.png',
+        'images/char-horn-girl.png'
     ]);
     Resources.onReady(init);
 

@@ -1,3 +1,45 @@
 body {
     text-align: center;
 }
+
+h1{
+	background-color: #90EE90;
+	margin: 10px;
+	padding: 5px;
+}
+
+canvas {
+    position: absolute;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin:auto;
+}
+
+#result{
+	/*display: flex;*/
+	display: inline-block;
+	/*justify-content: left;*/
+	float: right;
+	margin-right: 10em;
+	margin-top: 2em;
+}
+
+p{
+	margin: 10px;
+	padding: 10px;
+	background-color: #ff4000;
+	border: 1px solid black;
+}
+
+table, th, td{
+	padding: 0.5em;
+	border: 1px solid black;
+	border-collapse: collapse;
+	background-color: #ff4000;
+}
+
+table{
+	margin-top: 2.5em;
+}
