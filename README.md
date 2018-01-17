@@ -10,6 +10,7 @@ To run the game:
 
 # Goals of the game
 Get the chicken to the other side of the road to get the joke answer!
+
 (You won’t get the same one every time!)
 
 # Controls
