@@ -1,4 +1,4 @@
-frontend-nanodegree-arcade-game
+Frontend Nanodegree Arcade Game
 ===============================
 # Description
 This is my implementation of the classic arcade game Frogger, made for the Udacity Front-End Web Developer Nanodegree.
