@@ -17,8 +17,8 @@ Get the chicken to the other side of the road to get the joke answer!
 Use the up, down, right, left keys on the keyboard.
 
 ## Resources
-- Original course project files
-- Chicken picture
-- Car picture
+- [Original course project files](https://github.com/udacity/frontend-nanodegree-arcade-game)
+- [Chicken picture](https://www.google.com.sa/search?q=chicken+cartoon+png&safe=strict&rlz=1C5CHFA_enSA771SA771&tbm=isch&tbo=u&source=univ&sa=X&ved=0ahUKEwiwyvXL19_YAhVDWRQKHYEYA8MQsAQIJg&biw=1440&bih=759#imgrc=ioujo0YNjnbgUM:)
+- [Car picture](http://www.gifs.cc/car-graphics.shtml)
 
 ### Enjoy!
