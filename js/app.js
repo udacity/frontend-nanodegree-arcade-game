@@ -5,19 +5,36 @@ class gameEntity{
         this.sprite = mySpriteImgPath;
         this.x = myX;
         this.y = myY;
+        this.originX=myX;
+        this.originY=myY;
     }
     render(){
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     }
+    reset(){
+        this.x = this.originX;
+        this.y = this.originY;
+    }
 }
 // Enemies our player must avoid
 class Enemy extends gameEntity{
-    constructor(mySpriteImgPath, myX, myY){
+    constructor(mySpriteImgPath, myX, myY, mySpeed){
         super(mySpriteImgPath, myX, myY);
+        this.speed = mySpeed;
+    }
+    hitTestEnemy(thePlayer){
+        if((Math.abs(thePlayer.x - this.x) <= 60) && (Math.abs(thePlayer.y - this.y) <= 60)){
+            thePlayer.reset();       
+            console.log("hit");
+        }
+
     }
     update(dt){
-        this.x = this.x * (1+dt);
+        this.x +=(dt*this.speed);
+        if(this.x > 500)
+            this.reset();
 
+        this.hitTestEnemy(player);
     }
 }
 /* Original Enemies code
@@ -52,7 +69,8 @@ class playerClass extends gameEntity{
         super(mySpriteImgPath, myX, myY);
     }
     update(dt){
-
+        if(this.y<40)
+        winner = true;
     }
     handleInput(key){
         if(key === 'left')
@@ -63,13 +81,26 @@ class playerClass extends gameEntity{
             this.y -= 25;
         else if(key === 'down')
             this.y += 25;
+        
+            if(this.y <= -10){
+                this.y= -10;
+            }else if(this.y >= 450){
+                this.y = 450;
+            }
+
+            if(this.x <= 5){
+                this.x= -10;
+            }else if(this.x >= 420){
+                this.x = 420;
+            }
     }
 }
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-var allEnemies = [new Enemy('images/enemy-bug.png', 50, 150), new Enemy('images/enemy-bug.png', 1, 100)];
+var allEnemies = [new Enemy('images/enemy-bug.png', -100, 60, Math.floor(Math.random()*(200-100))), new Enemy('images/enemy-bug.png', -100, 150, Math.floor(Math.random()*(300-100))),
+                  new Enemy('images/enemy-bug.png', -100, 230, Math.floor(Math.random()*(200-100))), new Enemy('images/enemy-bug.png', -100, 310, Math.floor(Math.random()*(300-100)))];
 var player = new playerClass('images/char-boy.png', 200, 400);
 
 // This listens for key presses and sends the keys to your

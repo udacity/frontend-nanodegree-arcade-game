@@ -23,7 +23,7 @@ var Engine = (function(global) {
         canvas = doc.createElement('canvas'),
         ctx = canvas.getContext('2d'),
         lastTime;
-
+    var winner = false;    
     canvas.width = 505;
     canvas.height = 606;
     doc.body.appendChild(canvas);
@@ -55,7 +55,18 @@ var Engine = (function(global) {
         /* Use the browser's requestAnimationFrame function to call this
          * function again as soon as the browser is able to draw another frame.
          */
-        win.requestAnimationFrame(main);
+        if(player.y<0){
+            
+            ctx.font = "72px Arial";
+            ctx.fillText("You Win!",100,250);
+
+            ctx.font = "36px Arial";
+            ctx.fillText("Press ctrl+r to restart",100,350);
+        
+        } else{
+            win.requestAnimationFrame(main); 
+        }
+    
     }
 
     /* This function does some initial setup that should only occur once,
@@ -181,5 +192,6 @@ var Engine = (function(global) {
      * object when run in a browser) so that developers can use it more easily
      * from within their app.js files.
      */
+    global.winner = winner;
     global.ctx = ctx;
 })(this);
