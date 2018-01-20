@@ -1,4 +1,5 @@
 
+/*jshint esversion: 6 */
 //Base Class for all Entities in game
 class gameEntity{
     constructor(mySpriteImgPath, myX, myY){
