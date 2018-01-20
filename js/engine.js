@@ -55,6 +55,7 @@ var Engine = (function(global) {
         /* Use the browser's requestAnimationFrame function to call this
          * function again as soon as the browser is able to draw another frame.
          */
+        //check and see if the player has won the game. If so stop the animation and post a message about winning.
         if(player.y<0){
             
             ctx.font = "72px Arial";

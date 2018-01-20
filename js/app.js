@@ -1,7 +1,10 @@
 
 /*jshint esversion: 6 */
 //Base Class for all Entities in game
+//gameEntity contains all of the basic metchods and variables required by the game engine.
+//it uses javascript version 6 class syntax
 class gameEntity{
+    //setup object properties
     constructor(mySpriteImgPath, myX, myY){
         this.sprite = mySpriteImgPath;
         this.x = myX;
@@ -9,32 +12,42 @@ class gameEntity{
         this.originX=myX;
         this.originY=myY;
     }
+    //callback used by game endgine
     render(){
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     }
+    //reset character to original position
     reset(){
         this.x = this.originX;
         this.y = this.originY;
     }
 }
-// Enemies our player must avoid
+
+// Enemy inherites and specifies out Enemy our player must avoid
 class Enemy extends gameEntity{
+    //setup object and pass properties to parent class
     constructor(mySpriteImgPath, myX, myY, mySpeed){
         super(mySpriteImgPath, myX, myY);
         this.speed = mySpeed;
     }
+    //function to test and see if there is a collision with the player
     hitTestEnemy(thePlayer){
         if((Math.abs(thePlayer.x - this.x) <= 60) && (Math.abs(thePlayer.y - this.y) <= 60)){
+            //if the there is a collision reset the playre to the initial position.
             thePlayer.reset();       
-            console.log("hit");
+            //console.log("hit");
         }
 
     }
+    //update the postion of this enemy
     update(dt){
+        //ingrement horizontal position
         this.x +=(dt*this.speed);
+        //check and see if it is still on screen
+        //if off screen rest this enemy to its initial position
         if(this.x > 500)
             this.reset();
-
+        //check and see if this enemy has collided with the player
         this.hitTestEnemy(player);
     }
 }
@@ -65,14 +78,16 @@ Enemy.prototype.render = function() {
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
+//playerClass inherits gameEntity and extends for player class behavior
 class playerClass extends gameEntity{
+    //setup and playerClass object and pass propertied to parent classs
     constructor(mySpriteImgPath, myX, myY){
         super(mySpriteImgPath, myX, myY);
     }
     update(dt){
-        if(this.y<40)
-        winner = true;
+       //no update needed because position is updated by "handleInput" and picked up in the next render call
     }
+    //translate key press into charcter movement
     handleInput(key){
         if(key === 'left')
             this.x -= 25;
@@ -83,19 +98,19 @@ class playerClass extends gameEntity{
         else if(key === 'down')
             this.y += 25;
         
-            if(this.y <= -10){
-                this.y= -10;
-            }else if(this.y >= 450){
-                this.y = 450;
-            }
+        if(this.y <= -10){
+            this.y= -10;
+        }else if(this.y >= 450){
+            this.y = 450;
+        }
 
-            if(this.x <= 5){
-                this.x= -10;
-            }else if(this.x >= 420){
-                this.x = 420;
-            }
+        if(this.x <= 5){
+            this.x= -10;
+        }else if(this.x >= 420){
+            this.x = 420;
+        }
     }
-}
+}//end of playerClass
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
