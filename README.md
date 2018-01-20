@@ -1,6 +1,18 @@
-frontend-nanodegree-arcade-game
-===============================
+# frontend-nanodegree-arcade-game
 
-Students should use this [rubric](https://review.udacity.com/#!/projects/2696458597/rubric) for self-checking their submission. Make sure the functions you write are **object-oriented** - either class functions (like Player and Enemy) or class prototype functions such as Enemy.prototype.checkCollisions, and that the keyword 'this' is used appropriately within your class and class prototype functions to refer to the object the function is called upon. Also be sure that the **readme.md** file is updated with your instructions on both how to 1. Run and 2. Play your arcade game.
+## How Play
+In order to play this game you will need a modern browser (circa 2017) and open the _index.html_ file in the root directory to load the game.
 
-For detailed instructions on how to get started, check out this [guide](https://docs.google.com/document/d/1v01aScPjSWCCWQLIpFqvg3-vXLH2e8_SZQKC8jNO0Dc/pub?embedded=true).
+When the game is loaded you can use the keyboard *up*, *down*, *left* and *right* arrow keys to move your character. Using the arrow keys move your player character to accross the screen doing your best to avoid the bad guy bugs. 
+
+If you are hit by one of the bad guy bugs you will be reset back to the starting point. You can immediatly start moving again when the reset happens. 
+
+### How to Win
+To win the game you must move your player accross to the water at the top of the page. When you reach the water you win!
+
+### Quick Start Guide
+1. Open _index.html_ in browser.
+2. Move player with arrow keys
+3. Avoid Bad Guy Bugs
+4. Win by reaching the water.
+ 
