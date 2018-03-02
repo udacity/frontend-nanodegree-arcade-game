@@ -1,48 +1,45 @@
 // Enemies our player must avoid
 
 var Enemy = function() {
+    //create prototype for Enemy
     let obj = Object.create(Enemy.prototype);   
     //x co-ordinate
     obj.x = (function(){ 
                 return 505*Math.random()
             }());
     //y co-ordinate
-    obj.y =makeRandomYCord();
-
-    function makeRandomYCord(){
-        let yPossiblePos = [60, 140, 230];
-        if(Enemy.yPosition>=3) 
-            Enemy.yPosition==0;
-        return yPossiblePos[Enemy.yPosition++];
-    }
-    obj.speed= 800;//Speed
-    obj.sprite = 'images/enemy-bug.png';// The image/sprite
-
-
-
-   return obj;
+    obj.y =Enemy.makeRandomYCord();
     //create a random speed
-    //create a random x direction
-    //create a random y position between y 38 and y 122
-
+    obj.speed =(function(){return 600*Math.random();}());
+    // The image/sprite
+    obj.sprite = 'images/enemy-bug.png';
+    return obj;
 };
-//Acts as a static object, to help keep track of where to place each bug.
+//Static variable, keeps track of where to place each bug.
 Enemy.yPosition =0; 
-
-
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
-
-  //  this.x = x++;
-    //if(this.x===555)x=0;
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
+    //If reach the edge of the Game layout
+    if(this.x>=505){ 
+        //reset image just before the layout
+        this.x=-100;
+        this.y =Enemy.makeRandomYCord();
+    }else
+        //multiply random speed by variable dt
+        this.x+=(dt*this.speed);      
+    
+  
 };
 
-
+ Enemy.makeRandomYCord = function(){
+        let yPossiblePos = [60, 140, 230];
+        if(Enemy.yPosition>=3) 
+            //Last bug is placed on a random row.
+            Enemy.yPosition= Math.round(Math.random()*2);
+        return yPossiblePos[Enemy.yPosition++];
+    }
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
@@ -50,18 +47,32 @@ Enemy.prototype.render = function() {
     //This method takes three parameters: an image, an x-coordinate, and a y-coordinate:
 };
 
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
+let Player= function(){
+    this.x=205;
+    this.y=390;
+    this.sprite = 'images/char-boy.png';
+};
 
+Player.lives = 3;
+
+Player.prototype.update = function(){
+//console.log("what");
+};
+
+Player.prototype.render = function(){
+
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+Player.prototype.handleInput = function(){
+    
+};
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
-////var b = Enemy();
-//var c = Enemy();
-let allEnemies = [Enemy(),Enemy(),Enemy()];
-
+let allEnemies = [Enemy(),Enemy(),Enemy(),Enemy()]; 
 // Place the player object in a variable called player
+let player = new Player(); 
 
 
 
@@ -75,7 +86,7 @@ document.addEventListener('keyup', function(e) {
         40: 'down'
     };
 
-     player.handleInput(allowedKeys[e.keyCode]);
+    // player.handleInput(allowedKeys[e.keyCode]);
 });
 // Review the code and comments provided in app.js
 // Identify the various classes you will need to write.

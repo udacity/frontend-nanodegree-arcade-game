@@ -90,10 +90,10 @@ var Engine = (function(global) {
      * render methods.
      */
     function updateEntities(dt) {
-         // allEnemies.forEach(function(enemy) {
-         //     enemy.update(dt);
-         // });
-        // player.update();
+          allEnemies.forEach(function(enemy) {
+              enemy.update(dt);
+          });
+         player.update();
     }
 
     /* This function initially draws the "game level", it will then call
@@ -153,10 +153,7 @@ var Engine = (function(global) {
              enemy.render();
          }
         );
-
-
-        // player.render();
-      //  ctx.drawImage(Resources.get('images/char-boy.png'), 2, 2); //TEST
+        player.render();
     }
 
     /* This function does nothing but it could have been a good place to
