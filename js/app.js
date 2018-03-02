@@ -1,4 +1,6 @@
 // Enemies our player must avoid
+let pauseMode = false; 
+
 
 var Enemy = function() {
     //create prototype for Enemy
@@ -29,8 +31,6 @@ Enemy.prototype.update = function(dt) {
     }else
         //multiply random speed by variable dt
         this.x+=(dt*this.speed);      
-    
-  
 };
 
  Enemy.makeRandomYCord = function(){
@@ -56,16 +56,29 @@ let Player= function(){
 Player.lives = 3;
 
 Player.prototype.update = function(){
-//console.log("what");
+  
 };
 
 Player.prototype.render = function(){
-
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-Player.prototype.handleInput = function(){
-    
+
+Player.prototype.handleInput = function(keyPressed){
+    if(keyPressed == 'spacebar')
+        pauseMode = !pauseMode;
+    else if(keyPressed!=undefined && !pauseMode) {
+       switch(keyPressed){
+            case 'right': player.x += 100;
+                          break;
+            case 'left':  player.x -= 100;
+                          break;
+            case 'down':  player.y += 85;
+                          break;
+            case 'up':    player.y -= 85;
+                          break;
+        } 
+    }
 };
 
 // Now instantiate your objects.
@@ -83,18 +96,8 @@ document.addEventListener('keyup', function(e) {
         37: 'left',
         38: 'up',
         39: 'right',
-        40: 'down'
+        40: 'down',
+       32:  'spacebar'
     };
-
-    // player.handleInput(allowedKeys[e.keyCode]);
+    player.handleInput(allowedKeys[e.keyCode]);
 });
-// Review the code and comments provided in app.js
-// Identify the various classes you will need to write.
-// Identify and code the properties each class must have to accomplish its tasks.
-// Write the functions that provide functionality to each of your class instances.
-// Review the project rubric to make sure your project is up to spec. For example 
-// make sure the functions you write are object-oriented - either class functions 
-// (like Player and Enemy) or class prototype functions such as Enemy.prototype.checkCollisions, 
-// and that the keyword 'this' is used appropriately within your class and class prototype functions.
-//  Also be sure that the readme.md file is updated with your instructions on both how to 
-//  1. Run and 2. Play your arcade game.

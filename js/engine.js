@@ -44,9 +44,18 @@ var Engine = (function(global) {
         /* Call our update/render functions, pass along the time delta to
          * our update function since it may be used for smooth animation.
          */
-        update(dt);
-        render();
-
+        if(!pauseMode){
+            update(dt);
+            render();
+        }else{  
+            ctx.font = '90pt Impact';
+            ctx.textAlign = 'center';
+            ctx.strokeStyle = 'black';
+            ctx.lineWidth = 5;
+            ctx.fillStyle = 'red';
+            ctx.fillText("Paused",canvas.width/2,canvas.height/2);
+            ctx.strokeText("Paused", canvas.width/2, canvas.height/2);
+        }
         /* Set our lastTime variable which is used to determine the time delta
          * for the next time this function is called.
          */
