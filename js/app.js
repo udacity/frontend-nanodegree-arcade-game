@@ -1,93 +1,88 @@
 // Enemies our player must avoid
 let pauseMode = false; 
 
-
-var Enemy = function() {
-    //create prototype for Enemy
-    let obj = Object.create(Enemy.prototype);   
-    //x co-ordinate
-    obj.x = (function(){ 
-                return 505*Math.random()
-            }());
-    //y co-ordinate
-    obj.y =Enemy.makeRandomYCord();
-    //create a random speed
-    obj.speed =(function(){return 600*Math.random();}());
-    // The image/sprite
-    obj.sprite = 'images/enemy-bug.png';
-    return obj;
-};
-//Static variable, keeps track of where to place each bug.
-Enemy.yPosition =0; 
-
-// Update the enemy's position, required method for game
-// Parameter: dt, a time delta between ticks
-Enemy.prototype.update = function(dt) {
-    //If reach the edge of the Game layout
-    if(this.x>=505){ 
-        //reset image just before the layout
-        this.x=-100;
-        this.y =Enemy.makeRandomYCord();
-    }else
-        //multiply random speed by variable dt
-        this.x+=(dt*this.speed);      
-};
-
- Enemy.makeRandomYCord = function(){
-        let yPossiblePos = [60, 140, 230];
-        if(Enemy.yPosition>=3) 
-            //Last bug is placed on a random row.
-            Enemy.yPosition= Math.round(Math.random()*2);
-        return yPossiblePos[Enemy.yPosition++];
-    }
-
-// Draw the enemy on the screen, required method for game
-Enemy.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+////////////SUPER CLASS-GAME PIECE///////////
+var GamePiece = function(){};
+//Draw GamePieces on the screen, required method for game
+GamePiece.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.getSprite()), this.getX(), this.getY());
     //This method takes three parameters: an image, an x-coordinate, and a y-coordinate:
 };
 
-let Player= function(){
-    this.x=205;
-    this.y=390;
-    this.sprite = 'images/char-boy.png';
+//////////////////ENEMY///////////////////
+//Pseudoclassical Class Definition
+var Enemy = function() {
+    //Private variables
+    let x = (function(){ return 505*Math.random()}());
+    let makeRandomYCord; //A private functiom 
+    let y = (function(){ 
+                    let yPosition =0; //Use a closure with makeRandomYCord(function) to make yPosition a private static variable.
+                    makeRandomYCord = function (){ 
+                        let yPossiblePos = [60, 140, 230];
+                        if(yPosition>=3) 
+                            yPosition= Math.round(Math.random()*2);//Last bug is placed on a random row.
+                        return yPossiblePos[yPosition++];
+                    }
+            return makeRandomYCord();
+            }());//IIFE
+    let speed =(function(){return 600*Math.random();}());//IIFE
+    let sprite = 'images/enemy-bug.png';
+    //public functions
+    this.getSprite = function(){return sprite;};
+    this.getX = function(){return x;};
+    this.getY = function(){return y;};
+    this.getSpeed = function(){return speed;};
+    // Update the enemy's position, required method for game, Parameter: dt, a time delta between ticks
+    this.update = function(dt) {//If reach the edge of the Game layout
+                    if(x>=505){ //reset image just before the layout
+                        x=-100;
+                        y=makeRandomYCord();
+                    }else
+                        //multiply random speed by variable dt
+                        x+=(dt*speed);      
+                    };  
 };
 
-Player.lives = 3;
+Enemy.prototype = Object.create(GamePiece.prototype);//Inherit from GamePiece Superclass
+
+
+/////////////////PLAYER/////////////////////
+let Player= function(){ //Pseudoclassical Class Definition
+    let x = 205;
+    let y = 390; 
+    let sprite = 'images/char-boy.png';
+    let lives = 3; //Default 3 lives at start
+
+    this.updateX =  function(movePos){x = x + movePos;};
+    this.updateY =  function(movePos){y = y + movePos;};
+    this.getSprite = function(){return sprite;};
+    this.getX = function(){return x;};
+    this.getY = function(){return y;};
+};
+Player.prototype = Object.create(GamePiece.prototype);//Inherit from GamePiece Superclass
+
+//Player.lives = 3; //Use a closure....
 
 Player.prototype.update = function(){
   
 };
-
-Player.prototype.render = function(){
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
-
 
 Player.prototype.handleInput = function(keyPressed){
     if(keyPressed == 'spacebar')
         pauseMode = !pauseMode;
     else if(keyPressed!=undefined && !pauseMode) {
        switch(keyPressed){
-            case 'right': player.x += 100;
+            case 'right': this.updateX(100);
                           break;
-            case 'left':  player.x -= 100;
+            case 'left':  this.updateX(-100);
                           break;
-            case 'down':  player.y += 85;
+            case 'down':  this.updateY(85);
                           break;
-            case 'up':    player.y -= 85;
+            case 'up':    this.updateY(-85);
                           break;
         } 
     }
 };
-
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-let allEnemies = [Enemy(),Enemy(),Enemy(),Enemy()]; 
-// Place the player object in a variable called player
-let player = new Player(); 
-
-
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
@@ -101,3 +96,7 @@ document.addEventListener('keyup', function(e) {
     };
     player.handleInput(allowedKeys[e.keyCode]);
 });
+
+// Now instantiate your objects.
+let allEnemies = [new Enemy(),new Enemy(),new Enemy(),new Enemy()]; 
+let player = new Player(); 
