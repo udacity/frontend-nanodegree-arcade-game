@@ -34,6 +34,7 @@ var Engine = (function(global) {
      * and handles properly calling the update and render methods.
      */
 
+
     function main() {
         /* Get our time delta information which is required if your game
          * requires smooth animation. Because everyone's computer processes
@@ -47,8 +48,9 @@ var Engine = (function(global) {
         /* Call our update/render functions, pass along the time delta to
          * our update function since it may be used for smooth animation.
          */
-        if(gameCommenced&&!pauseScreen.pauseMode)
-            update(dt); 
+        if(gameCommenced&&!pauseScreen.pauseMode&&!gameOverScreen.on)
+           { update(dt); console.log('updating');}
+
         if(restartRequested)
             reset();
 
@@ -88,7 +90,9 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        // checkCollisions();
+        gameSpace.checkGemCollision(allGems,player);
+        gameSpace.checkEnemyCollision(allEnemies,player,allHearts);
+        gameSpace.checkGameOver();
     }
 
     /* This is called by the update function and loops through all of the
@@ -102,7 +106,8 @@ var Engine = (function(global) {
           allEnemies.forEach(function(enemy) {
               enemy.update(dt);
           });
-         player.update();
+          timer.update();
+          //gameSpace.eventCheck();
         
     }
 
@@ -160,12 +165,15 @@ var Engine = (function(global) {
             allEnemies.forEach(function(enemy) {
               enemy.render();
              });
-
-            player.render();
-
-             allHearts.forEach(function(heart) {
+            allHearts.forEach(function(heart) {
                 heart.render();
              });  
+            scoreBoard.render();     
+            timer.render(); 
+            player.render();
+
+
+            
      }
 
 
@@ -176,8 +184,10 @@ var Engine = (function(global) {
     function renderEntities() {
         if(gameCommenced){
             gamePlayRender();
-            if(pauseScreen.pauseMode)
+            if(pauseScreen.pauseMode) 
                 pauseScreen.render();
+            else if(gameOverScreen.on)
+                gameOverScreen.render();
         }
         else
             newGameScreen.render();
@@ -191,28 +201,9 @@ var Engine = (function(global) {
 
 
     function reset() {
-        gameCommenced = false;
         gameSpace = new GameSpace();
-        newGameScreen = new NewGameScreen();
-        player = new Player(); 
-        Enemy.possibleYPos = [60, 140, 230];
-        allEnemies = [new Enemy(),new Enemy(),new Enemy(),new Enemy()];
-        Gem.possibleSprites= ['images/Gem Blue.png', 'images/Gem Orange.png', 'images/Gem Green.png'];
-        Gem.possibleX = [0, 101, 202, 303, 404];
-        Gem.possibleY = [60, 140, 230];
-        allGems = [new Gem(), new Gem(), new Gem()]; 
-        pauseScreen = new PauseScreen();
-
-
-        Heart.x =110;
-        allHearts = [new Heart(), new Heart(), new Heart()];
-        restartRequested = false;
+        gameSpace.startGame();  
     }
-
-    
-
-
-
 
     /* Go ahead and load all of the images we know we're going to need to
      * draw our game level. Then set init as the callback method, so that when
