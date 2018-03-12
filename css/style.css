@@ -1,3 +1,10 @@
 body {
     text-align: center;
 }
+
+.banner-area{
+	background-color: orange;
+	height: 100px;
+	text-align: center;
+	width: 50%;
+}
