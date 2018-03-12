@@ -51,14 +51,19 @@ const GAMEAREA = {
   
 };
 
+const modal= document.querySelector('.modal');
 
-window.onload = function() {
-    //window.location.href = "#openModal";
+window.onload = function() { 
+        modal.style.display = "block";
         audio.src = 'sounds/intro.wav';
         audio.play();
-
 }
 
+window.onclick = function(event) {
+     if (event.target == modal) {
+         modal.style.display = "none";
+     }
+ }
 
 //GAME PIECE OBJECT -SUPERCLASS FOR ITEMS
 var GamePiece = function(){return this};
@@ -438,8 +443,11 @@ let HighScore = function(){
 };
 
  HighScore.prototype.updateHighScore = function(lastScore){
-     if(lastScore> this.highestScore)
+     if(lastScore> this.highestScore){
          this.highestScore = lastScore;
+         document.querySelector('.highscore').innerHTML = lastScore;
+
+     }
 
 
 };
@@ -463,11 +471,7 @@ GameOverScreen.prototype.render = function(keyPressed){
     ctx.strokeText('OVER!',252,403);
 };
 
-
-//TO DO:
-
-    //Add High Score 
-    //Add Instructions
+// /TO DO:
     //Neaten Code
     //Add Comments
     //Go over guidelines
