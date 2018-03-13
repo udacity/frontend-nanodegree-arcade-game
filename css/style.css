@@ -5,62 +5,55 @@ body {
     flex-direction: column;
 }
 
-.banner-area{
- 	text-align: center;  
-	background-color: 	#4B0082;
-	height: 100px;
-	width: 500px;
+/*Banner Area*/
+.banner-area {
+    text-align: center;
+    background-color: #4b0082;
+    height: 100px;
+    width: 500px;
 }
 
-.scoretext{
-
-	font-family: 'Press Start 2P', cursive;
-	font-size: 25px;
-	height: 40%;
-	color: 	#7CFC00;
+/*Banner score text*/
+.scoretext {
+    font: 25px 'Press Start 2P', cursive;
+    color: #7cfc00;
+    height: 40%;
 }
 
 /* The Modal */
 .modal {
-    display: none; /* Hidden */
-    position: fixed; 
-    top: 0;
-    width: 100%; 
-    height: 100%; 
-    background-color: rgba(0,0,0,0.8);
-}
-
-/* Modal Content */
-.modal-content-box{
+    display: none;
     position: fixed;
-  	top:450px;
-  	left: 50%;
-  	transform: translate(-50%, -50%);
-  	width: 450px;
-  	height:350px;
-    background: linear-gradient(to bottom right, #FF00FF,#C71585);
-    border-radius: 25px;
-    border: 3px solid #000000;
-}
-
-.modal{
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.8);
     cursor: pointer;
 }
 
-.modal-content-box{
-	cursor: auto ;
-	text-align: left;
-	color: 	#7CFC00;
-}  
-
-.instruction-heading{
-	font-family: 'Press Start 2P', cursive;
-	font-size: 23px;
-	padding: 5px;
+/*Modal Content*/
+.modal-content-box {
+    position: fixed;
+    top: 450px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 450px;
+    height: 350px;
+    background: linear-gradient(to bottom right, #ff00ff,#c71585);
+    border-radius: 25px;
+    border: 3px solid #000000;
+    cursor: auto;
+    text-align: left;
+    color: #7cfc00;
+    padding: 5px;
 }
 
-.instruction-content{
-	font-family: 'Orbitron', sans-serif;
-	font-size:20px;
-	padding: 5px;
+/*Modal Heading*/
+.instruction-heading {
+    font: 23px 'Press Start 2P', cursive;
+}
+
+/*Modal Text*/
+.instruction-content {
+    font: 20px 'Orbitron', sans-serif;
 }

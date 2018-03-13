@@ -1,465 +1,485 @@
-"use strict"; 
-let timer;
+/* App.js
+ * Contains the objects and some of the gamespace logic for the game
+ */
+
+"use strict";
+
+/**
+* Global variables
+*/
+let gameSpace;
 let pauseScreen;
-let allEnemies;
 let gameOverScreen;
-let player;
 let newGameScreen;
+let allEnemies;
+let player;
 let allGems;
 let allHearts;
-let gameSpace;
 let scoreBoard;
-
+let timer;
 let gameCommenced = false;
 let restartRequested = false;
-var audio = new Audio;
-
-const GAMEAREA = {
-    width : 505,
-    pixelColumns:[0,101,101*2,101*3,101*4,101*5],
-    pixelRows:[55, 55+80,55+80*2,55+80*3,55+80*4,55+80*5],
-
-    enemy:{
-        posY: [60, 140, 230], //Possible positions on 
-        width: 101
-    },
-    gem:{    
-        posY:[60, 140, 230],
-        posX:[0, 101, 202, 303, 404],
-        posSprite:['images/Gem Blue.png', 'images/Gem Orange.png', 'images/Gem Green.png'],
-        yOffSet:50,
-        xOffSet: 25
-    },
-    player:{
-        xStartPos:205,
-        yStartPos:390,
-        xLimitleft:5,
-        xLimitRight:405,
-        yLimitUp: -35,
-        yLimitDown: 390,
-        stepVer:85,
-        stepHor:100
-    },
-    startScreen:{
-        characterArray: ['images/char-boy.png','images/char-horn-girl.png','images/char-pink-girl.png','images/char-princess-girl.png','images/char-cat-girl.png'],
-        starPosition: 201,
-        characterSelected: 2,
-        limitLeft: 1,
-        limitRight: 401,
-        starOffset: 100
-    },
-  
-};
-
+let audio = new Audio;
 const modal= document.querySelector('.modal');
 
-window.onload = function() { 
-        modal.style.display = "block";
-        audio.src = 'sounds/intro.wav';
-        audio.play();
+/**
+* Constants
+*/
+const GAMEAREA = {
+  WIDTH: 505,
+  PIXELCOLUMNS: [0,101,101*2,101*3,101*4,101*5],
+  PIXELROWS: [55, 55+80,55+80*2,55+80*3,55+80*4,55+80*5],
+  TIMER: 90,
+  LIVES: 3,
+
+  ENEMY: {
+    POSY: [60, 140, 230],
+    WIDTH: 101,
+    SPEED: 250,
+    BUGIMAGE: 'images/enemy-bug.png',
+    BASESPEED: 20,
+  },
+
+  GEM: {
+    POSY: [60, 140, 230],
+    POSX: [0, 101, 202, 303, 404],
+    POSSPRITE: ['images/gem-blue.png', 'images/gem-orange.png', 'images/gem-green.png'],
+    YOFFSET: 50,
+    XOFFSET: 25,
+    SCORE: 10,
+  },
+
+  PLAYER: {
+    XSTARTPOS: 205,
+    YSTARTPOS: 390,
+    XLIMITLEFT: 5,
+    XLIMITRIGHT: 405,
+    YLIMITUP: -35,
+    YLIMITDOWN: 390,
+    STEPVER: 85,
+    STEPHOR: 100,
+    STARTPOSGRID: [2,5],
+    SCORE:20,
+    OFFSETLEFT: 25,
+    OFFSETRIGHT: 76,
+  },
+
+  STARTSCREEN: {
+    CHARACTERARRAY: ['images/char-boy.png','images/char-horn-girl.png','images/char-pink-girl.png','images/char-princess-girl.png','images/char-cat-girl.png'],
+    STARTPOSITION: 201,
+    CHARACTERSELECTED: 2,
+    LIMITLEFT: 1,
+    LIMITRIGHT: 401,
+    STAROFFSET: 100,
+  },
+};
+
+/**
+* @description Load modal and audio on page load
+*/
+window.onload = function(){
+  modal.style.display = "block";
+  audio.src = 'sounds/intro.wav';
+  audio.play();
 }
 
+/**
+* @description Hide modal if outside the modal is clicked.
+*/
 window.onclick = function(event) {
-     if (event.target == modal) {
-         modal.style.display = "none";
-     }
- }
-
-//GAME PIECE OBJECT -SUPERCLASS FOR ITEMS
-var GamePiece = function(){return this};
-GamePiece.prototype.render = function() {//Draw GamePieces on the screen, required method for game
-        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);  //This method takes three parameters: an image, an x-coordinate, and a y-coordinate:
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
 };
 
-GamePiece.randomize=function(allPositions,positionsLeft){
-      let randomizer = function(itemArray){
-        let thisItemPos=Math.round(Math.random()*(itemArray.length-1));
-        let thisItemBe = itemArray[thisItemPos];
-        itemArray.splice(thisItemPos, 1);
-        return thisItemBe;
-    }
-    return(positionsLeft.length===0? randomizer(allPositions): randomizer(positionsLeft));
+/**
+* @description Parent class for all game pieces that use common functions
+* @constructor
+*/
+var GamePiece = function() {
+  return this;
+};
+
+/**
+* @description Place specific image on the canvas at specific x,y pixel co-ordinates
+*/
+GamePiece.prototype.render = function() {
+  ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+/**
+* @description Randomly selects a random variable from an array
+* @param {array} allPositions - All possible options that can be used, this input is used in function when positions left is 0
+* @param {array} positionsLeft - Possible positions that can be selected.
+* @returns {number/string} A random variable that has be selected from the array
+*/
+GamePiece.randomize= function(allPositions,positionsLeft) {
+  let randomizer = function(itemArray) {
+    let thisItemPos = Math.round(Math.random()*(itemArray.length-1));
+    let thisItemBe = itemArray[thisItemPos];
+    itemArray.splice(thisItemPos, 1);
+    return thisItemBe;
+  };
+  return(positionsLeft.length === 0 ? randomizer(allPositions) : randomizer(positionsLeft));
  };
-// ENEMY FUNCTION:
+
+/**
+* @description Returns grid (x or y) position from pixel (x or y) locations
+* @param {number} pixelLoc - The pixel location (x or y)
+* @param {array} pixelRowCol - The pixel to grid array
+* @returns {number} The grid position (x or y)
+*/
+GamePiece.findPos = function(pixelLoc,pixelRowCol){
+  let i;
+  for(i = 0; i < pixelRowCol.length - 1; i++)
+    if(pixelLoc === pixelRowCol[i] || pixelLoc < pixelRowCol[i + 1]) {
+      break;
+    }
+  if(pixelLoc > pixelRowCol[pixelRowCol.length - 1])
+    i = pixelRowCol.length - 1;
+  return i;
+};
+
+/*
+*@description Represents an enemy/bug
+*@constuctor
+*/
 var Enemy = function() {
-    this.x = GAMEAREA.width*Math.random();
-    this.y = GamePiece.randomize([...GAMEAREA.enemy.posY], Enemy.possibleYPos);
-    this.baseSpeed =150;
-    this.speed =this.baseSpeed+250*Math.random();
-   
-    this.sprite ='images/enemy-bug.png'; 
-    this.rowLoc = GamePiece.findPos(this.y, GAMEAREA.pixelRows)+1;
-    //Update the enemy's position between ticks
-    //If reach the edge of the Game layout,Move image just before the layout, Move position of enemy based on speed.
-    this.update = dt => (this.x>=GAMEAREA.width)?this.x=-GAMEAREA.enemy.width:this.x+=(dt*this.speed);
+  this.x = GAMEAREA.WIDTH*Math.random();
+  this.y = GamePiece.randomize([...GAMEAREA.ENEMY.POSY], Enemy.possibleYPos);
+  this.baseSpeed = 150;
+  this.speed = this.baseSpeed+GAMEAREA.ENEMY.SPEED*Math.random();
+  this.sprite = GAMEAREA.ENEMY.BUGIMAGE;
+  //Update the enemy's row position
+  this.rowLoc = GamePiece.findPos(this.y, GAMEAREA.PIXELROWS) + 1;
+  //If the left edge of the Game layout is reached then move image right just before the layout
+  //Move position of enemy based on speed.
+  this.update = dt => (this.x >= GAMEAREA.WIDTH) ? this.x = -GAMEAREA.ENEMY.WIDTH : this.x += (dt*this.speed);
 };
+//Inherit functions from GamePiece parent class.
+Enemy.prototype = Object.create(GamePiece.prototype);
 
-Enemy.prototype = Object.create(GamePiece.prototype);//Inherit from GamePiece Superclass
-
-//
-
-GamePiece.findPos = function(pixelLoc,pixelRowCol){ 
-    let rowcolLoc;
-      for(let i = 0; i<pixelRowCol.length-1; i++)
-        if(pixelLoc===pixelRowCol[i]||pixelLoc<pixelRowCol[i+1]){
-            rowcolLoc = i;
-            break;
-        }
-        if(pixelLoc> pixelRowCol[pixelRowCol.length-1])
-            rowcolLoc = pixelRowCol.length-1;
-        return rowcolLoc;
-        
-};
-
-
+/*
+*@description Represents a gem
+*@constuctor
+*/
 let Gem = function() {
-    this.y = GamePiece.randomize([...GAMEAREA.gem.posY], Gem.possibleYPos)+GAMEAREA.gem.yOffSet;
-    this.x =   GamePiece.randomize([...GAMEAREA.gem.posX], Gem.possibleXPos)+GAMEAREA.gem.xOffSet;
-    this.sprite =GamePiece.randomize([...GAMEAREA.gem.posSprite], Gem.possibleSprite);
-    this.gridCoord = [GamePiece.findPos(this.x, GAMEAREA.pixelColumns), GamePiece.findPos(this.y,GAMEAREA.pixelRows)+1];
+  this.y = GamePiece.randomize([...GAMEAREA.GEM.POSY], Gem.possibleYPos)+GAMEAREA.GEM.YOFFSET;
+  this.x =  GamePiece.randomize([...GAMEAREA.GEM.POSX], Gem.possibleXPos)+GAMEAREA.GEM.XOFFSET;
+  this.sprite = GamePiece.randomize([...GAMEAREA.GEM.POSSPRITE], Gem.possibleSprite);
+  this.gridCoord = [GamePiece.findPos(this.x, GAMEAREA.PIXELCOLUMNS), GamePiece.findPos(this.y,GAMEAREA.PIXELROWS) + 1];
 };
+//Inherit functions from GamePiece parent class.
+Gem.prototype = Object.create(GamePiece.prototype);
 
-Gem.prototype = Object.create(GamePiece.prototype);//Inherit from GamePiece Superclass
-
-let Player= function(){ //Pseudoclassical Class Definition
-    this.x = GAMEAREA.player.xStartPos;
-    this.y = GAMEAREA.player.yStartPos; 
-    this.gridCoord = [2,5];
+/*
+* @description Represents the player
+* @constuctor
+*/
+let Player= function() {
+    this.x = GAMEAREA.PLAYER.XSTARTPOS;
+    this.y = GAMEAREA.PLAYER.YSTARTPOS;
+    this.gridCoord = [...GAMEAREA.PLAYER.STARTPOSGRID];
     this.sprite = 'images/char-boy.png';
 };
-Player.prototype = Object.create(GamePiece.prototype);//Inherit from GamePiece Superclass
+//Inherit functions from GamePiece parent class.
+Player.prototype = Object.create(GamePiece.prototype);
 
-Player.prototype.selectPlayer =function(playerpicked){
+/**
+* @description Set the players sprite to the character selected
+* @param {string} the player image string
+*/
+Player.prototype.selectPlayer =function(playerpicked) {
     this.sprite = playerpicked;
 };
 
-Player.prototype.update = function(xMove,yMove){
-    if(this.x + xMove !== this.x)
-        if(this.x+xMove>=GAMEAREA.player.xLimitleft && this.x+xMove<=GAMEAREA.player.xLimitRight){
-            this.x += xMove;
-            (xMove>0) ? ++this.gridCoord[0]:--this.gridCoord[0];
+/**
+* @description Updates the x and y pixel positions of the player within the limitation of the game area.
+* @param {number} xMove: the request number of pixels to move in the x direction
+* @param {number} yMove: the request number of pixels to move in the x direction
+*/
+Player.prototype.update = function(xMove,yMove) {
+  if(this.x + xMove !== this.x)
+    if(this.x + xMove >= GAMEAREA.PLAYER.XLIMITLEFT && this.x + xMove <= GAMEAREA.PLAYER.XLIMITRIGHT) {
+      this.x += xMove;
+      (xMove > 0) ? ++ this.gridCoord[0] : --this.gridCoord[0];
     }
-    if(this.y + yMove !== this.y)
-        if(this.y+yMove>=GAMEAREA.player.yLimitUp && this.y+yMove<=GAMEAREA.player.yLimitDown){
-             this.y += yMove;
-             (yMove>0) ? ++this.gridCoord[1]:--this.gridCoord[1];
-        }
-};
-
-Player.prototype.handleInput = function(keyPressed){
-     if(keyPressed!=undefined) {
-       switch(keyPressed){
-            case 'right': this.update(GAMEAREA.player.stepHor,0);//this.updateX(100);
-                          break;
-            case 'left':  this.update(-GAMEAREA.player.stepHor,0);//this.updateX(-100);
-                          break;
-            case 'down':  this.update(0,GAMEAREA.player.stepVer);//this.updateY(85);
-                          break;
-            case 'up':    this.update(0,-GAMEAREA.player.stepVer)//this.updateY(-85);
-        gameSpace.checkPlayerAtWater(player);
-        } 
-
+  if(this.y + yMove !== this.y)
+    if(this.y + yMove >= GAMEAREA.PLAYER.YLIMITUP && this.y + yMove <= GAMEAREA.PLAYER.YLIMITDOWN) {
+      this.y += yMove;
+      (yMove > 0) ? ++this.gridCoord[1] : --this.gridCoord[1];
     }
 };
-// This listens for key presses and sends the keys to your
-// Player.handleInput() method. You don't need to modify this.
+
+/**
+*@description Invokes the update function in various ways if the arrow keys are pressed
+*@param {string} keyPressed - any key on pressed on the keyboard
+*/
+Player.prototype.handleInput = function(keyPressed) {
+  if(keyPressed!=undefined) {
+    switch(keyPressed) {
+      case 'right': this.update(GAMEAREA.PLAYER.STEPHOR,0);
+                    break;
+      case 'left':  this.update(-GAMEAREA.PLAYER.STEPHOR,0);
+                    break;
+      case 'down':  this.update(0,GAMEAREA.PLAYER.STEPVER);
+                    break;
+      case 'up':    this.update(0,-GAMEAREA.PLAYER.STEPVER)
+    }
+  }
+};
+
+/**
+*@description Listens for keystrokes and invokes different input handlers depending on game states.
+*@param {e} - the key pressed on the keyboard
+*/
 document.addEventListener('keyup', function(e) {
-    var allowedKeys = {
-        37: 'left',
-        38: 'up',
-        39: 'right',
-        40: 'down',
-        32: 'spacebar',
-        27: 'esc',
-        13: 'enter'
-    }; 
-
-if(!gameOverScreen.on){
-   if(gameCommenced){
+  var allowedKeys = {
+    37: 'left',
+    38: 'up',
+    39: 'right',
+    40: 'down',
+    32: 'spacebar',
+    27: 'esc',
+    13: 'enter'
+  };
+  if(modal.style.display === "none") {
+    if(!gameOverScreen.on) {
+      if(gameCommenced) {
         pauseScreen.handleInput(allowedKeys[e.keyCode]);
         if(allowedKeys[e.keyCode]==='esc')
-            restartRequested = true; 
-        if(!pauseScreen.pauseMode) 
-            player.handleInput(allowedKeys[e.keyCode]); 
+          restartRequested = true;
+        if(!pauseScreen.pauseMode)
+          player.handleInput(allowedKeys[e.keyCode]);
+      } else
+          newGameScreen.handleInput(allowedKeys[e.keyCode]);
     }
-   if(!gameCommenced)
-        newGameScreen.handleInput(allowedKeys[e.keyCode]);
-}
+  }
 });
 
-let Heart = function(){
-     this.x =(function(){
-            Heart.x-=50;
-            return Heart.x;
-            }());
-     this.y =2;
-     this.sprite = 'images/Heart.png';
+/*
+* @description Represents the heart
+* @constuctor
+*/
+let Heart = function() {
+  //Sets each constructed heart to preplaced areas on the canvas
+  this.x =(function() {
+    Heart.x-=50;
+    return Heart.x;
+  } ());
+  this.y =2;
+  this.sprite = 'images/Heart.png';
 };
-Heart.prototype = Object.create(GamePiece.prototype);//Inherit from GamePiece Superclass
+//Inherit functions from GamePiece parent class.
+Heart.prototype = Object.create(GamePiece.prototype);
 
-
-let PauseScreen = function(){
- this.pauseMode = false;
-};    
-
-PauseScreen.prototype.handleInput = function(keyPressed){
-    
-        switch(keyPressed){
-
-            case 'spacebar': pauseScreen.pauseMode = !pauseScreen.pauseMode;
-                             break;
-            case 'esc'     : restartRequested = true;
-        }
-};
-
-PauseScreen.prototype.render = function(keyPressed){
-    ctx.font = '90pt Impact';
-    ctx.textAlign = 'center';
-    ctx.strokeStyle = 'black';
-    ctx.lineWidth = 5;
-    ctx.fillStyle = 'red';
-    ctx.fillText("Paused",252,303);
-    ctx.strokeText("Paused",252,303);
+/*
+* @description Represents the PauseScreen
+* @constuctor
+*/
+let PauseScreen = function() {
+  this.pauseMode = false;
 };
 
-let NewGameScreen = function(){
-     this.characterArray =GAMEAREA.startScreen.characterArray;
-     this.starPosition = GAMEAREA.startScreen.starPosition;
-     this.characterSelected =  GAMEAREA.startScreen.characterSelected;
+/**
+*@description Restarts the game if the esc is pressed or pauses/unpauses if the spacebar is pressed
+*@param {string} keyPressed - any key on pressed on the keyboard
+*/
+PauseScreen.prototype.handleInput = function(keyPressed) {
+  switch(keyPressed) {
+    case 'spacebar': this.pauseMode =! this.pauseMode;
+                     break;
+    case 'esc'     : restartRequested = true;
+  }
 };
 
-NewGameScreen.prototype.handleInput = function(keyPressed){
-    if(keyPressed!=undefined) {
-           switch(keyPressed){
-                case 'right': newGameScreen.update(1);
-                              break;
-                case 'left':  newGameScreen.update(-1);                        
-                              break;
-                case 'enter': newGameScreen.beginGame();
-            } 
+/**
+*@description Displays the pause screen
+*/
+PauseScreen.prototype.render = function() {
+  ctx.font = '90pt Impact';
+  ctx.textAlign = 'center';
+  ctx.strokeStyle = 'black';
+  ctx.lineWidth = 5;
+  ctx.fillStyle = 'red';
+  ctx.fillText("Paused",252,303);
+  ctx.strokeText("Paused",252,303);
+};
+
+/*
+* @description Represents the New Game screen where new characters can be selected.
+* @constuctor
+*/
+let NewGameScreen = function() {
+  this.characterArray = GAMEAREA.STARTSCREEN.CHARACTERARRAY;
+  this.starPosition = GAMEAREA.STARTSCREEN.STARTPOSITION;
+  this.characterSelected =  GAMEAREA.STARTSCREEN.CHARACTERSELECTED;
+};
+
+/**
+*@description Invokes the update function based on right or left arrow key presses
+*Selects character and begins game if enter is pressed.
+*@param {string} keyPressed - any key on pressed on the keyboard
+*/
+NewGameScreen.prototype.handleInput = function(keyPressed) {
+  if(keyPressed != undefined) {
+    switch(keyPressed) {
+      case 'right': this.update(1);
+                    break;
+      case 'left':  this.update(-1);
+                    break;
+      case 'enter': this.beginGame();
     }
+  }
 };
 
-NewGameScreen.prototype.beginGame = function(){
-    gameCommenced = true;
-    player.selectPlayer(this.characterArray[this.characterSelected]);
+/**
+*@description Changes global variable to commence game and invokes the selectplayer function
+*this function will change the player property to the player selected by the user.
+*@param {string} keyPressed - any key on pressed on the keyboard
+*/
+NewGameScreen.prototype.beginGame = function() {
+  gameCommenced = true;
+  player.selectPlayer(this.characterArray[this.characterSelected]);
 };
 
-NewGameScreen.prototype.update = function(direction){
-    if(direction ===1 && this.starPosition+100<=GAMEAREA.startScreen.limitRight){
-        this.starPosition+=GAMEAREA.startScreen.starOffset;
-        ++this.characterSelected;
-    }
-
-    if(direction ===-1 &&this.starPosition-100>=GAMEAREA.startScreen.limitLeft){
-        this.starPosition-=GAMEAREA.startScreen.starOffset;
-        --this.characterSelected;
-    }
- 
+/**
+*@description Update the position of the star on the newGame Screen
+*@param {number} direction - 1 or -1 indicates left/right direction
+*/
+NewGameScreen.prototype.update = function(direction) {
+  if(direction === 1 && this.starPosition + GAMEAREA.STARTSCREEN.STAROFFSET <= GAMEAREA.STARTSCREEN.LIMITRIGHT) {
+    this.starPosition += GAMEAREA.STARTSCREEN.STAROFFSET;
+    ++this.characterSelected;
+  }
+  if(direction === -1 && this.starPosition - GAMEAREA.STARTSCREEN.STAROFFSET >= GAMEAREA.STARTSCREEN.LIMITLEFT) {
+    this.starPosition -= GAMEAREA.STARTSCREEN.STAROFFSET;
+    --this.characterSelected;
+  }
 };
 
-NewGameScreen.prototype.render = function(){
-            ctx.font = '40pt Impact';
-            ctx.textAlign = 'center';
-            ctx.strokeStyle = 'black';
-            ctx.lineWidth = 2;
-            ctx.fillStyle = 'blue';
-            ctx.fillText("Choose A Character",250, 280);
-            ctx.strokeText("Choose A Character", 250, 280);
+/**
+*@description Displays the new game screen where characters can be selected
+*/
+NewGameScreen.prototype.render = function() {
+  ctx.font = '40pt Impact';
+  ctx.textAlign = 'center';
+  ctx.strokeStyle = 'black';
+  ctx.lineWidth = 2;
+  ctx.fillStyle = 'blue';
+  ctx.fillText("Choose A Character", 250, 280);
+  ctx.strokeText("Choose A Character", 250, 280);
 
-            ctx.font = '60pt Impact';
-            ctx.textAlign = 'center';
-            ctx.strokeStyle = 'black';
-            ctx.lineWidth = 2;
-            ctx.fillStyle = 'red';
-            ctx.fillText("FROGGER",250,120);
-            ctx.strokeText("FROGGER", 250, 120);    
+  ctx.font = '60pt Impact';
+  ctx.textAlign = 'center';
+  ctx.strokeStyle = 'black';
+  ctx.lineWidth = 2;
+  ctx.fillStyle = 'red';
+  ctx.fillText("FROGGER", 250, 120);
+  ctx.strokeText("FROGGER", 250, 120);
 
-            for(let i =0; i<5;i++)
-                    ctx.drawImage(Resources.get('images/Selector.png'), i*101, 300);
-
-            ctx.font = '30pt Impact';
-            ctx.textAlign = 'center';
-            ctx.fillStyle = 'black';
-            ctx.fillText("Press 'Enter' To Select",250,530);
-
-
-            ctx.drawImage(Resources.get('images/Star.png'), this.starPosition, 320);
+  ctx.font = '30pt Impact';
+  ctx.textAlign = 'center';
+  ctx.fillStyle = 'black';
+  ctx.fillText("Press 'Enter' To Select",250,530);
 
 
-             for(let i =0; i<5;i++)    
-                 ctx.drawImage(Resources.get(this.characterArray[i]), i*101, 300); 
+  for(let i = 0; i < 5; i++)
+    ctx.drawImage(Resources.get('images/Selector.png'), i*101, 300);
 
+  ctx.drawImage(Resources.get('images/Star.png'), this.starPosition, 320);
+
+  for(let i =0; i<5;i++)
+    ctx.drawImage(Resources.get(this.characterArray[i]), i*101, 300);
 };
 
-let ScoreBoard = function(){
-    this.score =0;
+/**
+* @description Represents the real time scoreboard
+* @constuctor
+*/
+let ScoreBoard = function() {
+  this.score = 0;
 };
-ScoreBoard.prototype.render = function(){
-        let scoreString = 'Score: ' + this.score;
-        ctx.font = '40pt Impact';
-        ctx.textAlign = 'left';
-        ctx.strokeStyle = 'black';
-        ctx.lineWidth = 2;
-        ctx.fillStyle = 'orange';
-        ctx.fillText(scoreString,10, 44);
-        ctx.strokeText(scoreString, 10, 44);
+/**
+*@description Displays the scoreboard
+*/
+ScoreBoard.prototype.render = function() {
+  let scoreString = 'Score: ' + this.score;
+  ctx.font = '40pt Impact';
+  ctx.textAlign = 'left';
+  ctx.strokeStyle = 'black';
+  ctx.lineWidth = 2;
+  ctx.fillStyle = 'orange';
+  ctx.fillText(scoreString, 10, 44);
+  ctx.strokeText(scoreString, 10, 44);
 };
 
-let Timer = function(){
-    this.gameTime = 90;
-};    
+/**
+* @description Represents the realtime countdown timer.
+* @constuctor
+*/
+let Timer = function() {
+  this.gameTime = GAMEAREA.TIMER;
+};
 Timer.timeThen = Date.now();
 
-
-Timer.prototype.update=function(){
-    if(Date.now()-Timer.timeThen>=1000){
-            if(gameCommenced &&!pauseScreen.pauseMode)
-                --timer.gameTime;
-            Timer.timeThen = Date.now();
-        }
+/**
+*@description Counts down from this.gameTime every second.
+*/
+Timer.prototype.update=function(paused) {
+  if((Date.now()-Timer.timeThen>=1000)&&(gameCommenced &&!paused)) {
+    --this.gameTime;
+    Timer.timeThen = Date.now();
+  }
 };
 
-Timer.prototype.render = function(keyPressed){
-    ctx.font = '28pt Impact';
-    ctx.textAlign = 'left';
-    ctx.fillStyle = 'black';
-    ctx.strokeStyle = 'white';
-    ctx.lineWidth = 0.8;
-    ctx.fillText("Time Left: "+ timer.gameTime,150,580);
-    ctx.strokeText("Time Left: " + timer.gameTime,150,580);
+/**
+*@description Displays the countdown timer
+*/
+Timer.prototype.render = function(keyPressed) {
+  ctx.font = '28pt Impact';
+  ctx.textAlign = 'left';
+  ctx.fillStyle = 'black';
+  ctx.strokeStyle = 'white';
+  ctx.lineWidth = 0.8;
+  ctx.fillText("Time Left: "+ this.gameTime, 150, 580);
+  ctx.strokeText("Time Left: " + this.gameTime, 150, 580);
 };
 
-
-
-
-let GameSpace = function(){
-      
-      this.lives = 3;
-     
+/**
+* @description Represents the high score banner
+* @constuctor
+*/
+let HighScore = function() {
+  this.highestScore = 0;
 };
 
-GameSpace.prototype.checkGemCollision = function(gemArray,currentPlayer){
-    let gemcollided;
-    for(let i=0; i<gemArray.length; i++){
-        if(gemArray[i].gridCoord[0]===currentPlayer.gridCoord[0]&& gemArray[i].gridCoord[1]===currentPlayer.gridCoord[1]){
-                scoreBoard.score +=10;
-                gemcollided = i;
-                break;
-            }
-        }
-    if(gemcollided!=undefined){
-        gemArray.splice(gemcollided, 1);
-        console.log("gem")
-        audio.src = 'sounds/gem.wav';
-        audio.play();
-    }
+/**
+* @description Updates the highscore if the current one is higher
+*/
+HighScore.prototype.updateHighScore = function(lastScore) {
+  if(lastScore > this.highestScore) {
+    this.highestScore = lastScore;
+    document.querySelector('.highscore').innerHTML = lastScore;
+  }
 };
 
-GameSpace.prototype.checkPlayerAtWater = function(currentPlayer){
-    if(currentPlayer.gridCoord[1]===0)
-            //Add a short break here
-        setTimeout(function(){
-            player.x = GAMEAREA.player.xStartPos;
-            player.y = GAMEAREA.player.yStartPos; 
-            player.gridCoord = [2,5]; 
-            gameSpace.newRound();
-            scoreBoard.score += 20;
-            player.baseSpeed +=20;
-            audio.src = 'sounds/made it.wav';
-            audio.play();
-            console.log("Water")
-        },200);
-};
-
-GameSpace.prototype.checkEnemyCollision = function(enemies,currentPlayer, heartArray){
-    for(let i=0; i<enemies.length;i++)
-        if(enemies[i].rowLoc===currentPlayer.gridCoord[1]){
-            let enemyOffset =101;
-            let playerOffSetLeft =25;
-            let playerOffSetRight = 101-playerOffSetLeft;
-           if((currentPlayer.x+playerOffSetRight>=enemies[i].x&&currentPlayer.x+playerOffSetRight<=enemies[i].x+enemyOffset)||(currentPlayer.x+playerOffSetLeft>=enemies[i].x&&currentPlayer.x+playerOffSetLeft<=enemies[i].x+enemyOffset)){
-                heartArray.pop(1);
-               --gameSpace.lives;
-                currentPlayer.x = GAMEAREA.player.xStartPos;
-                currentPlayer.y = GAMEAREA.player.yStartPos; 
-                currentPlayer.gridCoord = [2,5]; 
-               
-                     audio.src = 'sounds/bug.wav';
-                     audio.play();
-                gameSpace.newRound();     
-            }
-        }
-};
-
-GameSpace.prototype.newRound = function(){
-        Enemy.possibleYPos =[...GAMEAREA.enemy.posY];
-        allEnemies = [new Enemy(),new Enemy(),new Enemy(),new Enemy()];
-
-        Gem.possibleYPos =[...GAMEAREA.gem.posY];
-        Gem.possibleXPos =[...GAMEAREA.gem.posX];
-        Gem.possibleSprite =[...GAMEAREA.gem.posSprite];
-        allGems = [new Gem(), new Gem(), new Gem()]; 
-
-};
-
-GameSpace.prototype.startGame = function(){     
-        this.lastGameEvent=null;
-
-        restartRequested = false;
-        gameCommenced = false;
- 
-        timer = new Timer();
-        newGameScreen = new NewGameScreen();     
-        pauseScreen = new PauseScreen();
-        gameOverScreen = new GameOverScreen();
-        player = new Player(); 
-        scoreBoard = new ScoreBoard();
-
-        Heart.x =505;
-        allHearts = [new Heart(), new Heart(), new Heart()];
-
-        this.newRound();
-};
-
-GameSpace.prototype.checkGameOver = function(){
-     if(this.lives==0 || timer.gameTime==0){
-        highScore.updateHighScore(scoreBoard.score);
-        gameOverScreen.on = true;
-       setTimeout(function(){
-            if(!this.playedSound){
-                audio.src = 'sounds/game over.wav';
-                audio.play();
-            }
-       },400);
-        setTimeout(function(){
-            restartRequested = true;},5000);
-    }  
-
-};
-
-let HighScore = function(){
-    this.highestScore = 0;
-};
-
- HighScore.prototype.updateHighScore = function(lastScore){
-     if(lastScore> this.highestScore){
-         this.highestScore = lastScore;
-         document.querySelector('.highscore').innerHTML = lastScore;
-
-     }
-
-
-};
-
+//Create a highscore object with global reference
 let highScore = new HighScore();
 
-let GameOverScreen = function(){
+/**
+* @description Represents the Game Over Screen
+* @constuctor
+*/
+let GameOverScreen = function() {
  this.on = false;
  this.playedSound = false;
-};    
+};
 
-GameOverScreen.prototype.render = function(keyPressed){
+/**
+* @description Displays the gameover screem
+*/
+GameOverScreen.prototype.render = function(keyPressed) {
     ctx.font = '90pt Impact';
     ctx.textAlign = 'center';
     ctx.strokeStyle = 'black';
@@ -471,7 +491,144 @@ GameOverScreen.prototype.render = function(keyPressed){
     ctx.strokeText('OVER!',252,403);
 };
 
-// /TO DO:
-    //Neaten Code
-    //Add Comments
-    //Go over guidelines
+/**
+* @description Represents the majority of the gameplay logic.
+* @constuctor
+*/
+let GameSpace = function() {
+  this.lives = GAMEAREA.LIVES;
+  this.firstTimeWater = true;
+  this.hasNotHitEnemy = true;
+};
+
+/**
+* @description Checks if player has landed on a gem
+* @param {object array} gemArray - The gems that have been created for the round
+* @param {object} currentPlayer - The current player object
+* @param {object} currentScore - The current score object
+*/
+GameSpace.prototype.checkGemCollision = function(gemArray,currentPlayer, currentScore) {
+  let gemcollided;
+  for(let i=0; i<gemArray.length; i++) {
+   if(gemArray[i].gridCoord[0]===currentPlayer.gridCoord[0]
+    && gemArray[i].gridCoord[1]===currentPlayer.gridCoord[1]) {
+     currentScore.score +=GAMEAREA.GEM.SCORE;
+     gemcollided = i;
+     break;
+   }
+  }
+  if(gemcollided!=undefined) {
+    gemArray.splice(gemcollided, 1);
+    audio.src = 'sounds/gem.wav';
+    audio.play();
+  }
+};
+
+/**
+* @description Check if the player is at the water and if so starts a new round
+* @paramc {object} CurrentPlayer - The current player object
+* @paramc {object} currentScore - The current scoreboard object
+*/
+GameSpace.prototype.checkPlayerAtWater = function(currentPlayer,currentScore) {
+  if(currentPlayer.gridCoord[1] === 0 && this.firstTimeWater) {
+    this.firstTimeWater = false;
+    setTimeout(function() {
+      currentPlayer.x = GAMEAREA.PLAYER.XSTARTPOS;
+      currentPlayer.y = GAMEAREA.PLAYER.YSTARTPOS;
+      currentPlayer.gridCoord =  [...GAMEAREA.PLAYER.STARTPOSGRID];
+      gameSpace.newRound();
+      currentScore.score += GAMEAREA.PLAYER.SCORE;
+      currentPlayer.baseSpeed += GAMEAREA.ENEMY.BASESPEED;
+      audio.src = 'sounds/made it.wav';
+      audio.play();
+    }, 200);
+  }
+};
+
+/**
+* @description Check if enemy collides with player
+* @paramc {array of object} enemies - An array of enemy objects
+* @paramc {object} currentPlayer - The current player object
+* @paramc {object} heartArray - An array of heart objects
+*/
+GameSpace.prototype.checkEnemyCollision = function(enemies, currentPlayer, heartArray) {
+  for(let i = 0; i < enemies.length; i++)
+    if(enemies[i].rowLoc === currentPlayer.gridCoord[1] ) {
+      if(((currentPlayer.x + GAMEAREA.PLAYER.OFFSETRIGHT >= enemies[i].x
+        && currentPlayer.x + GAMEAREA.PLAYER.OFFSETRIGHT <= enemies[i].x + GAMEAREA.ENEMY.WIDTH)
+        || (currentPlayer.x + GAMEAREA.PLAYER.OFFSETLEFT >= enemies[i].x
+        && currentPlayer.x + GAMEAREA.PLAYER.OFFSETLEFT <= enemies[i].x + GAMEAREA.ENEMY.WIDTH))
+        && this.hasNotHitEnemy) {
+        heartArray.pop(1);
+         --this.lives;
+         this.hasNotHitEnemy = false;
+         setTimeout(function() {
+           currentPlayer.x = GAMEAREA.PLAYER.XSTARTPOS;
+           currentPlayer.y = GAMEAREA.PLAYER.YSTARTPOS;
+           currentPlayer.gridCoord = [...GAMEAREA.PLAYER.STARTPOSGRID];
+           gameSpace.newRound();
+           audio.src = 'sounds/bug.wav';  //ERROR FIX
+           audio.play();
+        }, 50);
+      }
+    }
+};
+
+/**
+* @description Start a new round.
+*/
+GameSpace.prototype.newRound = function() {
+  this.firstTimeWater = true;
+  this.hasNotHitEnemy = true;
+  Enemy.possibleYPos = [...GAMEAREA.ENEMY.POSY];
+  allEnemies = [new Enemy(), new Enemy(), new Enemy(), new Enemy()];
+  Gem.possibleYPos = [...GAMEAREA.GEM.POSY];
+  Gem.possibleXPos = [...GAMEAREA.GEM.POSX];
+  Gem.possibleSprite = [...GAMEAREA.GEM.POSSPRITE];
+  allGems = [new Gem(), new Gem(), new Gem()];
+};
+
+/**
+* @description Starts a new Game and within that a new round.
+* ie goes back to the main character selection screne
+*/
+GameSpace.prototype.startGame = function() {
+  restartRequested = false;
+  gameCommenced = false;
+  timer = new Timer();
+  newGameScreen = new NewGameScreen();
+  pauseScreen = new PauseScreen();
+  gameOverScreen = new GameOverScreen();
+  player = new Player();
+  scoreBoard = new ScoreBoard();
+  Heart.x =505;
+  allHearts = [new Heart(), new Heart(), new Heart()];
+  this.newRound();
+};
+
+/**
+* @description Checks if the condition for a gameover is true.
+* This condition is either 0 lives or 0 seconds left on the timer
+*/
+GameSpace.prototype.checkGameOver = function() {
+  if(this.lives == 0 || timer.gameTime == 0) {
+    highScore.updateHighScore(scoreBoard.score);
+    gameOverScreen.on = true;
+    setTimeout(function() {
+      if(!this.playedSound) {
+        audio.src = 'sounds/game over.wav';
+        audio.play();
+      }
+    }, 400);
+    setTimeout(function() {
+     restartRequested = true;
+    }, 5000);
+  }
+};
+
+//Go over code
+//JSHInt
+//try and
+
+ //instructions for the readme file.
+ //A README file is included detailing all steps required to successfully run the application.
