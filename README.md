@@ -1,7 +1,7 @@
 # FROGGER ARCADE GAME
 
 ## 1. About
-This is a take on the classic arcade game Frogger. It was completed as part of the Udacity FrontEnd Nanodegree requiring HTML, CSS, JS and Canvas. The image resource management and a basic loop engine was provided prior to starting the project.
+This is a take on the classic arcade game Frogger. It was completed as part of the Udacity FrontEnd Nanodegree, requiring HTML, CSS, JS and Canvas skills. The image resource management file and a basic loop engine file (that was worked on later by myself) was provided prior to starting the project.
 
 ## 2. Run
 
