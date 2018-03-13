@@ -1,6 +1,22 @@
-frontend-nanodegree-arcade-game
-===============================
+#FROGGER ARCADE GAME
 
-Students should use this [rubric](https://review.udacity.com/#!/projects/2696458597/rubric) for self-checking their submission. Make sure the functions you write are **object-oriented** - either class functions (like Player and Enemy) or class prototype functions such as Enemy.prototype.checkCollisions, and that the keyword 'this' is used appropriately within your class and class prototype functions to refer to the object the function is called upon. Also be sure that the **readme.md** file is updated with your instructions on both how to 1. Run and 2. Play your arcade game.
+##1. About
+This is a take on the classic arcade game Frogger. It was completed as part of the Udacity FrontEnd Nanodegree requiring HTML, CSS, JS and Canvas. The image resource management and a basic loop engine was provided prior to starting the project.
 
-For detailed instructions on how to get started, check out this [guide](https://docs.google.com/document/d/1v01aScPjSWCCWQLIpFqvg3-vXLH2e8_SZQKC8jNO0Dc/pub?embedded=true).
+##2. Run
+
+1. Download the zip file
+2. Extract it into a folder
+3. Run the file index.html
+
+Note: Verified compatibility in Chrome
+
+##3. How to play
+
+Use the arrow keys to get across the water (for 20 points) whilst avoiding the evil bugs that can hurt you. The bugs move faster every time you cross successfully.
+
+You can get an extra 10 points for every sparkley gem you collect. You only have 90 seconds per game. Spacebar will pause the game. Esc gets you back to the main menu.
+
+Good Luck!
+
+![alt text](https://github.com/Jlevett/frontend-nanodegree-arcade-game/blob/master/images/screenshot.jpg "Screenshot Image")
