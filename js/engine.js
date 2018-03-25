@@ -169,10 +169,12 @@ var Engine = (function(global) {
         // noop
     }
 
+    /*This function registers the service worker
+    */
     function registerServiceWorker(){
-        navigator.serviceWorker.register('sw.js').then(function(reg) {
+        navigator.serviceWorker.register('sw.js').then(reg => {
                 console.log('SW registered: ', reg);
-            }).catch(function(err) {
+            }).catch(ferr => {
                 console.log('SW failed: ', err);
         });
     }
