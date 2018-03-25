@@ -7,7 +7,6 @@ For detailed instructions on how to get started, check out this [guide](https://
 
 This project is to be used to make it compatible to play online
 
-==============================
 Grow with Google Project
 ==============================
 In order to run this project locally, you need to use a localhost since the Service Worker only works with https and localhost. This is how I did it:
@@ -16,6 +15,7 @@ In order to run this project locally, you need to use a localhost since the Serv
 */
 
 one directory above your root directory, 
+
 1.npm init
 	Follow the promt. You should get a package.json file
 
