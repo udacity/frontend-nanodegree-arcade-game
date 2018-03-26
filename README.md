@@ -14,7 +14,8 @@ In order to run this project locally, you need to use a localhost since the Serv
 /*Steps for express.js
 */
 
-one directory above your root directory, 
+Using git bash:
+go one directory above your root directory (frontend-nanodegree-arcade-game), 
 
 1.npm init
 	Follow the promt. You should get a package.json file
@@ -23,6 +24,7 @@ one directory above your root directory,
 	install express and dependencies
 
 3.create server.js and add the following code:
+
 var express = require('express');
 var app = express();
 app.use(express.static(__dirname + '/frontend-nanodegree-arcade-game')); //__dir and not _dir
