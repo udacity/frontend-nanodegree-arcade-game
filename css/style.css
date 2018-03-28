@@ -24,25 +24,6 @@ ul {
     width: 500px;
 }
 
-#up-button {
-    border-radius: 50%;
-    border: 3px solid black;
-    width: 110px;
-    height: 110px;
-    margin-left: 42%;
-    margin-right: 42%;
-}
-
-#left-button, #down-button, #right-button {
-    border-radius: 50%;
-    border: 3px solid black;
-    width: 110px;
-    height: 110px;
-    margin-left: 20px;
-    margin-right: 20px;
-    margin-top: 20px;
-}
-
 button {
     margin: auto;
     height: 120px;
@@ -52,5 +33,5 @@ button {
 .buttons {
     position: absolute;
     top: 900px;
-    right: 300px
+    right: 300px;
 }

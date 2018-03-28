@@ -66,47 +66,47 @@ Player.prototype.checkCollision = function() {
         }
     }
     
-    if (player.y <= 0) {
+    if (this.y <= 0) {
         if (keyCollected.length > 0) {
             alert("You won! Go to next round!");
             this.reset();
         }
         else {
             alert("You need to bring the key to go to the next round!");
-            player.reset();
+            this.reset();
         }
     }
     
-    for (i=0; i < greenGems.length; i++) {
-        if (player.x >= greenGems[i].x - 50 && player.x <= greenGems[i].x + 50) {
-            if (player.y >= greenGems[i].y - 50 && player.y <= greenGems[i].y + 50) {
+    for (var i=0; i < greenGems.length; i++) {
+        if (this.x >= greenGems[i].x - 50 && this.x <= greenGems[i].x + 50) {
+            if (this.y >= greenGems[i].y - 50 && this.y <= greenGems[i].y + 50) {
                 greenGems.splice(i,1);
                 gemsCollected.push("*");
             }
         }
     }
     
-    for (i=0; i < orangeGems.length; i++) {
-        if (player.x >= orangeGems[i].x - 50 && player.x <= orangeGems[i].x + 50) {
-            if (player.y >= orangeGems[i].y - 50 && player.y <= orangeGems[i].y + 50) {
+    for (var i=0; i < orangeGems.length; i++) {
+        if (this.x >= orangeGems[i].x - 50 && this.x <= orangeGems[i].x + 50) {
+            if (this.y >= orangeGems[i].y - 50 && this.y <= orangeGems[i].y + 50) {
                 orangeGems.splice(i,1);
                 gemsCollected.push("*", "*");
             }
         }
     }
     
-    for (i=0; i < blueGems.length; i++) {
-        if (player.x >= blueGems[i].x - 50 && player.x <= blueGems[i].x + 50) {
-            if (player.y >= blueGems[i].y - 50 && player.y <= blueGems[i].y + 50) {
+    for (var i=0; i < blueGems.length; i++) {
+        if (this.x >= blueGems[i].x - 50 && this.x <= blueGems[i].x + 50) {
+            if (this.y >= blueGems[i].y - 50 && this.y <= blueGems[i].y + 50) {
                 blueGems.splice(i,1);
                 gemsCollected.push("*", "*", "*");
             }
         }
     }
     
-    for (i=0; i < allKeys.length; i++) {
-        if (player.x >= allKeys[i].x - 50 && player.x <= allKeys[i].x + 50) {
-            if (player.y >= allKeys[i].y - 50 && player.y <= allKeys[i].y + 50) {
+    for (var i=0; i < allKeys.length; i++) {
+        if (this.x >= allKeys[i].x - 50 && this.x <= allKeys[i].x + 50) {
+            if (this.y >= allKeys[i].y - 50 && this.y <= allKeys[i].y + 50) {
                 allKeys.splice(i,1);
                 keyCollected.push("*");
                 $(".items").replaceWith("<li class=\"flex-item items\">Items: You have the key!</li>");
@@ -114,9 +114,9 @@ Player.prototype.checkCollision = function() {
         }
     }
     
-    for (i=0; i < allHearts.length; i++) {
-        if (player.x >= allHearts[i].x - 50 && player.x <= allHearts[i].x + 50) {
-            if (player.y >= allHearts[i].y - 50 && player.y <= allHearts[i].y + 50) {
+    for (var i=0; i < allHearts.length; i++) {
+        if (this.x >= allHearts[i].x - 50 && this.x <= allHearts[i].x + 50) {
+            if (this.y >= allHearts[i].y - 50 && this.y <= allHearts[i].y + 50) {
                 allHearts.splice(i,1);
                 lifePoint.push("*");
                 $(".lifePoint").replaceWith("<li class=\"flex-item lifePoint\">Life Point: " + lifePoint.length + "</li>");
@@ -130,7 +130,7 @@ Player.prototype.checkCollision = function() {
         $(".score").replaceWith("<li class=\"flex-item score\">Score: " + score + "</li>");
     }
     
-    if (lifePoint.length == 0) {
+    if (lifePoint.length === 0) {
         alert("GAME OVER :(");
         // FOR FIXING BUGS
         lifePoint.push("DO SOMETHING");
@@ -164,34 +164,53 @@ Player.prototype.handleInput = function(inputKey) {
         }
     }
     if (inputKey == 'left') {
-        if (0 < player.x) {
+        if (0 < this.x) {
             this.x -= 50;
         }
     }
-};
-
-$(document).ready(function() {
     $("#up").click(function() {
-        player.y -= 50;
+        this.y -= 50;
     });
     
     $("#right").click(function() {
-        if (player.x < 400) {
-            player.x += 50;
+        if (this.x < 400) {
+            this.x += 50;
         }
     });
     
     $("#down").click(function() {
-        if (player.y < 400) {
-            player.y += 50;
+        if (this.y < 400) {
+            this.y += 50;
         }
     });
 
     $("#left").click(function() {
-        player.x -= 50;
+        this.x -= 50;
+    });
+};
+/*
+$(document).ready(function() {
+    $("#up").click(function() {
+        this.y -= 50;
+    });
+    
+    $("#right").click(function() {
+        if (this.x < 400) {
+            this.x += 50;
+        }
+    });
+    
+    $("#down").click(function() {
+        if (this.y < 400) {
+            this.y += 50;
+        }
+    });
+
+    $("#left").click(function() {
+        this.x -= 50;
     });
 });
-
+*/
         /*         GEMS         */
 
 // green gem
