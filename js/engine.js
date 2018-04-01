@@ -174,10 +174,66 @@ var Engine = (function(global) {
     function registerServiceWorker(){
         navigator.serviceWorker.register('sw.js').then(reg => {
                 console.log('SW registered: ', reg);
-            }).catch(ferr => {
+                //To do: tell the user when there is an update available
+                //use lesson 3.23 as a guide
+
+                //refers to the SW that controls this page
+                if(!navigator.serviceWorker.controller) {
+                    //page didn't load using a SW
+                    //loaded from the network
+                    return;
+                }
+
+                if(reg.waiting) {
+                    //there's an update ready!
+                    notifySWUpdates(reg.waiting);      
+                }
+
+                if(reg.installing){
+                    //there's an update in progress
+                    trackSWStates(reg.installing);
+                }
+
+                reg.addEventListener('updatefound', () => {
+                    console.log('updatefound');
+                    trackSWStates(reg.installing);
+                });
+
+                var reloading;
+                navigator.serviceWorker.addEventListener('controllerchange', function() {
+                    if(reloading) return;
+                    window.location.reload();
+                    reloading = true;
+                });
+
+            }).catch(err => {
                 console.log('SW failed: ', err);
         });
     }
+
+    function notifySWUpdates(reg) {
+        console.log('There is a new Service Worker available');
+        //create button
+        let SW_Button = document.createElement('button');
+        SW_Button.classList.add("sw-button");
+        SW_Button.innerHTML = 'Update Available';
+        //append button
+        let doc_body = document.getElementsByTagName('body')[0];
+        doc_body.appendChild(SW_Button);
+        //onclick, post message
+        SW_Button.addEventListener('click', () => {
+            reg.postMessage({activate: 'true'});
+        });
+    }
+
+    function trackSWStates(reg) {
+        console.log(this.state);
+        reg.addEventListener('statechange', () => {
+            if(this.state == 'installed') {
+                notifySWUpdates(reg);
+            }
+        });
+    }   
 
     /* Go ahead and load all of the images we know we're going to need to
      * draw our game level. Then set init as the callback method, so that when

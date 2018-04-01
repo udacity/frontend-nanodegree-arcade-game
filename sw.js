@@ -19,7 +19,7 @@ self.addEventListener('install', event => {
         'images/char-boy.png'
       ]);
     })
-  );
+  );//
 });
 
 self.addEventListener('activate', event => {
@@ -43,4 +43,9 @@ self.addEventListener('fetch', event => {
       return cachedResponse || fetch(event.request);
     })
   );
+});
+
+self.addEventListener('message', function(event) {
+  if(event.data.activate == 'true');
+    self.skipWaiting();
 });

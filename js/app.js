@@ -72,7 +72,6 @@ const Player = class{
             player.x += 101;
             break;
         default:
-            console.log(obj);
         }
     }
 
