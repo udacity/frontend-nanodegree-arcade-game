@@ -9,11 +9,13 @@
  * drawn but that is not the case. What's really happening is the entire "scene"
  * is being drawn over and over, presenting the illusion of animation.
  *
- * This engine makes the canvas' context (ctx) object globally available to make 
+ * This engine makes the canvas' context (ctx) object globally available to make
  * writing app.js a little simpler to work with.
  */
 
 var Engine = (function(global) {
+
+    let gameContinue = true;
     /* Predefine the variables we'll be using within this scope,
      * create the canvas element, grab the 2D context for that canvas
      * set the canvas elements height/width and add it to the DOM.
@@ -55,7 +57,9 @@ var Engine = (function(global) {
         /* Use the browser's requestAnimationFrame function to call this
          * function again as soon as the browser is able to draw another frame.
          */
-        win.requestAnimationFrame(main);
+         if (gameContinue) {
+           win.requestAnimationFrame(main);
+         }
     }
 
     /* This function does some initial setup that should only occur once,
@@ -79,7 +83,31 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        // checkCollisions();
+        checkCollisions();
+    }
+
+    function checkCollisions() {
+        if (player.y === 71) {
+          if (player.x - bug1.x <= 60 && bug1.x - player.x <= 81 ||
+            player.x - bug4.x <= 60 && bug4.x - player.x <= 81) {
+            player.x = 202;
+            player.y = 320;
+          }
+        } else if (player.y === 154) {
+          if (player.x - bug2.x <= 60 && bug2.x - player.x <= 81 ||
+            player.x - bug5.x <= 60 && bug5.x - player.x <= 81) {
+            player.x = 202;
+            player.y = 320;
+          }
+        } else if (player.y === 237) {
+          if (player.x - bug3.x <= 60 && bug3.x - player.x <= 81 ||
+            player.x - bug6.x <= 60 && bug6.x - player.x <= 81) {
+            player.x = 202;
+            player.y = 320;
+          }
+        } else if (player.y < 60) {
+          gameContinue = false;
+        }
     }
 
     /* This is called by the update function and loops through all of the
@@ -117,7 +145,7 @@ var Engine = (function(global) {
             numRows = 6,
             numCols = 5,
             row, col;
-        
+
         // Before drawing, clear existing canvas
         ctx.clearRect(0,0,canvas.width,canvas.height)
 
@@ -152,7 +180,6 @@ var Engine = (function(global) {
         allEnemies.forEach(function(enemy) {
             enemy.render();
         });
-
         player.render();
     }
 
