@@ -6,6 +6,52 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <h1>Frogger Game</h1>
+    <h2>
+        Collect five gems and run to the river!
+    </h2>
+    <div class="score-panel">
+      <div class="lives">
+        <img src="images/Heart.png"/>
+        <img src="images/Heart.png"/>
+        <img src="images/Heart.png"/>
+      </div>
+      <div class="gems">
+        <span class="gems number">0</span>
+        <img src="images/gem-green-small.png"/>
+      </div>
+    </div>
+
+    <div id="win" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <span class="close">&times;</span>
+          <h2>Congratulations!</h2hidden>
+        </div>
+        <div class="modal-body">
+          You won the game!
+        </div>
+        <div class="modal-footer">
+          <button class="play-again">PLAY AGAIN</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="lose" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <span class="close">&times;</span>
+          <h2>Game over!</h2hidden>
+        </div>
+        <div class="modal-body">
+          You lost the game!
+        </div>
+        <div class="modal-footer">
+          <button class="try-again">TRY AGAIN</button>
+        </div>
+      </div>
+    </div>
+
     <script src="js/resources.js"></script>
     <script src="js/app.js"></script>
     <script src="js/engine.js"></script>
