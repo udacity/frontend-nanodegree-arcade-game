@@ -9,11 +9,15 @@
  * drawn but that is not the case. What's really happening is the entire "scene"
  * is being drawn over and over, presenting the illusion of animation.
  *
- * This engine makes the canvas' context (ctx) object globally available to make 
+ * This engine makes the canvas' context (ctx) object globally available to make
  * writing app.js a little simpler to work with.
  */
 
 var Engine = (function(global) {
+
+    let gameContinue = true;
+    let collectedGems = 0;
+    let lives = 3;
     /* Predefine the variables we'll be using within this scope,
      * create the canvas element, grab the 2D context for that canvas
      * set the canvas elements height/width and add it to the DOM.
@@ -55,7 +59,9 @@ var Engine = (function(global) {
         /* Use the browser's requestAnimationFrame function to call this
          * function again as soon as the browser is able to draw another frame.
          */
-        win.requestAnimationFrame(main);
+         if (gameContinue) {
+           win.requestAnimationFrame(main);
+         }
     }
 
     /* This function does some initial setup that should only occur once,
@@ -79,7 +85,79 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        // checkCollisions();
+        checkCollisions();
+        checkGems();
+        endGame();
+    }
+
+    // This function checks if collision of the player and one of the enemies occured.
+    function checkCollisions() {
+      if (player.y === 71) {
+        if (player.x - bug1.x <= 70 && bug1.x - player.x <= 81 ||
+          player.x - bug4.x <= 60 && bug4.x - player.x <= 81) {
+          player.x = 202;
+          player.y = 320;
+          lives -= 1;
+          document.querySelectorAll('.lives img')[lives].style.visibility = 'hidden';
+        }
+      } else if (player.y === 154) {
+        if (player.x - bug2.x <= 70 && bug2.x - player.x <= 81 ||
+          player.x - bug5.x <= 60 && bug5.x - player.x <= 81) {
+          player.x = 202;
+          player.y = 320;
+          lives -= 1;
+          document.querySelectorAll('.lives img')[lives].style.visibility = 'hidden';
+
+        }
+      } else if (player.y === 237) {
+        if (player.x - bug3.x <= 70 && bug3.x - player.x <= 81 ||
+          player.x - bug6.x <= 60 && bug6.x - player.x <= 81) {
+          player.x = 202;
+          player.y = 320;
+          lives -= 1;
+          document.querySelectorAll('.lives img')[lives].style.visibility = 'hidden';
+        }
+      }
+    }
+
+    /* This function checks if the player collected the gem and
+    calls gem.update(), which changes color and position. */
+    function checkGems () {
+      if (player.y === 71 && gem.y === 105) {
+        if (gem.x - player.x === 20) {
+          gem.update();
+          collectedGems += 1;
+          document.querySelector('.gems.number').textContent = collectedGems;
+        }
+      } else if (player.y === 154 && gem.y === 190) {
+        if (gem.x - player.x === 20) {
+          gem.update();
+          collectedGems += 1;
+          document.querySelector('.gems.number').textContent = collectedGems;
+        }
+      } else if (player.y === 237 && gem.y === 275) {
+        if (gem.x - player.x === 20) {
+          gem.update();
+          collectedGems += 1;
+          document.querySelector('.gems.number').textContent = collectedGems;
+        }
+      }
+    }
+
+    /* This function checks if the playes lost or won, shows the modal and places the player
+    in the start point */
+    function endGame() {
+      if (player.y < 60 && collectedGems >= 5) {
+        gameContinue = false;
+        document.querySelector('#win').style.display = 'block';
+        player.x = 202;
+        player.y = 320;
+      } else if (lives <= 0) {
+        gameContinue = false;
+        document.querySelector('#lose').style.display = 'block';
+        player.x = 202;
+        player.y = 320;
+      }
     }
 
     /* This is called by the update function and loops through all of the
@@ -93,7 +171,6 @@ var Engine = (function(global) {
         allEnemies.forEach(function(enemy) {
             enemy.update(dt);
         });
-        player.update();
     }
 
     /* This function initially draws the "game level", it will then call
@@ -117,7 +194,7 @@ var Engine = (function(global) {
             numRows = 6,
             numCols = 5,
             row, col;
-        
+
         // Before drawing, clear existing canvas
         ctx.clearRect(0,0,canvas.width,canvas.height)
 
@@ -147,21 +224,26 @@ var Engine = (function(global) {
      */
     function renderEntities() {
         /* Loop through all of the objects within the allEnemies array and call
-         * the render function you have defined.
+         * the render function.
          */
+        gem.render();
         allEnemies.forEach(function(enemy) {
             enemy.render();
         });
-
         player.render();
     }
 
-    /* This function does nothing but it could have been a good place to
-     * handle game reset states - maybe a new game menu or a game over screen
-     * those sorts of things. It's only called once by the init() method.
-     */
+    // This function handles game reset states - when the player chose to play more 
     function reset() {
-        // noop
+      gameContinue = true;
+      collectedGems = 0;
+      lives = 3;
+      document.querySelector('#win').style.display = 'none';
+      document.querySelector('#lose').style.display = 'none';
+      [...document.querySelectorAll('.lives img')].forEach(heart => heart.style.visibility = 'visible');
+      document.querySelector('.gems.number').textContent = collectedGems;
+      player.x = 202;
+      player.y = 320;
     }
 
     /* Go ahead and load all of the images we know we're going to need to
@@ -173,7 +255,10 @@ var Engine = (function(global) {
         'images/water-block.png',
         'images/grass-block.png',
         'images/enemy-bug.png',
-        'images/char-boy.png'
+        'images/char-boy.png',
+        'images/gem-green.png',
+        'images/gem-blue.png',
+        'images/gem-orange.png',
     ]);
     Resources.onReady(init);
 
@@ -182,4 +267,23 @@ var Engine = (function(global) {
      * from within their app.js files.
      */
     global.ctx = ctx;
+
+    // Listener for 'won' popup
+    document.querySelector('.play-again').addEventListener('click', function () {
+      init();
+    });
+
+    document.querySelector('#win .close').addEventListener('click', function () {
+      document.querySelector('#win').style.display = 'none';
+    });
+
+    // Listener for 'lost' popup
+    document.querySelector('.try-again').addEventListener('click', function () {
+      init();
+    });
+
+    document.querySelector('#lose .close').addEventListener('click', function () {
+      document.querySelector('#lose').style.display = 'none';
+    });
+
 })(this);
