@@ -1,3 +1,94 @@
 body {
     text-align: center;
 }
+
+h1, h2 {
+  margin: 12px 12px;
+}
+
+.score-panel {
+  width: 505px;
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.lives, .gems {
+  flex-basis: 50%;
+}
+
+.lives img {
+  padding-top: 5px;
+}
+
+.gems img {
+  vertical-align: text-bottom;
+}
+
+.gems.number {
+  margin: 0;
+  padding: 0;
+  font-weight: bold;
+  font-size: 200%;
+  color: #3d8d27;
+  vertical-align: baseline;
+  padding-right: 5px;
+}
+
+
+/*
+ * Styles for the Modal
+ */
+
+ .modal {
+     display: none;
+     position: fixed;
+     z-index: 1;
+     left: 0;
+     top: 0;
+     width: 100%;
+     height: 100%;
+     background-color: rgb(0,0,0);
+     background-color: rgba(0,0,0,0.6);
+ }
+
+ .modal-content {
+   background-color: #94d2b9;
+   opacity: 0.8;
+   margin: 25% auto;
+   padding: 30px;
+   border: 1px solid #888;
+   text-align: center;
+   width: 25%;
+ }
+
+ .modal-header h2 {
+   margin-top: 10px;
+   margin-bottom: 10px;
+ }
+
+ .modal-body {
+   margin-top: 10px;
+   margin-bottom: 10px;
+ }
+
+ .modal-footer button {
+   background-color: #1fa2f3eb;
+   font-size: 150%;
+   cursor: pointer;
+   color: #19161b;
+ }
+
+ .close {
+   color: #1fa2f3eb;
+   float: right;
+   font-size: 28px;
+   font-weight: bold;
+ }
+
+ .close:hover,
+ .close:focus {
+   color: black;
+   text-decoration: none;
+   cursor: pointer;
+ }
