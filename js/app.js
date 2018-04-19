@@ -1,10 +1,6 @@
 // Enemies our player must avoid
 var Enemy = function() {
-  // Variables applied to each of our instances go here,
-  // we've provided one for you to get started
-
-  // The image/sprite for our enemies, this uses
-  // a helper we've provided to easily load images
+  // The image/sprite for our enemies
   this.sprite = "images/enemy-bug.png";
 };
 
@@ -21,15 +17,16 @@ Enemy.prototype.render = function() {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
+// Player class
+// Requires update(), render() and handleInput() methods
 var Player = function() {
   this.sprite = "images/char-boy.png";
 };
 
+// Update the player's position
 Player.prototype.update = function(dt) {};
 
+// Draw the player on the screen
 Player.prototype.render = function() {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
@@ -37,10 +34,39 @@ Player.prototype.render = function() {
 Player.prototype.handleInput = function() {};
 
 // Now instantiate your objects.
+var bug1 = new Enemy();
+var bug2 = new Enemy();
+var bug3 = new Enemy();
+var bug4 = new Enemy();
+var bug5 = new Enemy();
+var bug6 = new Enemy();
+var bug7 = new Enemy();
+
+// Static position all enemies
+bug1.x = 10;
+bug1.y = 60;
+
+bug2.x = 400;
+bug2.y = 60;
+
+bug3.x = 200;
+bug3.y = 150;
+
+bug4.x = 80;
+bug4.y = 150;
+
+bug5.x = -50;
+bug5.y = 230;
+
+bug6.x = 450;
+bug6.y = 230;
+
+bug7.x = 240;
+bug7.y = 230;
+
 // Place all enemy objects in an array called allEnemies
 var allEnemies = [];
-var bug1 = new Enemy();
-allEnemies.push(bug1);
+allEnemies.push(bug1, bug2, bug3, bug4, bug5, bug6, bug7);
 
 // Place the player object in a variable called player
 var player = new Player();
