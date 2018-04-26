@@ -1,3 +1,6 @@
+// Score functionality
+var score = 0;
+
 // Enemies our player must avoid
 var Enemy = function(x, y, speed) {
     // Variables applied to each of our instances go here,
@@ -27,6 +30,8 @@ Enemy.prototype.update = function(dt) {
         if(player.y >= this.y - 50 && player.y <= this.y + 50){
             player.x = 202;
             player.y = 404;
+            score = 0;
+            document.getElementById("score").innerHTML = score;
         }
     }
 };
@@ -64,6 +69,8 @@ Player.prototype.update = function() {
   } else if (this.y <= 0) {
     this.x = 202;
     this.y = 404;
+    score += 1;
+    document.getElementById("score").innerHTML = score;
   } else if (this.y > 404) {
     this.y = 404;
   }
