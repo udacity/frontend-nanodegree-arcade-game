@@ -47,6 +47,18 @@ Player.prototype.update = function() {
   } else if (this.pressedKey === 'down') {
     this.y = this.y + 84;
   }
+
+// Determining the boundaries of the game
+  if (this.x < 0) {
+    this.x = 0;
+  } else if (this.x > 404) {
+    this.x = 404;
+  } else if (this.y < -14) {
+    this.y = -14;
+  } else if (this.y > 404) {
+    this.y = 404;
+  }
+
   this.pressedKey = 0;
 };
 
