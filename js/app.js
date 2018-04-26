@@ -38,32 +38,24 @@ var Player = function() {
 };
 
 Player.prototype.update = function() {
-  this.x = 202;
-  this.y = 404;
+  if (this.pressedKey === 'right') {
+    this.x = this.x + 101;
+  } else if (this.pressedKey === 'left') {
+    this.x = this.x - 101;
+  } else if (this.pressedKey === 'up') {
+    this.y = this.y - 84;
+  } else if (this.pressedKey === 'down') {
+    this.y = this.y + 84;
+  }
+  this.pressedKey = 0;
 };
 
 Player.prototype.render = function() {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-Player.prototype.handleInput = function(press) {
-  if (press === 'right') {
-    if (this.x > 0) {
-      this.x = this.x + 101;
-    }
-  } else if (press === 'left') {
-    if (this.x < 505) {
-      this.x = this.x - 101;
-    }
-  } else if (press === 'up') {
-    if (this.y > 0) {
-      this.y = this.y + 101;
-    }
-  } else if (press === 'down') {
-    if (this.y < 606) {
-      this.y = this.y - 101;
-    }
-  }
+Player.prototype.handleInput = function(e) {
+  this.pressedKey = e;
 };
 
 // Now instantiate your objects.
