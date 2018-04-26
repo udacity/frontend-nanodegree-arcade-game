@@ -21,6 +21,14 @@ Enemy.prototype.update = function(dt) {
     } else {
       this.x = -115;
     }
+
+    // Resetting the position of the player with a collision
+    if(player.x >= this.x - 50 && player.x <= this.x + 50){
+        if(player.y >= this.y - 50 && player.y <= this.y + 50){
+            player.x = 202;
+            player.y = 404;
+        }
+    }
 };
 
 // Draw the enemy on the screen, required method for game
