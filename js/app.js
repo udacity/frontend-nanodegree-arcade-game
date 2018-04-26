@@ -92,9 +92,9 @@ Player.prototype.handleInput = function(e) {
 var allEnemies = [];
 
 (function enemies() {
-  allEnemies.push(new Enemy('', 56, Math.floor((Math.random() * 300))));
-  allEnemies.push(new Enemy('', 140, Math.floor((Math.random() * 300))));
-  allEnemies.push(new Enemy('', 224, Math.floor((Math.random() * 300))));
+  allEnemies.push(new Enemy('', 56, Math.floor((Math.random() * 300) + 100)));
+  allEnemies.push(new Enemy('', 140, Math.floor((Math.random() * 300) + 100)));
+  allEnemies.push(new Enemy('', 224, Math.floor((Math.random() * 300) + 100)));
 }());
 
 var player = new Player;
