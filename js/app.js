@@ -19,7 +19,7 @@ Enemy.prototype.update = function(dt) {
     if (this.x <= 550) {
       this.x = this.x + this.speed * dt;
     } else {
-      this.x = -100;
+      this.x = -115;
     }
 };
 
@@ -74,6 +74,12 @@ Player.prototype.handleInput = function(e) {
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 var allEnemies = [];
+
+(function enemies() {
+  allEnemies.push(new Enemy('', 56, Math.floor((Math.random() * 300))));
+  allEnemies.push(new Enemy('', 140, Math.floor((Math.random() * 300))));
+  allEnemies.push(new Enemy('', 224, Math.floor((Math.random() * 300))));
+}());
 
 var player = new Player;
 
