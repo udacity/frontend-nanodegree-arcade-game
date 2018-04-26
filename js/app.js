@@ -26,8 +26,8 @@ Enemy.prototype.update = function(dt) {
     }
 
     // Resetting the position of the player with a collision
-    if(player.x >= this.x - 50 && player.x <= this.x + 50){
-        if(player.y >= this.y - 50 && player.y <= this.y + 50){
+    if(player.x >= this.x - 75 && player.x <= this.x + 75){
+        if(player.y >= this.y - 60 && player.y <= this.y + 60){
             player.x = 202;
             player.y = 404;
             score = 0;
