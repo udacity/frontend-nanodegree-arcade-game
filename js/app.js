@@ -20,6 +20,12 @@ Enemy.prototype.update = function(dt) {
     // which will ensure the game runs at the same speed for
     // all computers.
     this.x += this.speed * dt
+
+    // Enemies restart after going off canvas
+    if (this.x > 500) {
+      this.x = -250;
+      this.speed = Math.floor(Math.random() * 250) + 75;
+    }
 };
 
 // Draw the enemy on the screen, required method for game
@@ -31,7 +37,7 @@ Enemy.prototype.render = function() {
 // Place all enemy objects in an array called allEnemies
 var enemy;
 var allEnemies = [];
-var enemyStart = [30, 122.5, 215];
+var enemyStart = [50, 140, 225];
 
 for (var position of enemyStart) {
   enemy = new Enemy(0, position, Math.floor(Math.random() * 250) + 75);
