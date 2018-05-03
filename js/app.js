@@ -35,14 +35,32 @@ var Player = function(x, y) {
   this.sprite = 'images/char-boy.png';
 };
 
+// creates boundaries and if player reaches water sets them back to initial position
 Player.prototype.update = function() {
+  if (this.y > 400) {
+    this.y = 400;
+  }
 
+  if (this.x > 400) {
+    this.x = 400;
+  }
+
+  if (this.x < 0) {
+    this.x = 0;
+  }
+
+  if (this.y < 0) {
+    this.x = 200;
+    this.y = 400
+  }
 };
 
+//Draws player on canvas
 Player.prototype.render = function() {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+//Handles input so that when player moves the position is moved according to speed
 Player.prototype.handleInput = function(input) {
   switch (input) {
     case 'left':
