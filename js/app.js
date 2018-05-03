@@ -2,35 +2,44 @@
 
 //Enemies our player must avoid
 var Enemy = function(x, y, speed) {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
-    this.x = x;
-    this.y = y;
-    this.speed = speed;
+  // Variables applied to each of our instances go here,
+  // we've provided one for you to get started
+  this.x = x;
+  this.y = y;
+  this.speed = speed;
 
-    // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
-    this.sprite = 'images/enemy-bug.png';
+  // The image/sprite for our enemies, this uses
+  // a helper we've provided to easily load images
+  this.sprite = 'images/enemy-bug.png';
 };
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
-    this.x += this.speed * dt
+  // You should multiply any movement by the dt parameter
+  // which will ensure the game runs at the same speed for
+  // all computers.
+  this.x += this.speed * dt
 
-    // Enemies restart after going off canvas
-    if (this.x > 500) {
-      this.x = -250;
-      this.speed = Math.floor(Math.random() * 250) + 75;
-    }
+  // Enemies restart after going off canvas
+  if (this.x > 500) {
+    this.x = -250;
+    this.speed = Math.floor(Math.random() * 275) + 100;
+  }
+
+  // Logic for collision
+  if (player.x < this.x + 50 &&
+    player.x + 30 > this.x &&
+    player.y < this.y + 50 &&
+    player.y + 30 > this.y) {
+    player.x = 200;
+    player.y = 400;
+  }
 };
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+  ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
 // Instantiate your enemy.
@@ -40,7 +49,7 @@ var allEnemies = [];
 var enemyStart = [50, 140, 225];
 
 for (var position of enemyStart) {
-  enemy = new Enemy(0, position, Math.floor(Math.random() * 250) + 75);
+  enemy = new Enemy(-150, position, Math.floor(Math.random() * 275) + 100);
   allEnemies.push(enemy);
 };
 
@@ -53,7 +62,7 @@ var Player = function(x, y) {
   this.x = x;
   this.y = y;
   this.speed = 92.5;
-  this.sprite = 'images/char-boy.png';
+  this.sprite = 'images/char-princess-girl.png';
 };
 
 // creates boundaries and if player reaches water sets them back to initial position
@@ -107,12 +116,12 @@ var player = new Player(200, 400);
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function(e) {
-    var allowedKeys = {
-        37: 'left',
-        38: 'up',
-        39: 'right',
-        40: 'down'
-    };
+  var allowedKeys = {
+    37: 'left',
+    38: 'up',
+    39: 'right',
+    40: 'down'
+  };
 
-    player.handleInput(allowedKeys[e.keyCode]);
+  player.handleInput(allowedKeys[e.keyCode]);
 });
