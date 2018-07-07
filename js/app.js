@@ -1,5 +1,4 @@
 
-
 /**
  * @description Enemy defines an enemy sprite and controls its movement on the
  * game board. The game engine requires it to contain `render` and `update`
@@ -11,15 +10,38 @@ class Enemy {
   /**
    * @description Creates an instance of the Enemy class and establishes the
    * required object variables.
+   * @param {Number} row Number of the game board row this enemy is constrained
+   * to.
    * @memberof Enemy
    */
-  constructor() {
+  constructor(row) {
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
 
+    this.rowConstraint = row;
     this.x = 0;
-    this.y = 0;
+    this.y = row * 101;
+    this.startRow = 1;
+    this.endRow = 3;
+  }
+
+  /**
+   * @description Retrieve the first row enemies are constrained to
+   * @returns {Number} Starting constraint row
+   * @memberof Enemy
+   */
+  getStartRow() {
+    return this.startRow;
+  }
+
+  /**
+   * @description Retrieve the last row enemies are constrained to
+   * @returns {Number} Ending constraint row
+   * @memberof Enemy
+   */
+  getEndRow() {
+    return this.endRow;
   }
 
   /**
@@ -94,8 +116,8 @@ class Player {
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 let allEnemies = [];
-for (let i = 0; i < 3; ++i) {
-	allEnemies.push(new Enemy());
+for (let i = 1; i <= 3; ++i) {
+	allEnemies.push(new Enemy(i));
 }
 
 // Place the player object in a variable called player
