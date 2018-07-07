@@ -1,31 +1,4 @@
 
-/*
-// Enemies our player must avoid
-var Enemy = function () {
-	// Variables applied to each of our instances go here,
-	// we've provided one for you to get started
-
-	// The image/sprite for our enemies, this uses
-	// a helper we've provided to easily load images
-	this.sprite = 'images/enemy-bug.png';
-
-	this.x = 0;
-	this.y = 0;
-};
-
-// Update the enemy's position, required method for game
-// Parameter: dt, a time delta between ticks
-Enemy.prototype.update = function (dt) {
-	// You should multiply any movement by the dt parameter
-	// which will ensure the game runs at the same speed for
-	// all computers.
-};
-
-// Draw the enemy on the screen, required method for game
-Enemy.prototype.render = function () {
-	ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
-*/
 
 /**
  * @description Enemy defines an enemy sprite and controls its movement on the
@@ -52,7 +25,7 @@ class Enemy {
   /**
    * @description Update the enemy's position. This method is required by the
    * game engine.
-   * @param {Number} dt a time delta between ticks
+   * @param {Number} dt a time delta between ticks of the game clock
    * @memberof Enemy
    */
   update(dt) {
@@ -98,13 +71,14 @@ class Player {
   /**
    * @description Update the player's position. This method is required by the
    * game engine.
-   * @param {Number} dt a time delta between ticks
+   * @param {Number} dt a time delta between ticks of the game clock
    * @memberof Player
    */
   update(dt) {
-      // You should multiply any movement by the dt parameter
-      // which will ensure the game runs at the same speed for
-      // all computers.
+    // You should multiply any movement by the dt parameter
+    // which will ensure the game runs at the same speed for
+    // all computers.
+
   }
 
   /**

@@ -1,3 +1,19 @@
 body {
-    text-align: center;
+  text-align: center;
+}
+
+.title-bar {
+  background-color: #9EE1E7;
+}
+
+.controls-bar {
+  margin-bottom: 0;
+}
+
+#game-board {
+  margin: 0 0 0 0;
+}
+
+.footer-bar {
+  background-color: #9EE1E7;
 }
