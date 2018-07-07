@@ -24,34 +24,44 @@ Enemy.prototype.render = function () {
 	ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
-// Enemies our player must avoid
-var Player = function () {
-	// Variables applied to each of our instances go here,
-	// we've provided one for you to get started
+class Player {
 
-	// The image/sprite for our enemies, this uses
-	// a helper we've provided to easily load images
-	this.sprite = 'images/char-boy.png';
+  /**
+   * @description Creates an instance of Player and creates and initializes
+   * object variables.
+   * @memberof Player
+   */
+  constructor() {
+    // Variables applied to each of our instances go here,
+    // we've provided one for you to get started
 
-	this.x = 50;
-	this.y = 50;
-};
+    // The image/sprite for our enemies, this uses
+    // a helper we've provided to easily load images
+    this.sprite = 'images/char-boy.png';
 
-// Update the player's position, required method for game
-// Parameter: dt, a time delta between ticks
-Player.prototype.update = function (dt) {
-	// You should multiply any movement by the dt parameter
-	// which will ensure the game runs at the same speed for
-	// all computers.
-};
+    this.x = 50;
+    this.y = 50;
+  }
 
-// Draw the player on the screen, required method for game
-Player.prototype.render = function () {
-	ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
+  /**
+   * @description Update the player's position, required method for game
+   * @param {Number} dt a time delta between ticks
+   * @memberof Player
+   */
+  update(dt) {
+      // You should multiply any movement by the dt parameter
+      // which will ensure the game runs at the same speed for
+      // all computers.
+  }
+
+  /**
+   * @description Draw the player on the screen, required method for game
+   * @memberof Player
+   */
+  render() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+  }
+}
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
