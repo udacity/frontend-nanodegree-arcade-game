@@ -7,14 +7,12 @@ module.exports = {
     filename: 'bundle-app.js'
   },
   module: {
-    rules: [
-        {
-            test: /\.js$/,
-            loader: 'babel-loader',
-            query: {
-                presets: ['es2015']
-            }
-        }
-    ]
+    rules: [{
+      test: /\.js$/,
+      loader: 'babel-loader',
+      query: {
+        presets: ['es2015']
+      }
+    }]
   }
 };
