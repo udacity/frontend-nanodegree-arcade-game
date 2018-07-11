@@ -1,39 +1,40 @@
-// Enemies our player must avoid
+// Inimigos que nosso jogador deve evitar
 var Enemy = function() {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
+    // As variáveis aplicadas a nossas instâncias entram aqui.
+    // Fornecemos uma a você para que possa começcar.
 
-    // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
+    // A imagem/sprite de nossos inimigos, isso usa um
+    // ajudante que é fornecido para carregar imagens
+    // com facilidade.
     this.sprite = 'images/enemy-bug.png';
 };
 
-// Update the enemy's position, required method for game
-// Parameter: dt, a time delta between ticks
+// Atualize a posição do inimigo, método exigido pelo jogo
+// Parâmetro: dt, um delta de tempo entre ticks
 Enemy.prototype.update = function(dt) {
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
+    // Você deve multiplicar qualquer movimento pelo parâmetro
+    // dt, o que garantirá que o jogo rode na mesma velocidade
+    // em qualquer computador.
 };
 
-// Draw the enemy on the screen, required method for game
+// Desenhe o inimigo na tela, método exigido pelo jogo
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
+// Agora, escreva sua própria classe de jogador
+// Esta classe exige um método update(), 
+// um render() e um handleInput().
 
 
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
+// Represente seus objetos como instâncias.
+// Coloque todos os objetos inimgos numa array allEnemies
+// Coloque o objeto do jogador numa variável chamada jogador.
 
 
 
-// This listens for key presses and sends the keys to your
-// Player.handleInput() method. You don't need to modify this.
+// Isto reconhece cliques em teclas e envia as chaves para seu
+// jogador. método handleInput(). Não é preciso mudar nada.
 document.addEventListener('keyup', function(e) {
     var allowedKeys = {
         37: 'left',
