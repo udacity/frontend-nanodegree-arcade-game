@@ -89,15 +89,10 @@ window.onload = function(){
 };
 
 /**
-* @description Hide modal if outside the modal is clicked.
-* @param {object} event - Represents the object that was just clicked
+* @description Hide window is clicked or a key is pressed
 */
-window.onclick = function(event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
-  }
-};
-
+window.onclick = ()=> modal.style.display = "none";
+window.onkeyup  = ()=> modal.style.display = "none";
 /**
 * @description Parent class for all game pieces that use common functions
 * @constructor
