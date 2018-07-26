@@ -20,8 +20,12 @@ let scoreBoard;
 let timer;
 let gameCommenced = false;
 let restartRequested = false;
-let audio = new Audio();
 const modal= document.querySelector('.modal');
+var intro = new Howl({src: ['sounds/intro.wav']});
+var bug = new Howl({src: ['sounds/bug.wav']});
+var gameOver = new Howl({src: ['sounds/game over.wav']});
+var madeIt = new Howl({src: ['sounds/made it.wav']});
+var gem = new Howl({src: ['sounds/gem.wav']});
 
 /**
 * Constants
@@ -81,8 +85,7 @@ const GAMEAREA = {
 */
 window.onload = function(){
   modal.style.display = "block";
-  audio.src = 'sounds/intro.wav';
-  audio.play();
+  intro.play();
 };
 
 /**
@@ -521,8 +524,7 @@ GameSpace.prototype.checkGemCollision = function(gemArray,currentPlayer, current
   }
   if(gemcollided!==undefined) {
     gemArray.splice(gemcollided, 1);
-    audio.src = 'sounds/gem.wav';
-    audio.play();
+    gem.play();
   }
 };
 
@@ -542,8 +544,7 @@ GameSpace.prototype.checkPlayerAtWater = function(currentPlayer,currentScore) {
       //Increase enemy speed
       Enemy.baseSpeed += GAMEAREA.ENEMY.SPEEDINCREASE;
       gameSpace.newRound();
-      audio.src = 'sounds/made it.wav';
-      audio.play();
+      madeIt.play();
     }, 200);
   }
 };
@@ -566,8 +567,7 @@ GameSpace.prototype.checkEnemyCollision = function(enemies, currentPlayer, heart
            currentPlayer.y = GAMEAREA.PLAYER.YSTARTPOS;
            currentPlayer.gridCoord = [...GAMEAREA.PLAYER.STARTPOSGRID];
            gameSpace.newRound();
-           audio.src = 'sounds/bug.wav';
-           audio.play();
+           bug.play();
         }, 50);
       }
     }
@@ -617,8 +617,7 @@ GameSpace.prototype.checkGameOver = function() {
     gameOverScreen.on = true;
     setTimeout(function() {
       if(!this.playedSound) {
-        audio.src = 'sounds/game over.wav';
-        audio.play();
+        gameOver.play();
       }
     }, 400);
     setTimeout(function() {
