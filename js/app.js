@@ -3,10 +3,9 @@
 // we've provided one for you to get started
 // The image/sprite for our enemies, this uses
 // a helper we've provided to easily load images
-
-class Enemy {
-  constructor(x, y) {
-    this.sprite = 'images/enemy-bug.png';
+class BaseClass {
+  constructor(x, y, sprite) {
+    this.sprite = sprite;
     this.x = x;
     this.y = y;
   }
@@ -25,13 +24,10 @@ class Enemy {
   }
 }
 
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
-
-class Player {
-  constructor(x, y) {
-    this.sprite = '/images/char-boy.png';
+class Enemy extends BaseClass {
+  constructor(x, y, sprite) {
+    super();
+    this.sprite = sprite;
     this.x = x;
     this.y = y;
   }
@@ -41,8 +37,21 @@ class Player {
   render() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
   }
+}
 
-  handleInput() {
+// Now write your own player class
+// This class requires an update(), render() and
+// a handleInput() method.
+
+class Player extends BaseClass {
+  constructor(x, y) {
+    super();
+    this.sprite = '/images/char-boy.png';
+    this.x = x;
+    this.y = y;
+  }
+
+  handleInput(input) {
     //
   }
 }
@@ -50,6 +59,17 @@ class Player {
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
+
+const player = new Player();
+const enemy_one = new Enemy();
+const enemy_two = new Enemy();
+const enemy_tree = new Enemy();
+const enemy_four = new Enemy();
+const enemy_five = new Enemy();
+
+const allEnemies = [];
+
+allEnemies.push(enemy_one, enemy_two, enemy_tree, enemy_four, enemy_five);
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
