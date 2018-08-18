@@ -4,8 +4,8 @@
 // The image/sprite for our enemies, this uses
 // a helper we've provided to easily load images
 class BaseClass {
-  constructor(x, y, sprite) {
-    this.sprite = sprite;
+  constructor(x, y) {
+    this.sprite = 'images/';
     this.x = x;
     this.y = y;
   }
@@ -25,14 +25,17 @@ class BaseClass {
 }
 
 class Enemy extends BaseClass {
-  constructor(x, y, sprite) {
+  constructor(x, y, speed) {
     super();
-    this.sprite = sprite;
-    this.x = x;
-    this.y = y;
+    this.speed = speed;
+    this.x = 0;
+    this.y = 0;
+    this.sprite = 'enemy-bug.png';
   }
 
-  update(dt) {}
+  update(dt) {
+    //
+  }
 
   render() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
@@ -46,7 +49,7 @@ class Enemy extends BaseClass {
 class Player extends BaseClass {
   constructor(x, y) {
     super();
-    this.sprite = '/images/char-boy.png';
+    this.sprite = 'char-boy.png';
     this.x = x;
     this.y = y;
   }
@@ -61,15 +64,21 @@ class Player extends BaseClass {
 // Place the player object in a variable called player
 
 const player = new Player();
-const enemy_one = new Enemy();
-const enemy_two = new Enemy();
-const enemy_tree = new Enemy();
-const enemy_four = new Enemy();
-const enemy_five = new Enemy();
+const enemy_row_one = new Enemy(-101, 0, 208);
+const enemy_row_two = new Enemy(-101 * 4, 0, 210);
+const enemy_row_tree = new Enemy(-101 * 4, 83, 180);
+const enemy_row_four = new Enemy(-101 * 3, 166, 245);
+const enemy_row_five = new Enemy(-101 * 6, 166, 245);
 
 const allEnemies = [];
 
-allEnemies.push(enemy_one, enemy_two, enemy_tree, enemy_four, enemy_five);
+allEnemies.push(
+  enemy_row_one,
+  enemy_row_two,
+  enemy_row_tree,
+  enemy_row_four,
+  enemy_row_five,
+);
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
