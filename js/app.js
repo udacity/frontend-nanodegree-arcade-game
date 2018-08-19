@@ -13,7 +13,6 @@ class BaseClass {
     this.x = 0;
     this.y = 0;
   }
-
   // Update the enemy's position, required method for game
   // Parameter: dt, a time delta between ticks
   update(dt) {
@@ -21,26 +20,37 @@ class BaseClass {
     // which will ensure the game runs at the same speed for
     // all computers.
   }
-
   // Draw the enemy on the screen, required method for game
   render() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+  }
+
+  backToSquareOne() {
+    this.x = 2 * this.rightLeft;
+    this.y = 4 * this.upDown + 54;
   }
 }
 
 class Enemy extends BaseClass {
   constructor(x, y, speed) {
     super();
-    this.speed = speed;
     this.x = x;
     this.y = y + 54;
+    this.speed = speed;
     this.sprite += 'enemy-bug.png';
+    this.rightLeft = 101;
+    this.offX = this.rightLeft * 5;
+    this.reset = -this.rightLeft;
+  }
+  update(dt) {
+    // looping action for enemies
+    if (this.x < this.offX) {
+      this.x += this.speed * dt;
+    } else {
+      this.x = this.reset;
+    }
   }
 }
-
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
 
 class Player extends BaseClass {
   constructor() {
@@ -88,6 +98,20 @@ class Player extends BaseClass {
         modal_message.textContent = 'You Safely made it to the other side.';
       }
     }
+  }
+
+  update() {
+    allEnemies.forEach((enemy) => {
+      if (
+        this.y === enemy.y &&
+        this.x < enemy.x + 83 &&
+        this.x + 83 > enemy.x &&
+        this.y < enemy.y + 101 &&
+        101 + this.y > enemy.y
+      ) {
+        this.backToSquareOne();
+      }
+    });
   }
 }
 
