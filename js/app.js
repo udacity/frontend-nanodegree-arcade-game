@@ -4,10 +4,10 @@
 // The image/sprite for our enemies, this uses
 // a helper we've provided to easily load images
 class BaseClass {
-  constructor(x, y) {
+  constructor() {
     this.sprite = 'images/';
-    this.x = x;
-    this.y = y;
+    this.x = 0;
+    this.y = 0;
   }
 
   // Update the enemy's position, required method for game
@@ -28,17 +28,9 @@ class Enemy extends BaseClass {
   constructor(x, y, speed) {
     super();
     this.speed = speed;
-    this.x = 0;
-    this.y = 0;
-    this.sprite = 'enemy-bug.png';
-  }
-
-  update(dt) {
-    //
-  }
-
-  render() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    this.x = x;
+    this.y = y + 54;
+    this.sprite += 'enemy-bug.png';
   }
 }
 
@@ -47,15 +39,17 @@ class Enemy extends BaseClass {
 // a handleInput() method.
 
 class Player extends BaseClass {
-  constructor(x, y) {
+  constructor() {
     super();
-    this.sprite = 'char-boy.png';
-    this.x = x;
-    this.y = y;
+    this.sprite += 'char-boy.png';
+    this.rightLeft = 101;
+    this.upDown = 83;
+    this.x = 2 * this.rightLeft;
+    this.y = 4 * this.upDown + 54;
   }
 
   handleInput(input) {
-    //
+    const { x, y, sprite } = this;
   }
 }
 
@@ -82,7 +76,7 @@ allEnemies.push(
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
-document.addEventListener('keyup', function(e) {
+document.addEventListener('keyup', (event) => {
   const allowedKeys = {
     37: 'left',
     38: 'up',
@@ -90,5 +84,5 @@ document.addEventListener('keyup', function(e) {
     40: 'down',
   };
 
-  player.handleInput(allowedKeys[e.keyCode]);
+  player.handleInput(allowedKeys[event.keyCode]);
 });
