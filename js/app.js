@@ -1,6 +1,6 @@
 const modal = document.querySelector('.modal');
 const modal_message = document.querySelector('.modal-message');
-const form = document.form[0];
+const form = document.forms[0];
 
 // Enemies our player must avoid
 // Variables applied to each of our instances go here,
@@ -118,4 +118,11 @@ document.addEventListener('keyup', (event) => {
   };
   console.log(player.x, player.y);
   player.handleInput(allowedKeys[event.keyCode]);
+});
+
+//After winning game modal will appear asking for another game.
+//form will reload the current location
+form.addEventListener('submit', (event) => {
+  location.reload();
+  event.preventDefault();
 });
