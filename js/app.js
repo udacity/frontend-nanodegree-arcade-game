@@ -82,7 +82,12 @@ class Player extends BaseClass {
   }
 
   gameWon() {
-    this.y === 54 ? (this.conquest = true) : console.log(this.conquest);
+    if (this.y === -29) {
+      this.conquest = true;
+      if (this.conquest === true) {
+        modal_message.textContent = 'You Safely made it to the other side.';
+      }
+    }
   }
 }
 
