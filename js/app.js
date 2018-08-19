@@ -1,3 +1,7 @@
+const modal = document.querySelector('.modal');
+const modal_message = document.querySelector('.modal-message');
+const form = document.form[0];
+
 // Enemies our player must avoid
 // Variables applied to each of our instances go here,
 // we've provided one for you to get started
@@ -46,26 +50,39 @@ class Player extends BaseClass {
     this.upDown = 83;
     this.x = 2 * this.rightLeft;
     this.y = 4 * this.upDown + 54;
+    this.conquest = false;
   }
 
   handleInput(input) {
-    const { x, y, sprite } = this;
     switch (input) {
       case 'left':
+        if (this.x > 0) {
+          this.x -= this.rightLeft;
+        }
         break;
-
       case 'right':
+        if (this.x < 4 * this.rightLeft) {
+          this.x += this.rightLeft;
+        }
         break;
-
       case 'up':
+        if (this.y > 5) {
+          this.y -= this.upDown;
+          this.gameWon();
+        }
         break;
-
       case 'down':
+        if (this.y < 4 * this.upDown) {
+          this.y += this.upDown;
+        }
         break;
-
       default:
         break;
     }
+  }
+
+  gameWon() {
+    this.y === 54 ? (this.conquest = true) : console.log(this.conquest);
   }
 }
 
@@ -99,8 +116,6 @@ document.addEventListener('keyup', (event) => {
     39: 'right',
     40: 'down',
   };
-
-  console.log(event.keyCode);
-
+  console.log(player.x, player.y);
   player.handleInput(allowedKeys[event.keyCode]);
 });
