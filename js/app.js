@@ -50,6 +50,22 @@ class Player extends BaseClass {
 
   handleInput(input) {
     const { x, y, sprite } = this;
+    switch (input) {
+      case 'left':
+        break;
+
+      case 'right':
+        break;
+
+      case 'up':
+        break;
+
+      case 'down':
+        break;
+
+      default:
+        break;
+    }
   }
 }
 
@@ -83,6 +99,8 @@ document.addEventListener('keyup', (event) => {
     39: 'right',
     40: 'down',
   };
+
+  console.log(event.keyCode);
 
   player.handleInput(allowedKeys[event.keyCode]);
 });
