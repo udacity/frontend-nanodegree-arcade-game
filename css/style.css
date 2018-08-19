@@ -1,3 +1,13 @@
 body {
-    text-align: center;
+  text-align: center;
+}
+
+.modal {
+  position: absolute;
+  top: 10;
+  left: -9999;
+  width: 300px;
+  height: 200px;
+  background-color: #539157;
+  border-radius: 5px;
 }
