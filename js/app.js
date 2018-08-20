@@ -61,6 +61,7 @@ class Player extends BaseClass {
     this.x = 2 * this.rightLeft;
     this.y = 4 * this.upDown + 54;
     this.conquest = false;
+    this.movement = true;
   }
 
   handleInput(input) {
@@ -79,6 +80,7 @@ class Player extends BaseClass {
         if (this.y > 5) {
           this.y -= this.upDown;
           this.gameWon();
+          this.stopMovement();
         }
         break;
       case 'down':
@@ -98,6 +100,7 @@ class Player extends BaseClass {
         modal_message.textContent =
           'You Safely made it to the other side.You should play again.';
         modal.classList.remove('hidden');
+        this.movement = false;
       }
     }
   }
@@ -114,6 +117,14 @@ class Player extends BaseClass {
         this.backToSquareOne();
       }
     });
+  }
+
+  stopMovement() {
+    if (this.movement === false) {
+      this.handleInput = function() {
+        return false;
+      };
+    }
   }
 }
 
