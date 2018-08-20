@@ -3,13 +3,19 @@
 body {
   text-align: center;
   font-family: 'Cabin Sketch', cursive;
+  /* filter: blur(30px); */
+}
+
+.hidden {
+  display: none;
 }
 
 .modal {
   position: absolute;
-  top: 80;
-  right: 9999;
-  width: 300px;
+  margin: 120px auto 0 auto;
+  right: 0;
+  left: 0;
+  width: 200px;
   height: 100px;
   background-color: #539157;
   border-radius: 5px;
