@@ -95,7 +95,9 @@ class Player extends BaseClass {
     if (this.y === -29) {
       this.conquest = true;
       if (this.conquest === true) {
-        modal_message.textContent = 'You Safely made it to the other side.';
+        modal_message.textContent =
+          'You Safely made it to the other side.You should play again.';
+        modal.classList.remove('hidden');
       }
     }
   }
@@ -145,7 +147,7 @@ document.addEventListener('keyup', (event) => {
     39: 'right',
     40: 'down',
   };
-  console.log(player.x, player.y);
+
   player.handleInput(allowedKeys[event.keyCode]);
 });
 
