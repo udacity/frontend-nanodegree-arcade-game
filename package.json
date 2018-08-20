@@ -1,0 +1,39 @@
+{
+  "name": "arcade-game-udacity",
+  "version": "1.0.0",
+  "description": "Arcade game project from the Udacity FED Nanodegree",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack-dev-server --output-public-path=/dist/ --mode development --progress --open --hot",
+    "build": "webpack --mode production --progress --verbose"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Josep1992/frontend-nanodegree-arcade-game.git"
+  },
+  "keywords": [
+    "Arcade",
+    "ES6",
+    "Classes",
+    "Webpack",
+    "Game",
+    "engine"
+  ],
+  "author": "Josep Lopez Hernandez",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Josep1992/frontend-nanodegree-arcade-game/issues"
+  },
+  "homepage": "https://github.com/Josep1992/frontend-nanodegree-arcade-game#readme",
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-0": "^6.24.1",
+    "webpack": "^4.16.5",
+    "webpack-cli": "^3.1.0",
+    "webpack-dev-server": "^3.1.5"
+  }
+}

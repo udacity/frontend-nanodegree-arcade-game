@@ -1,3 +1,38 @@
+@import url('https://fonts.googleapis.com/css?family=Cabin+Sketch');
+
 body {
-    text-align: center;
+  text-align: center;
+  font-family: 'Cabin Sketch', cursive;
+}
+
+.hidden {
+  display: none;
+}
+
+.modal {
+  position: absolute;
+  margin: 120px auto 0 auto;
+  right: 0;
+  left: 0;
+  width: 200px;
+  height: 100px;
+  background-color: #539157;
+  border-radius: 5px;
+  font-size: 20px;
+  color: #fff;
+  border: 2px solid #515151;
+}
+
+.modal-message {
+  padding-top: 0.35em;
+}
+
+.modal-button {
+  font-family: 'Cabin Sketch', cursive;
+  margin: 10px auto;
+  background-color: #7379d8;
+  color: #fff;
+  border: 2px solid #515151;
+  padding: 0.45em;
+  border-radius: 5px;
 }
