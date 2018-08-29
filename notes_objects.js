@@ -18,3 +18,37 @@ const newOven = oven;
 newOven.temperature += 50;
 
 console.log(oven.temperature); // Original object is updated
+
+
+/*
+*   The 'delete' operator on MDN
+*   https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/delete
+*/
+
+
+// Calling Methods
+
+const developer = {
+  name: 'Andrew',
+  sayHello: function () {
+    console.log('Hi there, ' + this.name + '!');
+  }
+};
+
+
+developer.sayHello();
+
+// Passing arguments into Methods
+
+const another_developer = {
+  name: 'Andrew',
+  sayHello: function () {
+    console.log('Hi there!');
+  },
+  favoriteLanguage: function (language) {
+    console.log(`My favorite programming language is ${language}`);
+  }
+};
+
+
+another_developer.favoriteLanguage('JavaScript');
