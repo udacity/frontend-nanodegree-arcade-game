@@ -10,6 +10,8 @@ Create an object called `chameleon` with two properties:
 
 const chameleon = {
     color: 'green',
+    eyes: 2,
+
     changeColor: function () {
         if (this.color == 'green') {
             this.color = 'pink';
@@ -17,6 +19,10 @@ const chameleon = {
         else {
             this.color = 'green';
             }
+    },
+    
+    lookAround: function () {
+        console.log(`I see you with my ${this.eyes} eyes!`); // Backticks `` not quotes '' ""
     }
 };
 
@@ -26,6 +32,8 @@ console.log(chameleon.color);
 chameleon.changeColor();
 console.log(chameleon.color);
 
+chameleon.lookAround();
+
 /*
 *   Defining Methods on MDN
 *   https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Working_with_Objects#Defining_methods
@@ -33,3 +41,10 @@ console.log(chameleon.color);
 *   "this" in Methods
 *   https://javascript.info/object-methods#this-in-methods
 */ 
+
+
+function whoThis () {
+    this.trickyish = true
+}
+
+whoThis();
