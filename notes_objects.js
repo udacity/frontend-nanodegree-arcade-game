@@ -52,3 +52,6 @@ const another_developer = {
 
 
 another_developer.favoriteLanguage('JavaScript');
+
+const myArray = [ function alerter() { console.log('Hello!'); } ]; // alert('Hello!'); did NOT work in Atom console :-/
+myArray[0]();
