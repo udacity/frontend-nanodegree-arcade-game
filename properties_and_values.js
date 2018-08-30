@@ -48,3 +48,7 @@ console.log(triangle_keys);
 *    http://tokenposts.blogspot.com.au/2012/04/javascript-objectkeys-browser.html
 *
 */
+
+
+//    JavaScript: The Good Parts by Douglas Crockford: http://javascript.crockford.com/
+//    JavaScript: The Good Parts via Goodreads: https://www.goodreads.com/book/show/2998152-javascript
