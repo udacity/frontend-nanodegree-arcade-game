@@ -20,7 +20,7 @@ const chameleon = {
             this.color = 'green';
             }
     },
-    
+
     lookAround: function () {
         console.log(`I see you with my ${this.eyes} eyes!`); // Backticks `` not quotes '' ""
     }
@@ -40,11 +40,11 @@ chameleon.lookAround();
 *
 *   "this" in Methods
 *   https://javascript.info/object-methods#this-in-methods
-*/ 
+*/
 
 
 function whoThis () {
     this.trickyish = true
 }
 
-whoThis();
+whoThis(); // Fails in atom - "TypeError: Cannot set property 'trickyish' of undefined"
