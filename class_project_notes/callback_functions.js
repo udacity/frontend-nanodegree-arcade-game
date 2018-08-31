@@ -41,3 +41,12 @@ function ifOdd(n) {
 
 console.log('More odd numbers...'); // previously defined function passed in forEach()
 [1, 3, 5, 4, 6, 2, 0].forEach(ifOdd);
+
+
+// map()
+const names = ['David', 'Richard', 'Veronika', 'Stephanie'];
+const nameLengths = names.map(function(name) {
+    return name.length;
+});
+
+console.log(nameLengths);
