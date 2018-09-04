@@ -1,99 +1,203 @@
 class Game {
-  constructor(score = 0, level = 1) {
-    this.score = score;
-    this.level = level;
-    this.x = 0;
-    this.y = 540;
+  /**
+  * @description Represents a Game
+  * @constructor
+  * @param {number} score - The score of the game
+  * @param {number} level - The level of the game
+  * @param {boolean} pause - The pause status of the game
+  * @param {boolean} over - The over status of the game
+  * @param {boolean} reset - The reset status of the game
+  * @param {string} sprite - The sprite heart of the game
+  */
+  constructor() {
+    this.score = 0;
+    this.level = 1;
+    this.pause = false;
+    this.over = false;
+    this.reset = false;
     this.sprite = 'images/Heart.png';
   }
 
   increaseLevel() {
+    /**
+    * @description Increase the game level and call the method to increase enemies
+    */
     this.level += 1
     this.increaseEnemy()
   }
 
   increaseScore(points) {
+    /**
+    * @description Increase de game score
+    * @param {number} score
+    */
     this.score += points;
   }
 
   increaseEnemy() {
-    var choices = [40, 130, 220];
-    for (var i = 0; i < game.level; i++) {
-      var choice = choices[Math.floor(Math.random() * choices.length)];
-      var speed = Math.floor(Math.random()*300) + 10;
-      allEnemies.push(new Enemy(choice, speed));
-    }    
-  }
-
-  renderLife() {
-    ctx.clearRect(0, 0, 0 , 0);
-    ctx.font = "bold 28px serif";
-    // Draw scores on the top left
-    ctx.fillText(" x " + player.life, 40, 575);
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y, 40, 50);
+    /**
+    * @description Increase enemies
+    */
+    const choices = [40, 130, 220];
+    const choice = choices[Math.floor(Math.random() * choices.length)];
+    const speed = Math.floor(Math.random()*300) + 10;
+    allEnemies.add(new Enemy(choice, speed));    
   }
 
   renderStatus() {
-    ctx.clearRect(0, 20 , 505 , 25);
-    ctx.font = "20px serif";
+    /**
+    * @description Renders the game status
+    */
+    ctx.clearRect(0, 0, 0 , 0);
+    ctx.fillStyle = 'black';
+    ctx.font = "bold 28px Arial";
+    ctx.fillText(" x " + player.life, 40, 575);
+    ctx.drawImage(Resources.get(this.sprite), 0, 540, 40, 50);
+    ctx.clearRect(0, 0, 0, 0);
+    ctx.fillStyle = 'black';
+    ctx.font = "20px Arial";
     // Draw scores on the top left
     ctx.fillText("Score: " + this.score, 15, 40);
     // Draw lives on the top right
     ctx.fillText("Level: " + this.level, 420, 40);
   }
 
-}
-
-// Enemies our player must avoid
-class Enemy {
-  // Variables applied to each of our instances go here,
-  // we've provided one for you to get started
-
-  // The image/sprite for our enemies, this uses
-  // a helper we've provided to easily load images
-  constructor(y = 10, rate) {
-    this.sprite = 'images/enemy-bug.png';
-    this.x = -100;
-    this.y = y;
-    this.rate = rate
-    this.width = 30;
+  renderPause() {
+    /**
+    * @description Renders the game over
+    */
+    ctx.clearRect(0, 0, 0, 0);
+    ctx.font = '30pt Impact';
+    ctx.fillStyle = 'white';
+    ctx.strokeStyle = 'black';
+    ctx.lineWidth = 3
+    ctx.fillText('PAUSE', 200, 290);
+    ctx.strokeText('PAUSE', 200, 290);
   }
 
-  // Update the enemy's position, required method for game
-  // Parameter: dt, a time delta between ticks
+  renderGameOver() {
+    /**
+    * @description Renders the game over
+    */
+    ctx.clearRect(0, 0, 0, 0);
+    ctx.font = '23pt Arial';
+    ctx.globalAlpha = 0.65;
+    ctx.fillStyle = 'black';
+    ctx.fillRect(78, 200, 350, 200);
+    ctx.globalAlpha = 1;
+    ctx.fillStyle = 'red';
+    ctx.fillText('GAME OVER!', 155, 285);
+    ctx.font = '18pt Arial';
+    ctx.fillStyle = 'white';
+    ctx.fillText('Press Enter to Play Again', 117, 350);
+  }
+
+  handlePause() {
+    /**
+    * @description Changes game pause
+    */
+    this.pause = !this.pause;
+  }
+
+  handleStart() {
+    /**
+    * @description Start the game
+    */
+    for (var i = 0; i < ENEMYS; i++) {
+      game.increaseEnemy();
+    }
+  }
+
+  handleReset() {
+    /**
+    * @description Reset the game
+    */
+    this.over = !this.over;
+    this.reset = !this.reset;
+    this.pause = !this.pause;
+    this.score = 0;
+    this.level = 1;
+    player.life = 3;
+    player.count = 0;
+    allEnemies.clear();
+    this.handleStart();
+  }
+
+}
+
+class Enemy {
+  /**
+  * @description Represents a Enemy
+  * @constructor
+  * @param {number} x - The position X of the enemy
+  * @param {number} y - The position Y of the enemy
+  * @param {number} width - The width of the enemy
+  * @param {number} rate - The rate speed of the enemy
+  * @param {number} life - The life of the enemy
+  * @param {string} sprite - The sprite of the enemy
+  */
+  constructor(y = 10, rate) {
+    this.x = -100;
+    this.y = y;
+    this.width = 30;
+    this.rate = rate
+    this.life = Math.floor(Math.random() * 3) + 1;
+    this.sprite = 'images/enemy-bug.png';
+  }
+
   update(dt) {
-    if (this.x > 505) this.x = -100
+    /**
+    * @description Update the enemies positions
+    * @param {number} dt - (now - lastTime) / 1000.0 
+    */
+    if (this.x > 505) {
+      this.x = -100;
+      this.life -= 1;
+    }
     else this.x += this.rate*dt;
   }
 
-  // Draw the enemy on the screen, required method for game
   render() {
+    /**
+    * @description Renders the enemy
+    */
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
   }
 };
 
 class Player {
-  // Variables applied to each of our instances go here,
-  // we've provided one for you to get started
-
-  // The image/sprite for our enemies, this uses
-  // a helper we've provided to easily load images
-  constructor(x = 10, y = 10) {
-    this.sprite = 'images/char-boy.png';
+  /**
+  * @description Represents a Player
+  * @constructor
+  * @param {number} x - The position X of the player
+  * @param {number} y - The position Y of the player
+  * @param {number} width - The width of the player
+  * @param {number} life - The life of the player
+  * @param {number} count - The count of the enemy
+  * @param {string} sprite - The sprite of the enemy
+  */
+  constructor() {
+    this.x = 200;
+    this.y = 400;
+    this.width = 40;
     this.life = 3;
     this.count = 0;
-    this.x = x;
-    this.y = y;
-    this.width = 40;
+    this.sprite = 'images/char-boy.png';
   }
 
-  // Update the player's position, required method for game
-  // Parameter: dt, a time delta between ticks
   update() {
+    /**
+    * @description Update player
+    */
     
   }
 
   increaseCount() {
+    /**
+    * @description Increase the number of times the player has reached the end
+    *              how much more harder, the player needs reach more times
+    *              Increase the level game
+    */
     if (this.count < 3 + game.level) this.count += 1;
     else {
       this.count = 1;
@@ -102,24 +206,33 @@ class Player {
   }
 
   reset() {
+     /**
+    * @description Reset the player position
+    */
     this.x = 200;
     this.y = 400;
   }
 
   lost() {
+     /**
+    * @description Reset the player position and decrease player life
+    */
     this.reset();
     this.life -= 1;
   }
 
-  // Draw the player on the screen, required method for game
   render() {
+    /**
+    * @description Renders the player
+    */
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
   }
 
-  // Now write your own player class
-  // This class requires an update(), render() and
-  // a handleInput() method.
   handleInput(keyCode) {
+    /**
+    * @description Changes the player positions
+    * @param {number} keyCode - A key that was pressed
+    */
     if (keyCode === 'up') this.y -= 90;
     if (keyCode === 'down' && this.y < 400) this.y += 90;
     if (keyCode === 'left' && this.x > 0) this.x -= 100;
@@ -130,27 +243,25 @@ class Player {
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-var enemy1 = new Enemy(40, 60);
-/*var enemy2 = new Enemy('enemy2', 130, 30);
-var enemy3 = new Enemy('enemy3', 220, 40);
-var enemy4 = new Enemy('enemy4', 40, 10);
-var enemy5 = new Enemy('enemy5', 130, 20);
-var enemy6 = new Enemy('enemy6', 220, 70);*/
-var allEnemies = [enemy1/*, enemy2, enemy3, enemy4, enemy5, enemy6*/];
-
-var player = new Player(200, 400);
-
-var game = new Game();
+let allEnemies = new Set();
+const ENEMYS = 4;
+let player = new Player();
+let game = new Game();
+game.handleStart();
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function(e) {
-  var allowedKeys = {
+  let allowedKeys = {
+      13: 'enter',
+      32: 'space',
       37: 'left',
       38: 'up',
       39: 'right',
       40: 'down'
   };
-
-  player.handleInput(allowedKeys[e.keyCode]);
+  if (game.over !== true) {
+    if (game.pause !== true && e.keyCode !== 32) player.handleInput(allowedKeys[e.keyCode]);
+    else if (e.keyCode === 32) game.handlePause();
+  } else if (e.keyCode === 13) game.handleReset();
 });

@@ -44,8 +44,10 @@ var Engine = (function(global) {
     /* Call our update/render functions, pass along the time delta to
     * our update function since it may be used for smooth animation.
     */
-    update(dt);
     render();
+
+    if (game.pause === true) update(0);
+    else update(dt);
 
     /* Set our lastTime variable which is used to determine the time delta
     * for the next time this function is called.
@@ -59,11 +61,10 @@ var Engine = (function(global) {
   }
 
   /* This function does some initial setup that should only occur once,
-    * particularly setting the lastTime variable that is required for the
-    * game loop.
-    */
+  * particularly setting the lastTime variable that is required for the
+  * game loop.
+  */
   function init() {
-    reset();
     lastTime = Date.now();
     main();
   }
@@ -81,6 +82,7 @@ var Engine = (function(global) {
     updateEntities(dt);
     checkCollisions();
     playerWin();
+    checkEnemyLife();
   }
 
   /* This is called by the update function and loops through all of the
@@ -94,13 +96,21 @@ var Engine = (function(global) {
     allEnemies.forEach(function(enemy) {
       enemy.update(dt);
     });
-    player.update();
   }
 
   function checkCollisions() {
     allEnemies.forEach(function(enemy) {
       if (enemy.y === player.y && Math.abs(enemy.x - player.x) < (enemy.width + player.width)) {
         player.lost();
+      }         
+    });
+  }
+
+  function checkEnemyLife() {
+    allEnemies.forEach(function(enemy) {
+      if (enemy.life <=0) {
+        allEnemies.delete(enemy);
+        game.increaseEnemy();
       }         
     });
   }
@@ -166,13 +176,27 @@ var Engine = (function(global) {
     /* Loop through all of the objects within the allEnemies array and call
     * the render function you have defined.
     */
-    allEnemies.forEach(function(enemy) {
-      enemy.render();
-    });
+    
+    // Display this when the player has no more lives
+    if (player.life === 0) {
+      game.renderGameOver();
+      game.pause = true;
+      game.over = true;
+    }
+    else {
+      if (game.pause === true) {
+        game.renderPause()
+      }
+      else {
+        allEnemies.forEach(function(enemy) {
+          enemy.render();
+        });
+        player.render();
+      }
+    }
 
-    player.render();
-    game.renderLife();
     game.renderStatus();
+   
   }
 
   /* This function does nothing but it could have been a good place to
@@ -180,7 +204,7 @@ var Engine = (function(global) {
   * those sorts of things. It's only called once by the init() method.
   */
   function reset() {
-    
+  
   }
 
   /* Go ahead and load all of the images we know we're going to need to
