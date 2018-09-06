@@ -42,7 +42,8 @@ const musicData = [
 ];
 
 const results = musicData.filter(function(album) {
-    return album.name.length >= 10 && album.name.length <= 25 // Using && (and, AND)
+    return album.name.length >= 10 && album.name.length <= 25 // the filter
+    // Using && (and, AND) in our filter
 });
 
 console.log(results);
