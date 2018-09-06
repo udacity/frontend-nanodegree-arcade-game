@@ -48,5 +48,8 @@ const results = musicData.filter(function(album) {
 console.log(results);
 
 
-//  filter() on MDN:
+// filter() on MDN:
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter
+//
+// Array Methods on MDN:
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/prototype
