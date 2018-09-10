@@ -44,3 +44,5 @@ console.log(array());
 // A closure refers to the combination of a function and the lexical environment
 // in which that function was declared. Every time a function is defined,
 // closure is created for that function.
+
+// Closures on MDN: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures
