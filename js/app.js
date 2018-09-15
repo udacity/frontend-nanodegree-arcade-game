@@ -40,7 +40,7 @@ class Hero {
         this.step = 101;
         this.jump = 83;
         this.startX = this.step * 2; // Center column
-        this.startY = this.jump * 5; // Bottom row
+        this.startY = (this.jump * 5) - 20; // Bottom row
         this.x = this.startX;
         this.y = this.startY;
     }
