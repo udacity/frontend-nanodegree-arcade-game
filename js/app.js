@@ -36,9 +36,11 @@ Enemy.prototype.render = function() {
 
 class Hero {
     constructor() {
+        this.sprite = 'images/char-boy.png';
         this.x = 0;
         this.y = 0;
-        this.sprite = 'images/char-boy.png';
+        this.step = 101;
+        this.jump = 83;
     }
     
     // Draw player sprite at current x,y
@@ -53,16 +55,16 @@ class Hero {
     handleInput(input) {
         switch(input) {
             case 'left':
-                this.x -= 20;
+                this.x -= this.step;
                 break;
             case 'up':
-                this.y -= 20;
+                this.y -= this.jump;
                 break;
             case 'right':
-                this.x += 20;
+                this.x += this.step;
                 break;
             case 'down':
-                this.y += 20;
+                this.y += this.jump;
                 break;
         }
     }
