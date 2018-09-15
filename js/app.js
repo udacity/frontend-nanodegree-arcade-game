@@ -45,6 +45,27 @@ class Hero {
     render() {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     }
+    
+    /** Update player x,y based on input
+    *
+    * @param {string} input - Direction of travel
+    */
+    handleInput(input) {
+        switch(input) {
+            case 'left':
+                this.x -= 20;
+                break;
+            case 'up':
+                this.y -= 20;
+                break;
+            case 'right':
+                this.x += 20;
+                break;
+            case 'down':
+                this.y += 20;
+                break;
+        }
+    }
 }
 
 // New Hero object
