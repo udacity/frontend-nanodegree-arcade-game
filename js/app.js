@@ -2,7 +2,10 @@
 var Enemy = function() {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
-
+    
+    // x position
+    // y position
+    
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
@@ -14,6 +17,12 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
+    
+    // If enemy is not past boundary
+        // Move forward
+        // Increment x by speed * dt
+    // else
+        // Reset position to start
 };
 
 // Draw the enemy on the screen, required method for game
@@ -24,6 +33,25 @@ Enemy.prototype.render = function() {
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
+
+class Hero {
+    constructor() {
+        this.x = 0;
+        this.y = 0;
+        this.sprite = 'images/char-boy.png';
+    }
+    
+    // Draw player sprite at current x,y
+    render() {
+        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    }
+}
+
+// New Hero object
+const player = new Hero();
+
+// Init allEnemies array
+// For each enemy create and push new Enemy object into array
 
 
 // Now instantiate your objects.
