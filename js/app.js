@@ -2,9 +2,8 @@
 var Enemy = function() {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
-    
-    // x position
-    // y position
+    this.x = 0;
+    this.y = 0;
     
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
@@ -79,12 +78,14 @@ class Hero {
         }
     }
 }
-// New Hero object
+// New Hero and Enemy objects
 const player = new Hero();
+const bug1 = new Enemy();
 
 // Init allEnemies array
 // For each enemy create and push new Enemy object into array
-
+const allEnemies = [];
+allEnemies.push(bug1);
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
