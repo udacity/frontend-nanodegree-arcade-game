@@ -4,10 +4,8 @@ var Enemy = function() {
     // we've provided one for you to get started
     this.x = 0;
     this.y = 0;
-    
-    // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
+    this.step = 101;
 };
 
 // Update the enemy's position, required method for game
@@ -18,10 +16,15 @@ Enemy.prototype.update = function(dt) {
     // all computers.
     
     // If enemy is not past boundary
+    if(this.x < this.step * 5) { // places bug just off screen
         // Move forward
         // Increment x by speed * dt
+        this.x += 200 * dt;
+    }
     // else
+    else {
         // Reset position to start
+    }
 };
 
 // Draw the enemy on the screen, required method for game
