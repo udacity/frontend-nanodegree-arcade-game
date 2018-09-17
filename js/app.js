@@ -51,7 +51,7 @@ class Hero {
         this.playerWin = false;
     }
 
-    updatePosition() {
+    update() {
         // check Collision
         let playerRight = this.x + this.step / 2;
         for(let enemy of allEnemies) {
