@@ -49,16 +49,24 @@ class Hero {
         this.startY = (this.jump * 4) + 55; // Bottom row
         this.x = this.startX;
         this.y = this.startY;
+        this.playerWin = false;
     }
     
     updatePosition() {
-        // checkCollisions
+        // check Collision
+        let playerRight = this.x + this.step / 2;
         for(let enemy of allEnemies) {
             // Did player collide with any enemy?
-            if (this.y === enemy.y) {
-                console.log('Collision detected!');
+            let enemyRight = enemy.x + enemy.step / 2;
+            if (this.y === enemy.y && (enemyRight > this.x && enemy.x < playerRight)) {
+                this.resetHero();
             }
         }
+        // check Win
+        if (this.y === 55) {
+            this.playerWin = true;
+        }
+        
     }
     
     // Draw player sprite at current x,y
@@ -94,24 +102,26 @@ class Hero {
                 break;
         }
     }
+    
+    resetHero() {
+        // Back to starting position
+        this.y = this.startY;
+        this.x = this.startX;
+    }
 }
+
+
 // New Hero and Enemy objects
 const player = new Hero();
 const enemy_bug1 = new Enemy(-101, 0, 200);
 const enemy_bug2 = new Enemy(-101, 83, 300);
-const enemy_bug3 = new Enemy((-101 * 2.5), 83, 300);
+const enemy_bug3 = new Enemy((-101 * 2.5), 83, 350);
 const enemy_bug4 = new Enemy(this.resetPosition, 166, 235);
 
 // Init allEnemies array
 // For each enemy create and push new Enemy object into array
 const allEnemies = [];
 allEnemies.push(enemy_bug1, enemy_bug2, enemy_bug3, enemy_bug4);
-
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
-
-
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
