@@ -29,3 +29,4 @@ class Enemy {
 }
 
 // TODO: Class has not been tested yet!
+// // TODO: move Collision detection to Enemy from Player (?)
