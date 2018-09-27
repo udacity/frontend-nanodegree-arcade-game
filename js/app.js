@@ -1,7 +1,10 @@
-// Enemies our player must avoid
+uj// Enemies our player must avoid
 var Enemy = function() {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
+
+    // X pos
+    // Y pos
 
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
@@ -14,6 +17,11 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
+
+//is enemey outside of boundary in other words reached its destination?
+    //Increment x by speed * dt..move foward
+  //Reset position to start
+    //Increment x by speed * dt..move foward
 };
 
 // Draw the enemy on the screen, required method for game
@@ -24,6 +32,25 @@ Enemy.prototype.render = function() {
 
 
 // Now write your own player class
+
+/*player class*/
+
+/*constructor*/
+
+/*properties*/
+  // x
+  // y
+  // sprite
+/*methods*/
+  // hint update method...update position methods
+    // collision
+      // did player x & y collide with Enemy?
+    // WIN?
+      // did player reach a winning tile?
+        // postion player back to starting position - x,y must now = starting x,y
+    // movement handleing
+      // update postioning according to input x,y
+
 // This class requires an update(), render() and
 // a handleInput() method.
 
