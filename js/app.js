@@ -34,14 +34,24 @@ Enemy.prototype.render = function() {
 // Now write your own player class
 
 /*player class*/
+class Charicter {
+  // Init allEnemies array
+  // For each enemy create and push new Enemy object into above array
 
 /*constructor*/
-
+  constructor(){
 /*properties*/
-  // x
-  // y
-  // sprite
+    // x
+    this.x = 0;
+    // y
+    this.y = 0;
+    // sprite
+    this.sprite = 'images/char-boy.png';
 /*methods*/
+  //create character onscreen
+  render() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+  }
   // hint update method...update position methods
     // collision
       // did player x & y collide with Enemy?
@@ -53,6 +63,10 @@ Enemy.prototype.render = function() {
 
 // This class requires an update(), render() and
 // a handleInput() method.
+  }
+}
+
+const player = new Charicter();
 
 
 // Now instantiate your objects.
