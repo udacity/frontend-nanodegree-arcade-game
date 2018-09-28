@@ -64,6 +64,17 @@ class Charicter {
 // This class requires an update(), render() and
 // a handleInput() method.
     }
+    handleInput(input){
+      if(input === 'left'){
+        this.x -= 20;
+      } else if(input === 'up'){
+        this.y -= 20;
+      } else if(input === 'right'){
+        this.x += 20;
+      } else if(input === 'down'){
+        this.y += 20;
+      }
+    }
 }
 
 const player = new Charicter();
@@ -72,7 +83,7 @@ const player = new Charicter();
 // Now instantiate your objects.
 //const Inky = new Enemy();
 //const Blinky = new Enemy();
-//const Pinky = new Enemy();
+//const Pinky = new Enemy();d
 //const Clyde = new Enemy();
 // Place all enemy objects in an array called allEnemies
 //const allEnemies = {Inky, Blinky, Pinky, Clyde}
@@ -85,10 +96,17 @@ const player = new Charicter();
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function(e) {
     var allowedKeys = {
+      //qwerty
+        87: 'up',
+        65: 'left',
+        68: 'right',
+        83: 'down',
+      //arrows
         37: 'left',
         38: 'up',
         39: 'right',
-        40: 'down'
+        40: 'down',
+
     };
 
     player.handleInput(allowedKeys[e.keyCode]);
