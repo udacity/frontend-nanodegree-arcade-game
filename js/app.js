@@ -1,4 +1,4 @@
-uj// Enemies our player must avoid
+// Enemies our player must avoid
 var Enemy = function() {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
@@ -49,9 +49,9 @@ class Charicter {
     this.sprite = 'images/char-boy.png';
 /*methods*/
   //create character onscreen
+  }
   render() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-  }
   // hint update method...update position methods
     // collision
       // did player x & y collide with Enemy?
@@ -63,19 +63,19 @@ class Charicter {
 
 // This class requires an update(), render() and
 // a handleInput() method.
-  }
+    }
 }
 
 const player = new Charicter();
 
 
 // Now instantiate your objects.
-const Inky = new Enemy();
-const Blinky = new Enemy();
-const Pinky = new Enemy();
-const Clyde = new Enemy();
+//const Inky = new Enemy();
+//const Blinky = new Enemy();
+//const Pinky = new Enemy();
+//const Clyde = new Enemy();
 // Place all enemy objects in an array called allEnemies
-const allEnemies = {Inky, Blinky, Pinky, Clyde}
+//const allEnemies = {Inky, Blinky, Pinky, Clyde}
 
 // Place the player object in a variable called player
 
