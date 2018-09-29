@@ -45,6 +45,7 @@ class Charicter {
     this.startingY = 400;
     this.x = this.startingX,
     this.y = this.startingY,
+    //allows me to reset the postion of the charicter
     this.resetPosition = function(){
       this.x = this.startingX;
       this.y = this.startingY;
@@ -52,8 +53,6 @@ class Charicter {
 
     // sprite
     this.sprite = 'images/char-boy.png';
-    this.step = 101;
-    this.jump = 83;
 /*methods*/
   //create character onscreen
   }
@@ -72,17 +71,25 @@ class Charicter {
 // a handleInput() method.
     }
     handleInput(input){
-      let fowardMovement = 83;
-      let lateralMovement = 101;
+      let horizontalMovement = 98;
+      let lateralMovement = 80;
 
       if(input === 'left'){
-        this.x -= fowardMovement * 2;
+        if(this.x > 5){
+          this.x -= horizontalMovement;
+        }
       } else if(input === 'up'){
-        this.y -= lateralMovement * 5;
+        if(this.y > 5){
+          this.y -= lateralMovement;
+          }
       } else if(input === 'right'){
-        this.x += fowardMovement * 2;
+        if(this.x < 350){
+          this.x += horizontalMovement;
+        }
       } else if(input === 'down'){
-        this.y += lateralMovement * 5;
+        if(this.y < 400){
+          this.y += lateralMovement;
+        }
       }
     }
 }
