@@ -41,12 +41,19 @@ class Charicter {
 /*constructor*/
   constructor(){
 /*properties*/
-    // x
-    this.x = 0;
-    // y
-    this.y = 0;
+    this.startingX = 200;
+    this.startingY = 400;
+    this.x = this.startingX,
+    this.y = this.startingY,
+    this.resetPosition = function(){
+      this.x = this.startingX;
+      this.y = this.startingY;
+    };
+
     // sprite
     this.sprite = 'images/char-boy.png';
+    this.step = 101;
+    this.jump = 83;
 /*methods*/
   //create character onscreen
   }
@@ -65,14 +72,17 @@ class Charicter {
 // a handleInput() method.
     }
     handleInput(input){
+      let fowardMovement = 83;
+      let lateralMovement = 101;
+
       if(input === 'left'){
-        this.x -= 20;
+        this.x -= fowardMovement * 2;
       } else if(input === 'up'){
-        this.y -= 20;
+        this.y -= lateralMovement * 5;
       } else if(input === 'right'){
-        this.x += 20;
+        this.x += fowardMovement * 2;
       } else if(input === 'down'){
-        this.y += 20;
+        this.y += lateralMovement * 5;
       }
     }
 }
