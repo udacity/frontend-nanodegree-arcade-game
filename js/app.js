@@ -16,6 +16,7 @@ var Enemy = function(x, y, speeds)
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt)
 {
+  this.x +=this.speeds *dt;
     // You should multiply any movement by the dt parameter
     //when the bug gets to end.... it needs to be reset()
     if (this.x > 505)
@@ -50,7 +51,7 @@ var Player = function()
 {
   this.x = beginX;
   this.y = beginY;
-  this.sprite = 'images/char-cat-girl.png'
+  this.sprite = 'images/char-cat-girl.png';
 };
 
 //create the ends of places where the player can go and can't go
@@ -65,11 +66,11 @@ Player.prototype.update = function()
   {
     this.x = 400;
   }
-  else if (this.y>400)
+  else if (this.y > 400)
   {
     this.y = 400;
   }
-  else if (this.y<0)
+  else if (this.y < 0)
   {
     this.reset();
   }
@@ -77,7 +78,7 @@ Player.prototype.update = function()
 
 //reset function to start over
 
-Player.prototype.reset function()
+Player.prototype.reset = function()
 {
   this.x = beginX;
   this.y = beginY;
@@ -90,12 +91,13 @@ Player.prototype.render = function()
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
+
 var allEnemies = [];
 
-for (var i = 0; i < 4; i++)
+for (var i = 0; i < 3; i++)
 {
   var bugY = 65 + 80 *i;
-  var bugX = Math.floor(Math.random()*25);
+  var bugX = Math.floor(Math.random()*30);
   var bugSpeeds = 50 + Math.floor(Math.random()*200);
   allEnemies.push(new Enemy(bugX, bugY, bugSpeeds));
 }
@@ -120,11 +122,11 @@ Player.prototype.handleInput = function(key)
   switch (key)
   {
     case 'up':
-    this.y -=100;
+    this.y -=90;
     break;
 
     case 'down':
-    this.y += 100;
+    this.y += 90;
     break;
 
     case 'left':
