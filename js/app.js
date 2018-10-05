@@ -1,5 +1,5 @@
 // Enemies our player must avoid
-var Enemy = function() {
+const Enemy = function() {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
     this.startingX = -60;
@@ -110,6 +110,19 @@ class Character {
       console.log("my X" + this.x + " my Y" + this.y);
     }
 
+    update(){
+      for(let enemy of allEnemies) {
+        if (this.y <= 300 && this.y >= 200){
+          console.log("first row");
+        } else if (this.y <= 200 && this.y >= 100){
+          console.log("second row");
+        } else if (this.y <= 100 && this.y >= 0){
+          console.log("third row");
+        } else if (this.y <= 0){
+          console.log("river");
+        }
+      }
+    }
 }
 
 // Now instantiate your objects.
