@@ -49,7 +49,8 @@ class Charicter {
     this.resetPosition = function(){
       this.x = this.startingX;
       this.y = this.startingY;
-    };
+    }
+    this.river = 10,
 
     // sprite
     this.sprite = 'images/char-boy.png';
@@ -69,7 +70,7 @@ class Charicter {
 
 // This class requires an update(), render() and
 // a handleInput() method.
-    }
+}
     handleInput(input){
       let horizontalMovement = 98;
       let lateralMovement = 80;
@@ -91,11 +92,11 @@ class Charicter {
           this.y += lateralMovement;
         }
       }
+      /// where is my charicter
+      console.log("my X" + this.x + " my Y" + this.y);
     }
+
 }
-
-const player = new Charicter();
-
 
 // Now instantiate your objects.
 //const Inky = new Enemy();
@@ -106,7 +107,7 @@ const player = new Charicter();
 //const allEnemies = {Inky, Blinky, Pinky, Clyde}
 
 // Place the player object in a variable called player
-
+const player = new Charicter();
 
 
 // This listens for key presses and sends the keys to your
