@@ -2,10 +2,19 @@
 var Enemy = function() {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
-
+    this.startingX = -60;
+    this.startingY = 0;
     // X pos
+    this.x = this.startingX;
     // Y pos
-
+    this.y = this.startingY;
+    //speed
+    this.speed = 0;
+    //resetPosition
+    this.resetPosition = function(){
+      this.x = this.startingX;
+      this.y = this.startingY;
+    }
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
@@ -19,9 +28,14 @@ Enemy.prototype.update = function(dt) {
     // all computers.
 
 //is enemey outside of boundary in other words reached its destination?
-    //Increment x by speed * dt..move foward
+if(this.x < 500){
+  //Increment x by speed * dt..move foward
+  this.x += this.speed * dt;
   //Reset position to start
     //Increment x by speed * dt..move foward
+} else {
+  this.resetPosition();
+  }
 };
 
 // Draw the enemy on the screen, required method for game
@@ -34,7 +48,7 @@ Enemy.prototype.render = function() {
 // Now write your own player class
 
 /*player class*/
-class Charicter {
+class Character {
   // Init allEnemies array
   // For each enemy create and push new Enemy object into above array
 
@@ -107,7 +121,28 @@ class Charicter {
 //const allEnemies = {Inky, Blinky, Pinky, Clyde}
 
 // Place the player object in a variable called player
-const player = new Charicter();
+const player = new Character();
+const blinky = new Enemy();
+  blinky['speed'] = 200;
+  blinky.y = 145;
+  blinky['startingY'] = 145;
+
+const clyde = new Enemy();
+  clyde['speed'] = 100;
+  clyde.y = 60;
+  clyde.x = 200;
+  clyde['startingY'] = 60;
+
+const inky = new Enemy();
+  inky['speed'] = 150;
+  inky.y = 230;
+  clyde.x = 300;
+  inky['startingY'] = 230;
+
+let allEnemies = [];
+allEnemies.push(inky);
+allEnemies.push(blinky);
+allEnemies.push(clyde);
 
 
 // This listens for key presses and sends the keys to your
