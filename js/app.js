@@ -1,16 +1,16 @@
 // Enemies our player must avoid
 class Enemy {
-  constructor(){
+  constructor(speed, y, startingY, sprite = 'images/enemy-bug.png'){
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
     this.startingX = -60;
-    this.startingY = 0;
+    this.startingY = startingY;
     // X pos
     this.x = this.startingX;
     // Y pos
-    this.y = this.startingY;
+    this.y = y;
     //speed
-    this.speed = 0;
+    this.speed = speed;
     //resetPosition
     this.resetPosition = function(){
       this.x = this.startingX;
@@ -18,7 +18,7 @@ class Enemy {
     }
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
-    this.sprite = 'images/enemy-bug.png';
+    this.sprite = sprite;
   };
   currentColumn(){
     var result = "";
@@ -71,7 +71,7 @@ class Character {
   // For each enemy create and push new Enemy object into above array
 
 /*constructor*/
-  constructor(){
+  constructor(sprite='images/char-boy.png'){
 /*properties*/
     this.startingX = 200;
     this.startingY = 400;
@@ -85,7 +85,7 @@ class Character {
     this.river = 10,
 
     // sprite
-    this.sprite = 'images/char-boy.png';
+    this.sprite = sprite;
 /*methods*/
   //create character onscreen
   }
@@ -178,23 +178,27 @@ class Character {
 //const allEnemies = {Inky, Blinky, Pinky, Clyde}
 
 // Place the player object in a variable called player
-const player = new Character();
-const blinky = new Enemy();
-  blinky['speed'] = 200;
-  blinky.y = 145;
-  blinky['startingY'] = 145;
+const playerInput = prompt("which character do you want to play as?");
+charicterSelect = '';
+ if(playerInput === 'girl'){
+   charicterSelect = "images/char-cat-girl.png";
+} else if(playerInput === 'horn'){
+    charicterSelect = 'images/char-horn-girl.png';
+} else if(playerInput === 'princess'){
+    charicterSelect = 'images/char-princess-girl.png';
+} else {
+    charicterSelect = 'images/char-boy.png';
+}
+const player = new Character(charicterSelect);
 
-const clyde = new Enemy();
-  clyde['speed'] = 100;
-  clyde.y = 60;
-  clyde.x = 200;
-  clyde['startingY'] = 60;
+const blinky = new Enemy(200,145,145,'images/stupidShark.png');
 
-const inky = new Enemy();
-  inky['speed'] = 150;
-  inky.y = 230;
-  clyde.x = 300;
-  inky['startingY'] = 230;
+
+const clyde = new Enemy(100,60,60,'images/stupidShark.png');
+clyde.x = 200;
+
+const inky = new Enemy(150,230,230);
+inky.x = 300;
 
 let allEnemies = [];
 allEnemies.push(clyde);
