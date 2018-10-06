@@ -1,5 +1,6 @@
 // Enemies our player must avoid
-const Enemy = function() {
+class Enemy {
+  constructor(){
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
     this.startingX = -60;
@@ -18,7 +19,24 @@ const Enemy = function() {
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
-};
+  };
+  currentColumn(){
+    var result = "";
+      if (this.x <= 100){
+        result = 'firstColumn'
+      }else if(this.x >= 101 && this.x <= 200){
+        result = 'secondColumn'
+      }else if(this.x >= 201 && this.x <= 300){
+        result = 'thirdColumn'
+      }else if(this.x >= 301 && this.x <= 400){
+        result = 'fourthColumn'
+      }else {
+        result = 'fifthColumn'
+      }
+      return result;
+  }
+}
+
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
@@ -137,16 +155,15 @@ class Character {
         const clydePosition = clyde.x;
         const charPosition = this.x;
 
-        if (firstRow){
+        if (thirdRow && clyde.currentColumn() === this.currentColumn()){
+          this.resetPosition();
 
-        } else if (secondRow){
-
-        } else if (thirdRow){
-          //blinkys row
-          if(clydePosition == charPosition){
-            this.resetPosition();
-          }
-        } else if (this.y <= 0){
+        } else if (secondRow && blinky.currentColumn() === this.currentColumn()){
+          this.resetPosition();
+        } else if (firstRow && inky.currentColumn() === this.currentColumn()){
+          this.resetPosition();
+        } else {
+          console.log("nigga you still alive");
         }
       }
     }
