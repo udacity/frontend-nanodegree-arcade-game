@@ -33,8 +33,8 @@ if(this.x < 500){
   this.x += this.speed * dt;
   //Reset position to start
     //Increment x by speed * dt..move foward
-} else {
-  this.resetPosition();
+  } else {
+    this.resetPosition();
   }
 };
 
@@ -71,6 +71,22 @@ class Character {
 /*methods*/
   //create character onscreen
   }
+  currentColumn(){
+    var result = "";
+      if (this.x <= 100){
+        result = 'firstColumn'
+      }else if(this.x >= 101 && this.x <= 200){
+        result = 'secondColumn'
+      }else if(this.x >= 201 && this.x <= 300){
+        result = 'thirdColumn'
+      }else if(this.x >= 301 && this.x <= 400){
+        result = 'fourthColumn'
+      }else {
+        result = 'fifthColumn'
+      }
+      return result;
+  }
+
   render() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
   // hint update method...update position methods
@@ -112,14 +128,25 @@ class Character {
 
     update(){
       for(let enemy of allEnemies) {
-        if (this.y <= 300 && this.y >= 200){
-          console.log("first row");
-        } else if (this.y <= 200 && this.y >= 100){
-          console.log("second row");
-        } else if (this.y <= 100 && this.y >= 0){
-          console.log("third row");
+        const firstRow = this.y <= 300 && this.y >= 200;
+        const secondRow = this.y <= 200 && this.y >= 100;
+        const thirdRow = this.y <= 100 && this.y > 0;
+
+
+
+        const clydePosition = clyde.x;
+        const charPosition = this.x;
+
+        if (firstRow){
+
+        } else if (secondRow){
+
+        } else if (thirdRow){
+          //blinkys row
+          if(clydePosition == charPosition){
+            this.resetPosition();
+          }
         } else if (this.y <= 0){
-          console.log("river");
         }
       }
     }
@@ -153,9 +180,10 @@ const inky = new Enemy();
   inky['startingY'] = 230;
 
 let allEnemies = [];
-allEnemies.push(inky);
-allEnemies.push(blinky);
 allEnemies.push(clyde);
+allEnemies.push(blinky);
+allEnemies.push(inky);
+
 
 
 // This listens for key presses and sends the keys to your
