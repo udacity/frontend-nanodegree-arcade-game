@@ -1,15 +1,16 @@
 // Enemies our player must avoid
-var Enemy = function() {
+class Enemy {
+  constructor(speed, y, startingY, sprite = 'images/enemy-bug.png'){
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
     this.startingX = -60;
-    this.startingY = 0;
+    this.startingY = startingY;
     // X pos
     this.x = this.startingX;
     // Y pos
-    this.y = this.startingY;
+    this.y = y;
     //speed
-    this.speed = 0;
+    this.speed = speed;
     //resetPosition
     this.resetPosition = function(){
       this.x = this.startingX;
@@ -17,8 +18,25 @@ var Enemy = function() {
     }
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
-    this.sprite = 'images/enemy-bug.png';
-};
+    this.sprite = sprite;
+  };
+  currentColumn(){
+    var result = "";
+      if (this.x <= 100){
+        result = 'firstColumn'
+      }else if(this.x >= 101 && this.x <= 200){
+        result = 'secondColumn'
+      }else if(this.x >= 201 && this.x <= 300){
+        result = 'thirdColumn'
+      }else if(this.x >= 301 && this.x <= 400){
+        result = 'fourthColumn'
+      }else {
+        result = 'fifthColumn'
+      }
+      return result;
+  }
+}
+
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
@@ -33,8 +51,8 @@ if(this.x < 500){
   this.x += this.speed * dt;
   //Reset position to start
     //Increment x by speed * dt..move foward
-} else {
-  this.resetPosition();
+  } else {
+    this.resetPosition();
   }
 };
 
@@ -53,7 +71,7 @@ class Character {
   // For each enemy create and push new Enemy object into above array
 
 /*constructor*/
-  constructor(){
+  constructor(sprite='images/char-boy.png'){
 /*properties*/
     this.startingX = 200;
     this.startingY = 400;
@@ -67,10 +85,26 @@ class Character {
     this.river = 10,
 
     // sprite
-    this.sprite = 'images/char-boy.png';
+    this.sprite = sprite;
 /*methods*/
   //create character onscreen
   }
+  currentColumn(){
+    var result = "";
+      if (this.x <= 100){
+        result = 'firstColumn'
+      }else if(this.x >= 101 && this.x <= 200){
+        result = 'secondColumn'
+      }else if(this.x >= 201 && this.x <= 300){
+        result = 'thirdColumn'
+      }else if(this.x >= 301 && this.x <= 400){
+        result = 'fourthColumn'
+      }else {
+        result = 'fifthColumn'
+      }
+      return result;
+  }
+
   render() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
   // hint update method...update position methods
@@ -110,35 +144,66 @@ class Character {
       console.log("my X" + this.x + " my Y" + this.y);
     }
 
+    update(){
+      for(let enemy of allEnemies) {
+        const firstRow = this.y <= 300 && this.y >= 200;
+        const secondRow = this.y <= 200 && this.y >= 100;
+        const thirdRow = this.y <= 100 && this.y > 0;
+
+
+
+        const clydePosition = clyde.x;
+        const charPosition = this.x;
+
+        if (thirdRow && clyde.currentColumn() === this.currentColumn()){
+          this.resetPosition();
+
+        } else if (secondRow && blinky.currentColumn() === this.currentColumn()){
+          this.resetPosition();
+        } else if (firstRow && inky.currentColumn() === this.currentColumn() || pinky.currentColumn() === this.currentColumn()){
+          this.resetPosition();
+        } else {
+          console.log("your alive");
+        }
+      }
+    }
 }
+
+//the goal is for the charicter to gather all of the stones in the river
+
 
 // Now instantiate your objects.
 
 // Place the player object in a variable called player
-const player = new Character();
+const playerInput = prompt("which character do you want to play as?");
+charicterSelect = '';
+ if(playerInput === 'girl'){
+   charicterSelect = "images/char-cat-girl.png";
+} else if(playerInput === 'horn'){
+    charicterSelect = 'images/char-horn-girl.png';
+} else if(playerInput === 'princess'){
+    charicterSelect = 'images/char-princess-girl.png';
+} else {
+    charicterSelect = 'images/char-boy.png';
+}
+const player = new Character(charicterSelect);
 
-//place Enemies
-const blinky = new Enemy();
-  blinky['speed'] = 200;
-  blinky.y = 145;
-  blinky['startingY'] = 145;
+const blinky = new Enemy(200,145,145,'images/enemy-bug-blinky.png');
 
-const clyde = new Enemy();
-  clyde['speed'] = 100;
-  clyde.y = 60;
-  clyde.x = 200;
-  clyde['startingY'] = 60;
+const clyde = new Enemy(300,60,60,'images/enemy-bug.png');
+clyde.x = 200;
 
-const inky = new Enemy();
-  inky['speed'] = 150;
-  inky.y = 230;
-  clyde.x = 300;
-  inky['startingY'] = 230;
+const inky = new Enemy(150,230,230,'images/enemy-bug-inky.png');
+inky.x = 300;
+
+const pinky = new Enemy(150,230,230,'images/enemy-bug-pinky.png');
 
 let allEnemies = [];
-allEnemies.push(inky);
-allEnemies.push(blinky);
 allEnemies.push(clyde);
+allEnemies.push(blinky);
+allEnemies.push(inky);
+allEnemies.push(pinky);
+
 
 
 // This listens for key presses and sends the keys to your
