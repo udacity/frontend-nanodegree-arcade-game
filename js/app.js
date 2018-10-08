@@ -160,7 +160,7 @@ class Character {
 
         } else if (secondRow && blinky.currentColumn() === this.currentColumn()){
           this.resetPosition();
-        } else if (firstRow && inky.currentColumn() === this.currentColumn()){
+        } else if (firstRow && inky.currentColumn() === this.currentColumn() || pinky.currentColumn() === this.currentColumn()){
           this.resetPosition();
         } else {
           console.log("nigga you still alive");
