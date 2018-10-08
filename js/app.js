@@ -191,19 +191,21 @@ charicterSelect = '';
 }
 const player = new Character(charicterSelect);
 
-const blinky = new Enemy(200,145,145,'images/stupidShark.png');
+const blinky = new Enemy(200,145,145,'images/enemy-bug-blinky.png');
 
-
-const clyde = new Enemy(100,60,60,'images/stupidShark.png');
+const clyde = new Enemy(300,60,60,'images/enemy-bug.png');
 clyde.x = 200;
 
-const inky = new Enemy(150,230,230);
+const inky = new Enemy(150,230,230,'images/enemy-bug-inky.png');
 inky.x = 300;
+
+const pinky = new Enemy(150,230,230,'images/enemy-bug-pinky.png');
 
 let allEnemies = [];
 allEnemies.push(clyde);
 allEnemies.push(blinky);
 allEnemies.push(inky);
+allEnemies.push(pinky);
 
 
 
