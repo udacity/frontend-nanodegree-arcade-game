@@ -113,15 +113,11 @@ class Character {
 }
 
 // Now instantiate your objects.
-//const Inky = new Enemy();
-//const Blinky = new Enemy();
-//const Pinky = new Enemy();d
-//const Clyde = new Enemy();
-// Place all enemy objects in an array called allEnemies
-//const allEnemies = {Inky, Blinky, Pinky, Clyde}
 
 // Place the player object in a variable called player
 const player = new Character();
+
+//place Enemies
 const blinky = new Enemy();
   blinky['speed'] = 200;
   blinky.y = 145;
