@@ -163,11 +163,14 @@ class Character {
         } else if (firstRow && inky.currentColumn() === this.currentColumn() || pinky.currentColumn() === this.currentColumn()){
           this.resetPosition();
         } else {
-          console.log("nigga you still alive");
+          console.log("your alive");
         }
       }
     }
 }
+
+//the goal is for the charicter to gather all of the stones in the river
+
 
 // Now instantiate your objects.
 //const Inky = new Enemy();
