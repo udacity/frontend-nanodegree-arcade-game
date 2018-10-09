@@ -174,9 +174,16 @@ class Stone {
   }
   render() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-
+  }
+  collect() {
+    if(player.x === 4 && player.y === 0 && stones.length >= 1){
+      score.points += 1;
+      stones.pop();
+      console.log(console.log(score.points))
+    }
   }
 }
+
 
 //scoreing object
 const score = {
@@ -190,12 +197,10 @@ const score = {
     //four points wins the game
     if(score.points = 4){
       return true
-      console.log("win");
     }
     //loseing 5 hearts restarts the game and puts you at zero points
     if(score.health = 0){
       return false
-      console.log("lose");
     }
   }
 }
@@ -232,8 +237,6 @@ inky.x = 280;
 const pinky = new Enemy(150,230,230,'images/enemy-bug-pinky.png');
 
 const blueStone = new Stone(0,-27,'images/Gem Blue.png');
-
-
 
 let stones = [];
 stones.push(blueStone);
