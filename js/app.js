@@ -146,9 +146,9 @@ class Character {
 
     update(){
       for(let enemy of allEnemies) {
-        const firstRow = this.y <= 300 && this.y >= 200;
-        const secondRow = this.y <= 200 && this.y >= 100;
-        const thirdRow = this.y <= 100 && this.y > 0;
+        const firstRow = this.y <= 240 && this.y >= 161;
+        const secondRow = this.y <= 160 && this.y >= 81;
+        const thirdRow = this.y <= 80 && this.y > 0;
 
 
 
@@ -157,13 +157,12 @@ class Character {
 
         if (thirdRow && clyde.currentColumn() === this.currentColumn()){
           this.resetPosition();
-
         } else if (secondRow && blinky.currentColumn() === this.currentColumn()){
           this.resetPosition();
-        } else if (firstRow && inky.currentColumn() === this.currentColumn() || pinky.currentColumn() === this.currentColumn()){
+        } else if (firstRow && pinky.currentColumn() === this.currentColumn()){
           this.resetPosition();
-        } else {
-          console.log("your alive");
+        } else if (firstRow && inky.currentColumn() === this.currentColumn()){
+          this.resetPosition();
         }
       }
     }
@@ -194,7 +193,7 @@ const clyde = new Enemy(300,60,60,'images/enemy-bug.png');
 clyde.x = 200;
 
 const inky = new Enemy(150,230,230,'images/enemy-bug-inky.png');
-inky.x = 300;
+inky.x = 280;
 
 const pinky = new Enemy(150,230,230,'images/enemy-bug-pinky.png');
 
