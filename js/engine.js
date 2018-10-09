@@ -152,6 +152,9 @@ var Engine = (function(global) {
         allEnemies.forEach(function(enemy) {
           enemy.render();
         });
+        stones.forEach(function(stone) {
+          stone.render();
+        });
 
         player.render();
     }
@@ -169,6 +172,7 @@ var Engine = (function(global) {
      * all of these images are properly loaded our game will start.
      */
     Resources.load([
+        'images/Gem Blue.png',
         'images/stone-block.png',
         'images/water-block.png',
         'images/grass-block.png',

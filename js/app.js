@@ -150,8 +150,6 @@ class Character {
         const secondRow = this.y <= 160 && this.y >= 81;
         const thirdRow = this.y <= 80 && this.y > 0;
 
-
-
         const clydePosition = clyde.x;
         const charPosition = this.x;
 
@@ -167,6 +165,24 @@ class Character {
       }
     }
 }
+
+class Stone {
+  constructor(x,y,sprite = 'images/Gem Blue.png'){
+    this.x = x,
+    this.y = y,
+    this.sprite = sprite
+  }
+  render() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+
+  }
+}
+
+//scoreing object
+  //health - you start off with a set amount of hearts that reduce when hit by bugs
+  //points - you gain points when you move over a stone
+    //when you get a stone the stone disapears and and another appears
+
 
 //the goal is for the charicter to gather all of the stones in the river
 
@@ -196,6 +212,13 @@ const inky = new Enemy(150,230,230,'images/enemy-bug-inky.png');
 inky.x = 280;
 
 const pinky = new Enemy(150,230,230,'images/enemy-bug-pinky.png');
+
+const blueStone = new Stone(0,-27,'images/Gem Blue.png');
+
+
+
+let stones = [];
+stones.push(blueStone);
 
 let allEnemies = [];
 allEnemies.push(clyde);
