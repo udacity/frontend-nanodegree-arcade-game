@@ -179,9 +179,27 @@ class Stone {
 }
 
 //scoreing object
+const score = {
   //health - you start off with a set amount of hearts that reduce when hit by bugs
+  health: 5,
   //points - you gain points when you move over a stone
+  points: 0,
     //when you get a stone the stone disapears and and another appears
+
+  winLose: function(){
+    //four points wins the game
+    if(score.points = 4){
+      return true
+      console.log("win");
+    }
+    //loseing 5 hearts restarts the game and puts you at zero points
+    if(score.health = 0){
+      return false
+      console.log("lose");
+    }
+  }
+}
+
 
 
 //the goal is for the charicter to gather all of the stones in the river
