@@ -140,6 +140,11 @@ class Character {
           this.y += lateralMovement;
         }
       }
+
+      if(this.samePostionAsStone(blueStone)){
+        this.collect(blueStone);
+      }
+
       /// where is my charicter
       console.log("my X" + this.x + " my Y" + this.y);
     }
@@ -164,6 +169,16 @@ class Character {
         }
       }
     }
+    samePostionAsStone(stone){
+      return this.x === stone.x && this.y === stone.y;
+    }
+    collect(stone) {
+      //collect blue stone
+        stones.pop();
+        console.log(this);
+        score.points += 1;
+        console.log(console.log(score.points));
+    }
 }
 
 class Stone {
@@ -174,13 +189,6 @@ class Stone {
   }
   render() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-  }
-  collect() {
-    if(player.x === 4 && player.y === 0 && stones.length >= 1){
-      score.points += 1;
-      stones.pop();
-      console.log(console.log(score.points))
-    }
   }
 }
 
@@ -236,7 +244,7 @@ inky.x = 280;
 
 const pinky = new Enemy(150,230,230,'images/enemy-bug-pinky.png');
 
-const blueStone = new Stone(0,-27,'images/Gem Blue.png');
+const blueStone = new Stone(4,0,'images/Gem Blue.png');
 
 let stones = [];
 stones.push(blueStone);
@@ -252,6 +260,7 @@ allEnemies.push(pinky);
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function(e) {
+
     var allowedKeys = {
       //qwerty
         87: 'up',
