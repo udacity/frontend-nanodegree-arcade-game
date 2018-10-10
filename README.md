@@ -1,4 +1,4 @@
-Classic Arcade Game 
+Classic Arcade Game
 ===============================
 
 ## About the project
@@ -13,7 +13,7 @@ Udacity - initial work - [frontend-nanodegree-arcade-game](https://github.com/ud
 
 Wen Yu - completing the game - [frontend-nanodegree-arcade-game](https://github.com/WYCodeBook/frontend-nanodegree-arcade-game)
 
-## Game Functionality 
+## Game Functionality
 
 In this game you have a Player and Enemies (bugs). The goal of the player is to reach the water, without colliding into any one of the enemies.
 
