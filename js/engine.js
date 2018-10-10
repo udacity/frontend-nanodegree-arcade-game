@@ -173,6 +173,9 @@ var Engine = (function(global) {
      */
     Resources.load([
         'images/Gem Blue.png',
+        'images/Gem Orange.png',
+        'images/Gem Red.png',
+        'images/Gem Green.png',
         'images/stone-block.png',
         'images/water-block.png',
         'images/grass-block.png',

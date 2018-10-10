@@ -141,8 +141,15 @@ class Character {
         }
       }
 
-      if(this.samePostionAsStone(blueStone)){
-        this.collect(blueStone);
+      const xCoordinates = [4,102,298,290];
+
+      if(this.samePostionAsStone(stone)){
+        this.collect(stone);
+        stone.x = xCoordinates[Math.floor(Math.random()*xCoordinates.length)];
+        stone.y = stone.y === 0 ? 320 : 0;
+        stone.sprite = stone.sprite === 'images/Gem Blue.png' ? 'images/Gem Orange.png' : 'images/Gem Red.png';
+        let stones = [];
+        stones.push(stone);
       }
 
       /// where is my charicter
@@ -174,12 +181,13 @@ class Character {
     }
     collect(stone) {
       //collect blue stone
-        stones.pop();
         console.log(this);
         score.points += 1;
         console.log(console.log(score.points));
     }
 }
+
+
 
 class Stone {
   constructor(x,y,sprite = 'images/Gem Blue.png'){
@@ -244,10 +252,10 @@ inky.x = 280;
 
 const pinky = new Enemy(150,230,230,'images/enemy-bug-pinky.png');
 
-const blueStone = new Stone(4,0,'images/Gem Blue.png');
+const stone = new Stone(4,0,'images/Gem Blue.png');
 
 let stones = [];
-stones.push(blueStone);
+stones.push(stone);
 
 let allEnemies = [];
 allEnemies.push(clyde);
