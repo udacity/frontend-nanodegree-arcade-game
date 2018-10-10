@@ -1,3 +1,35 @@
 body {
     text-align: center;
 }
+
+.modal {
+  position: fixed;
+  top:0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: rgba(0,0,0,0.5);
+}
+.content {
+  background: white;
+  position: fixed;
+  width: 60%;
+  height: 60%
+  left: 20%;
+  right: 20%;
+  border: 3px solid black;
+  border-radius: 20px;
+}
+
+.hide {
+  display: none;
+}
+
+.restart-game {
+  font-size: 20px;
+  text-align: center;
+  width: 160px;
+  height: 60px;
+  border: 3px solid black;
+  border-radius: 20px;
+}
