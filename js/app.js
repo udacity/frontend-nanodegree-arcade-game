@@ -5,7 +5,7 @@ var Enemy = function(x, y, speed) {
     // we've provided one for you to get started
     this.x = x;
     this.y = y;
-    this.speed = Math.floor((Math.random()*200)+100);
+    this.speed = speed;
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
@@ -19,9 +19,13 @@ Enemy.prototype.update = function(dt) {
     // all computers.
     this.x += this.speed * dt;
     if (this.x > 505){
-      this.x = 0;
-    } else if (this.x <= 505){
-      this.x = this.x + this.speed * dt;
+      this.x = -100;
+    } else if (player.x < this.x + 60 &&
+        player.x + 60 > this.x &&
+        player.y < this.y + 60 &&
+        60 + player.y > this.y) {
+          this.x = 200;
+          this.y = 400;
     }
 };
 
@@ -57,22 +61,22 @@ Player.prototype.handleInput = function(keyPress) {
   switch (keyPress) {
     case 'left':
     if (this.x > 0) {
-      this.x -= 20;
+      this.x -= 30;
     }
     break;
     case 'up':
     if (this.y > -20) {
-      this.y -= 20;
+      this.y -= 30;
     }
     break;
     case 'right':
     if (this.x < 400) {
-      this.x += 20;
+      this.x += 30;
     }
     break;
     case 'down':
     if (this.y < 400) {
-      this.y += 20;
+      this.y += 30;
     }
     break;
   }
@@ -81,16 +85,18 @@ Player.prototype.handleInput = function(keyPress) {
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-var allEnemies = [];
 
-var enemyPosition = [60, 140, 220];
-var enemy;
-var player = new Player();
+let player = new Player();
+let allEnemies = [];
+let enemyPosition = [60, 140, 220, 140];
+let enemy;
 
-enemyPosition.forEach(function(posY) {
-    enemy = new Enemy(0, posY, 100 + Math.floor(Math.random() * 512));
+enemyPosition.forEach(function(y) {
+    enemy = new Enemy(0, y, Math.floor(Math.random() * 200));
     allEnemies.push(enemy);
 });
+
+
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
@@ -113,7 +119,9 @@ function toggleModal(){
 
 // restart button
 function resetPlayer(){
-  location.reload();
+  this.x = 200;
+  this.y = 400;
+  toggleModal();
 };
 
 document.querySelector('.restart-game').addEventListener('click', resetPlayer);

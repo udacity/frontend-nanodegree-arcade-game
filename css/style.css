@@ -25,6 +25,15 @@ body {
   display: none;
 }
 
+.start-game {
+  font-size: 20px;
+  text-align: center;
+  width: 160px;
+  height: 60px;
+  border: 3px solid black;
+  border-radius: 20px;
+}
+
 .restart-game {
   font-size: 20px;
   text-align: center;
