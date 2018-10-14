@@ -19,7 +19,7 @@ class Enemy {
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = sprite;
-  };
+  }
   currentColumn(){
     var result = "";
       if (this.x <= 100){
@@ -153,7 +153,6 @@ class Character {
       }
 
       /// where is my charicter
-      console.log("my X" + this.x + " my Y" + this.y);
     }
 
     update(){
@@ -161,9 +160,6 @@ class Character {
         const firstRow = this.y <= 240 && this.y >= 161;
         const secondRow = this.y <= 160 && this.y >= 81;
         const thirdRow = this.y <= 80 && this.y > 0;
-
-        const clydePosition = clyde.x;
-        const charPosition = this.x;
 
         if (thirdRow && clyde.currentColumn() === this.currentColumn()){
           this.resetPosition();
