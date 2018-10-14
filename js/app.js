@@ -141,7 +141,7 @@ class Character {
         }
       }
 
-      const xCoordinates = [4,102,298,290];
+      const xCoordinates = [4,102,298,200,396];
 
       if(this.samePostionAsStone(stone)){
         this.collect(stone);
@@ -177,9 +177,7 @@ class Character {
     }
     collect(stone) {
       //collect blue stone
-        console.log(this);
         score.points += 1;
-        console.log(console.log(score.points));
     }
 }
 
