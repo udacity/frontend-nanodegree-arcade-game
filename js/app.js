@@ -165,8 +165,6 @@ class Character {
           case 'images/Gem Purple.png':
             alert("You win");
         }
-        let stones = [];
-        stones.push(stone);
       }
 
       /// where is my charicter
