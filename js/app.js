@@ -143,9 +143,10 @@ class Character {
         }
       }
 
-      const xCoordinates = [4,102,298,200,396];
+
       //stone collections
       if(this.samePostionAsStone(stone)){
+        const xCoordinates = [4,102,298,200,396];
         stone.x = xCoordinates[Math.floor(Math.random()*xCoordinates.length)];
         stone.y = stone.y === 0 ? 320 : 0;
         switch (stone.sprite) {
@@ -161,6 +162,8 @@ class Character {
           case 'images/Gem Green.png':
             stone.sprite = 'images/Gem Purple.png';
             break;
+          case 'images/Gem Purple.png':
+            alert("You win");
         }
         let stones = [];
         stones.push(stone);
