@@ -158,6 +158,9 @@ class Character {
           case 'images/Gem Orange.png':
             stone.sprite = 'images/Gem Green.png';
             break;
+          case 'images/Gem Green.png':
+            stone.sprite = 'images/Gem Purple.png';
+            break;
         }
         let stones = [];
         stones.push(stone);
