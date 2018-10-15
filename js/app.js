@@ -71,18 +71,20 @@ class Character {
   // For each enemy create and push new Enemy object into above array
 
 /*constructor*/
-  constructor(sprite='images/char-boy.png',health = 4){
+  constructor(sprite='images/char-boy.png'){
 /*properties*/
     this.startingX = 200;
     this.startingY = 400;
     this.x = this.startingX,
     this.y = this.startingY,
-    this.health = this.health,
+    this.health = this.health = 4,
     //allows me to reset the postion of the charicter
     this.takeDamage = function(){
       //reset position
       this.x = this.startingX;
       this.y = this.startingY;
+      //lower health
+      this.health -= 1;
     }
     this.river = 10,
 
