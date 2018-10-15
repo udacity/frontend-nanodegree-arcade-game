@@ -11,7 +11,7 @@ class Enemy {
     this.y = y;
     //speed
     this.speed = speed;
-    //resetPosition
+    //resets the postion of the bugs
     this.resetPosition = function(){
       this.x = this.startingX;
       this.y = this.startingY;
@@ -71,14 +71,16 @@ class Character {
   // For each enemy create and push new Enemy object into above array
 
 /*constructor*/
-  constructor(sprite='images/char-boy.png'){
+  constructor(sprite='images/char-boy.png',health = 4){
 /*properties*/
     this.startingX = 200;
     this.startingY = 400;
     this.x = this.startingX,
     this.y = this.startingY,
+    this.health = this.health,
     //allows me to reset the postion of the charicter
-    this.resetPosition = function(){
+    this.takeDamage = function(){
+      //reset position
       this.x = this.startingX;
       this.y = this.startingY;
     }
@@ -142,12 +144,21 @@ class Character {
       }
 
       const xCoordinates = [4,102,298,200,396];
-
+      //stone collections
       if(this.samePostionAsStone(stone)){
-        this.collect(stone);
         stone.x = xCoordinates[Math.floor(Math.random()*xCoordinates.length)];
         stone.y = stone.y === 0 ? 320 : 0;
-        stone.sprite = stone.sprite === 'images/Gem Blue.png' ? 'images/Gem Orange.png' : 'images/Gem Red.png';
+        switch (stone.sprite) {
+          case 'images/Gem Blue.png':
+            stone.sprite = 'images/Gem Red.png';
+            break;
+          case 'images/Gem Red.png':
+            stone.sprite = 'images/Gem Orange.png';
+            break;
+          case 'images/Gem Orange.png':
+            stone.sprite = 'images/Gem Green.png';
+            break;
+        }
         let stones = [];
         stones.push(stone);
       }
@@ -162,26 +173,20 @@ class Character {
         const thirdRow = this.y <= 80 && this.y > 0;
 
         if (thirdRow && clyde.currentColumn() === this.currentColumn()){
-          this.resetPosition();
+          this.takeDamage();
         } else if (secondRow && blinky.currentColumn() === this.currentColumn()){
-          this.resetPosition();
+          this.takeDamage();
         } else if (firstRow && pinky.currentColumn() === this.currentColumn()){
-          this.resetPosition();
+          this.takeDamage();
         } else if (firstRow && inky.currentColumn() === this.currentColumn()){
-          this.resetPosition();
+          this.takeDamage();
         }
       }
     }
     samePostionAsStone(stone){
       return this.x === stone.x && this.y === stone.y;
     }
-    collect(stone) {
-      //collect blue stone
-        score.points += 1;
-    }
 }
-
-
 
 class Stone {
   constructor(x,y,sprite = 'images/Gem Blue.png'){
@@ -194,32 +199,7 @@ class Stone {
   }
 }
 
-
-//scoreing object
-const score = {
-  //health - you start off with a set amount of hearts that reduce when hit by bugs
-  health: 5,
-  //points - you gain points when you move over a stone
-  points: 0,
-    //when you get a stone the stone disapears and and another appears
-
-  winLose: function(){
-    //four points wins the game
-    if(score.points = 4){
-      return true
-    }
-    //loseing 5 hearts restarts the game and puts you at zero points
-    if(score.health = 0){
-      return false
-    }
-  }
-}
-
-
-
 //the goal is for the charicter to gather all of the stones in the river
-
-
 // Now instantiate your objects.
 
 // Place the player object in a variable called player

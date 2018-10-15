@@ -176,6 +176,7 @@ var Engine = (function(global) {
         'images/Gem Orange.png',
         'images/Gem Red.png',
         'images/Gem Green.png',
+        'images/Gem Purple.png',
         'images/stone-block.png',
         'images/water-block.png',
         'images/grass-block.png',
