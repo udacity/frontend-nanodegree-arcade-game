@@ -225,17 +225,17 @@ class Stone {
 
 // Place the player object in a variable called player
 const playerInput = prompt("which character do you want to play as?");
-charicterSelect = '';
+characterSelect = '';
  if(playerInput === 'girl'){
-   charicterSelect = "images/char-cat-girl.png";
+   characterSelect = "images/char-cat-girl.png";
 } else if(playerInput === 'horn'){
-    charicterSelect = 'images/char-horn-girl.png';
+    characterSelect = 'images/char-horn-girl.png';
 } else if(playerInput === 'princess'){
-    charicterSelect = 'images/char-princess-girl.png';
+    characterSelect = 'images/char-princess-girl.png';
 } else {
-    charicterSelect = 'images/char-boy.png';
+    characterSelect = 'images/char-boy.png';
 }
-const player = new Character(charicterSelect);
+const player = new Character(characterSelect);
 
 const blinky = new Enemy(200,145,145,'images/enemy-bug-blinky.png');
 
