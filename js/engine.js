@@ -155,6 +155,9 @@ var Engine = (function(global) {
         stones.forEach(function(stone) {
           stone.render();
         });
+        allHearts.forEach(function(heart) {
+          heart.render();
+        });
 
         player.render();
     }
@@ -188,7 +191,9 @@ var Engine = (function(global) {
         'images/enemy-bug-blinky.png',
         'images/enemy-bug-pinky.png',
         'images/enemy-bug-inky.png',
-        'images/char-princess-girl.png'
+        'images/char-princess-girl.png',
+        'images/Heart.png'
+
     ]);
     Resources.onReady(init);
 

@@ -21,7 +21,7 @@ class Enemy {
     this.sprite = sprite;
   }
   currentColumn(){
-    var result = "";
+    let result = "";
       if (this.x <= 100){
         result = 'firstColumn'
       }else if(this.x >= 101 && this.x <= 200){
@@ -58,6 +58,21 @@ if(this.x < 500){
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+
+
+//symbols that represent if a charicter takes takeDamage
+class Heart {
+  constructor(x,y){
+  this.X = x;
+  this.Y = y;
+  this.sprite = 'images/Heart.png';
+  }
+}
+
+Heart.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
@@ -243,7 +258,14 @@ allEnemies.push(blinky);
 allEnemies.push(inky);
 allEnemies.push(pinky);
 
+const heart1 = new Heart(200,200);
+const heart2 = new Heart(100,200);
+const heart3 = new Heart(300,200);
 
+let allHearts = [];
+allHearts.push(heart1);
+allHearts.push(heart2);
+allHearts.push(heart3);
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
