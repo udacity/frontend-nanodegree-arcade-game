@@ -63,11 +63,11 @@ Enemy.prototype.render = function() {
 
 
 
-//symbols that represent if a charicter takes takeDamage
+//symbols that represent if a character takes takeDamage
 class Heart {
   constructor(x,y){
-  this.X = x;
-  this.Y = y;
+  this.x = x;
+  this.y = y;
   this.sprite = 'images/Heart.png';
   }
 }
@@ -258,9 +258,9 @@ allEnemies.push(blinky);
 allEnemies.push(inky);
 allEnemies.push(pinky);
 
-const heart1 = new Heart(200,200);
-const heart2 = new Heart(100,200);
-const heart3 = new Heart(300,200);
+const heart1 = new Heart(0,0);
+const heart2 = new Heart(0,0);
+const heart3 = new Heart(0,0);
 
 let allHearts = [];
 allHearts.push(heart1);
