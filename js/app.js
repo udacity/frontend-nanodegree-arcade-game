@@ -92,7 +92,7 @@ class Character {
     this.startingY = 400;
     this.x = this.startingX,
     this.y = this.startingY,
-    this.health = this.health = 4,
+    this.health = 4,
     //allows me to reset the postion of the charicter
     this.takeDamage = function(){
       //reset position
@@ -100,6 +100,21 @@ class Character {
       this.y = this.startingY;
       //lower health
       this.health -= 1;
+      switch (this.health) {
+        case 3:
+          allHearts.pop();
+          break;
+        case 2:
+          allHearts.pop();
+          break;
+        case 1:
+          allHearts.pop();
+          break;
+        default:
+          allHearts.pop();
+          reset();
+          break;
+      }
     }
     this.river = 10,
 
@@ -180,7 +195,7 @@ class Character {
             stone.sprite = 'images/Gem Purple.png';
             break;
           case 'images/Gem Purple.png':
-            alert("You win");
+            win();
         }
       }
 
@@ -258,14 +273,16 @@ allEnemies.push(blinky);
 allEnemies.push(inky);
 allEnemies.push(pinky);
 
-const heart1 = new Heart(0,0);
-const heart2 = new Heart(0,0);
-const heart3 = new Heart(0,0);
+const heart1 = new Heart(-27,455);
+const heart2 = new Heart(25,455);
+const heart3 = new Heart(75,455);
+const heart4 = new Heart(127,455);
 
 let allHearts = [];
 allHearts.push(heart1);
 allHearts.push(heart2);
 allHearts.push(heart3);
+allHearts.push(heart4);
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
