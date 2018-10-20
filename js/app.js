@@ -1,16 +1,20 @@
 // Enemies our player must avoid
 class Enemy {
+
+  const offScreen = -60;
   constructor(speed, y, startingY, sprite = 'images/enemy-bug.png') {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
-    this.startingX = -60;
+
+    //starting postion of enemy to be saved for later
+    this.startingX = offScreen;
     this.startingY = startingY;
-    // X pos
+
+    //exact position of enemy, can be manipulated per instance
     this.x = this.startingX;
-    // Y pos
     this.y = y;
+
     //speed
     this.speed = speed;
+
     //resets the postion of the bugs
     this.resetPosition = function() {
       this.x = this.startingX;
@@ -20,6 +24,7 @@ class Enemy {
     // a helper we've provided to easily load images
     this.sprite = sprite;
   }
+
   currentColumn() {
     let result = "";
     if (this.x <= 100) {
