@@ -6,6 +6,13 @@ const thirdLane = 60;
 
 const offScreen = -60;
 
+//player skins
+const boy = 'images/char-boy.png';
+const girl = 'images/char-girl.png';
+const girlHorns = 'images/char-horn-horn.png';
+const girlPink = 'images/char-pink-girl.png';
+const girlPrincess = 'images/char-princess-girl.png';
+
 // Enemies our player must avoid
 class Enemy {
 
@@ -92,8 +99,8 @@ class Character {
   // For each enemy create and push new Enemy object into above array
 
   /*constructor*/
-  constructor(sprite = 'images/char-boy.png') {
-      /*properties*/
+  constructor(sprite = boy) {
+    //allows me to save postioning for latter
       this.startingX = 200;
       this.startingY = 400;
       this.x = this.startingX;
