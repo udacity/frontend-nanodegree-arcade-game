@@ -53,16 +53,13 @@ class Enemy {
 }
 
 
-// Update the enemy's position, required method for game
-// Parameter: dt, a time delta between ticks
+// Update the enemy's position
 Enemy.prototype.update = function(dt) {
 
   //is enemey outside of boundary in other words reached its destination?
   if (this.x < 500) {
-    //Increment x by speed * dt..move foward
     this.x += this.speed * dt;
     //Reset position to start
-    //Increment x by speed * dt..move foward
   } else {
     this.resetPosition();
   }
@@ -88,9 +85,6 @@ Heart.prototype.render = function() {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-
-
-// Now write your own player class
 
 /*player class*/
 class Character {
