@@ -1,39 +1,68 @@
+
+const firstLane = 230;
+const secondLane = 145;
+const thirdLane = 60;
+const fourthLane = 30;
+
+const offScreen = -60;
+
 // Enemies our player must avoid
 class Enemy {
 
-  const offScreen = -60;
-  constructor(speed, y, startingY, sprite = 'images/enemy-bug.png') {
-
-    //starting postion of enemy to be saved for later
-    this.startingX = offScreen;
-    this.startingY = startingY;
-
-    //exact position of enemy, can be manipulated per instance
-    this.x = this.startingX;
-    this.y = y;
-
+  constructor(speed, lane, sprite = 'images/enemy-bug.png') {
     //speed
     this.speed = speed;
+    this.offScreen = -60;
+    this.lane = lane;
+    //starting postion of enemy to be saved for later
+    this.startingX = this.offScreen;
+
+    //exact position of enemy, can be manipulated per instance
+    this.x = this.offScreen;
+    this.y = lane;
 
     //resets the postion of the bugs
     this.resetPosition = function() {
-      this.x = this.startingX;
-      this.y = this.startingY;
+      this.x = offScreen;
     }
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = sprite;
   }
 
-  currentColumn() {
+  lane() {
+
+    const firstLane = this.x <= 100;
+    const secondLane = this.x >= 101 && this.x <= 200;
+    const thirdLane = this.x >= 201 && this.x <= 300;
+    const fourthlane = this.x >= 301 && this.x <= 400;
+
     let result = "";
-    if (this.x <= 100) {
+    switch (currentLane) {
+      case firstLane:
+        result = 'firstColumn'
+        break;
+      case secondLane:
+        result = 'secondColumn'
+        break;
+      case secondLane:
+        result = 'thirdColumn'
+        break;
+      case secondLane:
+        result = 'thirdColumn'
+        break;
+      default:
+        result = 'fifthColumn'
+    }
+
+    let result = "";
+    if (firstLane) {
       result = 'firstColumn'
-    } else if (this.x >= 101 && this.x <= 200) {
+    } else if (secondLane) {
       result = 'secondColumn'
-    } else if (this.x >= 201 && this.x <= 300) {
+    } else if (thirdLane) {
       result = 'thirdColumn'
-    } else if (this.x >= 301 && this.x <= 400) {
+    } else if (fourthlane) {
       result = 'fourthColumn'
     } else {
       result = 'fifthColumn'
@@ -46,9 +75,6 @@ class Enemy {
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
-  // You should multiply any movement by the dt parameter
-  // which will ensure the game runs at the same speed for
-  // all computers.
 
   //is enemey outside of boundary in other words reached its destination?
   if (this.x < 500) {
@@ -214,13 +240,13 @@ update() {
     const secondRow = this.y <= 160 && this.y >= 81;
     const thirdRow = this.y <= 80 && this.y > 0;
 
-    if (thirdRow && clyde.currentColumn() === this.currentColumn()) {
+    if (thirdRow && clyde.lane() === this.lane()) {
       this.takeDamage();
-    } else if (secondRow && blinky.currentColumn() === this.currentColumn()) {
+    } else if (secondRow && blinky.lane() === this.lane()) {
       this.takeDamage();
-    } else if (firstRow && pinky.currentColumn() === this.currentColumn()) {
+    } else if (firstRow && pinky.lane() === this.lane()) {
       this.takeDamage();
-    } else if (firstRow && inky.currentColumn() === this.currentColumn()) {
+    } else if (firstRow && inky.lane() === this.lane()) {
       this.takeDamage();
     }
   }
@@ -259,26 +285,24 @@ if (playerInput === 'girl') {
 }
 const player = new Character(characterSelect);
 
-const blinky = new Enemy(200, 145, 145, 'images/enemy-bug-blinky.png');
-
-const clyde = new Enemy(300, 60, 60, 'images/enemy-bug.png');
-clyde.x = 200;
-
-const inky = new Enemy(150, 230, 230, 'images/enemy-bug-inky.png');
-inky.x = 280;
-
-const pinky = new Enemy(150, 230, 230, 'images/enemy-bug-pinky.png');
+const allEnemies = [];
+//red
+const blinky = new Enemy(200, firstLane, 'images/enemy-bug-blinky.png');
+allEnemies.push(blinky);
+//orange
+const clyde = new Enemy(300, secondLane, 'images/enemy-bug.png');
+allEnemies.push(clyde);
+//blue
+const inky = new Enemy(200, thirdLane, 'images/enemy-bug-inky.png');
+allEnemies.push(inky);
+//pink
+const pinky = new Enemy(90, thirdLane, 'images/enemy-bug-pinky.png');
+allEnemies.push(pinky);
 
 const stone = new Stone(4, 0, 'images/Gem Blue.png');
 
 let stones = [];
 stones.push(stone);
-
-let allEnemies = [];
-allEnemies.push(clyde);
-allEnemies.push(blinky);
-allEnemies.push(inky);
-allEnemies.push(pinky);
 
 const heart1 = new Heart(-27, 455);
 const heart2 = new Heart(25, 455);
