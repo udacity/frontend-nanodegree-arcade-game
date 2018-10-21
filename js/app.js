@@ -1,8 +1,8 @@
 
+//lane choices for bug postioning
 const firstLane = 230;
 const secondLane = 145;
 const thirdLane = 60;
-const fourthLane = 30;
 
 const offScreen = -60;
 
@@ -13,7 +13,7 @@ class Enemy {
     //speed
     this.speed = speed;
     this.offScreen = -60;
-    this.lane = lane;
+    this.currentlane = lane;
     //starting postion of enemy to be saved for later
     this.startingX = this.offScreen;
 
@@ -30,45 +30,26 @@ class Enemy {
     this.sprite = sprite;
   }
 
-  lane() {
+    currentColumn() {
 
-    const firstLane = this.x <= 100;
-    const secondLane = this.x >= 101 && this.x <= 200;
-    const thirdLane = this.x >= 201 && this.x <= 300;
-    const fourthlane = this.x >= 301 && this.x <= 400;
+      const firstColumn = this.x <= 100;
+      const secondColumn = this.x >= 101 && this.x <= 200;
+      const thirdColumn = this.x >= 201 && this.x <= 300;
+      const fourthColumn = this.x >= 301 && this.x <= 400;
+      const fithColumn = this.x >= 401;
 
-    let result = "";
-    switch (currentLane) {
-      case firstLane:
-        result = 'firstColumn'
-        break;
-      case secondLane:
-        result = 'secondColumn'
-        break;
-      case secondLane:
-        result = 'thirdColumn'
-        break;
-      case secondLane:
-        result = 'thirdColumn'
-        break;
-      default:
-        result = 'fifthColumn'
+      if (firstColumn) {
+        return 'firstColumn'
+      } else if (secondColumn) {
+        return 'secondColumn'
+      } else if (thirdColumn) {
+        return 'thirdColumn'
+      } else if (fourthColumn) {
+        return 'fourthColumn'
+      } else if (fithColumn) {
+        return 'fifthColumn'
+      }
     }
-
-    let result = "";
-    if (firstLane) {
-      result = 'firstColumn'
-    } else if (secondLane) {
-      result = 'secondColumn'
-    } else if (thirdLane) {
-      result = 'thirdColumn'
-    } else if (fourthlane) {
-      result = 'fourthColumn'
-    } else {
-      result = 'fifthColumn'
-    }
-    return result;
-  }
 }
 
 
@@ -240,13 +221,13 @@ update() {
     const secondRow = this.y <= 160 && this.y >= 81;
     const thirdRow = this.y <= 80 && this.y > 0;
 
-    if (thirdRow && clyde.lane() === this.lane()) {
+    if (thirdRow && clyde.currentColumn() === this.currentColumn()) {
       this.takeDamage();
-    } else if (secondRow && blinky.lane() === this.lane()) {
+    } else if (secondRow && blinky.currentColumn() === this.currentColumn()) {
       this.takeDamage();
-    } else if (firstRow && pinky.lane() === this.lane()) {
+    } else if (firstRow && pinky.currentColumn() === this.currentColumn()) {
       this.takeDamage();
-    } else if (firstRow && inky.lane() === this.lane()) {
+    } else if (firstRow && inky.currentColumn() === this.currentColumn()) {
       this.takeDamage();
     }
   }
