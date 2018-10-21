@@ -105,32 +105,22 @@ class Character {
       this.startingY = 400;
       this.x = this.startingX;
       this.y = this.startingY;
+
+      //charts how many hearts the player has
       this.health = 4;
       this.isCollectingStones = true;
+
     //allows me to reset the postion of the charicter
-    this.takeDamage = function() {
-      //reset position
-      this.x = this.startingX;
-      this.y = this.startingY;
-      //lower health
-      this.health -= 1;
-      switch (this.health) {
-        case 3:
-          allHearts.pop();
-          break;
-        case 2:
-          allHearts.pop();
-          break;
-        case 1:
-          allHearts.pop();
-          break;
-        default:
-          allHearts.pop();
-          console.log("You lose");
-          break;
-      }
-    };
-  this.river = 10,
+      this.takeDamage = function() {
+        //reset position
+        this.x = this.startingX;
+        this.y = this.startingY;
+
+        //lower health
+        this.health -= 1;
+        allHearts.pop();
+
+      };
 
     // sprite
     this.sprite = sprite;
@@ -232,9 +222,6 @@ update() {
       this.takeDamage();
     }
   }
-}
-samePostionAsStone(stone) {
-  return this.x === stone.x && this.y === stone.y;
 }
 
 }
