@@ -1,24 +1,17 @@
 
 //lane choices for bug postioning
-const firstLane = 230;
-const secondLane = 145;
-const thirdLane = 60;
+const firstLane = 240;
+const secondLane = 160;
+const thirdLane = 80;
 
 const offScreen = -60;
 
-//player skins
-const boy = 'images/char-boy.png';
-const girl = 'images/char-girl.png';
-const girlHorns = 'images/char-horn-horn.png';
-const girlPink = 'images/char-pink-girl.png';
-const girlPrincess = 'images/char-princess-girl.png';
-
-//stone skins
-const red = 'images/Gem Red.png';
-const blue = 'images/Gem Blue.png';
-const orange = 'images/Gem Orange.png';
-const green = 'images/Gem Green.png';
-const purple = 'images/Gem Purple.png';
+//column choices
+const firstColumn = this.x <= 100;
+const secondColumn = this.x >= 101 && this.x <= 200;
+const thirdColumn = this.x >= 201 && this.x <= 300;
+const fourthColumn = this.x >= 301 && this.x <= 400;
+const fithColumn = this.x >= 401;
 
 // Enemies our player must avoid
 class Enemy {
@@ -44,26 +37,34 @@ class Enemy {
     this.sprite = sprite;
   }
 
-    currentColumn() {
-
-      const firstColumn = this.x <= 100;
-      const secondColumn = this.x >= 101 && this.x <= 200;
-      const thirdColumn = this.x >= 201 && this.x <= 300;
-      const fourthColumn = this.x >= 301 && this.x <= 400;
-      const fithColumn = this.x >= 401;
-
-      if (firstColumn) {
-        return 'firstColumn'
-      } else if (secondColumn) {
-        return 'secondColumn'
-      } else if (thirdColumn) {
-        return 'thirdColumn'
-      } else if (fourthColumn) {
-        return 'fourthColumn'
-      } else if (fithColumn) {
-        return 'fifthColumn'
-      }
+  currentColumn() {
+    let result = "";
+    if (this.x >= 4 && this.x <= 101) {
+      result = 'firstColumn'
+    } else if (this.x >= 102 && this.x <= 200) {
+      result = 'secondColumn'
+    } else if (this.x >= 201 && this.x <= 298) {
+      result = 'thirdColumn'
+    } else if (this.x >= 300 && this.x <= 398) {
+      result = 'fourthColumn'
+    } else {
+      result = 'fifthColumn'
     }
+    return result;
+  }
+
+  currentLane() {
+    let result = "";
+    if (this.y >= 80 && this.y <= 100) {
+      result = 'firstLane'
+    } else if (this.y >= 101 && this.y <= 180) {
+      result = 'secondLane'
+    } else if (this.y >= 181 && this.y <= 240) {
+      result = 'thirdLane'
+    }
+    return result;
+  }
+
 }
 
 
@@ -118,18 +119,31 @@ class Character {
   /*methods*/
   //create character onscreen
 }
+
 currentColumn() {
-  var result = "";
-  if (this.x <= 100) {
+  let result = "";
+  if (this.x >= 4 && this.x <= 101) {
     result = 'firstColumn'
-  } else if (this.x >= 101 && this.x <= 200) {
+  } else if (this.x >= 102 && this.x <= 200) {
     result = 'secondColumn'
-  } else if (this.x >= 201 && this.x <= 300) {
+  } else if (this.x >= 201 && this.x <= 298) {
     result = 'thirdColumn'
-  } else if (this.x >= 301 && this.x <= 400) {
+  } else if (this.x >= 300 && this.x <= 398) {
     result = 'fourthColumn'
   } else {
     result = 'fifthColumn'
+  }
+  return result;
+}
+
+currentLane() {
+  let result = "";
+  if (this.y >= 80 && this.y <= 100) {
+    result = 'firstLane'
+  } else if (this.y >= 101 && this.y <= 180) {
+    result = 'secondLane'
+  } else if (this.y >= 181 && this.y <= 240) {
+    result = 'thirdLane'
   }
   return result;
 }
@@ -148,6 +162,7 @@ render() {
   // This class requires an update(), render() and
   // a handleInput() method.
 }
+//movement
 handleInput(input) {
   let horizontalMovement = 98;
   let lateralMovement = 80;
@@ -173,13 +188,22 @@ handleInput(input) {
 
   //stone collections
   if (this.x === stone.x && this.y === stone.y) {
-    console.log("works");
     //makes it so the stone will be placed in random locations
     const xCoordinates = [4, 102, 298, 200, 396];
     stone.x = xCoordinates[Math.floor(Math.random() * xCoordinates.length)];
 
     //change the location of the stone from on the river to on the grass
     stone.y = stone.y === 0 ? 320 : 0;
+
+    //stone skins
+    const red = 'images/Gem Red.png';
+    const blue = 'images/Gem Blue.png';
+    const orange = 'images/Gem Orange.png';
+    const green = 'images/Gem Green.png';
+    const purple = 'images/Gem Purple.png';
+
+
+    //switches the color of the stone after collecting it
     switch (stone.sprite) {
       case blue:
         stone.sprite = red;
@@ -202,23 +226,15 @@ handleInput(input) {
   console.log(this.x + " " + this.y);
 }
 
-update() {
-  for (let enemy of allEnemies) {
-    const firstRow = this.y <= 240 && this.y >= 161;
-    const secondRow = this.y <= 160 && this.y >= 81;
-    const thirdRow = this.y <= 80 && this.y > 0;
+//collision system for our bugs
+  update() {
+    for (let enemy of allEnemies) {
 
-    if (thirdRow && clyde.currentColumn() === this.currentColumn()) {
-      this.takeDamage();
-    } else if (secondRow && blinky.currentColumn() === this.currentColumn()) {
-      this.takeDamage();
-    } else if (firstRow && pinky.currentColumn() === this.currentColumn()) {
-      this.takeDamage();
-    } else if (firstRow && inky.currentColumn() === this.currentColumn()) {
-      this.takeDamage();
+      if (enemy.currentLane() === this.currentLane() && enemy.currentColumn() === this.currentColumn()) {
+        this.takeDamage();
+      }
     }
   }
-}
 }
 //symbols that represent if a character takes takeDamage
 class Heart {
@@ -244,6 +260,14 @@ class Stone {
   }
 }
 
+
+//player skins
+const boy = 'images/char-boy.png';
+const girl = 'images/char-girl.png';
+const girlHorns = 'images/char-horn-horn.png';
+const girlPink = 'images/char-pink-girl.png';
+const girlPrincess = 'images/char-princess-girl.png';
+
 //the goal is for the charicter to gather all of the stones in the river
 // Now instantiate your objects.
 
@@ -251,13 +275,15 @@ class Stone {
 const playerInput = prompt("which character do you want to play as?");
 characterSelect = '';
 if (playerInput === 'girl') {
-  characterSelect = "images/char-cat-girl.png";
+  characterSelect = girl;
 } else if (playerInput === 'horn') {
-  characterSelect = 'images/char-horn-girl.png';
+  characterSelect = girlHorns;
+} else if (playerInput === 'girlPink') {
+  characterSelect = girlPink;
 } else if (playerInput === 'princess') {
-  characterSelect = 'images/char-princess-girl.png';
+  characterSelect = girlPrincess;
 } else {
-  characterSelect = 'images/char-boy.png';
+  characterSelect = boy;
 }
 const player = new Character(characterSelect);
 
