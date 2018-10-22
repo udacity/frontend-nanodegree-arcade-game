@@ -13,6 +13,13 @@ const girlHorns = 'images/char-horn-horn.png';
 const girlPink = 'images/char-pink-girl.png';
 const girlPrincess = 'images/char-princess-girl.png';
 
+//stone skins
+const red = 'images/Gem Red.png';
+const blue = 'images/Gem Blue.png';
+const orange = 'images/Gem Orange.png';
+const green = 'images/Gem Green.png';
+const purple = 'images/Gem Purple.png';
+
 // Enemies our player must avoid
 class Enemy {
 
@@ -76,22 +83,6 @@ Enemy.prototype.update = function(dt) {
 Enemy.prototype.render = function() {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
-
-
-
-//symbols that represent if a character takes takeDamage
-class Heart {
-  constructor(x, y) {
-    this.x = x;
-    this.y = y;
-    this.sprite = 'images/Heart.png';
-  }
-}
-
-Heart.prototype.render = function() {
-  ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
-
 
 /*player class*/
 class Character {
@@ -181,29 +172,34 @@ handleInput(input) {
 
 
   //stone collections
-  if (this.samePostionAsStone(stone)) {
+  if (this.x === stone.x && this.y === stone.y) {
+    console.log("works");
+    //makes it so the stone will be placed in random locations
     const xCoordinates = [4, 102, 298, 200, 396];
     stone.x = xCoordinates[Math.floor(Math.random() * xCoordinates.length)];
+
+    //change the location of the stone from on the river to on the grass
     stone.y = stone.y === 0 ? 320 : 0;
     switch (stone.sprite) {
-      case 'images/Gem Blue.png':
-        stone.sprite = 'images/Gem Red.png';
+      case blue:
+        stone.sprite = red;
         break;
-      case 'images/Gem Red.png':
-        stone.sprite = 'images/Gem Orange.png';
+      case red:
+        stone.sprite = orange;
         break;
-      case 'images/Gem Orange.png':
-        stone.sprite = 'images/Gem Green.png';
+      case orange:
+        stone.sprite = green;
         break;
-      case 'images/Gem Green.png':
-        stone.sprite = 'images/Gem Purple.png';
+      case green:
+        stone.sprite = purple;
         break;
-      case 'images/Gem Purple.png':
+      case purple:
         console.log("you win");
     }
   }
 
   /// where is my charicter
+  console.log(this.x + " " + this.y);
 }
 
 update() {
@@ -223,11 +219,22 @@ update() {
     }
   }
 }
-
+}
+//symbols that represent if a character takes takeDamage
+class Heart {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+    this.sprite = 'images/Heart.png';
+  }
 }
 
+Heart.prototype.render = function() {
+  ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
 class Stone {
-  constructor(x, y, sprite = 'images/Gem Blue.png') {
+  constructor(x, y, sprite = blue) {
     this.x = x,
       this.y = y,
       this.sprite = sprite
