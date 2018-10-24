@@ -19,7 +19,7 @@ class Enemy {
   constructor(speed, lane, sprite = 'images/enemy-bug.png') {
     //speed
     this.speed = speed;
-    this.offScreen = -60;
+    this.offScreen = offScreen;
     this.currentlane = lane;
     //starting postion of enemy to be saved for later
     this.startingX = this.offScreen;
