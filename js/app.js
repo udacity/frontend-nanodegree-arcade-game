@@ -100,7 +100,8 @@ class Character {
 
       //charts how many hearts the player has
       this.health = 4;
-      this.won = false;
+      this.stonesCollected = 0;
+
 
     //allows me to reset the postion of the charicter
       this.takeDamage = function() {
@@ -176,7 +177,7 @@ render() {
 //movement
 handleInput(input) {
 //dead people dont move
-if(this.health > 0 || this.won === false){
+if(this.health > 0 && this.stonesCollected < 5){
     let horizontalMovement = 98;
     let lateralMovement = 80;
 
@@ -221,25 +222,33 @@ if(this.health > 0 || this.won === false){
     switch (stone.sprite) {
       case blue:
         stone.sprite = red;
+        this.stonesCollected += 1;
+        console.log(this.stonesCollected);
         break;
       case red:
         stone.sprite = orange;
+        this.stonesCollected += 1;
+        console.log(this.stonesCollected);
         break;
       case orange:
         stone.sprite = green;
+        this.stonesCollected += 1;
+        console.log(this.stonesCollected);
         break;
       case green:
         stone.sprite = purple;
+        this.stonesCollected += 1;
+        console.log(this.stonesCollected);
         break;
       case purple:
       //on win
-        this.won = true;
+        this.stonesCollected += 1;
         stone.sprite = blue;
         stone.y = 0;
       //display modal
           modal.style.display = "block";
           headerText.textContent = "Congratulations You Win";
-          console.log("win");
+          console.log(this.stonesCollected);
       //puts player back to start
           this.respawn();
     }
@@ -332,10 +341,8 @@ const heart3 = new Heart(75, 455);
 const heart4 = new Heart(127, 455);
 
 let allHearts = [];
-allHearts.push(heart1);
-allHearts.push(heart2);
-allHearts.push(heart3);
-allHearts.push(heart4);
+
+allHearts.push(heart1, heart2, heart3, heart4);
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
