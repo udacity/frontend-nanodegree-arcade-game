@@ -175,25 +175,27 @@ render() {
 }
 //movement
 handleInput(input) {
+//dead people dont move
+if(this.health > 0){
+    let horizontalMovement = 98;
+    let lateralMovement = 80;
 
-  let horizontalMovement = 98;
-  let lateralMovement = 80;
-
-  if (input === 'left') {
-    if (this.x > 5) {
-      this.x -= horizontalMovement;
-    }
-  } else if (input === 'up') {
-    if (this.y > 5) {
-      this.y -= lateralMovement;
-    }
-  } else if (input === 'right') {
-    if (this.x < 350) {
-      this.x += horizontalMovement;
-    }
-  } else if (input === 'down') {
-    if (this.y < 400) {
-      this.y += lateralMovement;
+    if (input === 'left') {
+      if (this.x > 5) {
+        this.x -= horizontalMovement;
+      }
+    } else if (input === 'up') {
+      if (this.y > 5) {
+        this.y -= lateralMovement;
+      }
+    } else if (input === 'right') {
+      if (this.x < 350) {
+        this.x += horizontalMovement;
+      }
+    } else if (input === 'down') {
+      if (this.y < 400) {
+        this.y += lateralMovement;
+      }
     }
   }
 
@@ -230,6 +232,8 @@ handleInput(input) {
         stone.sprite = purple;
         break;
       case purple:
+        stone.sprite = blue;
+        stone.y = 0;
       //on win
           modal.style.display = "block";
           headerText.textContent = "Congratulations You Win";
