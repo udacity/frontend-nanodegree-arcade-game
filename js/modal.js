@@ -6,23 +6,9 @@ modal.id = "modal";
 // Create modal content
 const modalHeading = document.createElement("h1");
 
-const headerText = document.createTextNode("");
-
-//on player death
-if(player.health <= 0){
-  headerText = "You Died";
-  modal.style.display = "inline";
-}
-
-//on player death
-if(player.health <= 0){
-  headerText = "You Died";
-}
-
-const headerText = document.createTextNode("Congratulations You Win");
-
+let headerText = document.createTextNode("");
 document.body.appendChild(modalHeading);
-modalHeading.appendChild(headerTextWin);
+modalHeading.appendChild(headerText);
 modal.appendChild(modalHeading);
 
 

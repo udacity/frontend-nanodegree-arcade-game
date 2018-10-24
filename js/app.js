@@ -100,7 +100,7 @@ class Character {
 
       //charts how many hearts the player has
       this.health = 4;
-      this.isCollectingStones = true;
+      this.won = false;
 
     //allows me to reset the postion of the charicter
       this.takeDamage = function() {
@@ -112,6 +112,12 @@ class Character {
         this.health -= 1;
         allHearts.pop();
 
+        //on player death
+        if(this.health <= 0){
+          headerText.textContent = "You Died";
+          modal.style.display = "block";
+          console.log("lose");
+        }
       };
 
     // sprite
@@ -218,12 +224,12 @@ handleInput(input) {
         stone.sprite = purple;
         break;
       case purple:
-        console.log("you win");
+      //on win
+          modal.style.display = "block";
+          headerText.textContent = "Congratulations You Win";
+          console.log("win");
     }
   }
-
-  /// where is my charicter
-  console.log(this.x + " " + this.y);
 }
 
 //collision system for our bugs
