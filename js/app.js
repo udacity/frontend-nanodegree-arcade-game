@@ -176,7 +176,7 @@ render() {
 //movement
 handleInput(input) {
 //dead people dont move
-if(this.health > 0){
+if(this.health > 0 || this.won === false){
     let horizontalMovement = 98;
     let lateralMovement = 80;
 
@@ -232,12 +232,16 @@ if(this.health > 0){
         stone.sprite = purple;
         break;
       case purple:
+      //on win
+        this.won = true;
         stone.sprite = blue;
         stone.y = 0;
-      //on win
+      //display modal
           modal.style.display = "block";
           headerText.textContent = "Congratulations You Win";
           console.log("win");
+      //puts player back to start
+          this.respawn();
     }
   }
 }
