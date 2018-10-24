@@ -104,9 +104,8 @@ class Character {
 
     //allows me to reset the postion of the charicter
       this.takeDamage = function() {
-        //reset position
-        this.x = this.startingX;
-        this.y = this.startingY;
+
+        this.respawn();
 
         //lower health
         this.health -= 1;
@@ -124,6 +123,12 @@ class Character {
     this.sprite = sprite;
   /*methods*/
   //create character onscreen
+}
+
+//reset position
+respawn(){
+  this.x = this.startingX;
+  this.y = this.startingY;
 }
 
 currentColumn() {
@@ -170,6 +175,7 @@ render() {
 }
 //movement
 handleInput(input) {
+
   let horizontalMovement = 98;
   let lateralMovement = 80;
 
@@ -208,7 +214,7 @@ handleInput(input) {
     const green = 'images/Gem Green.png';
     const purple = 'images/Gem Purple.png';
 
-
+    //this needs to cyle through infintely
     //switches the color of the stone after collecting it
     switch (stone.sprite) {
       case blue:
