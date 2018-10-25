@@ -192,12 +192,12 @@ var Engine = (function(global) {
         'images/enemy-bug.png',
         'images/char-boy.png',
         'images/char-cat-girl.png',
-        'images/char-cat-girl.png',
         'images/char-horn-girl.png',
+        'images/char-pink-girl.png',
+        'images/char-princess-girl.png',
         'images/enemy-bug-blinky.png',
         'images/enemy-bug-pinky.png',
         'images/enemy-bug-inky.png',
-        'images/char-princess-girl.png',
         'images/Heart.png'
 
     ]);

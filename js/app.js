@@ -275,23 +275,25 @@ class Stone {
 
 //player skins
 const boy = 'images/char-boy.png';
-const girl = 'images/char-girl.png';
-const girlHorns = 'images/char-horn-horn.png';
-const girlPink = 'images/char-pink-girl.png';
+const girl = 'images/char-cat-girl.png';
+const girlHorns = 'images/char-horn-girl.png';
+const pinkGirl = 'images/char-pink-girl.png';
 const girlPrincess = 'images/char-princess-girl.png';
 
 //the goal is for the charicter to gather all of the stones in the river
 // Now instantiate your objects.
 
 // Place the player object in a variable called player
-const playerInput = prompt("which character do you want to play as? , \n boy\n girl\n horngirl\n pink girl\n Princess", "Boy");
+const playerInput = prompt("which character do you want to play as? , \n boy\n girl\n horn girl\n pink girl\n princess", "boy");
 characterSelect = '';
-if (playerInput === 'girl') {
-  characterSelect = 'images/char-girl.png';
-} else if (playerInput === 'horngirl') {
+if (playerInput === 'boy') {
+  characterSelect = boy;
+} else if (playerInput === 'girl') {
+  characterSelect = girl;
+} else if (playerInput === 'horn girl') {
   characterSelect = girlHorns;
-} else if (playerInput === 'girlPink') {
-  characterSelect = girlPink;
+} else if (playerInput === 'pink girl') {
+  characterSelect = pinkGirl;
 } else if (playerInput === 'princess') {
   characterSelect = girlPrincess;
 } else {
