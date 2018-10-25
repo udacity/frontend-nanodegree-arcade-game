@@ -19,9 +19,7 @@
   "devDependencies": {
     "eslint": "^5.7.0",
     "eslint-config-google": "^0.10.0",
-    "gulp": "^3.9.1"
-  },
-  "dependencies": {
+    "gulp": "^3.9.1",
     "gulp-eslint": "^5.0.0"
-  }
+  },
 }
