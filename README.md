@@ -2,10 +2,10 @@ frontend-nanodegree-arcade-game
 ===============================
 
 ## My Contributions
-Though this project did come with a bit of starting code to get its users going. I developed multiple classes from the ground up and created collision for the assets that the project provided for me. Utilized properties and methods to have multiple object interact with each other. 
+Though this project did come with a bit of starting code to get its users going. I developed multiple classes from the ground up and created collision for the assets that the project provided for me. Utilized properties and methods to have multiple object interact with each other.
 
 ## Play  
-If you would like to play click [here](https://rashadmad.github.io/frontend-nanodegree-arcade-game)
+If you would like to play click [here](https://rashadmad.github.io/frontend-nanodegree-arcade-game/)
 
 ### What I learned
 This project is the first time that I used *classes* with *object oriented programming*. Now when it comes to everything I see in the real world. I turn things into objects.
