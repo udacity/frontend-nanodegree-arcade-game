@@ -13,7 +13,7 @@ modal.appendChild(modalHeading);
 
 
 // Get the button that closes the modal
-const buttonText = document.createTextNode("Play agin");
+const buttonText = document.createTextNode("Play again");
 const modalButton = document.createElement("button");
 modalButton.appendChild(buttonText);
 modal.appendChild(modalButton);
@@ -22,6 +22,10 @@ modalButton.id = "modalButton";
 // When the user clicks on the button, open the modal
 modalButton.onclick = function() {
     modal.style.display = "none";
+    player.health = 4;
+    player.stonesCollected = 0;
+    allHearts = [];
+    allHearts.push(heart1, heart2, heart3, heart4);
 }
 
 // When the user clicks anywhere outside of the modal, close it

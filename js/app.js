@@ -111,6 +111,7 @@ class Character {
         //lower health
         this.health -= 1;
         allHearts.pop();
+        console.log(allHearts);
 
         //on player death
         if(this.health <= 0){
