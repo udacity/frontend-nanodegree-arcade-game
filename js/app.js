@@ -111,13 +111,11 @@ class Character {
         //lower health
         this.health -= 1;
         allHearts.pop();
-        console.log(allHearts);
 
         //on player death
         if(this.health <= 0){
           headerText.textContent = "You Died";
           modal.style.display = "block";
-          console.log("lose");
         }
       };
 
@@ -163,17 +161,6 @@ currentLane() {
 
 render() {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-  // hint update method...update position methods
-  // collision
-  // did player x & y collide with Enemy?
-  // WIN?
-  // did player reach a winning tile?
-  // postion player back to starting position - x,y must now = starting x,y
-  // movement handleing
-  // update postioning according to input x,y
-
-  // This class requires an update(), render() and
-  // a handleInput() method.
 }
 //movement
 handleInput(input) {
@@ -224,22 +211,18 @@ if(this.health > 0 && this.stonesCollected < 5){
       case blue:
         stone.sprite = red;
         this.stonesCollected += 1;
-        console.log(this.stonesCollected);
         break;
       case red:
         stone.sprite = orange;
         this.stonesCollected += 1;
-        console.log(this.stonesCollected);
         break;
       case orange:
         stone.sprite = green;
         this.stonesCollected += 1;
-        console.log(this.stonesCollected);
         break;
       case green:
         stone.sprite = purple;
         this.stonesCollected += 1;
-        console.log(this.stonesCollected);
         break;
       case purple:
       //on win
@@ -249,7 +232,6 @@ if(this.health > 0 && this.stonesCollected < 5){
       //display modal
           modal.style.display = "block";
           headerText.textContent = "Congratulations You Win";
-          console.log(this.stonesCollected);
       //puts player back to start
           this.respawn();
     }
@@ -302,11 +284,11 @@ const girlPrincess = 'images/char-princess-girl.png';
 // Now instantiate your objects.
 
 // Place the player object in a variable called player
-const playerInput = prompt("which character do you want to play as?");
+const playerInput = prompt("which character do you want to play as? , \n boy\n girl\n horngirl\n pink girl\n Princess", "Boy");
 characterSelect = '';
 if (playerInput === 'girl') {
-  characterSelect = girl;
-} else if (playerInput === 'horn') {
+  characterSelect = 'images/char-girl.png';
+} else if (playerInput === 'horngirl') {
   characterSelect = girlHorns;
 } else if (playerInput === 'girlPink') {
   characterSelect = girlPink;
