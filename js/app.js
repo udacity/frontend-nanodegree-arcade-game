@@ -1,17 +1,16 @@
 
 //lane choices for bug postioning
-const firstLane = 240;
-const secondLane = 160;
-const thirdLane = 80;
+const firstLaneSpawn = 240;
+const secondLaneSpawn = 160;
+const thirdLaneSpawn = 80;
 
 const offScreen = -60;
 
 //column choices
-const firstColumn = this.x <= 100;
-const secondColumn = this.x >= 101 && this.x <= 200;
-const thirdColumn = this.x >= 201 && this.x <= 300;
-const fourthColumn = this.x >= 301 && this.x <= 400;
-const fithColumn = this.x >= 401;
+const FIRSTCOLUMN = this.x >= 4 && this.x <= 101;
+const SECONDCOLUMN = this.x >= 102 && this.x <= 200;
+const THIRDCOLUMN = this.x >= 201 && this.x <= 298;
+const FOURTHCOLUMN = this.x >= 300 && this.x <= 398;
 
 // Enemies our player must avoid
 class Enemy {
@@ -39,13 +38,13 @@ class Enemy {
 
   currentColumn() {
     let result = "";
-    if (this.x >= 4 && this.x <= 101) {
+    if (FIRSTCOLUMN) {
       result = 'firstColumn'
-    } else if (this.x >= 102 && this.x <= 200) {
+    } else if (SECONDCOLUMN) {
       result = 'secondColumn'
-    } else if (this.x >= 201 && this.x <= 298) {
+    } else if (THIRDCOLUMN) {
       result = 'thirdColumn'
-    } else if (this.x >= 300 && this.x <= 398) {
+    } else if (FOURTHCOLUMN) {
       result = 'fourthColumn'
     } else {
       result = 'fifthColumn'
@@ -133,13 +132,13 @@ respawn(){
 
 currentColumn() {
   let result = "";
-  if (this.x >= 4 && this.x <= 101) {
+  if (FIRSTCOLUMN) {
     result = 'firstColumn'
-  } else if (this.x >= 102 && this.x <= 200) {
+  } else if (SECONDCOLUMN) {
     result = 'secondColumn'
-  } else if (this.x >= 201 && this.x <= 298) {
+  } else if (THIRDCOLUMN) {
     result = 'thirdColumn'
-  } else if (this.x >= 300 && this.x <= 398) {
+  } else if (FOURTHCOLUMN) {
     result = 'fourthColumn'
   } else {
     result = 'fifthColumn'
@@ -303,16 +302,16 @@ const player = new Character(characterSelect);
 
 const allEnemies = [];
 //red
-const blinky = new Enemy(200, firstLane, 'images/enemy-bug-blinky.png');
+const blinky = new Enemy(200, firstLaneSpawn, 'images/enemy-bug-blinky.png');
 allEnemies.push(blinky);
 //orange
-const clyde = new Enemy(300, secondLane, 'images/enemy-bug.png');
+const clyde = new Enemy(300, secondLaneSpawn, 'images/enemy-bug.png');
 allEnemies.push(clyde);
 //blue
-const inky = new Enemy(200, thirdLane, 'images/enemy-bug-inky.png');
+const inky = new Enemy(200, thirdLaneSpawn, 'images/enemy-bug-inky.png');
 allEnemies.push(inky);
 //pink
-const pinky = new Enemy(90, thirdLane, 'images/enemy-bug-pinky.png');
+const pinky = new Enemy(90, thirdLaneSpawn, 'images/enemy-bug-pinky.png');
 allEnemies.push(pinky);
 
 const stone = new Stone(4, 0, 'images/Gem Blue.png');
