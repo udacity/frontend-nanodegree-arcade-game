@@ -2,6 +2,7 @@
 const modal = document.createElement("div");
 document.body.appendChild(modal);
 modal.id = "modal";
+modal.class = "play-again";
 
 // Create modal content
 const modalHeading = document.createElement("h1");
@@ -21,16 +22,14 @@ modalButton.id = "modalButton";
 
 // When the user clicks on the button, open the modal
 modalButton.onclick = function() {
-    modal.style.display = "none";
-    player.health = 4;
-    player.stonesCollected = 0;
-    allHearts = [];
-    allHearts.push(heart1, heart2, heart3, heart4);
-}
+  modal.style.display = "none";
+  createCharacter();
+  // player.resetHealth();
+};
 
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
-}
+  if (event.target === modal) {
+    modal.style.display = "none";
+  }
+};
