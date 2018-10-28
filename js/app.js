@@ -1,8 +1,8 @@
 
 //lane choices for bug postioning
-const firstLaneSpawn = 240;
-const secondLaneSpawn = 160;
-const thirdLaneSpawn = 80;
+const FIRSTLANESPAWN = 240;
+const SECONDLANESPAWN = 160;
+const THIRDLANESPAWN = 80;
 
 const offScreen = -60;
 
@@ -11,6 +11,12 @@ const FIRSTCOLUMN = this.x >= 4 && this.x <= 101;
 const SECONDCOLUMN = this.x >= 102 && this.x <= 200;
 const THIRDCOLUMN = this.x >= 201 && this.x <= 298;
 const FOURTHCOLUMN = this.x >= 300 && this.x <= 398;
+
+//row choices
+const FIRSTLANE = this.y >= 80 && this.y <= 100;
+const SECONDLANE = this.y >= 101 && this.y <= 180;
+const THIRDLANE = this.y >= 181 && this.y <= 240;
+
 
 // Enemies our player must avoid
 class Enemy {
@@ -22,7 +28,6 @@ class Enemy {
     this.currentlane = lane;
     //starting postion of enemy to be saved for later
     this.startingX = this.offScreen;
-
     //exact position of enemy, can be manipulated per instance
     this.x = this.offScreen;
     this.y = lane;
@@ -54,16 +59,15 @@ class Enemy {
 
   currentLane() {
     let result = "";
-    if (this.y >= 80 && this.y <= 100) {
+    if (FIRSTLANE) {
       result = 'firstLane'
-    } else if (this.y >= 101 && this.y <= 180) {
+    } else if (SECONDLANE) {
       result = 'secondLane'
-    } else if (this.y >= 181 && this.y <= 240) {
+    } else if (THIRDLANE) {
       result = 'thirdLane'
     }
     return result;
   }
-
 }
 
 
@@ -302,16 +306,16 @@ const player = new Character(characterSelect);
 
 const allEnemies = [];
 //red
-const blinky = new Enemy(200, firstLaneSpawn, 'images/enemy-bug-blinky.png');
+const blinky = new Enemy(200, FIRSTLANESPAWN, 'images/enemy-bug-blinky.png');
 allEnemies.push(blinky);
 //orange
-const clyde = new Enemy(300, secondLaneSpawn, 'images/enemy-bug.png');
+const clyde = new Enemy(300, SECONDLANESPAWN, 'images/enemy-bug.png');
 allEnemies.push(clyde);
 //blue
-const inky = new Enemy(200, thirdLaneSpawn, 'images/enemy-bug-inky.png');
+const inky = new Enemy(200, THIRDLANESPAWN, 'images/enemy-bug-inky.png');
 allEnemies.push(inky);
 //pink
-const pinky = new Enemy(90, thirdLaneSpawn, 'images/enemy-bug-pinky.png');
+const pinky = new Enemy(90, THIRDLANESPAWN, 'images/enemy-bug-pinky.png');
 allEnemies.push(pinky);
 
 const stone = new Stone(4, 0, 'images/Gem Blue.png');
