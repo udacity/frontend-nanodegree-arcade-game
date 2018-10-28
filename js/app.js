@@ -6,18 +6,6 @@ const THIRDLANESPAWN = 80;
 
 const offScreen = -60;
 
-//column choices
-const FIRSTCOLUMN = this.x >= 4 && this.x <= 101;
-const SECONDCOLUMN = this.x >= 102 && this.x <= 200;
-const THIRDCOLUMN = this.x >= 201 && this.x <= 298;
-const FOURTHCOLUMN = this.x >= 300 && this.x <= 398;
-
-//row choices
-const FIRSTLANE = this.y >= 80 && this.y <= 100;
-const SECONDLANE = this.y >= 101 && this.y <= 180;
-const THIRDLANE = this.y >= 181 && this.y <= 240;
-
-
 // Enemies our player must avoid
 class Enemy {
 
@@ -26,8 +14,10 @@ class Enemy {
     this.speed = speed;
     this.offScreen = offScreen;
     this.currentlane = lane;
+
     //starting postion of enemy to be saved for later
     this.startingX = this.offScreen;
+
     //exact position of enemy, can be manipulated per instance
     this.x = this.offScreen;
     this.y = lane;
@@ -42,6 +32,14 @@ class Enemy {
   }
 
   currentColumn() {
+
+
+      //column choices
+      const FIRSTCOLUMN = this.x >= 4 && this.x <= 101;
+      const SECONDCOLUMN = this.x >= 102 && this.x <= 200;
+      const THIRDCOLUMN = this.x >= 201 && this.x <= 298;
+      const FOURTHCOLUMN = this.x >= 300 && this.x <= 398;
+
     let result = "";
     if (FIRSTCOLUMN) {
       result = 'firstColumn'
@@ -58,6 +56,11 @@ class Enemy {
   }
 
   currentLane() {
+    //row choices
+    const FIRSTLANE = this.y >= 80 && this.y <= 100;
+    const SECONDLANE = this.y >= 101 && this.y <= 180;
+    const THIRDLANE = this.y >= 181 && this.y <= 240;
+
     let result = "";
     if (FIRSTLANE) {
       result = 'firstLane'
@@ -105,27 +108,24 @@ class Character {
       this.health = 4;
       this.stonesCollected = 0;
 
-
-    //allows me to reset the postion of the charicter
-      this.takeDamage = function() {
-
-        this.respawn();
-
-        //lower health
-        this.health -= 1;
-        allHearts.pop();
-
-        //on player death
-        if(this.health <= 0){
-          headerText.textContent = "You Died";
-          modal.style.display = "block";
-        }
-      };
-
     // sprite
     this.sprite = sprite;
   /*methods*/
   //create character onscreen
+}
+
+takeDamage(){
+  this.respawn();
+
+  //lower health
+  this.health -= 1;
+  allHearts.pop();
+
+  //on player death
+  if(this.health <= 0){
+    headerText.textContent = "You Died";
+    modal.style.display = "block";
+  }
 }
 
 //reset position
@@ -135,6 +135,13 @@ respawn(){
 }
 
 currentColumn() {
+
+  //column choices
+  const FIRSTCOLUMN = this.x >= 4 && this.x <= 101
+  const SECONDCOLUMN = this.x >= 102 && this.x <= 200
+  const THIRDCOLUMN = this.x >= 201 && this.x <= 298
+  const FOURTHCOLUMN = this.x >= 300 && this.x <= 398
+
   let result = "";
   if (FIRSTCOLUMN) {
     result = 'firstColumn'
@@ -151,12 +158,19 @@ currentColumn() {
 }
 
 currentLane() {
+
+  //row choices
+  const FIRSTLANE = this.y >= 80 && this.y <= 100;
+  const SECONDLANE = this.y >= 101 && this.y <= 180;
+  const THIRDLANE = this.y >= 181 && this.y <= 240;
+
+
   let result = "";
-  if (this.y >= 80 && this.y <= 100) {
+  if (FIRSTLANE) {
     result = 'firstLane'
-  } else if (this.y >= 101 && this.y <= 180) {
+  } else if (SECONDLANE) {
     result = 'secondLane'
-  } else if (this.y >= 181 && this.y <= 240) {
+  } else if (THIRDLANE) {
     result = 'thirdLane'
   }
   return result;
