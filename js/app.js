@@ -34,10 +34,10 @@ class Enemy {
 
 
     //column choices
-    const FIRSTCOLUMN = this.x >= 4 && this.x <= 101;
-    const SECONDCOLUMN = this.x >= 102 && this.x <= 200;
-    const THIRDCOLUMN = this.x >= 201 && this.x <= 298;
-    const FOURTHCOLUMN = this.x >= 300 && this.x <= 398;
+    const FIRSTCOLUMN = this.x >= 4 && this.x <= 90;
+    const SECONDCOLUMN = this.x >= 102 && this.x <= 160;
+    const THIRDCOLUMN = this.x >= 161 && this.x <= 250;
+    const FOURTHCOLUMN = this.x >= 310 && this.x <= 350;
 
     let result = "";
     if (FIRSTCOLUMN) {
@@ -135,10 +135,10 @@ class Character {
 
   currentColumn() {
     //column choices
-    const FIRSTCOLUMN = this.x >= 4 && this.x <= 101
-    const SECONDCOLUMN = this.x >= 102 && this.x <= 200
-    const THIRDCOLUMN = this.x >= 201 && this.x <= 298
-    const FOURTHCOLUMN = this.x >= 300 && this.x <= 398
+    const FIRSTCOLUMN = this.x >= 4 && this.x <= 90;
+    const SECONDCOLUMN = this.x >= 102 && this.x <= 160;
+    const THIRDCOLUMN = this.x >= 210 && this.x <= 230;
+    const FOURTHCOLUMN = this.x >= 360 && this.x <= 396;
 
     let result = "";
     if (FIRSTCOLUMN) {
@@ -251,6 +251,7 @@ class Character {
           this.respawn();
       }
     }
+    console.log(this.x + " " + this.y);
   }
 
   //collision system for our bugs
