@@ -29,9 +29,8 @@ class Enemy {
   update(changeInTime) {
     //is enemy outside of boundary in other words reached its destination?
     if (this.sprite === 'images/enemy-bug-red.png'){
-      console.log(this.x)
     }
-    if (this.x <= 500) {
+    if (Math.abs(this.x) <= 500) {
       this.x += this.speed * changeInTime;
       //Reset position to start
     } else {

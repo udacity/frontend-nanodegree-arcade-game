@@ -63,6 +63,8 @@ const inky = new Enemy(200, thirdLane, 'images/enemy-bug-blue.png');
 allEnemies.push(inky);
 //pink
 const pinky = new Enemy(90, thirdLane, 'images/enemy-bug-pink.png');
+pinky.startingX = 499;
+pinky.speed = -200;
 allEnemies.push(pinky);
 
 // This listens for key presses and sends the keys to your

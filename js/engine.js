@@ -80,17 +80,15 @@ let Engine = (function(global) {
    */
   function update(changeInTime) {
     updateEntities(changeInTime);
-    checkCollisions();
+    for (let enemy of allEnemies) {
+     if ( playerCollidedWithEnemy(enemy) ){ player.takeDamage(); }
+    }
+
   }
 
-  function checkCollisions() {
-    for (let enemy of allEnemies) {
-      if (currentRow(enemy.y) === currentRow(player.y) &&
-          currentEnemyColumn(enemy.x) === currentColumn(player.x)) {
-
-        player.takeDamage();
-      }
-    }
+  function playerCollidedWithEnemy(enemy) {
+    return currentRow(enemy.y) === currentRow(player.y) &&
+        currentEnemyColumn(enemy.x) === currentColumn(player.x);
   }
 
   let currentEnemyColumn = function (yCoordinate) {
