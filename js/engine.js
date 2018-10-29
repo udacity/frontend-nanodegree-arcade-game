@@ -85,26 +85,25 @@ let Engine = (function(global) {
 
   function checkCollisions() {
     for (let enemy of allEnemies) {
-      if (currentRow(enemy) === currentRow(player) &&
-          currentColumn(enemy) === currentColumn(player)) {
+      if (currentRow(enemy.y) === currentRow(player.y) &&
+          currentEnemyColumn(enemy.x) === currentColumn(player.x)) {
+
         player.takeDamage();
       }
     }
   }
-//column choices
-  function withinFirstColumn(x) {return x >= 4 && x <= 101;}
-  function withinSecondColumn(x) { return x >= 102 && x <= 200;}
-  function withinThirdColumn(x) { return x >= 201 && x <= 298;}
-  function withinFourthColumn(x) { return x >= 300 && x <= 398;}
-  function withinFifthColumn(x) {return x >= 398;}
 
-  let currentColumn = function (objectWithYCoordinate) {
-    return getIndexFromValue(ROW_Y_COORDINATES, objectWithYCoordinate.y);
+  let currentEnemyColumn = function (yCoordinate) {
+    return getIndexFromRange(COLUMN_X_COORDINATES, yCoordinate);
+  };
+
+  let currentColumn = function (yCoordinate) {
+    return getIndexFromValue(COLUMN_X_COORDINATES, yCoordinate);
 
   };
 
-  let currentRow = function currentRow(objectWithYCoordinate) {
-    return getIndexFromValue(COLUMN_X_COORDINATES, objectWithYCoordinate.x);
+  let currentRow = function (xCoordinate) {
+    return getIndexFromValue(ROW_Y_COORDINATES, xCoordinate);
   };
   /* This is called by the update function and loops through all of the
    * objects within your allEnemies array as defined in app.js and calls
@@ -214,14 +213,13 @@ let Engine = (function(global) {
     'images/enemy-bug-orange.png',
     'images/char-boy.png',
     'images/char-cat-girl.png',
-    'images/char-cat-girl.png',
+    'images/char-pink-girl.png',
     'images/char-horn-girl.png',
+    'images/char-princess-girl.png',
     'images/enemy-bug-red.png',
     'images/enemy-bug-pink.png',
     'images/enemy-bug-blue.png',
-    'images/char-princess-girl.png',
     'images/Heart.png'
-
   ]);
   Resources.onReady(init);
 

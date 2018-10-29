@@ -6,6 +6,11 @@ let getIndexFromValue = function(array, value) {
   return array.findIndex(function(e) { return e === Math.floor(value) });
 };
 
+let getIndexFromRange = function(array, value) {
+  return array.findIndex(function(e) {
+    return e === Math.round(value/100)*100
+  });
+};
 // const firstLane = 240;
 // const secondLane = 160;
 // const thirdLane = 80;
@@ -13,12 +18,14 @@ const firstLane = ROW_Y_COORDINATES[3];
 const secondLane = ROW_Y_COORDINATES[2];
 const thirdLane = ROW_Y_COORDINATES[1];
 const offScreen = -60;
+
 //player skins
 const boy = 'images/char-boy.png';
 const girl = 'images/char-girl.png';
-const girlHorns = 'images/char-horn-horn.png';
+const girlHorns = 'images/char-horn-girl.png';
 const girlPink = 'images/char-pink-girl.png';
 const girlPrincess = 'images/char-princess-girl.png';
+const girlCat = 'images/char-cat-girl.png';
 const allEnemies = [];
 //gem skins
 const gemRed = new Gem(0, 0, 'images/Gem Red.png');

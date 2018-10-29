@@ -1,7 +1,7 @@
 /*player class*/
 class Player {
   // constructor
-  constructor(sprite = "boy") {
+  constructor(sprite) {
     //allows me to save positioning for latter
     this.startingX = COLUMN_X_COORDINATES[2];
     this.startingY = 410;
@@ -17,10 +17,6 @@ class Player {
     this._sprite = sprite;
   }
 
-  get sprite() {
-    return this._sprite;
-  }
-
   get x() {
     return this._x;
   }
@@ -31,20 +27,22 @@ class Player {
   }
 
   static createPlayer() {
-    let playerInput = prompt('which character do you want to play as?');
-    let characterSelect = '';
+    let playerInput = prompt("which character do you want to play as? , \n boy\n girl\n cat girl\n horn girl\n pink girl\n princess", "boy");
+    let selectedSprite;
     if (playerInput === 'girl') {
-      characterSelect = girl;
-    } else if (playerInput === 'horn') {
-      characterSelect = girlHorns;
-    } else if (playerInput === 'girlPink') {
-      characterSelect = girlPink;
+      selectedSprite = girl;
+    } else if (playerInput === 'horn girl') {
+      selectedSprite = girlHorns;
+    } else if (playerInput === 'pink girl') {
+      selectedSprite = girlPink;
     } else if (playerInput === 'princess') {
-      characterSelect = girlPrincess;
+      selectedSprite = girlPrincess;
+    } else if (playerInput === 'cat girl') {
+      selectedSprite = girlCat;
     } else {
-      characterSelect = boy;
+      selectedSprite = boy;
     }
-    return new Player(characterSelect);
+    return new Player(selectedSprite);
   };
 
 //allows me to reset the position of the character
