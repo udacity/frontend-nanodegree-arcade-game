@@ -1,7 +1,7 @@
 // Enemies our player must avoid
 class Enemy {
 
-  constructor(speed, lane, sprite = 'images/enemy-bug.png') {
+  constructor(speed, lane, sprite = 'images/enemy-bug-orange.png') {
     //speed
     this.speed = speed;
     this.startingY = lane;
@@ -26,10 +26,12 @@ class Enemy {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
   }
 
-  update(dt) {
+  update(changeInTime) {
     //is enemy outside of boundary in other words reached its destination?
+    if (this.sprite === 'images/enemy-bug-red.png'){
+    }
     if (this.x < 500) {
-      this.x += this.speed * dt;
+      this.x += this.speed * changeInTime;
       //Reset position to start
     } else {
       this.resetPosition();

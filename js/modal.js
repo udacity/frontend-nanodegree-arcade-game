@@ -23,8 +23,7 @@ modalButton.id = "modalButton";
 // When the user clicks on the button, open the modal
 modalButton.onclick = function() {
   modal.style.display = "none";
-  createCharacter();
-  // player.resetHealth();
+  restartGame();
 };
 
 // When the user clicks anywhere outside of the modal, close it

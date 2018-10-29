@@ -25,27 +25,27 @@ let Engine = (function(global) {
       ctx = canvas.getContext('2d'),
       lastTime;
 
-  canvas.width = 505;
-  canvas.height = 606;
+  canvas.width = 500;
+  canvas.height = 600;
   doc.body.appendChild(canvas);
 
   /* This function serves as the kickoff point for the game loop itself
    * and handles properly calling the update and render methods.
    */
   function main() {
-    /* Get our time delta information which is required if your game
+    /* Get our time delta(changeInTime) information which is required if your game
      * requires smooth animation. Because everyone's computer processes
      * instructions at different speeds we need a constant value that
      * would be the same for everyone (regardless of how fast their
      * computer is) - hurray time!
      */
-    var now = Date.now(),
-        dt = (now - lastTime) / 1000.0;
+    let now = Date.now();
+    let changeInTime = (now - lastTime) / 1000.0;
 
     /* Call our update/render functions, pass along the time delta to
      * our update function since it may be used for smooth animation.
      */
-    update(dt);
+    update(changeInTime);
     render();
 
     /* Set our lastTime variable which is used to determine the time delta
@@ -78,53 +78,34 @@ let Engine = (function(global) {
    * functionality this way (you could just implement collision detection
    * on the entities themselves within your app.js file).
    */
-  function update(dt) {
-    updateEntities(dt);
+  function update(changeInTime) {
+    updateEntities(changeInTime);
     checkCollisions();
   }
 
   function checkCollisions() {
     for (let enemy of allEnemies) {
       if (currentRow(enemy) === currentRow(player) &&
-          currentColumn(enemy.x) === currentColumn(player.x)) {
+          currentColumn(enemy) === currentColumn(player)) {
         player.takeDamage();
       }
     }
-  };
+  }
 //column choices
-  function firstColumn(x) {return x >= 4 && x <= 101;}
-  function secondColumn(x) { return x >= 102 && x <= 200;}
-  function thirdColumn(x) { return x >= 201 && x <= 298;}
-  function fourthColumn(x) { return x >= 300 && x <= 398;}
-  function fifthColun(x) {return x >= 398;}
+  function withinFirstColumn(x) {return x >= 4 && x <= 101;}
+  function withinSecondColumn(x) { return x >= 102 && x <= 200;}
+  function withinThirdColumn(x) { return x >= 201 && x <= 298;}
+  function withinFourthColumn(x) { return x >= 300 && x <= 398;}
+  function withinFifthColumn(x) {return x >= 398;}
 
-  function currentColumn(xCoordinate) {
-    let result = '';
-    if (firstColumn(xCoordinate)) {
-      result = 'firstColumn';
-    } else if (secondColumn(xCoordinate)) {
-      result = 'secondColumn';
-    } else if (thirdColumn(xCoordinate)) {
-      result = 'thirdColumn';
-    } else if (fourthColumn(xCoordinate)) {
-      result = 'fourthColumn';
-    } else {
-      result = 'fifthColumn';
-    }
-    return result;
-  }
+  let currentColumn = function (objectWithYCoordinate) {
+    return getIndexFromValue(ROW_Y_COORDINATES, objectWithYCoordinate.y);
 
-  function currentRow(objectWithYCoordinate) {
-    let result = '';
-    if (objectWithYCoordinate.y >= 80 && objectWithYCoordinate.y <= 100) {
-      result = 'firstLane';
-    } else if (objectWithYCoordinate.y >= 101 && objectWithYCoordinate.y <= 180) {
-      result = 'secondLane';
-    } else if (objectWithYCoordinate.y >= 181 && objectWithYCoordinate.y <= 240) {
-      result = 'thirdLane';
-    }
-    return result;
-  }
+  };
+
+  let currentRow = function currentRow(objectWithYCoordinate) {
+    return getIndexFromValue(COLUMN_X_COORDINATES, objectWithYCoordinate.x);
+  };
   /* This is called by the update function and loops through all of the
    * objects within your allEnemies array as defined in app.js and calls
    * their update() methods. It will then call the update function for your
@@ -176,7 +157,7 @@ let Engine = (function(global) {
          * so that we get the benefits of caching these images, since
          * we're using them over and over.
          */
-        ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
+        ctx.drawImage(Resources.get(rowImages[row]), col * 100, row * 83);
       }
     }
 
@@ -194,27 +175,26 @@ let Engine = (function(global) {
     allEnemies.forEach(function(enemy) {
       enemy.render();
     });
-    gems.forEach(function(stone) {
-      stone.render();
-    });
+    gem.render();
     player.health.forEach(function(heart) {
       heart.render();
     });
 
     player.render();
   }
-  function winGame(){
-    console.log("you win");
-  }
-  function loseGame(){
-    console.log("you lose");
-  }
+  // function winGame(){
+  //   console.log("you win");
+  // }
+  // function loseGame(){
+  //   console.log("you lose");
+  // }
 
   /* This function does nothing but it could have been a good place to
    * handle game reset states - maybe a new game menu or a game over screen
    * those sorts of things. It's only called once by the init() method.
    */
   function reset() {
+    restartGame()
     console.log("resets game");
   }
 
@@ -231,14 +211,14 @@ let Engine = (function(global) {
     'images/stone-block.png',
     'images/water-block.png',
     'images/grass-block.png',
-    'images/enemy-bug.png',
+    'images/enemy-bug-orange.png',
     'images/char-boy.png',
     'images/char-cat-girl.png',
     'images/char-cat-girl.png',
     'images/char-horn-girl.png',
-    'images/enemy-bug-blinky.png',
-    'images/enemy-bug-pinky.png',
-    'images/enemy-bug-inky.png',
+    'images/enemy-bug-red.png',
+    'images/enemy-bug-pink.png',
+    'images/enemy-bug-blue.png',
     'images/char-princess-girl.png',
     'images/Heart.png'
 
