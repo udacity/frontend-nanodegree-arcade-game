@@ -1,56 +1,73 @@
 /*player class*/
-export class Player{
-  /*constructor*/
+class Player {
+  // constructor
   constructor(sprite = "boy") {
     //allows me to save positioning for latter
     this.startingX = 200;
     this.startingY = 400;
     this.x = this.startingX;
     this.y = this.startingY;
-    this.health = 4;
+    this.health = [];
+    this.resetHealth();
     this.sprite = sprite;
+    this.gemsCollected = [];
   }
 
   //allows me to reset the position of the character
   takeDamage() {
-    //reset position
-    this.x = this.startingX;
-    this.y = this.startingY;
-
     //lower health
-    this.health -= 1;
-    allHearts.pop();
+    this.health.pop();
 
     //on player death
-    if (this.health <= 0) {
+    this.resetStartingPosition();
+    if (this.lost()) {
       headerText.textContent = 'You Died';
       modal.style.display = 'block';
       console.log('lose');
     }
   };
 
+  lost() {
+    return this.health.length === 0;
+  }
+
+  won() {
+    return this.gemsCollected === 4;
+  }
+
+  //reset position
+  resetStartingPosition() {
+    this.x = this.startingX;
+    this.y = this.startingY;
+  }
+
   resetHealth() {
-    fillAllHearts();
-    this.health = 4;
+    this.health =
+        [
+          new Heart(-25, 455),
+          new Heart(25, 455),
+          new Heart(75, 455),
+          new Heart(125, 455)
+        ];
   };
 
   render() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-    // hint update method...update position methods
-    // collision
-    // did player x & y collide with Enemy?
-    // WIN?
-    // did player reach a winning tile?
-    // postion player back to starting position - x,y must now = starting x,y
-    // movement handleing
-    // update postioning according to input x,y
-
-    // This class requires an update(), render() and
-    // a handleInput() method.
   }
 
 //movement
-  handleInput(input) {
+  update(input, allEnemies, gem) {
+    // reflect user input by changing player location
+    this.applyUserInput(input);
+    //gem collections
+    if (this.canCollectGem(gem)) {
+      //makes it so the gem will be placed in random locations
+      this.collectGem(gem);
+    }
+  }
+
+  //change player location
+  applyUserInput(input) {
     let horizontalMovement = 98;
     let lateralMovement = 80;
 
@@ -71,43 +88,33 @@ export class Player{
         this.y += lateralMovement;
       }
     }
-
-    //stone collections
-    if (this.x === stone.x && this.y === stone.y) {
-      //makes it so the stone will be placed in random locations
-      const xCoordinates = [4, 102, 298, 200, 396];
-      stone.x = xCoordinates[Math.floor(Math.random() * xCoordinates.length)];
-
-      //change the location of the stone from on the river to on the grass
-      stone.y = stone.y === 0 ? 320 : 0;
-
-      //stone skins
-      const red = 'images/Gem Red.png';
-      const blue = 'images/Gem Blue.png';
-      const orange = 'images/Gem Orange.png';
-      const green = 'images/Gem Green.png';
-      const purple = 'images/Gem Purple.png';
-      let stoneSpriteArray = [red, blue, orange, green, purple];
-      //switches the color of the stone after collecting it
-      let currentSpriteIndex = stoneSpriteArray.findIndex(
-          k => k === stone.sprite);
-      let lastSprite = stone.sprite === stoneSpriteArray[stoneSpriteArray.length
-      - 1];
-      stone.sprite =
-          lastSprite ? stoneSpriteArray : stoneSpriteArray[currentSpriteIndex
-          + 1];
-    }
   }
 
-//collision system for our bugs
-  update() {
-    for (let enemy of allEnemies) {
+  canCollectGem(gem) {
+    return this.x === gem.x && this.y === gem.y;
+  }
 
-      if (currentRow(enemy) === currentRow(this) &&
-          currentColumn(enemy) === currentColumn(this)) {
-        this.takeDamage();
-      }
-    }
+  collectGem(gem) {
+    const xCoordinates = [4, 102, 298, 200, 396];
+    gem.x = xCoordinates[Math.floor(Math.random() * xCoordinates.length)];
+
+    //change the location of the gem from on the river to on the grass
+    gem.y = gem.y === 0 ? 320 : 0;
+
+    //gem skins
+    const red = 'images/Gem Red.png';
+    const blue = 'images/Gem Blue.png';
+    const orange = 'images/Gem Orange.png';
+    const green = 'images/Gem Green.png';
+    const purple = 'images/Gem Purple.png';
+    let gemSpriteArray = [red, blue, orange, green, purple];
+    //switches the color of the gem after collecting it
+    let currentSpriteIndex = gemSpriteArray.findIndex(
+        k => k === gem.sprite);
+    let lastSprite = gem.sprite === gemSpriteArray[gemSpriteArray.length
+    - 1];
+    gem.sprite =
+        lastSprite ? gemSpriteArray[0] : gemSpriteArray[currentSpriteIndex + 1];
   }
 }
 

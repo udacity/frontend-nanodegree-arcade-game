@@ -12,13 +12,14 @@
  * This engine makes the canvas' context (ctx) object globally available to make
  * writing app.js a little simpler to work with.
  */
+// import {player, allEnemies, gem} from "./app";
 
-var Engine = (function(global) {
+let Engine = (function(global) {
   /* Predefine the variables we'll be using within this scope,
    * create the canvas element, grab the 2D context for that canvas
    * set the canvas elements height/width and add it to the DOM.
    */
-  var doc = global.document,
+  let doc = global.document,
       win = global.window,
       canvas = doc.createElement('canvas'),
       ctx = canvas.getContext('2d'),
@@ -79,9 +80,51 @@ var Engine = (function(global) {
    */
   function update(dt) {
     updateEntities(dt);
-    // checkCollisions();
+    checkCollisions();
   }
 
+  function checkCollisions() {
+    for (let enemy of allEnemies) {
+      if (currentRow(enemy) === currentRow(player) &&
+          currentColumn(enemy.x) === currentColumn(player.x)) {
+        player.takeDamage();
+      }
+    }
+  };
+//column choices
+  function firstColumn(x) {return x >= 4 && x <= 101;}
+  function secondColumn(x) { return x >= 102 && x <= 200;}
+  function thirdColumn(x) { return x >= 201 && x <= 298;}
+  function fourthColumn(x) { return x >= 300 && x <= 398;}
+  function fifthColun(x) {return x >= 398;}
+
+  function currentColumn(xCoordinate) {
+    let result = '';
+    if (firstColumn(xCoordinate)) {
+      result = 'firstColumn';
+    } else if (secondColumn(xCoordinate)) {
+      result = 'secondColumn';
+    } else if (thirdColumn(xCoordinate)) {
+      result = 'thirdColumn';
+    } else if (fourthColumn(xCoordinate)) {
+      result = 'fourthColumn';
+    } else {
+      result = 'fifthColumn';
+    }
+    return result;
+  }
+
+  function currentRow(objectWithYCoordinate) {
+    let result = '';
+    if (objectWithYCoordinate.y >= 80 && objectWithYCoordinate.y <= 100) {
+      result = 'firstLane';
+    } else if (objectWithYCoordinate.y >= 101 && objectWithYCoordinate.y <= 180) {
+      result = 'secondLane';
+    } else if (objectWithYCoordinate.y >= 181 && objectWithYCoordinate.y <= 240) {
+      result = 'thirdLane';
+    }
+    return result;
+  }
   /* This is called by the update function and loops through all of the
    * objects within your allEnemies array as defined in app.js and calls
    * their update() methods. It will then call the update function for your
@@ -93,7 +136,6 @@ var Engine = (function(global) {
     allEnemies.forEach(function(enemy) {
       enemy.update(dt);
     });
-    player.update();
   }
 
   /* This function initially draws the "game level", it will then call
@@ -106,7 +148,7 @@ var Engine = (function(global) {
     /* This array holds the relative URL to the image used
      * for that particular row of the game level.
      */
-    var rowImages = [
+    let rowImages = [
           'images/water-block.png',   // Top row is water
           'images/stone-block.png',   // Row 1 of 3 of stone
           'images/stone-block.png',   // Row 2 of 3 of stone
@@ -152,10 +194,10 @@ var Engine = (function(global) {
     allEnemies.forEach(function(enemy) {
       enemy.render();
     });
-    stones.forEach(function(stone) {
+    gems.forEach(function(stone) {
       stone.render();
     });
-    allHearts.forEach(function(heart) {
+    player.health.forEach(function(heart) {
       heart.render();
     });
 

@@ -1,6 +1,5 @@
-
 // Enemies our player must avoid
-export class Enemy {
+class Enemy {
 
   constructor(speed, lane, sprite = 'images/enemy-bug.png') {
     //speed
@@ -37,3 +36,4 @@ export class Enemy {
     }
   }
 }
+
