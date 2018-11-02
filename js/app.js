@@ -28,6 +28,46 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
+
+    Enemy.prototype.update = function(dt){ //Aspects of this method have origins from https://matthewcranford.com/arcade-game-walkthrough-part-5-adding-enemies/
+
+        this.x += 100 * dt; //movement of enemy
+        this.x += this.speed * dt; //Varing speed of enemy by multiplying initial X-position by a new x-value. 
+    
+        if (this.x < hStep * 5){  //If x-position is less than the width of the canvass, enemy will continue to move at designated speed.
+            this.x += this.speed * dt;
+    
+        } else {
+                this.x = this.startPos; /*Otherwise, if x-position is greater than the width of the canvass, enemy will default
+                                        to initial x-position.*/
+            }
+           
+           //Collision Check
+          //This Collision Check Statement is a concept originated from http://blog.sklambert.com/html5-canvas-game-2d-collision-detection
+          //Used Dev Tools in order to find out height and width of player and enemy 
+    
+            for (enemy of allEnemies){ 
+                if (this.x < player.x + player.width  && this.x + this.width  > player.x &&
+                    this.y < player.y + player.height && this.y + this.height > player.y) {
+            // The objects are touching
+                        
+                     player.reset();
+                        
+            }
+            
+            }
+                     
+            // You should multiply any movement by the dt parameter
+            // which will ensure the game runs at the same speed for
+            // all computers.
+        };
+    
+        // Draw the enemy on the screen, required method for game
+       Enemy.prototype.render = function() {
+            ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+        };
+    
+        
 };
 
 // Draw the enemy on the screen, required method for game
