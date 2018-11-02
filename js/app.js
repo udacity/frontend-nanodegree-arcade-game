@@ -90,6 +90,89 @@ const Player = function (x,y){
 
 
 
+
+    /Methods
+    Player.prototype.render = function (){
+        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    };
+
+    Player.prototype.update = function(dt){
+        // You should multiply any movement by the dt parameter
+        // which will ensure the game runs at the same speed for
+        // all computers.
+        //Need to check collision
+
+        this.x * dt; // Movement of player
+
+        //Check if player's x-value and y-value collided with enemy's x-value and y-value
+        if (this.x === Enemy.x && this.y === Enemy.y){
+                alert('Impact!');
+                
+                this.reset();
+            
+        }
+        this.gameOver();    
+    };
+
+    Player.prototype.reset = function reset (){
+
+        this.x = this.initX; 
+        this.y = this.initY;            
+    
+    }
+
+    Player.prototype.gameOver = function gamOver(){
+
+        if(this.y === -15){
+         
+         const modalClass = document.querySelector('.modal');
+         modalClass.classList.remove('hide_modal');
+         allEnemies = [];  
+        }
+       
+    };
+
+   
+  
+
+
+    /*The values (83) and (101) in the function below are the height 
+    and width of each square that comprises the building blocks 
+    of the rows and co lums of game's background.
+    */
+   
+    //Player Methods
+    Player.prototype.handleInput = function(direction){ //This switch statement concept is from https://matthewcranford.com/arcade-game-walkthrough-part-4-heros-first-steps/
+       
+       switch(direction){
+
+        case 'left':
+        if (this.x > 0){
+            this.x -= hStep;
+        }   break;
+
+        case 'right':
+        if (this.x < hStep * 3){
+            this.x += hStep;
+        }   break;
+
+        case 'up':
+            if(this.y > 0){
+               this.y -= vStep;
+            }  break;
+            
+        case 'down': 
+            if(this.y < vStep * 4){
+                this.y += vStep;
+            }
+           
+            break;            
+       }    
+       
+    }
+
+
+
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
