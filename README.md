@@ -1,4 +1,4 @@
-##Arcade Game Project for Udacity
+##  Arcade Game Project for Udacity
 Author: Shavaun Brandy
 
   This is the third project for the Udacity Frontend Developer Course. The memory game is similar to the card game, concentration. Having a good eye-hand coordination is the key factor to being successful and winning the game.
