@@ -91,7 +91,7 @@ const Player = function (x,y){
 
 
 
-    /Methods
+   //Methods
     Player.prototype.render = function (){
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     };
@@ -140,7 +140,7 @@ const Player = function (x,y){
     and width of each square that comprises the building blocks 
     of the rows and co lums of game's background.
     */
-   
+
     //Player Methods
     Player.prototype.handleInput = function(direction){ //This switch statement concept is from https://matthewcranford.com/arcade-game-walkthrough-part-4-heros-first-steps/
        
@@ -193,4 +193,18 @@ document.addEventListener('keyup', function(e) {
 });
 
 
+const enemyA = new Enemy(-101,0, 25);
+const enemyB = new Enemy(-101,83,100);
+const enemyC = new Enemy(-101, 160, 75);
+const enemyD = new Enemy(-101,240, 124 );
+/*const enemyE = new Enemy();
+const enemeyF= new Enemy();
+*/
+
+const player = new Player(200,400);
 let allEnemies = [];
+allEnemies.push(enemyA, enemyB, enemyC, enemyD);
+
+
+console.log(allEnemies);
+
