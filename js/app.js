@@ -24,15 +24,14 @@ var Enemy = function() {
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
-Enemy.prototype.update = function(dt) {
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
+// You should multiply any movement by the dt parameter
+// which will ensure the game runs at the same speed for
+// all computers.
 
-    Enemy.prototype.update = function(dt){ //Aspects of this method have origins from https://matthewcranford.com/arcade-game-walkthrough-part-5-adding-enemies/
+Enemy.prototype.update = function(dt){ //Aspects of this method have origins from https://matthewcranford.com/arcade-game-walkthrough-part-5-adding-enemies/
 
-        this.x += 100 * dt; //movement of enemy
-        this.x += this.speed * dt; //Varing speed of enemy by multiplying initial X-position by a new x-value. 
+    this.x += 100 * dt; //movement of enemy
+    this.x += this.speed * dt; //Varing speed of enemy by multiplying initial X-position by a new x-value. 
     
         if (this.x < hStep * 5){  //If x-position is less than the width of the canvass, enemy will continue to move at designated speed.
             this.x += this.speed * dt;
@@ -56,28 +55,39 @@ Enemy.prototype.update = function(dt) {
             }
             
             }
-                     
-            // You should multiply any movement by the dt parameter
-            // which will ensure the game runs at the same speed for
-            // all computers.
         };
     
-        // Draw the enemy on the screen, required method for game
-       Enemy.prototype.render = function() {
-            ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-        };
-    
-        
-};
-
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
+    };
+    
+        
+
+
+
 
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
+
+const vStep = 83;
+const hStep = 101;
+
+const Player = function (x,y){
+        //Properties            
+        this.x = x;
+        this.y = y;
+        this.vStep = vStep;
+        this.hStep = hStep;
+        this.initX = 200; 
+        this.initY = 400;    
+        this.sprite = 'images/char-boy.png';
+        this.height = 60;
+        this.width = 32;    
+        
+    };
+
 
 
 // Now instantiate your objects.
