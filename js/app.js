@@ -5,7 +5,21 @@ var Enemy = function() {
 
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
-    this.sprite = 'images/enemy-bug.png';
+    const  Enemy = function Enemey(x,y,speed) {
+        // Variables applied to each of our instances go here,
+        // we've provided one for you to get started
+        // The image/sprite for our enemies, this uses
+        // a helper we've provided to easily load images
+        //Properties
+        this.sprite = 'images/enemy-bug.png';
+        this.x = x;
+        this.y = y;
+        this.height = 45;
+        this.width = 75;
+        this.speed = speed;   
+        this.hStep = 101;
+        this.startPos= -(hStep);     
+    };
 };
 
 // Update the enemy's position, required method for game
