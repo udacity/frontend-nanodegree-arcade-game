@@ -1,6 +1,34 @@
-frontend-nanodegree-arcade-game
-===============================
+Arcade Game Project for   Udacity
+Author: Shavaun Brandy
 
-Students should use this [rubric](https://review.udacity.com/#!/projects/2696458597/rubric) for self-checking their submission. Make sure the functions you write are **object-oriented** - either class functions (like Player and Enemy) or class prototype functions such as Enemy.prototype.checkCollisions, and that the keyword 'this' is used appropriately within your class and class prototype functions to refer to the object the function is called upon. Also be sure that the **readme.md** file is updated with your instructions on both how to 1. Run and 2. Play your arcade game.
+  This is the third project for the Udacity Frontend Developer Course. The memory game is similar to the card game, concentration. Having a good eye-hand coordination is the key factor to being successful and winning the game.
+  
+  
+## Uploading the Game to Your Computer
 
-For detailed instructions on how to get started, check out this [guide](https://docs.google.com/document/d/1v01aScPjSWCCWQLIpFqvg3-vXLH2e8_SZQKC8jNO0Dc/pub?embedded=true).
+The game can be installed onto your computer by initially making sure that you are in the "shavauns-arcade-game" repository. 
+Search for the green button that has the words Clone or Download, and proceed to click the button.  When the download is complete, search for the index folder and click.  The arcade game should open in the browser right away.
+  
+
+## Instructions for Playing the Arcade Game
+
+The game is played by using the arrow keys to move the player in either an up, down, left or right direction.  Being able to move in these multiple directions will allow for maneuvering out of the path of the enemy vehicles that are moving across the screen above the player.  The object to the game is to successfully reach the water at the top of the screen without making contact with the enemy vehicles. One must be alert, instinctive, and have fast reaction time to be able to win the game.  Once you reach the water, you have won and the game is over.
+
+
+
+## Dependencies
+
+The Arcady game utilizes Font-Awesome for the Memory Game icons and also utilizes Google Fonts for the Coda font-family.
+
+
+
+## Contributing
+
+References that I used to create the game  include :https://matthewcranford.com/?s=memory+game, Memory Game Webinar With Ryan Waite, Memory Game Webinar with Mike Wales, https://developer.mozilla.org, https://www.w3schools.com/.
+
+
+
+
+
+
+
