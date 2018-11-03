@@ -18,13 +18,13 @@ The game is played by using the arrow keys to move the player in either an up, d
 
 ## Dependencies
 
-The Arcade game utilizes a resource.js and engine.js files provided by Udacity, in order to assist with proper operation of the arcade game
+The Arcade game utilizes a resource.js and engine.js files provided by Udacity, in order to assist with proper operation of the arcade game.
 
 
 
 ## Contributing
 
-References that I used to create the game  include :https://matthewcranford.com/?s=memory+game, Memory Game Webinar With Ryan Waite, Memory Game Webinar with Mike Wales, https://developer.mozilla.org, https://www.w3schools.com/.
+References that I used to create the game  include :https://matthewcranford.com/?s=arcade+game, Webinar With Ryan Waite, Memory Game Webinar with Mike Wales, https://developer.mozilla.org, https://www.w3schools.com/.
 
 
 
