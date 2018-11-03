@@ -24,7 +24,7 @@ The Arcade game utilizes a resource.js and engine.js files provided by Udacity, 
 
 ## Contributing
 
-References that I used to create the game  include :https://matthewcranford.com/?s=arcade+game, Webinar With Ryan Waite, Memory Game Webinar with Mike Wales, https://developer.mozilla.org, https://www.w3schools.com/.
+References that I used to create the game  include :https://matthewcranford.com/?s=arcade+game, http://blog.sklambert.com/html5-canvas-game-2d-collision-detection, https://developer.mozilla.org, and https://www.w3schools.com/.
 
 
 
