@@ -18,7 +18,7 @@ The game is played by using the arrow keys to move the player in either an up, d
 
 ## Dependencies
 
-The Arcady game utilizes Font-Awesome for the Memory Game icons and also utilizes Google Fonts for the Coda font-family.
+The Arcade game utilizes a resource.js and engine.js files provided by Udacity, in order to assist with proper operation of the arcade game
 
 
 
