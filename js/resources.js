@@ -37,7 +37,7 @@
     function _load(url) {
         if(resourceCache[url]) {
             /* If this URL has been previously loaded it will exist within
-             * our resourceCache array. Just return that image rather
+             * our resourceCache array. Just return that image rather than
              * re-loading the image.
              */
             return resourceCache[url];
