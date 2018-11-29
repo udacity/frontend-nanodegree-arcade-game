@@ -1,3 +1,5 @@
 body {
     text-align: center;
+    background: #11998e;
+    background: linear-gradient(to right, #11998e, #38ef7d);
 }
