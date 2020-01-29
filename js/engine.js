@@ -1,8 +1,24 @@
 
+/* Engine.js
+ * This file provides the game loop functionality (update entities and render),
+ * draws the initial game board on the screen, and then calls the update and
+ * render methods on your player and enemy objects (defined in your app.js).
+ *
+ * A game engine works by drawing the entire game screen over and over, kind of
+ * like a flipbook you may have created as a kid. When your player moves across
+ * the screen, it may look like just that image/character is moving or being
+ * drawn but that is not the case. What's really happening is the entire "scene"
+ * is being drawn over and over, presenting the illusion of animation.
+ *
+ * This engine makes the canvas' context (ctx) object globally available to make
+ * writing app.js a little simpler to work with.
+ */
+
+
 var Engine = (function(global) {
     /* Predefine the variables we'll be using within this scope,
      * create the canvas element, grab the 2D context for that canvas
-     * set the canvas elements height/width and add it to the DOM.
+     * set the canvas element's height/width and add it to the DOM.
      */
     var doc = global.document,
         win = global.window,
@@ -48,7 +64,15 @@ var Engine = (function(global) {
         checkCollisions();
     }
 
-    // Move enemies and check to see if player has 'won'
+
+    /* This is called by the update function and loops through all of the
+     * objects within your allEnemies array as defined in app.js and calls
+     * their update() methods. It will then call the update function for your
+     * player object. These update methods should focus purely on updating
+     * the data/properties related to the object. Do your drawing in your
+     * render methods.
+     */
+
     function updateEntities(dt) {
         allEnemies.forEach(function(enemy) {
             enemy.update(dt);
@@ -84,17 +108,30 @@ var Engine = (function(global) {
             numCols = 5,
             row, col;
 
+
+        // Before drawing, clear existing canvas
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+
+        /* Loop through the number of rows and columns we've defined above
+         * and, using the rowImages array, draw the correct image for that
+         * portion of the "grid"
+         */
+
         for (row = 0; row < numRows; row++) {
             for (col = 0; col < numCols; col++) {
                 ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
             }
         }
 
-        // Call function to draw our remaining assets
+
         renderEntities();
     }
 
-    // Draw our player, enemies and other game statuses on top of the background 'level'
+    /* This function is called by the render function and is called on each game
+     * tick. Its purpose is to then call the render functions you have defined
+     * on your enemy and player entities within app.js
+     */
+
     function renderEntities() {
 
         // Draw enemies in current location
@@ -124,6 +161,11 @@ var Engine = (function(global) {
     ]);
     Resources.onReady(init);
 
-    // Make ctx globally accessible
+
+    /* Assign the canvas' context object to the global variable (the window
+     * object when run in a browser) so that developers can use it more easily
+     * from within their app.js files.
+     */
+
     global.ctx = ctx;
 })(this);
